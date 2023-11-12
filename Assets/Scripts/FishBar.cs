@@ -17,12 +17,18 @@ public class FishBar : MonoBehaviour
     [SerializeField] private int _shakeVibrato = 10;
     [SerializeField] private float _shakeRandomness = 90;
 
+    [Header("Fish Indicator Options")]
+    [SerializeField] private float _forceStrength = 2f;
+    [SerializeField] private float _positionRadius = 1f;
+    [SerializeField] private float _mass = 1f;
+
     [Header("Overlay Options")]
     [SerializeField] private SpriteRenderer _overlaySpriteRenderer;
     [SerializeField] private Sprite _greyOverlay;
     [SerializeField] private Sprite _redOverlay;
     [SerializeField] private float _blinkDuration = 0.1f;
 
+    private Rigidbody2D _fishObjectRb;
     private Collider2D _indicatorCollider;
     private FishBarTrigger[] _fishBarTriggers;
     private int _triggerIdx = 0;
@@ -48,6 +54,16 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = _redOverlay;
         yield return new WaitForSeconds(_blinkDuration);
         _overlaySpriteRenderer.sprite = _greyOverlay;
+        AddFishForce();
+    }
+
+    private void AddFishForce()
+    {
+        _fishObjectRb.bodyType = RigidbodyType2D.Dynamic;
+        _fishObjectRb.mass = _mass;
+
+        Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
+        _fishObjectRb.AddForceAtPosition(randomForce, (Vector2)_fishSpriteObject.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
     }
 
     // Called from FishBarTrigger
@@ -63,6 +79,7 @@ public class FishBar : MonoBehaviour
     {
         _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>();
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
+        _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
         Play(_playDuration);
     }
 
@@ -78,7 +95,10 @@ public class FishBar : MonoBehaviour
         _barSprite.size = new Vector2(_barSprite.size.x, currHeight);
 
         // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
-        _fishSpriteObject.transform.localPosition = new Vector2(_fishSpriteObject.transform.localPosition.x, currHeight);
+        if (!_failed.Get())
+        {
+            _fishSpriteObject.transform.localPosition = new Vector2(_fishSpriteObject.transform.localPosition.x, currHeight);
+        }
     }
 
     // Play the fish bar game.
