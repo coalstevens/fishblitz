@@ -8,7 +8,7 @@ public class FishBarTrigger : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
 
-    private void Awake()
+    public void Initialize()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<Collider2D>();

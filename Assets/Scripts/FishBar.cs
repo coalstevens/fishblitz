@@ -75,11 +75,18 @@ public class FishBar : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Initialize()
     {
-        _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>();
+        gameObject.SetActive(true);
+        _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>(true);
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
+        _failed.Set(false);
+        foreach (FishBarTrigger trigger in _fishBarTriggers)
+        {
+            trigger.Initialize();
+            trigger.SetSprite(false);
+        }
     }
 
     private FishBarTrigger GetNextTrigger()
@@ -104,12 +111,7 @@ public class FishBar : MonoBehaviour
     // duration: time it takes for the progress bar to fill up to full
     public void Play(float duration)
     {
-        _failed.Set(false);
-        foreach (FishBarTrigger trigger in _fishBarTriggers)
-        {
-            trigger.SetSprite(false);
-        }
-
+        Initialize();
         StartCoroutine(PlayRoutine(duration));
     }
 

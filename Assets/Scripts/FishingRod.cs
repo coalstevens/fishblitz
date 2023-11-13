@@ -21,10 +21,15 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private int _shakeVibrato = 10;
     [SerializeField] private float _shakeRandomness = 90;
 
+    [Header("Input Options")]
+    [SerializeField] private InputActionReference _inputActionReference;
+
     private SpriteRenderer _spriteRenderer;
     private Reactive<bool> _fishOn = new Reactive<bool>(false);
     private Reactive<bool> _selected = new Reactive<bool>(false);
     private FishBar _fishBar;
+    private Coroutine _changeStateRoutine;
+    private Inventory _inventory;
 
     private void Awake()
     {
@@ -35,11 +40,6 @@ public class FishingRod : MonoBehaviour
         ChangeSprite(_fishOn.Get(), _selected.Get());
     }
 
-    private void ChangeOutline(bool selected)
-    {
-        _spriteRenderer.color = selected ? Color.green : Color.white;
-    }
-
     private void Shake()
     {
         transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
@@ -47,8 +47,9 @@ public class FishingRod : MonoBehaviour
 
     private void Start()
     {
-        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>();
-        StartCoroutine(ChangeStateRoutine());
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
+        _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
     }
 
     private IEnumerator ChangeStateRoutine()
@@ -88,5 +89,27 @@ public class FishingRod : MonoBehaviour
         {
             return;
         }
+
+        if (!_inputActionReference.action.WasPressedThisFrame())
+        {
+            return;
+        }
+
+        if (!_fishOn.Get())
+        {
+            Shake();
+        }
+        else
+        {
+            StartFishingGame();
+        }
+    }
+
+    private void StartFishingGame()
+    {
+        StopCoroutine(_changeStateRoutine);
+        _inventory.Rods += 1;
+        _fishBar.Play(3);
+        Destroy(gameObject);
     }
 }
