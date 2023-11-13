@@ -4,7 +4,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     private Reactive<int> _rods = new Reactive<int>(0);
-    private Reactive<int> _keys = new Reactive<int>(0);
+    private Reactive<int> _keys = new Reactive<int>(1);
     private Reactive<int> _money = new Reactive<int>(1);
 
     [Header("UI hookups")]
