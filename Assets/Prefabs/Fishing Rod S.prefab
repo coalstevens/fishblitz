@@ -9,9 +9,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_Size.x
+      value: 0.28125
+      objectReference: {fileID: 0}
+    - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_Size.y
+      value: 0.875
+      objectReference: {fileID: 0}
+    - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 7021658288854961411, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: -2878738049651649282, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 251922772164505438, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_Offset.x
       value: 0.01
@@ -27,7 +39,7 @@ PrefabInstance:
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: _onSprite
       value: 
-      objectReference: {fileID: 7021658288854961411, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: -3957783960750853412, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: offSprite
       value: 
@@ -35,7 +47,15 @@ PrefabInstance:
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: _offSprite
       value: 
-      objectReference: {fileID: -5142206286308274311, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: -2878738049651649282, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: _onSelectedSprite
+      value: 
+      objectReference: {fileID: -1794015185711422488, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: _offSelectedSprite
+      value: 
+      objectReference: {fileID: -8093159499254122920, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
     - target: {fileID: 6730937976201416397, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

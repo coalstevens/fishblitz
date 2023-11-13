@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7005299f8250b4aa7b2e6eff51b40f9a
+guid: e1a89430fbf784399b0a64db7ef45765
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -75,7 +75,7 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 0
+    defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
     generateModelPrefab: 1
@@ -87,7 +87,7 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 0
+    defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
     generateModelPrefab: 1
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638354633152206040
+  platformSettingsDirtyTick: 638354632833146150
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Coin
+  - name: Larch_Frame_0
     originalName: 
-    pivot: {x: 0.45000002, y: 0.47619048}
+    pivot: {x: 0.51724136, y: -0.011173185}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 20
-      height: 21
-    spriteID: d9316ba87a56544e1a10ea1099c59f2a
+      width: 87
+      height: 179
+    spriteID: 290d87413c88f445bab7f7de9e28ebff
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,23 +139,51 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: Larch_Frame_1
+    originalName: 
+    pivot: {x: 0.51724136, y: -0.011173185}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 99
+      y: 4
+      width: 87
+      height: 179
+    spriteID: f688c1394d1b344d79873efa00272a8c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 99, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1609295079
-    name: Coin
+    guid: 430531358
+    name: Larch
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Coin
+    - name: Larch_Frame_0
       frameIndex: 0
       cellRect:
-        x: 7
-        y: 6
-        width: 20
-        height: 21
-      spriteId: d9316ba87a56544e1a10ea1099c59f2a
+        x: 3
+        y: 2
+        width: 87
+        height: 179
+      spriteId: 290d87413c88f445bab7f7de9e28ebff
+    - name: Larch_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 3
+        y: 2
+        width: 87
+        height: 179
+      spriteId: f688c1394d1b344d79873efa00272a8c
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -197,4 +225,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
+  canvasSize: {x: 96, y: 192}

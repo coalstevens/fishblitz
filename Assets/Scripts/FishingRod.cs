@@ -8,6 +8,8 @@ public class FishingRod : MonoBehaviour
     [Header("Sprite Options")]
     [SerializeField] private Sprite _onSprite;
     [SerializeField] private Sprite _offSprite;
+    [SerializeField] private Sprite _onSelectedSprite;
+    [SerializeField] private Sprite _offSelectedSprite;
 
     [Header("Behavioural Options")]
     [SerializeField] private float _minChangeInterval = 3;
@@ -19,9 +21,6 @@ public class FishingRod : MonoBehaviour
     [SerializeField] private int _shakeVibrato = 10;
     [SerializeField] private float _shakeRandomness = 90;
 
-    [Header("Input Options")]
-    [SerializeField] private InputActionReference _inputActionRef;
-
     private SpriteRenderer _spriteRenderer;
     private Reactive<bool> _fishOn = new Reactive<bool>(false);
     private Reactive<bool> _selected = new Reactive<bool>(false);
@@ -30,10 +29,10 @@ public class FishingRod : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _fishOn.OnChange((_, curr) => ChangeSprite(curr));
+        _fishOn.OnChange((_, curr) => ChangeSprite(curr, _selected.Get()));
         _fishOn.OnChange((_, curr) => Shake());
-        _selected.OnChange((_, selected) => ChangeOutline(selected));
-        ChangeSprite(_fishOn.Get());
+        _selected.OnChange((_, selected) => ChangeSprite(_fishOn.Get(), selected));
+        ChangeSprite(_fishOn.Get(), _selected.Get());
     }
 
     private void ChangeOutline(bool selected)
@@ -61,9 +60,16 @@ public class FishingRod : MonoBehaviour
         }
     }
 
-    private void ChangeSprite(bool fishOn)
+    private void ChangeSprite(bool fishOn, bool selected)
     {
-        _spriteRenderer.sprite = fishOn ? _onSprite : _offSprite;
+        if (fishOn)
+        {
+            _spriteRenderer.sprite = selected ? _onSelectedSprite : _onSprite;
+        }
+        else
+        {
+            _spriteRenderer.sprite = selected ? _offSelectedSprite : _offSprite;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -82,7 +88,5 @@ public class FishingRod : MonoBehaviour
         {
             return;
         }
-
-
     }
 }

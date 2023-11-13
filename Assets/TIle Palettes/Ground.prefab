@@ -80,6 +80,7 @@ Transform:
   - {fileID: 1580332265974193516}
   - {fileID: 9113127776324414889}
   - {fileID: 5151761220111461844}
+  - {fileID: 7959279747599017179}
   m_Father: {fileID: 1069129577405811740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1839735485 &1356219980596629225
@@ -116,12 +117,12 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: c32422bb438094e389e03ede38d5dd4a, type: 2}
   - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 188a5954cb88f46b18e4e79a13d3f06a, type: 2}
+    m_Data: {fileID: 11400000, guid: 7819074e256b74e088f4177d662528ae, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
-    m_Data: {fileID: 1810010212, guid: 8e5fe569aa13f4b019fd27b0e08428f3, type: 3}
+    m_Data: {fileID: 113325549, guid: 55a9a8e35c9ca4008808533255a8a9d7, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: -1364193256, guid: 8e5fe569aa13f4b019fd27b0e08428f3, type: 3}
+    m_Data: {fileID: 1274990037, guid: 55a9a8e35c9ca4008808533255a8a9d7, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 2
     m_Data:
@@ -277,6 +278,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fishing Rod W
       objectReference: {fileID: 0}
+    - target: {fileID: 8348124566271831225, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -286,6 +291,76 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6730937976201416397, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
   m_PrefabInstance: {fileID: 1880151576359494425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2128283536107079833
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1336763955448518691}
+    m_Modifications:
+    - target: {fileID: 1443780340505877682, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_Name
+      value: Store
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+--- !u!4 &7959279747599017179 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+  m_PrefabInstance: {fileID: 2128283536107079833}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6652736907743867926
 PrefabInstance:
@@ -347,6 +422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fishing Rod E
       objectReference: {fileID: 0}
+    - target: {fileID: 7964338676419829003, guid: 99d4d79299fad44318f3581cbcd4754f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -376,6 +455,10 @@ PrefabInstance:
     - target: {fileID: 6417108589607048492, guid: 5d07931b189fb44c4b32800e43ab5a2d, type: 3}
       propertyPath: m_Name
       value: Fishing Rod N
+      objectReference: {fileID: 0}
+    - target: {fileID: 6417108589607048492, guid: 5d07931b189fb44c4b32800e43ab5a2d, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8628124196281972568, guid: 5d07931b189fb44c4b32800e43ab5a2d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -479,6 +562,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fishing Rod S
       objectReference: {fileID: 0}
+    - target: {fileID: 3739433359757680081, guid: d78d24c7b8c6446218f697937e943722, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5475446620317456394, guid: d78d24c7b8c6446218f697937e943722, type: 3}
       propertyPath: m_DynamicOccludee
       value: 0
@@ -497,7 +584,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2113953669269307301, guid: d78d24c7b8c6446218f697937e943722, type: 3}
   m_PrefabInstance: {fileID: 7146668095449453068}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5123163826527281446
+--- !u!114 &7842538377536234829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

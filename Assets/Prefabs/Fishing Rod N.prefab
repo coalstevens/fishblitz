@@ -9,9 +9,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_Size.x
+      value: 0.21875
+      objectReference: {fileID: 0}
+    - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -6955012360647547020, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: -3795903450673709957, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: -8375590894817990302, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 251922772164505438, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_Offset.x
       value: 0
@@ -27,7 +35,7 @@ PrefabInstance:
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: _onSprite
       value: 
-      objectReference: {fileID: -6955012360647547020, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: 2831609344126724835, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: offSprite
       value: 
@@ -35,7 +43,15 @@ PrefabInstance:
     - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: _offSprite
       value: 
-      objectReference: {fileID: -8769819993021667580, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+      objectReference: {fileID: -3795903450673709957, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: _onSelectedSprite
+      value: 
+      objectReference: {fileID: -5405570096582286908, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+    - target: {fileID: 4913110220928130671, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
+      propertyPath: _offSelectedSprite
+      value: 
+      objectReference: {fileID: 8658886396617665253, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
     - target: {fileID: 6730937976201416397, guid: 1ca393a39dee849f2ad6f63aeedcf5a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

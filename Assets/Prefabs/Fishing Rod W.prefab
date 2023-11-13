@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8133435807758410669, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+  m_Sprite: {fileID: -6902560443119822176, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.21875, y: 0.90625}
+  m_Size: {x: 0.96875, y: 0.8125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -98,8 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d208b07c1fb94486ad9a51da762b455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onSprite: {fileID: -8133435807758410669, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
-  _offSprite: {fileID: -4558298611493272031, guid: ae75f890ec2634b9b9de28aa3c8959a8, type: 3}
+  _onSprite: {fileID: 1347163612285895035, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+  _offSprite: {fileID: -6902560443119822176, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+  _onSelectedSprite: {fileID: -4801905292824037924, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
+  _offSelectedSprite: {fileID: 3997032126480539612, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
   _minChangeInterval: 10
   _maxChangeInterval: 20
   _shakeDuration: 0.3
