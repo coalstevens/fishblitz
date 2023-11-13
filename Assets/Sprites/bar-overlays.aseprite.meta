@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 689cbd0be07424bd3a6649bef6edf8fe
+guid: 315f7b477b9e944c3b39833ee84e36a9
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -32,7 +32,7 @@ ScriptedImporter:
     sRGBTexture: 1
     spriteMode: 2
     spriteExtrude: 1
-    spriteMeshType: 0
+    spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
     spritePixelsToUnits: 32
@@ -71,7 +71,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -83,7 +83,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638354007526472220
+  platformSettingsDirtyTick: 638354632950126840
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,7 +119,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Fishing_Gamebar-64x128 (2)
+  - name: bar-overlays
     originalName: 
     pivot: {x: 0.4964539, y: 0}
     alignment: 9
@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 4
       width: 141
       height: 128
-    spriteID: f969999bbf4f0400ca5dbb65ad7780d0
+    spriteID: 3f1eedecc044d4aeda82a4454c0c85c0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,47 +139,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  spriteSheetImportData:
-  - name: overlay-grey
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 7
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 99
-      y: 4
-      width: 14
-      height: 128
-    spriteID: deb2f69d4d9f343ada04fba1f313f280
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: overlay-red
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 7
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 131
-      y: 4
-      width: 14
-      height: 128
-    spriteID: ed8c29798cae24108a70c410045b36c7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+  spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
     guid: 1625340129
@@ -195,7 +155,7 @@ ScriptedImporter:
         y: 0
         width: 141
         height: 128
-      spriteId: d33e4b7192441453a9f81f6361307c55
+      spriteId: 3f1eedecc044d4aeda82a4454c0c85c0
     linkedCells: []
     parentIndex: -1
   platformSettings:

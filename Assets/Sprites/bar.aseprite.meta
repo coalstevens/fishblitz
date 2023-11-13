@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5d81f1ee1ebe54ce096a9fdfb6636714
+guid: a5f25e4c3bc22432baa9975ad0e3048a
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -32,7 +32,7 @@ ScriptedImporter:
     sRGBTexture: 1
     spriteMode: 2
     spriteExtrude: 1
-    spriteMeshType: 0
+    spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
     spritePixelsToUnits: 32
@@ -74,7 +74,7 @@ ScriptedImporter:
     fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
-    defaultPivotSpace: 1
+    defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
@@ -86,7 +86,7 @@ ScriptedImporter:
     fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
-    defaultPivotSpace: 1
+    defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638353856555269990
+  platformSettingsDirtyTick: 638354631594125980
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,8 +121,8 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: bar
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 7
+    pivot: {x: 0.4935065, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
@@ -130,7 +130,7 @@ ScriptedImporter:
       y: 4
       width: 77
       height: 128
-    spriteID: bce40ebe8ce9f4cdfb85d71b06073b85
+    spriteID: 91b19413540ee468b960127545859671
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -140,7 +140,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: bar-indicator-full
+  - name: bar_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -151,7 +151,7 @@ ScriptedImporter:
       y: 111
       width: 10
       height: 10
-    spriteID: 7dd64d4cb6d3d46d4b8ed29a7e76ce3a
+    spriteID: a87cfd18a6e8a42fab4594450f023ab5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -160,7 +160,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: bar-frame
+  - name: bar_1
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 7
@@ -171,7 +171,7 @@ ScriptedImporter:
       y: 4
       width: 14
       height: 128
-    spriteID: 4005e041c3d8d4732b642167ce570b63
+    spriteID: cc01e8d6639784b7e8406e4e7f7991b9
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -180,7 +180,27 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: bar-indicator-empty
+  - name: bar_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 67
+      y: 4
+      width: 14
+      height: 128
+    spriteID: 007a9c919f40b41feba83a7bde23e583
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: bar_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -191,7 +211,7 @@ ScriptedImporter:
       y: 79
       width: 10
       height: 10
-    spriteID: 34afe3a1402c04058a17067fa7958fa5
+    spriteID: 95143bbe3e91c4dd991f4e66ebfc128d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -200,7 +220,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: bar-indicator-fish
+  - name: bar_4
     originalName: 
     pivot: {x: 0.5, y: 0.42857143}
     alignment: 9
@@ -211,7 +231,7 @@ ScriptedImporter:
       y: 49
       width: 12
       height: 7
-    spriteID: 81c0d0f4a3d1646d09307e88d6e92b90
+    spriteID: def0248352a574ec0835160e1d3c2d42
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -220,7 +240,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: bar-level
+  - name: bar_5
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 7
@@ -231,7 +251,7 @@ ScriptedImporter:
       y: 12
       width: 4
       height: 16
-    spriteID: f0db199248db44770979e7c4edfb5608
+    spriteID: 23dad02a2c0244ee1a5ebed3fed81d36
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -255,7 +275,7 @@ ScriptedImporter:
         y: 0
         width: 77
         height: 128
-      spriteId: bce40ebe8ce9f4cdfb85d71b06073b85
+      spriteId: 91b19413540ee468b960127545859671
     linkedCells: []
     parentIndex: -1
   platformSettings:
