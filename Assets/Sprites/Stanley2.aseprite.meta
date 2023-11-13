@@ -127,7 +127,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 96
-      y: 52
+      y: 196
       width: 19
       height: 59
     spriteID: eb01d3e59b0c64ba9b23d56da74b2a71
@@ -138,68 +138,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 96, y: 52}
+    uvTransform: {x: 96, y: 196}
   - name: Stanley2_Frame_1
-    originalName: 
-    pivot: {x: 1.1666667, y: -0.016666668}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 127
-      y: 4
-      width: 24
-      height: 60
-    spriteID: 5610f940c698f4f6e8aeb2fcea152023
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 127, y: 4}
-  - name: Stanley2_Frame_2
-    originalName: 
-    pivot: {x: 1.3157895, y: -0.016949153}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 96
-      y: 119
-      width: 19
-      height: 59
-    spriteID: d6b9423e0e4094244aa2e447077fd363
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 96, y: 119}
-  - name: Stanley2_Frame_3
-    originalName: 
-    pivot: {x: 1.1666667, y: -0.016666668}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 127
-      y: 72
-      width: 24
-      height: 60
-    spriteID: ff76066fed6f8497fb0e72c1aa1cd172
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 127, y: 72}
-  - name: Stanley2_Frame_4
     originalName: 
     pivot: {x: 1.2173914, y: 0}
     alignment: 9
@@ -210,7 +150,7 @@ ScriptedImporter:
       y: 52
       width: 23
       height: 63
-    spriteID: e8cf37cf9deb440d3b15622cba5347b4
+    spriteID: 5610f940c698f4f6e8aeb2fcea152023
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -219,27 +159,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 65, y: 52}
-  - name: Stanley2_Frame_5
-    originalName: 
-    pivot: {x: 1.2272727, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 65
-      y: 406
-      width: 22
-      height: 64
-    spriteID: 6b28537cdf8a7407da15fee2cd3e58aa
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 65, y: 406}
-  - name: Stanley2_Frame_6
+  - name: Stanley2_Frame_2
     originalName: 
     pivot: {x: 1.2173914, y: 0}
     alignment: 9
@@ -250,7 +170,7 @@ ScriptedImporter:
       y: 123
       width: 23
       height: 63
-    spriteID: 5cd0c7837b991487f8678767e0a4f5dd
+    spriteID: d6b9423e0e4094244aa2e447077fd363
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -259,17 +179,97 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 65, y: 123}
-  - name: Stanley2_Frame_7
+  - name: Stanley2_Frame_3
     originalName: 
-    pivot: {x: 1.2727273, y: 0}
+    pivot: {x: 1.3684211, y: -0.01724138}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 397
+      width: 19
+      height: 58
+    spriteID: ff76066fed6f8497fb0e72c1aa1cd172
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 96, y: 397}
+  - name: Stanley2_Frame_4
+    originalName: 
+    pivot: {x: 1.3157895, y: -0.016949153}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 263
+      width: 19
+      height: 59
+    spriteID: e8cf37cf9deb440d3b15622cba5347b4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 96, y: 263}
+  - name: Stanley2_Frame_5
+    originalName: 
+    pivot: {x: 1.1666667, y: -0.016666668}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 127
-      y: 274
-      width: 22
-      height: 64
+      y: 4
+      width: 24
+      height: 60
+    spriteID: 6b28537cdf8a7407da15fee2cd3e58aa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 127, y: 4}
+  - name: Stanley2_Frame_6
+    originalName: 
+    pivot: {x: 1.3157895, y: -0.016949153}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 330
+      width: 19
+      height: 59
+    spriteID: 5cd0c7837b991487f8678767e0a4f5dd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 96, y: 330}
+  - name: Stanley2_Frame_7
+    originalName: 
+    pivot: {x: 1.1666667, y: -0.016666668}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 127
+      y: 72
+      width: 24
+      height: 60
     spriteID: 693a5ea12931b4318bce810ce0157c27
     spriteBone: []
     spriteOutline: []
@@ -278,7 +278,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 127, y: 274}
+    uvTransform: {x: 127, y: 72}
   - name: Stanley2_Frame_8
     originalName: 
     pivot: {x: 1.2173914, y: 0}
@@ -301,14 +301,14 @@ ScriptedImporter:
     uvTransform: {x: 65, y: 194}
   - name: Stanley2_Frame_9
     originalName: 
-    pivot: {x: 1.2857143, y: 0}
+    pivot: {x: 1.2272727, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 127
-      y: 346
-      width: 21
+      y: 344
+      width: 22
       height: 64
     spriteID: 56e2957452886408fb3830a0648c7eec
     spriteBone: []
@@ -318,7 +318,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 127, y: 346}
+    uvTransform: {x: 127, y: 344}
   - name: Stanley2_Frame_10
     originalName: 
     pivot: {x: 1.2173914, y: 0}
@@ -341,14 +341,14 @@ ScriptedImporter:
     uvTransform: {x: 65, y: 265}
   - name: Stanley2_Frame_11
     originalName: 
-    pivot: {x: 1.2857143, y: 0}
+    pivot: {x: 1.2727273, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 127
-      y: 418
-      width: 21
+      y: 416
+      width: 22
       height: 64
     spriteID: d52e0d57fcbe445b9a0a3817434c199e
     spriteBone: []
@@ -358,18 +358,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 127, y: 418}
+    uvTransform: {x: 127, y: 416}
   - name: Stanley2_Frame_12
     originalName: 
-    pivot: {x: 1.3684211, y: -0.01724138}
+    pivot: {x: 1.2173914, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 96
-      y: 186
-      width: 19
-      height: 58
+      x: 65
+      y: 336
+      width: 23
+      height: 63
     spriteID: 346f8832a9eb54655bc1ff28a912099a
     spriteBone: []
     spriteOutline: []
@@ -378,18 +378,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 96, y: 186}
+    uvTransform: {x: 65, y: 336}
   - name: Stanley2_Frame_13
     originalName: 
-    pivot: {x: 1.1666667, y: -0.016949153}
+    pivot: {x: 1.2857143, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 127
-      y: 140
-      width: 24
-      height: 59
+      x: 96
+      y: 52
+      width: 21
+      height: 64
     spriteID: ff8a4ce81f1f2416583143b8f91d6770
     spriteBone: []
     spriteOutline: []
@@ -398,18 +398,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 127, y: 140}
+    uvTransform: {x: 96, y: 52}
   - name: Stanley2_Frame_14
     originalName: 
-    pivot: {x: 1.3684211, y: -0.01724138}
+    pivot: {x: 1.2173914, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 96
-      y: 252
-      width: 19
-      height: 58
+      x: 65
+      y: 407
+      width: 23
+      height: 63
     spriteID: 892056550f4f34e30972e0020b95a7e7
     spriteBone: []
     spriteOutline: []
@@ -418,18 +418,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 96, y: 252}
+    uvTransform: {x: 65, y: 407}
   - name: Stanley2_Frame_15
     originalName: 
-    pivot: {x: 1.1666667, y: -0.016949153}
+    pivot: {x: 1.2857143, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 127
-      y: 207
-      width: 24
-      height: 59
+      x: 96
+      y: 124
+      width: 21
+      height: 64
     spriteID: 1c212dd6994e24c0c9bdd6d1084c7851
     spriteBone: []
     spriteOutline: []
@@ -438,8 +438,88 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 127, y: 207}
+    uvTransform: {x: 96, y: 124}
   - name: Stanley2_Frame_16
+    originalName: 
+    pivot: {x: 1.3684211, y: -0.01724138}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 159
+      y: 4
+      width: 19
+      height: 58
+    spriteID: 29becacecd3cf44189384302ff5a6c29
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 159, y: 4}
+  - name: Stanley2_Frame_17
+    originalName: 
+    pivot: {x: 1.1666667, y: -0.016949153}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 127
+      y: 210
+      width: 24
+      height: 59
+    spriteID: 0cd10025ec2c94714bdb9d0bc3d28e5d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 127, y: 210}
+  - name: Stanley2_Frame_18
+    originalName: 
+    pivot: {x: 1.3684211, y: -0.01724138}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 159
+      y: 70
+      width: 19
+      height: 58
+    spriteID: 4b277a6cbcbb14e95b572fa517c52e68
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 159, y: 70}
+  - name: Stanley2_Frame_19
+    originalName: 
+    pivot: {x: 1.1666667, y: -0.016949153}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 127
+      y: 277
+      width: 24
+      height: 59
+    spriteID: cc2b2509c6e9e46aa8a75f7578db322a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 127, y: 277}
+  - name: Stanley2_Frame_20
     originalName: 
     pivot: {x: 1, y: 0}
     alignment: 9
@@ -450,7 +530,7 @@ ScriptedImporter:
       y: 449
       width: 31
       height: 46
-    spriteID: 29becacecd3cf44189384302ff5a6c29
+    spriteID: 7908fcd6a7ebf4d8bbf2421572c7ddad
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -459,7 +539,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 449}
-  - name: Stanley2_Frame_17
+  - name: Stanley2_Frame_21
     originalName: 
     pivot: {x: 1, y: 0}
     alignment: 9
@@ -470,7 +550,7 @@ ScriptedImporter:
       y: 278
       width: 31
       height: 51
-    spriteID: 0cd10025ec2c94714bdb9d0bc3d28e5d
+    spriteID: 8bbd7cebf5c0d488e8864c34f656453e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -479,7 +559,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 278}
-  - name: Stanley2_Frame_18
+  - name: Stanley2_Frame_22
     originalName: 
     pivot: {x: 1, y: -0.08928572}
     alignment: 9
@@ -490,7 +570,7 @@ ScriptedImporter:
       y: 150
       width: 32
       height: 56
-    spriteID: 4b277a6cbcbb14e95b572fa517c52e68
+    spriteID: b2d4c3ef89cc344caa1792579f8257c0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -499,7 +579,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 150}
-  - name: Stanley2_Frame_19
+  - name: Stanley2_Frame_23
     originalName: 
     pivot: {x: 1, y: -0.08928572}
     alignment: 9
@@ -510,7 +590,7 @@ ScriptedImporter:
       y: 214
       width: 32
       height: 56
-    spriteID: cc2b2509c6e9e46aa8a75f7578db322a
+    spriteID: aa534e46ca95c4957a823b9c43bb250d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -519,7 +599,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 214}
-  - name: Stanley2_Frame_20
+  - name: Stanley2_Frame_24
     originalName: 
     pivot: {x: 0.5925926, y: 0}
     alignment: 9
@@ -530,7 +610,7 @@ ScriptedImporter:
       y: 4
       width: 54
       height: 40
-    spriteID: 7908fcd6a7ebf4d8bbf2421572c7ddad
+    spriteID: 528454590f50949b1a0cda118380e564
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -539,7 +619,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 65, y: 4}
-  - name: Stanley2_Frame_21
+  - name: Stanley2_Frame_25
     originalName: 
     pivot: {x: 0.6037736, y: 0}
     alignment: 9
@@ -550,7 +630,7 @@ ScriptedImporter:
       y: 4
       width: 53
       height: 41
-    spriteID: 8bbd7cebf5c0d488e8864c34f656453e
+    spriteID: f213988be3f794ccaa6ce9dd8bde1b0a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -559,7 +639,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Stanley2_Frame_22
+  - name: Stanley2_Frame_26
     originalName: 
     pivot: {x: 0.41509435, y: 0}
     alignment: 9
@@ -570,7 +650,7 @@ ScriptedImporter:
       y: 102
       width: 53
       height: 40
-    spriteID: b2d4c3ef89cc344caa1792579f8257c0
+    spriteID: bba70b9aa2e754bb88c6f71a0ab2e3f7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -579,7 +659,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 102}
-  - name: Stanley2_Frame_23
+  - name: Stanley2_Frame_27
     originalName: 
     pivot: {x: 0.3962264, y: 0}
     alignment: 9
@@ -590,7 +670,7 @@ ScriptedImporter:
       y: 53
       width: 53
       height: 41
-    spriteID: aa534e46ca95c4957a823b9c43bb250d
+    spriteID: cc8c539b12cac40adb874dfa875c0123
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -599,7 +679,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 53}
-  - name: Stanley2_Frame_24
+  - name: Stanley2_Frame_28
     originalName: 
     pivot: {x: 1, y: 0}
     alignment: 9
@@ -610,7 +690,7 @@ ScriptedImporter:
       y: 337
       width: 32
       height: 48
-    spriteID: 528454590f50949b1a0cda118380e564
+    spriteID: 4f855bdadffd14ddab509b6cc90e52c0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -619,7 +699,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 337}
-  - name: Stanley2_Frame_25
+  - name: Stanley2_Frame_29
     originalName: 
     pivot: {x: 1, y: 0}
     alignment: 9
@@ -630,7 +710,7 @@ ScriptedImporter:
       y: 393
       width: 32
       height: 48
-    spriteID: f213988be3f794ccaa6ce9dd8bde1b0a
+    spriteID: 4657a389e3e1f443f9332b35e3cb0787
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -639,7 +719,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 393}
-  - name: Stanley2_Frame_26
+  - name: Stanley2_Frame_30
     originalName: 
     pivot: {x: 1.2272727, y: 0}
     alignment: 9
@@ -647,10 +727,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 96
-      y: 372
+      y: 463
       width: 22
       height: 45
-    spriteID: bba70b9aa2e754bb88c6f71a0ab2e3f7
+    spriteID: 91679a54ab3e148368bf4d39dd2b172f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -658,19 +738,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 96, y: 372}
-  - name: Stanley2_Frame_27
+    uvTransform: {x: 96, y: 463}
+  - name: Stanley2_Frame_31
     originalName: 
     pivot: {x: 1.2272727, y: -0.02173913}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 96
-      y: 318
+      x: 186
+      y: 4
       width: 22
       height: 46
-    spriteID: cc8c539b12cac40adb874dfa875c0123
+    spriteID: 67febb729b1044e7da9cdb6cd2f60c8a
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -678,19 +758,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 96, y: 318}
-  - name: Stanley2_Frame_28
+    uvTransform: {x: 186, y: 4}
+  - name: Stanley2_Frame_32
     originalName: 
     pivot: {x: 1.1739131, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 65
-      y: 336
+      x: 127
+      y: 140
       width: 23
       height: 62
-    spriteID: 4f855bdadffd14ddab509b6cc90e52c0
+    spriteID: dca601301962a4a16ada5c4bba3a6014
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -698,7 +778,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 65, y: 336}
+    uvTransform: {x: 127, y: 140}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -720,57 +800,57 @@ ScriptedImporter:
       frameIndex: 1
       cellRect:
         x: 4
-        y: 1
-        width: 24
-        height: 60
+        y: 0
+        width: 23
+        height: 63
       spriteId: 5610f940c698f4f6e8aeb2fcea152023
     - name: Stanley2_Frame_2
       frameIndex: 2
+      cellRect:
+        x: 4
+        y: 0
+        width: 23
+        height: 63
+      spriteId: d6b9423e0e4094244aa2e447077fd363
+    - name: Stanley2_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 6
+        y: 1
+        width: 19
+        height: 58
+      spriteId: ff76066fed6f8497fb0e72c1aa1cd172
+    - name: Stanley2_Frame_4
+      frameIndex: 4
       cellRect:
         x: 7
         y: 1
         width: 19
         height: 59
-      spriteId: d6b9423e0e4094244aa2e447077fd363
-    - name: Stanley2_Frame_3
-      frameIndex: 3
+      spriteId: e8cf37cf9deb440d3b15622cba5347b4
+    - name: Stanley2_Frame_5
+      frameIndex: 5
       cellRect:
         x: 4
         y: 1
         width: 24
         height: 60
-      spriteId: ff76066fed6f8497fb0e72c1aa1cd172
-    - name: Stanley2_Frame_4
-      frameIndex: 4
-      cellRect:
-        x: 4
-        y: 0
-        width: 23
-        height: 63
-      spriteId: e8cf37cf9deb440d3b15622cba5347b4
-    - name: Stanley2_Frame_5
-      frameIndex: 5
-      cellRect:
-        x: 5
-        y: 0
-        width: 22
-        height: 64
       spriteId: 6b28537cdf8a7407da15fee2cd3e58aa
     - name: Stanley2_Frame_6
       frameIndex: 6
       cellRect:
-        x: 4
-        y: 0
-        width: 23
-        height: 63
+        x: 7
+        y: 1
+        width: 19
+        height: 59
       spriteId: 5cd0c7837b991487f8678767e0a4f5dd
     - name: Stanley2_Frame_7
       frameIndex: 7
       cellRect:
         x: 4
-        y: 0
-        width: 22
-        height: 64
+        y: 1
+        width: 24
+        height: 60
       spriteId: 693a5ea12931b4318bce810ce0157c27
     - name: Stanley2_Frame_8
       frameIndex: 8
@@ -785,7 +865,7 @@ ScriptedImporter:
       cellRect:
         x: 5
         y: 0
-        width: 21
+        width: 22
         height: 64
       spriteId: 56e2957452886408fb3830a0648c7eec
     - name: Stanley2_Frame_10
@@ -799,147 +879,179 @@ ScriptedImporter:
     - name: Stanley2_Frame_11
       frameIndex: 11
       cellRect:
-        x: 5
+        x: 4
         y: 0
-        width: 21
+        width: 22
         height: 64
       spriteId: d52e0d57fcbe445b9a0a3817434c199e
     - name: Stanley2_Frame_12
       frameIndex: 12
       cellRect:
-        x: 6
-        y: 1
-        width: 19
-        height: 58
+        x: 4
+        y: 0
+        width: 23
+        height: 63
       spriteId: 346f8832a9eb54655bc1ff28a912099a
     - name: Stanley2_Frame_13
       frameIndex: 13
       cellRect:
-        x: 4
-        y: 1
-        width: 24
-        height: 59
+        x: 5
+        y: 0
+        width: 21
+        height: 64
       spriteId: ff8a4ce81f1f2416583143b8f91d6770
     - name: Stanley2_Frame_14
       frameIndex: 14
+      cellRect:
+        x: 4
+        y: 0
+        width: 23
+        height: 63
+      spriteId: 892056550f4f34e30972e0020b95a7e7
+    - name: Stanley2_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 5
+        y: 0
+        width: 21
+        height: 64
+      spriteId: 1c212dd6994e24c0c9bdd6d1084c7851
+    - name: Stanley2_Frame_16
+      frameIndex: 16
       cellRect:
         x: 6
         y: 1
         width: 19
         height: 58
-      spriteId: 892056550f4f34e30972e0020b95a7e7
-    - name: Stanley2_Frame_15
-      frameIndex: 15
+      spriteId: 29becacecd3cf44189384302ff5a6c29
+    - name: Stanley2_Frame_17
+      frameIndex: 17
       cellRect:
         x: 4
         y: 1
         width: 24
         height: 59
-      spriteId: 1c212dd6994e24c0c9bdd6d1084c7851
-    - name: Stanley2_Frame_16
-      frameIndex: 16
+      spriteId: 0cd10025ec2c94714bdb9d0bc3d28e5d
+    - name: Stanley2_Frame_18
+      frameIndex: 18
+      cellRect:
+        x: 6
+        y: 1
+        width: 19
+        height: 58
+      spriteId: 4b277a6cbcbb14e95b572fa517c52e68
+    - name: Stanley2_Frame_19
+      frameIndex: 19
+      cellRect:
+        x: 4
+        y: 1
+        width: 24
+        height: 59
+      spriteId: cc2b2509c6e9e46aa8a75f7578db322a
+    - name: Stanley2_Frame_20
+      frameIndex: 20
       cellRect:
         x: 1
         y: 0
         width: 31
         height: 46
-      spriteId: 29becacecd3cf44189384302ff5a6c29
-    - name: Stanley2_Frame_17
-      frameIndex: 17
+      spriteId: 7908fcd6a7ebf4d8bbf2421572c7ddad
+    - name: Stanley2_Frame_21
+      frameIndex: 21
       cellRect:
         x: 1
         y: 0
         width: 31
         height: 51
-      spriteId: 0cd10025ec2c94714bdb9d0bc3d28e5d
-    - name: Stanley2_Frame_18
-      frameIndex: 18
-      cellRect:
-        x: 0
-        y: 5
-        width: 32
-        height: 56
-      spriteId: 4b277a6cbcbb14e95b572fa517c52e68
-    - name: Stanley2_Frame_19
-      frameIndex: 19
-      cellRect:
-        x: 0
-        y: 5
-        width: 32
-        height: 56
-      spriteId: cc2b2509c6e9e46aa8a75f7578db322a
-    - name: Stanley2_Frame_20
-      frameIndex: 20
-      cellRect:
-        x: 0
-        y: 0
-        width: 54
-        height: 40
-      spriteId: 7908fcd6a7ebf4d8bbf2421572c7ddad
-    - name: Stanley2_Frame_21
-      frameIndex: 21
-      cellRect:
-        x: 0
-        y: 0
-        width: 53
-        height: 41
       spriteId: 8bbd7cebf5c0d488e8864c34f656453e
     - name: Stanley2_Frame_22
       frameIndex: 22
       cellRect:
-        x: 10
-        y: 0
-        width: 53
-        height: 40
+        x: 0
+        y: 5
+        width: 32
+        height: 56
       spriteId: b2d4c3ef89cc344caa1792579f8257c0
     - name: Stanley2_Frame_23
       frameIndex: 23
       cellRect:
-        x: 11
-        y: 0
-        width: 53
-        height: 41
+        x: 0
+        y: 5
+        width: 32
+        height: 56
       spriteId: aa534e46ca95c4957a823b9c43bb250d
     - name: Stanley2_Frame_24
       frameIndex: 24
       cellRect:
         x: 0
         y: 0
-        width: 32
-        height: 48
+        width: 54
+        height: 40
       spriteId: 528454590f50949b1a0cda118380e564
     - name: Stanley2_Frame_25
       frameIndex: 25
       cellRect:
         x: 0
         y: 0
-        width: 32
-        height: 48
+        width: 53
+        height: 41
       spriteId: f213988be3f794ccaa6ce9dd8bde1b0a
     - name: Stanley2_Frame_26
       frameIndex: 26
+      cellRect:
+        x: 10
+        y: 0
+        width: 53
+        height: 40
+      spriteId: bba70b9aa2e754bb88c6f71a0ab2e3f7
+    - name: Stanley2_Frame_27
+      frameIndex: 27
+      cellRect:
+        x: 11
+        y: 0
+        width: 53
+        height: 41
+      spriteId: cc8c539b12cac40adb874dfa875c0123
+    - name: Stanley2_Frame_28
+      frameIndex: 28
+      cellRect:
+        x: 0
+        y: 0
+        width: 32
+        height: 48
+      spriteId: 4f855bdadffd14ddab509b6cc90e52c0
+    - name: Stanley2_Frame_29
+      frameIndex: 29
+      cellRect:
+        x: 0
+        y: 0
+        width: 32
+        height: 48
+      spriteId: 4657a389e3e1f443f9332b35e3cb0787
+    - name: Stanley2_Frame_30
+      frameIndex: 30
       cellRect:
         x: 5
         y: 0
         width: 22
         height: 45
-      spriteId: bba70b9aa2e754bb88c6f71a0ab2e3f7
-    - name: Stanley2_Frame_27
-      frameIndex: 27
+      spriteId: 91679a54ab3e148368bf4d39dd2b172f
+    - name: Stanley2_Frame_31
+      frameIndex: 31
       cellRect:
         x: 5
         y: 1
         width: 22
         height: 46
-      spriteId: cc8c539b12cac40adb874dfa875c0123
-    - name: Stanley2_Frame_28
-      frameIndex: 28
+      spriteId: 67febb729b1044e7da9cdb6cd2f60c8a
+    - name: Stanley2_Frame_32
+      frameIndex: 32
       cellRect:
         x: 5
         y: 0
         width: 23
         height: 62
-      spriteId: 4f855bdadffd14ddab509b6cc90e52c0
+      spriteId: dca601301962a4a16ada5c4bba3a6014
     linkedCells: []
     parentIndex: -1
   platformSettings:
