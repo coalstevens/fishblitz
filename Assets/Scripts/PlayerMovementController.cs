@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 5f;
@@ -8,6 +16,8 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D _rb;
 
     private Reactive<bool> _fishing = new Reactive<bool>(false);
+    public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
+
     public bool Fishing
     {
         get
@@ -29,6 +39,26 @@ public class PlayerMovementController : MonoBehaviour
     public void OnMove(InputValue value)
     {
         _currMotionVector = value.Get<Vector2>();
+    }
+
+    private void Update()
+    {
+        if (_currMotionVector.x > 0)
+        {
+            FacingDir.Set(Direction.Right);
+        }
+        else if (_currMotionVector.x < 0)
+        {
+            FacingDir.Set(Direction.Left);
+        }
+        else if (_currMotionVector.y > 0)
+        {
+            FacingDir.Set(Direction.Up);
+        }
+        else if (_currMotionVector.y < 0)
+        {
+            FacingDir.Set(Direction.Down);
+        }
     }
 
     private void FixedUpdate()
