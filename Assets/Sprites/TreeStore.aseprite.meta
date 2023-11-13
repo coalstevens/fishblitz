@@ -139,6 +139,46 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: TreeStore_Frame_1
+    originalName: 
+    pivot: {x: 0.48913044, y: -0.011173185}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 191
+      width: 92
+      height: 179
+    spriteID: dea923b3fefb8411aa83ef9a058a1644
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 191}
+  - name: TreeStore_Frame_2
+    originalName: 
+    pivot: {x: 0.48913044, y: -0.011173185}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 104
+      y: 4
+      width: 92
+      height: 179
+    spriteID: 5be0cdceb6b8b477fa57e742b5176cf8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 104, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -148,7 +188,7 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: TreeStore
+    - name: TreeStore_Frame_0
       frameIndex: 0
       cellRect:
         x: 3
@@ -156,6 +196,22 @@ ScriptedImporter:
         width: 92
         height: 179
       spriteId: b6edd05d4af3f42c19e07c3091e0ab80
+    - name: TreeStore_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 3
+        y: 2
+        width: 92
+        height: 179
+      spriteId: dea923b3fefb8411aa83ef9a058a1644
+    - name: TreeStore_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 3
+        y: 2
+        width: 92
+        height: 179
+      spriteId: 5be0cdceb6b8b477fa57e742b5176cf8
     linkedCells: []
     parentIndex: -1
   platformSettings:
