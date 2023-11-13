@@ -1647,7 +1647,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 9049343339084710493, guid: a5f25e4c3bc22432baa9975ad0e3048a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1968,7 +1968,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -5815132375396432853, guid: a5f25e4c3bc22432baa9975ad0e3048a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1997,6 +1997,8 @@ MonoBehaviour:
   _barSprite: {fileID: 1008478722}
   _fishSpriteObject: {fileID: 1922139833}
   _playDuration: 5
+  _playerMovementController: {fileID: 820455456}
+  _inventory: {fileID: 0}
   _shakeDuration: 0.5
   _shakeStrength: 0.2
   _shakeVibrato: 20
@@ -17390,7 +17392,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 13
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -17612,7 +17614,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 12
   m_Sprite: {fileID: -7275651155716108517, guid: a5f25e4c3bc22432baa9975ad0e3048a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

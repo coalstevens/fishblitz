@@ -10,6 +10,8 @@ public class FishBar : MonoBehaviour
     [SerializeField] private SpriteRenderer _barSprite;
     [SerializeField] private GameObject _fishSpriteObject;
     [SerializeField] private float _playDuration = 5f;
+    [SerializeField] private PlayerMovementController _playerMovementController;
+    [SerializeField] private Inventory _inventory;
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -33,10 +35,13 @@ public class FishBar : MonoBehaviour
     private FishBarTrigger[] _fishBarTriggers;
     private int _triggerIdx = 0;
     private Reactive<bool> _failed = new Reactive<bool>(false);
+    private Vector2 _originalFishObjectPos;
+    private bool _won = false;
 
     private void Awake()
     {
         _failed.When(curr => curr, (prev, curr) => OnFail());
+        _originalFishObjectPos = _fishSpriteObject.transform.localPosition;
     }
 
     private void OnFail()
@@ -57,6 +62,13 @@ public class FishBar : MonoBehaviour
         AddFishForce();
     }
 
+    private void ResetFishObject()
+    {
+        _fishObjectRb.transform.localPosition = _originalFishObjectPos;
+        _fishObjectRb.transform.localRotation = Quaternion.identity;
+        _fishObjectRb.bodyType = RigidbodyType2D.Kinematic;
+    }
+
     private void AddFishForce()
     {
         _fishObjectRb.bodyType = RigidbodyType2D.Dynamic;
@@ -69,6 +81,11 @@ public class FishBar : MonoBehaviour
     // Called from FishBarTrigger
     private void PassedFishBarTrigger(FishBarTrigger fishBarTrigger)
     {
+        if (_won)
+        {
+            return;
+        }
+
         if (GetNextTrigger() == fishBarTrigger)
         {
             _failed.Set(true);
@@ -78,10 +95,14 @@ public class FishBar : MonoBehaviour
     private void Initialize()
     {
         gameObject.SetActive(true);
+        _triggerIdx = 0;
         _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>(true);
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
+        ResetFishObject();
+        _overlaySpriteRenderer.sprite = null;
         _failed.Set(false);
+        _won = false;
         foreach (FishBarTrigger trigger in _fishBarTriggers)
         {
             trigger.Initialize();
@@ -117,6 +138,7 @@ public class FishBar : MonoBehaviour
 
     private IEnumerator PlayRoutine(float duration)
     {
+        _playerMovementController.Fishing = true;
         float time = 0;
         while (time < duration)
         {
@@ -125,6 +147,14 @@ public class FishBar : MonoBehaviour
             yield return new WaitForSeconds(elapsed);
             time += elapsed;
         }
+
+        // If you didn't fail, you get a coin
+        if (!_failed.Get())
+        {
+            _inventory.Money += 1;
+        }
+        gameObject.SetActive(false);
+        _playerMovementController.Fishing = false;
     }
 
     private void OnFire()
@@ -143,6 +173,12 @@ public class FishBar : MonoBehaviour
             // yay!
             next.SetSprite(true);
             _triggerIdx += 1;
+
+            // That was the last one. we won!
+            if (_triggerIdx == _fishBarTriggers.Length)
+            {
+                _won = true;
+            }
         }
         else
         {
