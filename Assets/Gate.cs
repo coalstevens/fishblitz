@@ -8,12 +8,13 @@ public class Gate : MonoBehaviour
 {
     [SerializeField] private InputActionReference _inputActionReference;
     [SerializeField] private Collider2D gateCollider;
-    [SerializeField] private Inventory playerInventory;
+    private Inventory _inventory;
     private bool inRange = false;
     // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -30,8 +31,8 @@ public class Gate : MonoBehaviour
             return;
         }
         if (_inputActionReference.action.WasPressedThisFrame()) {
-            if (playerInventory.Keys >= 1) {
-                playerInventory.Keys -= 1;
+            if (_inventory.Keys >= 1) {
+                _inventory.Keys -= 1;
                 openGate();
             }
         }
