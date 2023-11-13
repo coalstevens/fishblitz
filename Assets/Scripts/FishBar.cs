@@ -80,7 +80,6 @@ public class FishBar : MonoBehaviour
         _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>();
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
-        Play(_playDuration);
     }
 
     private FishBarTrigger GetNextTrigger()
