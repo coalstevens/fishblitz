@@ -2,12 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum TradeType
+{
+    Key,
+    Rod
+}
+
 public class Store : MonoBehaviour
 {
     [SerializeField] private InputActionReference _action;
     [SerializeField] private SpriteRenderer _storeSpriteRenderer;
     [SerializeField] private Sprite _outlineSprite;
     [SerializeField] private Sprite _nonOutlineSprite;
+    [SerializeField] private TradeType _tradeType = TradeType.Rod;
 
     private Inventory _inventory;
     private Reactive<bool> _inRange = new Reactive<bool>(false);
@@ -46,10 +53,30 @@ public class Store : MonoBehaviour
             return;
         }
 
-        MakeTrade();
+        if (_tradeType == TradeType.Rod)
+        {
+            MakeRodTrade();
+        }
+        else if (_tradeType == TradeType.Key)
+        {
+            MakeKeyTrade();
+        }
     }
 
-    private void MakeTrade()
+    // Keys cost 10 money
+    private void MakeKeyTrade()
+    {
+        if (_inventory.Money < 10)
+        {
+            return;
+        }
+
+        _inventory.Money -= 10;
+        _inventory.Keys += 1;
+    }
+
+    // Rods cost 1 money
+    private void MakeRodTrade()
     {
         if (_inventory.Money <= 0)
         {
