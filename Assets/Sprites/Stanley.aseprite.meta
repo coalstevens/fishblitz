@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9d4cce0303ec241259c6d56aa3831af1
+guid: 41c024728129646758eef1d458f6ba85
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Coin
+  - name: Stanley_Frame_0
     originalName: 
-    pivot: {x: 0.45000002, y: -0.2857143}
+    pivot: {x: 0.50793654, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 20
-      height: 21
-    spriteID: d3113f8fd71574b50a305e917d44d946
+      width: 252
+      height: 127
+    spriteID: 121488e9a8ba24bfea894844abad4e10
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,26 +139,82 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: Stanley_Frame_1
+    originalName: 
+    pivot: {x: 0.8, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 264
+      y: 4
+      width: 160
+      height: 125
+    spriteID: 50246ffdd90a84b658fbd374ab2f41fb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 264, y: 4}
+  - name: Stanley_Frame_2
+    originalName: 
+    pivot: {x: 0.76033056, y: -1.0491803}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 264
+      y: 137
+      width: 121
+      height: 61
+    spriteID: 86d6ecd45fb3445198a076535f3e964d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 264, y: 137}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1609295079
-    name: Coin
+    guid: -872536396
+    name: Stanley
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Coin
+    - name: Stanley_Frame_0
       frameIndex: 0
       cellRect:
-        x: 7
-        y: 6
-        width: 20
-        height: 21
-      spriteId: d3113f8fd71574b50a305e917d44d946
+        x: 0
+        y: 0
+        width: 252
+        height: 127
+      spriteId: 121488e9a8ba24bfea894844abad4e10
+    - name: Stanley_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 0
+        y: 0
+        width: 160
+        height: 125
+      spriteId: 50246ffdd90a84b658fbd374ab2f41fb
+    - name: Stanley_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 36
+        y: 64
+        width: 121
+        height: 61
+      spriteId: 86d6ecd45fb3445198a076535f3e964d
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
+  canvasSize: {x: 256, y: 128}
