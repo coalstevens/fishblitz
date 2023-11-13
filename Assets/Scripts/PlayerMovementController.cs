@@ -9,6 +9,12 @@ public enum Direction
     Right,
 }
 
+public enum State
+{
+    Walking,
+    Idle
+}
+
 public class PlayerMovementController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 5f;
@@ -17,6 +23,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private Reactive<bool> _fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
+    public Reactive<State> CurrState = new Reactive<State>(State.Idle);
 
     public bool Fishing
     {
@@ -58,6 +65,15 @@ public class PlayerMovementController : MonoBehaviour
         else if (_currMotionVector.y < 0)
         {
             FacingDir.Set(Direction.Down);
+        }
+
+        if (_currMotionVector.magnitude > 0)
+        {
+            CurrState.Set(State.Walking);
+        }
+        else
+        {
+            CurrState.Set(State.Idle);
         }
     }
 
