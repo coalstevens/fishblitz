@@ -240,6 +240,28 @@ public class FishBar : MonoBehaviour
                 break;
 
                 case modifier.doubles:
+                    int k = 1;
+                    if (numTriggers % 2 != 0) {
+                        triggerPositions[1] = 1.0f - specialGap; 
+                        k++;
+                    }
+
+                    for (; k < numTriggers; k += 2) {
+                        triggerPositions[k] = Random.Range(0.1f, 0.9f);
+                        
+                        do {
+                        triggersTooClose = false;
+                        for (int j = 0; j < k; j++) {
+                            if (Mathf.Abs(triggerPositions[k] - triggerPositions[j]) < minimumTriggerGap) {
+                                triggerPositions[k] = Random.Range(0.1f, 0.9f);
+                                triggersTooClose = true;
+                            }
+                        }
+                        } while(triggersTooClose);
+
+                       triggerPositions[k+1] = triggerPositions[k] + specialGap;
+                    }
+
                 break;
 
                 case modifier.mega:
