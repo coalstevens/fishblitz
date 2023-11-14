@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class RodPlacement : MonoBehaviour
 {
-    [SerializeField] private GameObject _rodToPlace;
+    [SerializeField] public GameObject RodToPlace;
 }

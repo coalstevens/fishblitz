@@ -24,12 +24,12 @@ public class FishBar : MonoBehaviour
     [SerializeField] private int numTriggers; // always a trigger press at the end 
     [SerializeField] private float minimumTriggerGap;
     [SerializeField] private float specialGap;
-    
-    enum modifier {normal, doubles, triples, mega};
+
+    enum modifier { normal, doubles, triples, mega };
     [SerializeField] private modifier gameModifier;
 
     private float[] triggerPositions;
-    
+
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -115,17 +115,19 @@ public class FishBar : MonoBehaviour
         gameObject.SetActive(true);
         _triggerIdx = 0;
 
-        foreach (Transform child in _triggersContainer.transform) {
+        foreach (Transform child in _triggersContainer.transform)
+        {
             Destroy(child.gameObject);
         }
         generateTriggerPositions();
         System.Array.Sort(triggerPositions);
         _fishBarTriggers.Clear();
 
-        for (int i = 0; i < triggerPositions.Length; i++) {
+        for (int i = 0; i < triggerPositions.Length; i++)
+        {
             Vector3 localPosition = new Vector3(0, triggerPositions[i] * 3.35f + 0.35f, 0);
             var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + localPosition, Quaternion.identity, _triggersContainer.transform);
-            _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());       
+            _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());
         }
 
 
@@ -217,36 +219,43 @@ public class FishBar : MonoBehaviour
             _failed.Set(true);
         }
     }
-    private void generateTriggerPositions() {
+    private void generateTriggerPositions()
+    {
         bool triggersTooClose;
-        triggerPositions = new float[numTriggers+1];
+        triggerPositions = new float[numTriggers + 1];
         triggerPositions[0] = 1.0f; // Final press
-       
-        switch (gameModifier) {
+
+        switch (gameModifier)
+        {
             case modifier.normal:
-                for (int i = 1; i < numTriggers + 1; i++) {
+                for (int i = 1; i < numTriggers + 1; i++)
+                {
                     triggerPositions[i] = Random.Range(0.1f, 0.9f);
 
-                    do {
+                    do
+                    {
                         triggersTooClose = false;
-                        for (int j = 0; j < i; j++) {
-                            if (Mathf.Abs(triggerPositions[i] - triggerPositions[j]) < minimumTriggerGap) {
+                        for (int j = 0; j < i; j++)
+                        {
+                            if (Mathf.Abs(triggerPositions[i] - triggerPositions[j]) < minimumTriggerGap)
+                            {
                                 triggerPositions[i] = Random.Range(0.1f, 0.9f);
                                 triggersTooClose = true;
                             }
                         }
-                    } while(triggersTooClose);
+                    } while (triggersTooClose);
                 }
                 break;
 
-                case modifier.doubles:
+            case modifier.doubles:
                 break;
 
-                case modifier.mega:
-                    triggerPositions[1] = Random.Range(0.1f, 0.9f - specialGap*numTriggers);
-                    for (int i = 1; i < numTriggers; i++) {
-                        triggerPositions[i+1] = triggerPositions[1] + specialGap;
-                    }
+            case modifier.mega:
+                triggerPositions[1] = Random.Range(0.1f, 0.9f - specialGap * numTriggers);
+                for (int i = 1; i < numTriggers; i++)
+                {
+                    triggerPositions[i + 1] = triggerPositions[1] + specialGap;
+                }
                 break;
         }
     }
