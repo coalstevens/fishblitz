@@ -16,7 +16,7 @@ public class FishBarTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        SendMessageUpwards("PassedFishBarTrigger", this);
+        gameObject.SendMessageUpwards("PassedFishBarTrigger", this);
     }
 
     public void SetSprite(bool fulfilled)

@@ -1,7 +1,10 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FishBar : MonoBehaviour
 {
@@ -9,9 +12,24 @@ public class FishBar : MonoBehaviour
     [SerializeField] private float _endHeight;
     [SerializeField] private SpriteRenderer _barSprite;
     [SerializeField] private GameObject _fishSpriteObject;
+    [SerializeField] private GameObject _triggersContainer;
+    [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private float _playDuration = 5f;
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private Inventory _inventory;
+
+    [Header("Challenge Setup")]
+
+    // [SerializeField] private float duration;
+    [SerializeField] private int numTriggers; // always a trigger press at the end 
+    [SerializeField] private float minimumTriggerGap;
+    [SerializeField] private float specialGap;
+    
+    enum modifier {normal, doubles, triples, mega};
+    [SerializeField] private modifier gameModifier;
+
+    private float[] triggerPositions;
+    
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -32,7 +50,7 @@ public class FishBar : MonoBehaviour
 
     private Rigidbody2D _fishObjectRb;
     private Collider2D _indicatorCollider;
-    private FishBarTrigger[] _fishBarTriggers;
+    private List<FishBarTrigger> _fishBarTriggers = new List<FishBarTrigger>();
     private int _triggerIdx = 0;
     private Reactive<bool> _failed = new Reactive<bool>(false);
     private Vector2 _originalFishObjectPos;
@@ -96,7 +114,21 @@ public class FishBar : MonoBehaviour
     {
         gameObject.SetActive(true);
         _triggerIdx = 0;
-        _fishBarTriggers = GetComponentsInChildren<FishBarTrigger>(true);
+
+        foreach (Transform child in _triggersContainer.transform) {
+            Destroy(child.gameObject);
+        }
+        generateTriggerPositions();
+        System.Array.Sort(triggerPositions);
+        _fishBarTriggers.Clear();
+
+        for (int i = 0; i < triggerPositions.Length; i++) {
+            Vector3 localPosition = new Vector3(0, triggerPositions[i] * 3.35f + 0.35f, 0);
+            var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + localPosition, Quaternion.identity, _triggersContainer.transform);
+            _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());       
+        }
+
+
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
         ResetFishObject();
@@ -112,7 +144,7 @@ public class FishBar : MonoBehaviour
 
     private FishBarTrigger GetNextTrigger()
     {
-        int idx = _triggerIdx >= _fishBarTriggers.Length ? _fishBarTriggers.Length - 1 : _triggerIdx;
+        int idx = _triggerIdx >= _fishBarTriggers.Count ? _fishBarTriggers.Count - 1 : _triggerIdx;
         return _fishBarTriggers[idx];
     }
 
@@ -175,7 +207,7 @@ public class FishBar : MonoBehaviour
             _triggerIdx += 1;
 
             // That was the last one. we won!
-            if (_triggerIdx == _fishBarTriggers.Length)
+            if (_triggerIdx == _fishBarTriggers.Count)
             {
                 _won = true;
             }
@@ -183,6 +215,39 @@ public class FishBar : MonoBehaviour
         else
         {
             _failed.Set(true);
+        }
+    }
+    private void generateTriggerPositions() {
+        bool triggersTooClose;
+        triggerPositions = new float[numTriggers+1];
+        triggerPositions[0] = 1.0f; // Final press
+       
+        switch (gameModifier) {
+            case modifier.normal:
+                for (int i = 1; i < numTriggers + 1; i++) {
+                    triggerPositions[i] = Random.Range(0.1f, 0.9f);
+
+                    do {
+                        triggersTooClose = false;
+                        for (int j = 0; j < i; j++) {
+                            if (Mathf.Abs(triggerPositions[i] - triggerPositions[j]) < minimumTriggerGap) {
+                                triggerPositions[i] = Random.Range(0.1f, 0.9f);
+                                triggersTooClose = true;
+                            }
+                        }
+                    } while(triggersTooClose);
+                }
+                break;
+
+                case modifier.doubles:
+                break;
+
+                case modifier.mega:
+                    triggerPositions[1] = Random.Range(0.1f, 0.9f - specialGap*numTriggers);
+                    for (int i = 1; i < numTriggers; i++) {
+                        triggerPositions[i+1] = triggerPositions[1] + specialGap;
+                    }
+                break;
         }
     }
 }
