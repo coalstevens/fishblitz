@@ -3,7 +3,7 @@ using UnityEngine;
 public class Cursor : MonoBehaviour
 {
   [SerializeField] private Grid _grid;
-  [SerializeField] private Transform _renderedTransform;
+  [SerializeField] public Transform _renderedTransform;
   [SerializeField] private Direction _activeDirection;
   [SerializeField] private PlayerMovementController _playerMovementController;
   [SerializeField] private SpriteRenderer _spriteRenderer;

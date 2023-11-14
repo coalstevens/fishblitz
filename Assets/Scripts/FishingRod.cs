@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class FishingRod : MonoBehaviour
 {
@@ -30,6 +32,7 @@ public class FishingRod : MonoBehaviour
     private FishBar _fishBar;
     private Coroutine _changeStateRoutine;
     private Inventory _inventory;
+    private ActiveGridCell _activeGridCell;
 
     private void Awake()
     {
@@ -47,6 +50,7 @@ public class FishingRod : MonoBehaviour
 
     private void Start()
     {
+        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
@@ -73,40 +77,36 @@ public class FishingRod : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        _selected.Set(true);
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        _selected.Set(false);
-    }
-
     private void Update()
     {
-        if (!_selected.Get())
+        List<Collider2D> results = new List<Collider2D>();
+        Physics2D.OverlapBox(_activeGridCell.GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), results);
+
+        bool found = false;
+        foreach (var result in results)
         {
-            return;
+            var rod = result.gameObject.GetComponent<FishingRod>();
+            if (rod == this)
+            {
+                found = true;
+                _selected.Set(true);
+            }
         }
 
-        if (!_inputActionReference.action.WasPressedThisFrame())
+        if (!found)
         {
-            return;
+            _selected.Set(false);
         }
+    }
 
+    public void StartFishingGame()
+    {
         if (!_fishOn.Get())
         {
             Shake();
+            return;
         }
-        else
-        {
-            StartFishingGame();
-        }
-    }
 
-    private void StartFishingGame()
-    {
         StopCoroutine(_changeStateRoutine);
         _inventory.Rods += 1;
         _fishBar.Play(3);
