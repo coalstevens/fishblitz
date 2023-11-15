@@ -187,7 +187,7 @@ public class FishBar : MonoBehaviour
         {
             _inventory.Money += 1;
             _playerMovementController.CurrState.Set(State.Celebrating);
-            Invoke(nameof(BackToIdle), 1f);
+            Invoke(nameof(BackToIdle), 1.5f);
         }
         else
         {

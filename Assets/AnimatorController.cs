@@ -5,6 +5,7 @@ public class AnimatorController : MonoBehaviour
 {
     private Animator _animator;
     private PlayerMovementController _playerMovementController;
+    [SerializeField] private AudioSource _caughtSoundEffect;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class AnimatorController : MonoBehaviour
     private void HandleCelebrating()
     {
         _animator.Play("Caught");
+        _caughtSoundEffect.Play();
     }
 
     private void HandleFishing(Direction facingDir)
