@@ -14,7 +14,11 @@ public class Store : MonoBehaviour
     [SerializeField] private SpriteRenderer _storeSpriteRenderer;
     [SerializeField] private Sprite _outlineSprite;
     [SerializeField] private Sprite _nonOutlineSprite;
+    [SerializeField] private Sprite _soldOutSprite;
     [SerializeField] private TradeType _tradeType = TradeType.Rod;
+    [SerializeField] private int _totalInventory = 1;
+    [SerializeField] private int _keyCost = 10;
+    [SerializeField] private int _rodCost = 1;
 
     private Inventory _inventory;
     private Reactive<bool> _inRange = new Reactive<bool>(false);
@@ -28,6 +32,11 @@ public class Store : MonoBehaviour
 
     private void SetOutline(bool inRange)
     {
+        if (IsSoldOut())
+        {
+            return;
+        }
+
         _storeSpriteRenderer.sprite = inRange ? _outlineSprite : _nonOutlineSprite;
     }
 
@@ -43,6 +52,11 @@ public class Store : MonoBehaviour
 
     private void Update()
     {
+        if (IsSoldOut())
+        {
+            return;
+        }
+
         if (!_inRange.Get())
         {
             return;
@@ -66,24 +80,51 @@ public class Store : MonoBehaviour
     // Keys cost 10 money
     private void MakeKeyTrade()
     {
-        if (_inventory.Money < 10)
+        if (IsSoldOut())
         {
             return;
         }
 
-        _inventory.Money -= 10;
+        if (_inventory.Money < _keyCost)
+        {
+            return;
+        }
+
+        _inventory.Money -= _keyCost;
         _inventory.Keys += 1;
+        _totalInventory -= 1;
+
+        if (IsSoldOut())
+        {
+            _storeSpriteRenderer.sprite = _soldOutSprite;
+        }
     }
 
     // Rods cost 1 money
     private void MakeRodTrade()
     {
+        if (IsSoldOut())
+        {
+            return;
+        }
+
         if (_inventory.Money <= 0)
         {
             return;
         }
 
-        _inventory.Money -= 1;
+        _inventory.Money -= _rodCost;
         _inventory.Rods += 1;
+        _totalInventory -= 1;
+
+        if (IsSoldOut())
+        {
+            _storeSpriteRenderer.sprite = _soldOutSprite;
+        }
+    }
+
+    private bool IsSoldOut()
+    {
+        return _totalInventory <= 0;
     }
 }

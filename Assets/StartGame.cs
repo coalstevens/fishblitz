@@ -7,7 +7,7 @@ public class StartGame : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SmoothSceneManager.LoadScene("SampleScene");
+            SmoothSceneManager.LoadScene("Level 1");
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
@@ -28,7 +27,37 @@ public class AnimatorController : MonoBehaviour
             case State.Walking:
                 HandleWalking(facingDir);
                 return;
+            case State.Fishing:
+                HandleFishing(facingDir);
+                return;
+            case State.Celebrating:
+                HandleCelebrating();
+                return;
             default:
+                return;
+        }
+    }
+
+    private void HandleCelebrating()
+    {
+        _animator.Play("Caught");
+    }
+
+    private void HandleFishing(Direction facingDir)
+    {
+        switch (facingDir)
+        {
+            case Direction.Up:
+                _animator.Play("N_Fish");
+                return;
+            case Direction.Down:
+                _animator.Play("S_Fish");
+                return;
+            case Direction.Right:
+                _animator.Play("E_Fish");
+                return;
+            case Direction.Left:
+                _animator.Play("W_Fish");
                 return;
         }
     }

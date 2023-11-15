@@ -13,7 +13,9 @@ public enum Direction
 public enum State
 {
     Walking,
-    Idle
+    Idle,
+    Fishing,
+    Celebrating,
 }
 
 public class PlayerMovementController : MonoBehaviour
@@ -25,19 +27,6 @@ public class PlayerMovementController : MonoBehaviour
     public Reactive<bool> _fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
     public Reactive<State> CurrState = new Reactive<State>(State.Idle);
-
-    public bool Fishing
-    {
-        get
-        {
-            return _fishing.Get();
-        }
-
-        set
-        {
-            _fishing.Set(value);
-        }
-    }
 
     private void Awake()
     {
@@ -52,7 +41,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // no turning when ur fishing
-        if (Fishing)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
         {
             return;
         }
@@ -87,7 +76,7 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         // cant move when ur fishing
-        if (Fishing)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
         {
             return;
         }
