@@ -186,8 +186,19 @@ public class FishBar : MonoBehaviour
         if (!_failed.Get())
         {
             _inventory.Money += 1;
+            _playerMovementController.CurrState.Set(State.Celebrating);
+            Invoke(nameof(BackToIdle), 1f);
         }
+        else
+        {
+            _playerMovementController.CurrState.Set(State.Idle);
+        }
+
         gameObject.SetActive(false);
+    }
+
+    private void BackToIdle()
+    {
         _playerMovementController.CurrState.Set(State.Idle);
     }
 

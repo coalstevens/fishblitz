@@ -75,12 +75,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3843665196953603138, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+  m_Sprite: {fileID: 4170371669965756043, guid: 0d413fae27c494026962241298b2b1af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.875, y: 5.59375}
+  m_Size: {x: 0.96875, y: 0.8125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -203,6 +203,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _action: {fileID: -2269952491713794095, guid: c29e8e0b207bd4ecb952e2f148574f0b, type: 3}
   _storeSpriteRenderer: {fileID: 3911751984115411142}
-  _outlineSprite: {fileID: -3012012855560561359, guid: 0d413fae27c494026962241298b2b1af, type: 3}
-  _nonOutlineSprite: {fileID: 3843665196953603138, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+  _outlineSprite: {fileID: 3005771824145270910, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+  _nonOutlineSprite: {fileID: 4170371669965756043, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+  _soldOutSprite: {fileID: -1624987535627168654, guid: 0d413fae27c494026962241298b2b1af, type: 3}
   _tradeType: 1
+  _totalInventory: 10
+  _keyCost: 10
+  _rodCost: 1

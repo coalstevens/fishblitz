@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
@@ -31,9 +30,17 @@ public class AnimatorController : MonoBehaviour
             case State.Fishing:
                 HandleFishing(facingDir);
                 return;
+            case State.Celebrating:
+                HandleCelebrating();
+                return;
             default:
                 return;
         }
+    }
+
+    private void HandleCelebrating()
+    {
+        _animator.Play("Caught");
     }
 
     private void HandleFishing(Direction facingDir)

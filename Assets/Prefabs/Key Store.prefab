@@ -13,9 +13,21 @@ PrefabInstance:
       value: Key Store
       objectReference: {fileID: 0}
     - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_Size.x
+      value: 2.875
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_Size.y
+      value: 5.59375
+      objectReference: {fileID: 0}
+    - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2561098622680652282, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+      objectReference: {fileID: 4237254728091988064, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+    - target: {fileID: 3911751984115411142, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4106442963929131520, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
       propertyPath: _tradeType
       value: 0
@@ -23,11 +35,19 @@ PrefabInstance:
     - target: {fileID: 4106442963929131520, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
       propertyPath: _outlineSprite
       value: 
-      objectReference: {fileID: -4719825891016597152, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+      objectReference: {fileID: -8025061075127744186, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+    - target: {fileID: 4106442963929131520, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: _soldOutSprite
+      value: 
+      objectReference: {fileID: 3394609049681768330, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+    - target: {fileID: 4106442963929131520, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
+      propertyPath: _totalInventory
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4106442963929131520, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
       propertyPath: _nonOutlineSprite
       value: 
-      objectReference: {fileID: -2561098622680652282, guid: 0d413fae27c494026962241298b2b1af, type: 3}
+      objectReference: {fileID: 4237254728091988064, guid: 0d413fae27c494026962241298b2b1af, type: 3}
     - target: {fileID: 8357594982581808194, guid: e322f52a22c3b432484b871ca7d09c19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

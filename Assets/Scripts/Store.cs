@@ -32,6 +32,11 @@ public class Store : MonoBehaviour
 
     private void SetOutline(bool inRange)
     {
+        if (IsSoldOut())
+        {
+            return;
+        }
+
         _storeSpriteRenderer.sprite = inRange ? _outlineSprite : _nonOutlineSprite;
     }
 

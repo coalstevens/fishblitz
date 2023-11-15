@@ -14,7 +14,8 @@ public enum State
 {
     Walking,
     Idle,
-    Fishing
+    Fishing,
+    Celebrating,
 }
 
 public class PlayerMovementController : MonoBehaviour
@@ -40,7 +41,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // no turning when ur fishing
-        if (CurrState.Get() == State.Fishing)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
         {
             return;
         }
@@ -75,7 +76,7 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         // cant move when ur fishing
-        if (CurrState.Get() == State.Fishing)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
         {
             return;
         }

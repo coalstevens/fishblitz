@@ -47,7 +47,12 @@ public class Gate : MonoBehaviour
 
     private void openGate()
     {
-        gateCollider.enabled = false;
+        Invoke(nameof(RemoveCollider), 1);
         _animator.Play("GateOpening");
+    }
+
+    private void RemoveCollider()
+    {
+        gateCollider.enabled = false;
     }
 }
