@@ -17,6 +17,8 @@ public class FishBar : MonoBehaviour
     [SerializeField] private float _playDuration = 5f;
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private playerSoundController _playerSoundController;
+
 
     [Header("Challenge Setup")]
 
@@ -94,6 +96,7 @@ public class FishBar : MonoBehaviour
 
         Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
         _fishObjectRb.AddForceAtPosition(randomForce, (Vector2)_fishSpriteObject.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
+        _playerSoundController.PlaySound("Missed");
     }
 
     // Called from FishBarTrigger
@@ -130,7 +133,7 @@ public class FishBar : MonoBehaviour
             _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());
         }
 
-
+        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<playerSoundController>();
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
         ResetFishObject();
@@ -188,6 +191,7 @@ public class FishBar : MonoBehaviour
             _inventory.Money += 1;
             _playerMovementController.CurrState.Set(State.Celebrating);
             Invoke(nameof(BackToIdle), 1.5f);
+            _playerSoundController.PlaySound("Caught");
         }
         else
         {
