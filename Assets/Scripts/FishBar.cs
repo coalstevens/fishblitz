@@ -167,10 +167,10 @@ public class FishBar : MonoBehaviour
 
     // Play the fish bar game.
     // duration: time it takes for the progress bar to fill up to full
-    public void Play(float duration)
+    public void Play()
     {
         Initialize();
-        StartCoroutine(PlayRoutine(duration));
+        StartCoroutine(PlayRoutine(_playDuration));
     }
 
     private IEnumerator PlayRoutine(float duration)

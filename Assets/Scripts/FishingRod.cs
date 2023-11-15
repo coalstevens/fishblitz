@@ -108,7 +108,7 @@ public class FishingRod : MonoBehaviour
 
         StopCoroutine(_changeStateRoutine);
         _inventory.Rods += 1;
-        _fishBar.Play(3);
+        _fishBar.Play();
         Destroy(gameObject);
     }
 }
