@@ -49,7 +49,7 @@ public class ActiveGridCell : MonoBehaviour
     private void OnFire()
     {
         // no placements when ur fishing
-        if (_playerMovementController.Fishing)
+        if (_playerMovementController.CurrState.Get() == State.Fishing)
         {
             return;
         }

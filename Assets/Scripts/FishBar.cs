@@ -172,7 +172,7 @@ public class FishBar : MonoBehaviour
 
     private IEnumerator PlayRoutine(float duration)
     {
-        _playerMovementController.Fishing = true;
+        _playerMovementController.CurrState.Set(State.Fishing);
         float time = 0;
         while (time < duration)
         {
@@ -188,7 +188,7 @@ public class FishBar : MonoBehaviour
             _inventory.Money += 1;
         }
         gameObject.SetActive(false);
-        _playerMovementController.Fishing = false;
+        _playerMovementController.CurrState.Set(State.Idle);
     }
 
     private void OnFire()
@@ -247,28 +247,33 @@ public class FishBar : MonoBehaviour
                 }
                 break;
 
-                case modifier.doubles:
-                    int k = 1;
-                    if (numTriggers % 2 != 0) {
-                        triggerPositions[1] = 1.0f - specialGap; 
-                        k++;
-                    }
+            case modifier.doubles:
+                int k = 1;
+                if (numTriggers % 2 != 0)
+                {
+                    triggerPositions[1] = 1.0f - specialGap;
+                    k++;
+                }
 
-                    for (; k < numTriggers; k += 2) {
-                        triggerPositions[k] = Random.Range(0.1f, 0.9f);
-                        
-                        do {
+                for (; k < numTriggers; k += 2)
+                {
+                    triggerPositions[k] = Random.Range(0.1f, 0.9f);
+
+                    do
+                    {
                         triggersTooClose = false;
-                        for (int j = 0; j < k; j++) {
-                            if (Mathf.Abs(triggerPositions[k] - triggerPositions[j]) < minimumTriggerGap) {
+                        for (int j = 0; j < k; j++)
+                        {
+                            if (Mathf.Abs(triggerPositions[k] - triggerPositions[j]) < minimumTriggerGap)
+                            {
                                 triggerPositions[k] = Random.Range(0.1f, 0.9f);
                                 triggersTooClose = true;
                             }
                         }
-                        } while(triggersTooClose);
+                    } while (triggersTooClose);
 
-                       triggerPositions[k+1] = triggerPositions[k] + specialGap;
-                    }
+                    triggerPositions[k + 1] = triggerPositions[k] + specialGap;
+                }
 
                 break;
 

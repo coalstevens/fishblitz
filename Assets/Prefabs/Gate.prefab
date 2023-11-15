@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: -6402097657079857103}
   - component: {fileID: 5294013433174898541}
   - component: {fileID: 5086689129559003134}
+  - component: {fileID: 7131661189280755436}
   m_Layer: 10
   m_Name: Gate
   m_TagString: Untagged
@@ -225,6 +226,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.336153, y: 0.7118937}
   m_EdgeRadius: 0
+--- !u!95 &7131661189280755436
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167153126305781420}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: -5127315204007607241, guid: 89796be5ae9bd424697982b885661b44, type: 3}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4261071527403509650
 GameObject:
   m_ObjectHideFlags: 0
