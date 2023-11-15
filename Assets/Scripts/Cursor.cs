@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Cursor : MonoBehaviour
@@ -11,6 +12,13 @@ public class Cursor : MonoBehaviour
   private void Start()
   {
     _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
+    _playerMovementController._fishing.OnChange((prev, curr) => OnFishingChange(curr));
+  }
+
+  private void OnFishingChange(bool curr)
+  {
+    bool maybeTrue = _playerMovementController.FacingDir.Get() == _activeDirection;
+    _spriteRenderer.enabled = curr ? false : maybeTrue;
   }
 
   private void OnDirectionChange(Direction curr)

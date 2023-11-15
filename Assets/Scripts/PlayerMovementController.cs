@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,7 +22,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 _currMotionVector = Vector2.zero;
     private Rigidbody2D _rb;
 
-    private Reactive<bool> _fishing = new Reactive<bool>(false);
+    public Reactive<bool> _fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
     public Reactive<State> CurrState = new Reactive<State>(State.Idle);
 
@@ -50,6 +51,12 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
+        // no turning when ur fishing
+        if (Fishing)
+        {
+            return;
+        }
+
         if (_currMotionVector.x > 0)
         {
             FacingDir.Set(Direction.Right);
