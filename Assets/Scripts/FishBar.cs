@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class FishBar : MonoBehaviour
@@ -14,23 +16,20 @@ public class FishBar : MonoBehaviour
     [SerializeField] private GameObject _fishSpriteObject;
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
-    [SerializeField] private float _playDuration = 5f;
+    [SerializeField] private GameObject _fishContainer;
     [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private playerSoundController _playerSoundController;
 
 
-    [Header("Challenge Setup")]
-
-    // [SerializeField] private float duration;
-    [SerializeField] private int numTriggers; // always a trigger press at the end 
-    [SerializeField] private float minimumTriggerGap;
-    [SerializeField] private float specialGap;
-
-    enum modifier { normal, doubles, triples, mega };
-    [SerializeField] private modifier gameModifier;
-
-    private float[] triggerPositions;
+    //[Header("Challenge Setup")]
+    //[SerializeField] private float _playDuration = 5f;
+    //[SerializeField] private int numTriggers; // always a trigger press at the end 
+    //[SerializeField] private float minimumTriggerGap;
+    //[SerializeField] private float specialGap;
+    //enum modifier { normal, doubles, triples, mega };
+    //[SerializeField] private modifier gameModifier;
+    //private float[] triggerPositions;
 
 
     [Header("Shake Options")]
@@ -53,10 +52,12 @@ public class FishBar : MonoBehaviour
     private Rigidbody2D _fishObjectRb;
     private Collider2D _indicatorCollider;
     private List<FishBarTrigger> _fishBarTriggers = new List<FishBarTrigger>();
+    
     private int _triggerIdx = 0;
     private Reactive<bool> _failed = new Reactive<bool>(false);
     private Vector2 _originalFishObjectPos;
     private bool _won = false;
+    private Fish _fish;
 
     private void Awake()
     {
@@ -117,21 +118,17 @@ public class FishBar : MonoBehaviour
     {
         gameObject.SetActive(true);
         _triggerIdx = 0;
+        float[] _triggerPositions;  
+        
 
         foreach (Transform child in _triggersContainer.transform)
         {
             Destroy(child.gameObject);
         }
-        generateTriggerPositions();
-        System.Array.Sort(triggerPositions);
-        _fishBarTriggers.Clear();
 
-        for (int i = 0; i < triggerPositions.Length; i++)
-        {
-            Vector3 localPosition = new Vector3(0, triggerPositions[i] * 3.35f + 0.35f, 0);
-            var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + localPosition, Quaternion.identity, _triggersContainer.transform);
-            _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());
-        }
+        _fish = GetRandomValidFish();
+        _triggerPositions = GenerateNormalizedTriggerPositions(_fish);
+        GenerateTriggers(_triggerPositions);
 
         _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<playerSoundController>();
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
@@ -140,11 +137,6 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = null;
         _failed.Set(false);
         _won = false;
-        foreach (FishBarTrigger trigger in _fishBarTriggers)
-        {
-            trigger.Initialize();
-            trigger.SetSprite(false);
-        }
     }
 
     private FishBarTrigger GetNextTrigger()
@@ -170,7 +162,7 @@ public class FishBar : MonoBehaviour
     public void Play()
     {
         Initialize();
-        StartCoroutine(PlayRoutine(_playDuration));
+        StartCoroutine(PlayRoutine(_fish.playDuration));
     }
 
     private IEnumerator PlayRoutine(float duration)
@@ -234,71 +226,107 @@ public class FishBar : MonoBehaviour
             _failed.Set(true);
         }
     }
-    private void generateTriggerPositions()
-    {
-        bool triggersTooClose;
-        triggerPositions = new float[numTriggers + 1];
-        triggerPositions[0] = 1.0f; // Final press
 
-        switch (gameModifier)
+    private float[] GenerateNormalizedTriggerPositions(Fish fish)
+    {
+        float[] _triggerPositions = new float[fish.numTriggers];
+
+        bool _triggersTooClose;
+        _triggerPositions = new float[fish.numTriggers];
+        _triggerPositions[0] = 1.0f; // Trigger right at end
+
+        switch (fish.gameModifier)
         {
-            case modifier.normal:
-                for (int i = 1; i < numTriggers + 1; i++)
+            case Fish.modifier.normal:
+                for (int i = 1; i < fish.numTriggers; i++)
                 {
-                    triggerPositions[i] = Random.Range(0.1f, 0.9f);
+                    _triggerPositions[i] = Random.Range(0.1f, 0.9f);
 
                     do
                     {
-                        triggersTooClose = false;
+                        _triggersTooClose = false;
                         for (int j = 0; j < i; j++)
                         {
-                            if (Mathf.Abs(triggerPositions[i] - triggerPositions[j]) < minimumTriggerGap)
+                            if (Mathf.Abs(_triggerPositions[i] - _triggerPositions[j]) < fish.minimumTriggerGap)
                             {
-                                triggerPositions[i] = Random.Range(0.1f, 0.9f);
-                                triggersTooClose = true;
+                                _triggerPositions[i] = Random.Range(0.1f, 0.9f);
+                                _triggersTooClose = true;
                             }
                         }
-                    } while (triggersTooClose);
+                    } while (_triggersTooClose);
                 }
                 break;
 
-            case modifier.doubles:
+            case Fish.modifier.doubles:
                 int k = 1;
-                if (numTriggers % 2 != 0)
+                if (fish.numTriggers % 2 == 0)
                 {
-                    triggerPositions[1] = 1.0f - specialGap;
+                    _triggerPositions[1] = 1.0f - fish.specialGap;
                     k++;
                 }
 
-                for (; k < numTriggers; k += 2)
+                for (; k < fish.numTriggers; k += 2)
                 {
-                    triggerPositions[k] = Random.Range(0.1f, 0.9f);
+                    _triggerPositions[k] = Random.Range(0.1f, 0.9f);
 
                     do
                     {
-                        triggersTooClose = false;
+                        _triggersTooClose = false;
                         for (int j = 0; j < k; j++)
                         {
-                            if (Mathf.Abs(triggerPositions[k] - triggerPositions[j]) < minimumTriggerGap)
+                            if (Mathf.Abs(_triggerPositions[k] - _triggerPositions[j]) < fish.minimumTriggerGap)
                             {
-                                triggerPositions[k] = Random.Range(0.1f, 0.9f);
-                                triggersTooClose = true;
+                                _triggerPositions[k] = Random.Range(0.1f, 0.9f);
+                                _triggersTooClose = true;
                             }
                         }
-                    } while (triggersTooClose);
+                    } while (_triggersTooClose);
 
-                    triggerPositions[k + 1] = triggerPositions[k] + specialGap;
+                    _triggerPositions[k + 1] = _triggerPositions[k] + fish.specialGap;
                 }
 
                 break;
 
-            case modifier.mega:
-                triggerPositions[1] = Random.Range(0.1f, 0.9f - specialGap * numTriggers);
-                for (int i = 1; i < numTriggers; i++)
+            case Fish.modifier.mega:
+                _triggerPositions[1] = Random.Range(0.1f, 0.9f - fish.specialGap * fish.numTriggers);
+                for (int i = 1; i < fish.numTriggers; i++)
                 {
-                    triggerPositions[i + 1] = triggerPositions[1] + specialGap;
+                    _triggerPositions[i + 1] = _triggerPositions[1] + fish.specialGap;
                 }
                 break;
         }
+
+        System.Array.Sort(_triggerPositions);
+        return _triggerPositions;
+    }
+    private void GenerateTriggers(float[] positions) {
+        _fishBarTriggers.Clear();
+        for (int i = 0; i < positions.Length; i++)
+        {
+            Vector3 localPosition = new Vector3(0, positions[i] * 3.35f + 0.35f, 0);
+            var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + localPosition, Quaternion.identity, _triggersContainer.transform);
+            _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());
+        }
+       
+        foreach (FishBarTrigger trigger in _fishBarTriggers)
+        {
+            trigger.Initialize();
+            trigger.SetSprite(false);
+        }
+    }
+    
+    private Fish GetRandomValidFish() {
+        Fish _fish;
+        List<Fish> _fishes = new List<Fish>();
+
+        foreach (Transform child in _fishContainer.transform) {
+            _fish = child.GetComponent<Fish>();
+            if (_fish.validSceneName == gameObject.scene.name) 
+            {
+                _fishes.Add(_fish);
+            }
+        }
+        
+        return _fishes[Random.Range(0, _fishes.Count)];
     }
 }
