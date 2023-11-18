@@ -48,16 +48,16 @@ public class AnimatorController : MonoBehaviour
         switch (facingDir)
         {
             case Direction.Up:
-                _animator.Play("N_Fish");
+                _animator.Play("N_Catch");
                 return;
             case Direction.Down:
-                _animator.Play("S_Fish");
+                _animator.Play("S_Catch");
                 return;
             case Direction.Right:
-                _animator.Play("E_Fish");
+                _animator.Play("E_Catch");
                 return;
             case Direction.Left:
-                _animator.Play("W_Fish");
+                _animator.Play("W_Catch");
                 return;
         }
     }

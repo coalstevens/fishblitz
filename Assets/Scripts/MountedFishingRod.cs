@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class FishingRod : MonoBehaviour
+public class MountedFishingRod : MonoBehaviour
 {
     [Header("Sprite Options")]
     [SerializeField] private Sprite _onSprite;
@@ -84,7 +84,7 @@ public class FishingRod : MonoBehaviour
         bool found = false;
         foreach (var result in results)
         {
-            var rod = result.gameObject.GetComponent<FishingRod>();
+            var rod = result.gameObject.GetComponent<MountedFishingRod>();
             if (rod == this)
             {
                 found = true;

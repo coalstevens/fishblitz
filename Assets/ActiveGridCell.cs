@@ -54,7 +54,7 @@ public class ActiveGridCell : MonoBehaviour
             return;
         }
 
-        FishingRod rod = GetRod();
+        MountedFishingRod rod = GetRod();
         if (rod != null)
         {
             rod.StartFishingGame();
@@ -81,14 +81,14 @@ public class ActiveGridCell : MonoBehaviour
         }
     }
 
-    private FishingRod GetRod()
+    private MountedFishingRod GetRod()
     {
         List<Collider2D> results = new List<Collider2D>();
         Physics2D.OverlapBox(GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), results);
 
         foreach (var result in results)
         {
-            var rod = result.GetComponent<FishingRod>();
+            var rod = result.GetComponent<MountedFishingRod>();
             if (rod != null)
             {
                 return rod;
