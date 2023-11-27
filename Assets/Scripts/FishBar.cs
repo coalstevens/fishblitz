@@ -167,7 +167,7 @@ public class FishBar : MonoBehaviour
 
     private IEnumerator PlayRoutine(float duration)
     {
-        _playerMovementController.CurrState.Set(State.Fishing);
+        _playerMovementController.CurrState.Set(State.Catching);
         float time = 0;
         while (time < duration)
         {

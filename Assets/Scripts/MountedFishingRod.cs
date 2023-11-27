@@ -107,7 +107,7 @@ public class MountedFishingRod : MonoBehaviour
         }
 
         StopCoroutine(_changeStateRoutine);
-        _inventory.Rods += 1;
+        _inventory.MountedRods += 1;
         _fishBar.Play();
         Destroy(gameObject);
     }

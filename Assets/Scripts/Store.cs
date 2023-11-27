@@ -114,7 +114,7 @@ public class Store : MonoBehaviour
         }
 
         _inventory.Money -= _rodCost;
-        _inventory.Rods += 1;
+        _inventory.MountedRods += 1;
         _totalInventory -= 1;
 
         if (IsSoldOut())

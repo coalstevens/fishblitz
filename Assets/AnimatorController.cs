@@ -30,6 +30,9 @@ public class AnimatorController : MonoBehaviour
             case State.Fishing:
                 HandleFishing(facingDir);
                 return;
+            case State.Catching:
+                HandleCatching(facingDir);
+                return;
             case State.Celebrating:
                 HandleCelebrating();
                 return;
@@ -48,6 +51,25 @@ public class AnimatorController : MonoBehaviour
         switch (facingDir)
         {
             case Direction.Up:
+                _animator.Play("N_Fish");
+                return;
+            case Direction.Down:
+                _animator.Play("S_Fish");
+                return;
+            case Direction.Right:
+                _animator.Play("E_Fish");
+                return;
+            case Direction.Left:
+                _animator.Play("W_Fish");
+                return;
+        }
+    }
+
+    private void HandleCatching(Direction facingDir) 
+    {
+        switch (facingDir)
+        {
+            case Direction.Up:
                 _animator.Play("N_Catch");
                 return;
             case Direction.Down:
@@ -60,6 +82,7 @@ public class AnimatorController : MonoBehaviour
                 _animator.Play("W_Catch");
                 return;
         }
+
     }
 
     private void HandleWalking(Direction facingDir)
@@ -67,16 +90,16 @@ public class AnimatorController : MonoBehaviour
         switch (facingDir)
         {
             case Direction.Up:
-                _animator.Play("N_Walk");
+                _animator.Play("N_Walk", 0, 2);
                 return;
             case Direction.Down:
-                _animator.Play("S_Walk");
+                _animator.Play("S_Walk", 0, 2);
                 return;
             case Direction.Right:
-                _animator.Play("E_Walk");
+                _animator.Play("E_Walk", 0, 2);
                 return;
             case Direction.Left:
-                _animator.Play("W_Walk");
+                _animator.Play("W_Walk", 0, 2);
                 return;
         }
     }

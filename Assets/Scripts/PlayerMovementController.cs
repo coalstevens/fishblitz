@@ -15,6 +15,7 @@ public enum State
     Walking,
     Idle,
     Fishing,
+    Catching,
     Celebrating,
 }
 
@@ -24,6 +25,8 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 _currMotionVector = Vector2.zero;
     private Rigidbody2D _rb;
 
+    //TODO change _fishing reactive to "Acting"? cursor should disappear in an action state/animation like fishing
+    // _fishing currently just toggles the cursor display
     public Reactive<bool> _fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
     public Reactive<State> CurrState = new Reactive<State>(State.Idle);
@@ -41,7 +44,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // no turning when ur fishing
-        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Catching || CurrState.Get() == State.Celebrating)
         {
             return;
         }
@@ -76,7 +79,7 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         // cant move when ur fishing
-        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Celebrating)
+        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Catching || CurrState.Get() == State.Celebrating)
         {
             return;
         }
