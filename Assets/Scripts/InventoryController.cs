@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using ReactiveUnity;
 
 public class Inventory : MonoBehaviour
 {
@@ -17,11 +18,11 @@ public class Inventory : MonoBehaviour
     {
         get
         {
-            return _mountedRods.Get();
+            return _mountedRods.Value;
         }
         set
         {
-            _mountedRods.Set(value);
+            _mountedRods.Value = value;
         }
     }
 
@@ -29,11 +30,11 @@ public class Inventory : MonoBehaviour
     {
         get
         {
-            return _rods.Get();
+            return _rods.Value;
         }
         set
         {
-            _rods.Set(value);
+            _rods.Value = value;
         }
     }
 
@@ -41,12 +42,12 @@ public class Inventory : MonoBehaviour
     {
         get
         {
-            return _keys.Get();
+            return _keys.Value;
         }
 
         set
         {
-            _keys.Set(value);
+            _keys.Value = value;
         }
     }
 
@@ -54,12 +55,12 @@ public class Inventory : MonoBehaviour
     {
         get
         {
-            return _money.Get();
+            return _money.Value;
         }
 
         set
         {
-            _money.Set(value);
+            _money.Value = value;
         }
     }
 

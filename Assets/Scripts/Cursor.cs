@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ReactiveUnity;
 
 public class Cursor : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Cursor : MonoBehaviour
 
   private void OnFishingChange(bool curr)
   {
-    bool maybeTrue = _playerMovementController.FacingDir.Get() == _activeDirection;
+    bool maybeTrue = _playerMovementController.FacingDir.Value == _activeDirection;
     _spriteRenderer.enabled = curr ? false : maybeTrue;
   }
 

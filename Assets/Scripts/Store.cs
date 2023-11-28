@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using ReactiveUnity;
 
 public enum TradeType
 {
@@ -42,12 +43,12 @@ public class Store : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        _inRange.Set(true);
+        _inRange.Value = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        _inRange.Set(false);
+        _inRange.Value = false;
     }
 
     private void Update()
@@ -57,7 +58,7 @@ public class Store : MonoBehaviour
             return;
         }
 
-        if (!_inRange.Get())
+        if (!_inRange.Value)
         {
             return;
         }

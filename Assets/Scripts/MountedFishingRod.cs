@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using ReactiveUnity;
 
 public class MountedFishingRod : MonoBehaviour
 {
@@ -36,10 +37,10 @@ public class MountedFishingRod : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _fishOn.OnChange((_, curr) => ChangeSprite(curr, _selected.Get()));
+        _fishOn.OnChange((_, curr) => ChangeSprite(curr, _selected.Value));
         _fishOn.OnChange((_, curr) => Shake());
-        _selected.OnChange((_, selected) => ChangeSprite(_fishOn.Get(), selected));
-        ChangeSprite(_fishOn.Get(), _selected.Get());
+        _selected.OnChange((_, selected) => ChangeSprite(_fishOn.Value, selected));
+        ChangeSprite(_fishOn.Value, _selected.Value);
     }
 
     private void Shake()
@@ -60,7 +61,7 @@ public class MountedFishingRod : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(_minChangeInterval, _maxChangeInterval));
-            _fishOn.Set(!_fishOn.Get());
+            _fishOn.Value = !_fishOn.Value;
         }
     }
 
@@ -88,19 +89,19 @@ public class MountedFishingRod : MonoBehaviour
             if (rod == this)
             {
                 found = true;
-                _selected.Set(true);
+                _selected.Value = true;
             }
         }
 
         if (!found)
         {
-            _selected.Set(false);
+            _selected.Value = false;
         }
     }
 
     public void StartFishingGame()
     {
-        if (!_fishOn.Get())
+        if (!_fishOn.Value)
         {
             Shake();
             return;

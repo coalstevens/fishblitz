@@ -53,23 +53,22 @@ public class ActiveGridCell : MonoBehaviour
     }
 
     private void OnInteract() {
-        System.Console.WriteLine("Test0");
         // no interrupting cele
-        if (_playerMovementController.CurrState.Get() == State.Celebrating)
+        if (_playerMovementController.CurrState.Value == State.Celebrating)
         {
             return;
         }
         
         // no interrupting catching
-        if (_playerMovementController.CurrState.Get() == State.Catching)
+        if (_playerMovementController.CurrState.Value == State.Catching)
         {
             return;
         }
 
         //if fishing stop fishing
-        if (_playerMovementController.CurrState.Get() == State.Fishing)
+        if (_playerMovementController.CurrState.Value == State.Fishing)
         {
-            _playerMovementController.CurrState.Set(State.Idle);
+            _playerMovementController.CurrState.Value = State.Idle;
             StopCoroutine(_changeStateRoutine);
             return;
         }
@@ -85,10 +84,9 @@ public class ActiveGridCell : MonoBehaviour
         }
 
         bool hasRod = _inventory.Rods > 0;
-        System.Console.WriteLine("Test1");
+        
         if (hasRod && canFish) {
-            System.Console.WriteLine("Test2");
-            _playerMovementController.CurrState.Set(State.Fishing);
+            _playerMovementController.CurrState.Value = State.Fishing;
             _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
         }
     }
@@ -104,7 +102,7 @@ public class ActiveGridCell : MonoBehaviour
     private void OnFire()
     {
         // no placements when ur fishing
-        if (_playerMovementController.CurrState.Get() == State.Fishing || _playerMovementController.CurrState.Get() == State.Catching || _playerMovementController.CurrState.Get() == State.Celebrating)
+        if (_playerMovementController.CurrState.Value == State.Fishing || _playerMovementController.CurrState.Value == State.Catching || _playerMovementController.CurrState.Value == State.Celebrating)
         {
             return;
         }

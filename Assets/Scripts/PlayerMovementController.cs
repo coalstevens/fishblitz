@@ -1,7 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using ReactiveUnity;
 public enum Direction
 {
     Up,
@@ -44,42 +44,44 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // no turning when ur fishing
-        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Catching || CurrState.Get() == State.Celebrating)
+        if (CurrState.Value == State.Fishing || CurrState.Value == State.Catching || CurrState.Value == State.Celebrating)
         {
+            _fishing.Value = true;
             return;
         }
+        _fishing.Value = false;
 
         if (_currMotionVector.x > 0)
         {
-            FacingDir.Set(Direction.Right);
+            FacingDir.Value= Direction.Right;
         }
         else if (_currMotionVector.x < 0)
         {
-            FacingDir.Set(Direction.Left);
+            FacingDir.Value = Direction.Left;
         }
         else if (_currMotionVector.y > 0)
         {
-            FacingDir.Set(Direction.Up);
+            FacingDir.Value = Direction.Up;
         }
         else if (_currMotionVector.y < 0)
         {
-            FacingDir.Set(Direction.Down);
+            FacingDir.Value = Direction.Down;
         }
 
         if (_currMotionVector.magnitude > 0)
         {
-            CurrState.Set(State.Walking);
+            CurrState.Value = State.Walking;
         }
         else
         {
-            CurrState.Set(State.Idle);
+            CurrState.Value = State.Idle;
         }
     }
 
     private void FixedUpdate()
     {
         // cant move when ur fishing
-        if (CurrState.Get() == State.Fishing || CurrState.Get() == State.Catching || CurrState.Get() == State.Celebrating)
+        if (CurrState.Value == State.Fishing || CurrState.Value == State.Catching || CurrState.Value == State.Celebrating)
         {
             return;
         }

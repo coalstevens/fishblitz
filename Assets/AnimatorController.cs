@@ -12,12 +12,12 @@ public class AnimatorController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _playerMovementController.CurrState.OnChange((prev, curr) => OnStateChange(curr));
-        _playerMovementController.FacingDir.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Get()));
+        _playerMovementController.FacingDir.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Value));
     }
 
     private void OnStateChange(State curr)
     {
-        Direction facingDir = _playerMovementController.FacingDir.Get();
+        Direction facingDir = _playerMovementController.FacingDir.Value;
 
         switch (curr)
         {

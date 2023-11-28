@@ -7,6 +7,7 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using ReactiveUnity;
 
 public class FishBar : MonoBehaviour
 {
@@ -61,7 +62,7 @@ public class FishBar : MonoBehaviour
 
     private void Awake()
     {
-        _failed.When(curr => curr, (prev, curr) => OnFail());
+        _failed.When((prev, curr) => curr, (prev, curr) => OnFail());
         _originalFishObjectPos = _fishSpriteObject.transform.localPosition;
     }
 
@@ -110,7 +111,7 @@ public class FishBar : MonoBehaviour
 
         if (GetNextTrigger() == fishBarTrigger)
         {
-            _failed.Set(true);
+            _failed.Value = true;
         }
     }
 
@@ -135,7 +136,7 @@ public class FishBar : MonoBehaviour
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
         ResetFishObject();
         _overlaySpriteRenderer.sprite = null;
-        _failed.Set(false);
+        _failed.Value = false;
         _won = false;
     }
 
@@ -151,7 +152,7 @@ public class FishBar : MonoBehaviour
         _barSprite.size = new Vector2(_barSprite.size.x, currHeight);
 
         // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
-        if (!_failed.Get())
+        if (!_failed.Value)
         {
             _fishSpriteObject.transform.localPosition = new Vector2(_fishSpriteObject.transform.localPosition.x, currHeight);
         }
@@ -167,7 +168,7 @@ public class FishBar : MonoBehaviour
 
     private IEnumerator PlayRoutine(float duration)
     {
-        _playerMovementController.CurrState.Set(State.Catching);
+        _playerMovementController.CurrState.Value = State.Catching;
         float time = 0;
         while (time < duration)
         {
@@ -178,16 +179,16 @@ public class FishBar : MonoBehaviour
         }
 
         // If you didn't fail, you get a coin
-        if (!_failed.Get())
+        if (!_failed.Value)
         {
             _inventory.Money += 1;
-            _playerMovementController.CurrState.Set(State.Celebrating);
+            _playerMovementController.CurrState.Value = State.Celebrating;
             Invoke(nameof(BackToIdle), 1.5f);
             _playerSoundController.PlaySound("Caught");
         }
         else
         {
-            _playerMovementController.CurrState.Set(State.Idle);
+            _playerMovementController.CurrState.Value = State.Idle;
         }
 
         gameObject.SetActive(false);
@@ -195,12 +196,12 @@ public class FishBar : MonoBehaviour
 
     private void BackToIdle()
     {
-        _playerMovementController.CurrState.Set(State.Idle);
+        _playerMovementController.CurrState.Value = State.Idle;
     }
 
     private void OnFire()
     {
-        if (_failed.Get())
+        if (_failed.Value)
         {
             return;
         }
@@ -223,7 +224,7 @@ public class FishBar : MonoBehaviour
         }
         else
         {
-            _failed.Set(true);
+            _failed.Value = true;
         }
     }
 
