@@ -11,6 +11,7 @@ public enum TradeType
 
 public class Store : MonoBehaviour
 {
+    /*
     [SerializeField] private InputActionReference _action;
     [SerializeField] private SpriteRenderer _storeSpriteRenderer;
     [SerializeField] private Sprite _outlineSprite;
@@ -21,12 +22,12 @@ public class Store : MonoBehaviour
     [SerializeField] private int _keyCost = 10;
     [SerializeField] private int _rodCost = 1;
 
-    private Inventory _inventory;
+    private InventoryController _inventory;
     private Reactive<bool> _inRange = new Reactive<bool>(false);
 
     private void Awake()
     {
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("InventoryController").GetComponent<InventoryController>();
         _inRange.OnChange((_, inRange) => SetOutline(inRange));
         SetOutline(false);
     }
@@ -128,4 +129,5 @@ public class Store : MonoBehaviour
     {
         return _totalInventory <= 0;
     }
+    */
 }

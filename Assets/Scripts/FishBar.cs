@@ -22,17 +22,6 @@ public class FishBar : MonoBehaviour
     [SerializeField] private Inventory _inventory;
     [SerializeField] private playerSoundController _playerSoundController;
 
-
-    //[Header("Challenge Setup")]
-    //[SerializeField] private float _playDuration = 5f;
-    //[SerializeField] private int numTriggers; // always a trigger press at the end 
-    //[SerializeField] private float minimumTriggerGap;
-    //[SerializeField] private float specialGap;
-    //enum modifier { normal, doubles, triples, mega };
-    //[SerializeField] private modifier gameModifier;
-    //private float[] triggerPositions;
-
-
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
     [SerializeField] private float _shakeStrength = 1;
@@ -181,7 +170,8 @@ public class FishBar : MonoBehaviour
         // If you didn't fail, you get a coin
         if (!_failed.Value)
         {
-            _inventory.Money += 1;
+            //TODO: Create money
+            //_inventory.Money += 1;
             _playerMovementController.CurrState.Value = State.Celebrating;
             Invoke(nameof(BackToIdle), 1.5f);
             _playerSoundController.PlaySound("Caught");
@@ -199,7 +189,7 @@ public class FishBar : MonoBehaviour
         _playerMovementController.CurrState.Value = State.Idle;
     }
 
-    private void OnFire()
+    private void OnUseTool()
     {
         if (_failed.Value)
         {

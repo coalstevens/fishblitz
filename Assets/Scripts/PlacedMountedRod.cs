@@ -4,8 +4,9 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
+using UnityEngine.Tilemaps;
 
-public class MountedFishingRod : MonoBehaviour
+public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
 {
     [Header("Sprite Options")]
     [SerializeField] private Sprite _onSprite;
@@ -25,13 +26,13 @@ public class MountedFishingRod : MonoBehaviour
 
     [Header("Input Options")]
     [SerializeField] private InputActionReference _inputActionReference;
+    private InventoryController _inventory;
 
     private SpriteRenderer _spriteRenderer;
     private Reactive<bool> _fishOn = new Reactive<bool>(false);
     private Reactive<bool> _selected = new Reactive<bool>(false);
     private FishBar _fishBar;
     private Coroutine _changeStateRoutine;
-    private Inventory _inventory;
     private ActiveGridCell _activeGridCell;
 
     private void Awake()
@@ -51,7 +52,7 @@ public class MountedFishingRod : MonoBehaviour
     private void Start()
     {
         _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<InventoryController>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
     }
@@ -85,7 +86,7 @@ public class MountedFishingRod : MonoBehaviour
         bool found = false;
         foreach (var result in results)
         {
-            var rod = result.gameObject.GetComponent<MountedFishingRod>();
+            var rod = result.gameObject.GetComponent<PlacedMountedRod>();
             if (rod == this)
             {
                 found = true;
@@ -99,7 +100,7 @@ public class MountedFishingRod : MonoBehaviour
         }
     }
 
-    public void StartFishingGame()
+    public void CursorAction(TileData tileData, Vector3 cursorLocation)
     {
         if (!_fishOn.Value)
         {
@@ -108,7 +109,7 @@ public class MountedFishingRod : MonoBehaviour
         }
 
         StopCoroutine(_changeStateRoutine);
-        _inventory.MountedRods += 1;
+        _inventory.AddItem("MountedRod", 1);
         _fishBar.Play();
         Destroy(gameObject);
     }

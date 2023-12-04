@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,25 +7,17 @@ using ReactiveUnity;
 
 public class ItemSlot : MonoBehaviour
 {
-    private Reactive<bool> _hasItem = new Reactive<bool>(false);
-    private GameObject _slotItem;
+    private Reactive<GameObject> _slotItem = new Reactive<GameObject>(null);
     private Image _imageRenderer;
     [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private Sprite fullSlotSprite;
 
     public GameObject SlotItem {
         get {
-            return _slotItem;
+            return _slotItem.Value;
         }
         set {
-            if (value != null) {
-                _slotItem = value;
-                _hasItem.Value = true;
-            }
-            else {
-                _slotItem = null;
-                _hasItem.Value = false;
-            }
+            _slotItem.Value = value;
         }
     } 
 
@@ -33,19 +26,18 @@ public class ItemSlot : MonoBehaviour
         _imageRenderer = GetComponent<Image>();
 
         if (transform.childCount == 0) {
-            _slotItem = null;
+            _slotItem.Value = null;
         }
         else {
-            _slotItem = transform.GetChild(0).gameObject;
-            _hasItem.Value = true;
+            _slotItem.Value = transform.GetChild(0).gameObject;
         }
         
         UpdateUI();
-        _hasItem.OnChange((prev, curr) => UpdateUI());
+        _slotItem.OnChange((prev, curr) => UpdateUI());
     }
     
     void UpdateUI() {
-        if (_hasItem.Value) {
+        if (_slotItem.Value != null) {
             _imageRenderer.sprite = fullSlotSprite;
         }
         else {
