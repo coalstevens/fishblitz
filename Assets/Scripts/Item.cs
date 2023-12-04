@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
     public string Name;
     public int Capacity;
     public enum ItemType{Misc, Tools, Fish};
-    public ItemType itemType;
+    public ItemType Type;
     
     public int Quantity 
     {

@@ -27,7 +27,7 @@ public class PlayerMovementController : MonoBehaviour
 
     //TODO change _fishing reactive to "Acting"? cursor should disappear in an action state/animation like fishing
     // _fishing currently just toggles the cursor display
-    public Reactive<bool> _fishing = new Reactive<bool>(false);
+    public Reactive<bool> Fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
     public Reactive<State> CurrState = new Reactive<State>(State.Idle);
 
@@ -46,10 +46,10 @@ public class PlayerMovementController : MonoBehaviour
         // no turning when ur fishing
         if (CurrState.Value == State.Fishing || CurrState.Value == State.Catching || CurrState.Value == State.Celebrating)
         {
-            _fishing.Value = true;
+            Fishing.Value = true;
             return;
         }
-        _fishing.Value = false;
+        Fishing.Value = false;
 
         if (_currMotionVector.x > 0)
         {
@@ -86,7 +86,7 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
 
-        Vector2 newPos = _rb.position + (_currMotionVector * Time.fixedDeltaTime * _moveSpeed);
-        _rb.MovePosition(newPos);
+        Vector2 _newPos = _rb.position + (_currMotionVector * Time.fixedDeltaTime * _moveSpeed);
+        _rb.MovePosition(_newPos);
     }
 }

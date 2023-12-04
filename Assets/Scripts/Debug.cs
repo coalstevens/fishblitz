@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Debug : MonoBehaviour
+public class MyDebugger : MonoBehaviour
 {
     [SerializeField] private Tilemap _tilemap;
 

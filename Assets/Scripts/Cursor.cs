@@ -7,13 +7,14 @@ public class Cursor : MonoBehaviour
   [SerializeField] private Grid _grid;
   [SerializeField] public Transform _renderedTransform;
   [SerializeField] private Direction _activeDirection;
-  [SerializeField] private PlayerMovementController _playerMovementController;
   [SerializeField] private SpriteRenderer _spriteRenderer;
+  private PlayerMovementController _playerMovementController;
 
   private void Start()
   {
+    _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
     _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
-    _playerMovementController._fishing.OnChange((prev, curr) => OnFishingChange(curr));
+    _playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr));
   }
 
   private void OnFishingChange(bool curr)

@@ -18,8 +18,6 @@ public class FishBar : MonoBehaviour
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private GameObject _fishContainer;
-    [SerializeField] private PlayerMovementController _playerMovementController;
-    [SerializeField] private Inventory _inventory;
     [SerializeField] private playerSoundController _playerSoundController;
 
     [Header("Shake Options")]
@@ -39,6 +37,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] private Sprite _redOverlay;
     [SerializeField] private float _blinkDuration = 0.1f;
 
+    private PlayerMovementController _playerMovementController;
     private Rigidbody2D _fishObjectRb;
     private Collider2D _indicatorCollider;
     private List<FishBarTrigger> _fishBarTriggers = new List<FishBarTrigger>();
@@ -48,9 +47,12 @@ public class FishBar : MonoBehaviour
     private Vector2 _originalFishObjectPos;
     private bool _won = false;
     private Fish _fish;
+    private Inventory _inventory;
 
     private void Awake()
     {
+        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
         _failed.When((prev, curr) => curr, (prev, curr) => OnFail());
         _originalFishObjectPos = _fishSpriteObject.transform.localPosition;
     }
@@ -111,9 +113,9 @@ public class FishBar : MonoBehaviour
         float[] _triggerPositions;  
         
 
-        foreach (Transform child in _triggersContainer.transform)
+        foreach (Transform _child in _triggersContainer.transform)
         {
-            Destroy(child.gameObject);
+            Destroy(_child.gameObject);
         }
 
         _fish = GetRandomValidFish();
@@ -137,13 +139,13 @@ public class FishBar : MonoBehaviour
 
     public void SetCompletion(float percent)
     {
-        float currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
-        _barSprite.size = new Vector2(_barSprite.size.x, currHeight);
+        float _currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
+        _barSprite.size = new Vector2(_barSprite.size.x, _currHeight);
 
         // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
         if (!_failed.Value)
         {
-            _fishSpriteObject.transform.localPosition = new Vector2(_fishSpriteObject.transform.localPosition.x, currHeight);
+            _fishSpriteObject.transform.localPosition = new Vector2(_fishSpriteObject.transform.localPosition.x, _currHeight);
         }
     }
 
@@ -152,19 +154,19 @@ public class FishBar : MonoBehaviour
     public void Play()
     {
         Initialize();
-        StartCoroutine(PlayRoutine(_fish.playDuration));
+        StartCoroutine(PlayRoutine(_fish.PlayDuration));
     }
 
     private IEnumerator PlayRoutine(float duration)
     {
         _playerMovementController.CurrState.Value = State.Catching;
-        float time = 0;
-        while (time < duration)
+        float _time = 0;
+        while (_time < duration)
         {
-            SetCompletion(Mathf.InverseLerp(0, duration, time));
-            float elapsed = Time.deltaTime;
-            yield return new WaitForSeconds(elapsed);
-            time += elapsed;
+            SetCompletion(Mathf.InverseLerp(0, duration, _time));
+            float _elapsed = Time.deltaTime;
+            yield return new WaitForSeconds(_elapsed);
+            _time += _elapsed;
         }
 
         // If you didn't fail, you get a coin
@@ -196,14 +198,14 @@ public class FishBar : MonoBehaviour
             return;
         }
 
-        FishBarTrigger next = GetNextTrigger();
-        List<Collider2D> results = new List<Collider2D>();
+        FishBarTrigger _next = GetNextTrigger();
+        List<Collider2D> _results = new List<Collider2D>();
 
-        _indicatorCollider.OverlapCollider(new ContactFilter2D().NoFilter(), results);
-        if (results.Contains(next.GetCollider()))
+        _indicatorCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _results);
+        if (_results.Contains(_next.GetCollider()))
         {
             // yay!
-            next.SetSprite(true);
+            _next.SetSprite(true);
             _triggerIdx += 1;
 
             // That was the last one. we won!
@@ -220,16 +222,16 @@ public class FishBar : MonoBehaviour
 
     private float[] GenerateNormalizedTriggerPositions(Fish fish)
     {
-        float[] _triggerPositions = new float[fish.numTriggers];
+        float[] _triggerPositions = new float[fish.NumTriggers];
 
         bool _triggersTooClose;
-        _triggerPositions = new float[fish.numTriggers];
+        _triggerPositions = new float[fish.NumTriggers];
         _triggerPositions[0] = 1.0f; // Trigger right at end
 
         switch (fish.gameModifier)
         {
             case Fish.modifier.normal:
-                for (int i = 1; i < fish.numTriggers; i++)
+                for (int i = 1; i < fish.NumTriggers; i++)
                 {
                     _triggerPositions[i] = Random.Range(0.1f, 0.9f);
 
@@ -238,7 +240,7 @@ public class FishBar : MonoBehaviour
                         _triggersTooClose = false;
                         for (int j = 0; j < i; j++)
                         {
-                            if (Mathf.Abs(_triggerPositions[i] - _triggerPositions[j]) < fish.minimumTriggerGap)
+                            if (Mathf.Abs(_triggerPositions[i] - _triggerPositions[j]) < fish.MinimumTriggerGap)
                             {
                                 _triggerPositions[i] = Random.Range(0.1f, 0.9f);
                                 _triggersTooClose = true;
@@ -250,13 +252,13 @@ public class FishBar : MonoBehaviour
 
             case Fish.modifier.doubles:
                 int k = 1;
-                if (fish.numTriggers % 2 == 0)
+                if (fish.NumTriggers % 2 == 0)
                 {
-                    _triggerPositions[1] = 1.0f - fish.specialGap;
+                    _triggerPositions[1] = 1.0f - fish.SpecialGap;
                     k++;
                 }
 
-                for (; k < fish.numTriggers; k += 2)
+                for (; k < fish.NumTriggers; k += 2)
                 {
                     _triggerPositions[k] = Random.Range(0.1f, 0.9f);
 
@@ -265,7 +267,7 @@ public class FishBar : MonoBehaviour
                         _triggersTooClose = false;
                         for (int j = 0; j < k; j++)
                         {
-                            if (Mathf.Abs(_triggerPositions[k] - _triggerPositions[j]) < fish.minimumTriggerGap)
+                            if (Mathf.Abs(_triggerPositions[k] - _triggerPositions[j]) < fish.MinimumTriggerGap)
                             {
                                 _triggerPositions[k] = Random.Range(0.1f, 0.9f);
                                 _triggersTooClose = true;
@@ -273,16 +275,16 @@ public class FishBar : MonoBehaviour
                         }
                     } while (_triggersTooClose);
 
-                    _triggerPositions[k + 1] = _triggerPositions[k] + fish.specialGap;
+                    _triggerPositions[k + 1] = _triggerPositions[k] + fish.SpecialGap;
                 }
 
                 break;
 
             case Fish.modifier.mega:
-                _triggerPositions[1] = Random.Range(0.1f, 0.9f - fish.specialGap * fish.numTriggers);
-                for (int i = 1; i < fish.numTriggers; i++)
+                _triggerPositions[1] = Random.Range(0.1f, 0.9f - fish.SpecialGap * fish.NumTriggers);
+                for (int i = 1; i < fish.NumTriggers; i++)
                 {
-                    _triggerPositions[i + 1] = _triggerPositions[1] + fish.specialGap;
+                    _triggerPositions[i + 1] = _triggerPositions[1] + fish.SpecialGap;
                 }
                 break;
         }
@@ -294,15 +296,15 @@ public class FishBar : MonoBehaviour
         _fishBarTriggers.Clear();
         for (int i = 0; i < positions.Length; i++)
         {
-            Vector3 localPosition = new Vector3(0, positions[i] * 3.35f + 0.35f, 0);
-            var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + localPosition, Quaternion.identity, _triggersContainer.transform);
+            Vector3 _localPosition = new Vector3(0, positions[i] * 3.35f + 0.35f, 0);
+            var _fishBarTrigger = Instantiate(_fishBarTriggerPrefab, transform.position + _localPosition, Quaternion.identity, _triggersContainer.transform);
             _fishBarTriggers.Add(_fishBarTrigger.GetComponent<FishBarTrigger>());
         }
        
-        foreach (FishBarTrigger trigger in _fishBarTriggers)
+        foreach (FishBarTrigger _trigger in _fishBarTriggers)
         {
-            trigger.Initialize();
-            trigger.SetSprite(false);
+            _trigger.Initialize();
+            _trigger.SetSprite(false);
         }
     }
     
@@ -310,8 +312,8 @@ public class FishBar : MonoBehaviour
         Fish _fish;
         List<Fish> _fishes = new List<Fish>();
 
-        foreach (Transform child in _fishContainer.transform) {
-            _fish = child.GetComponent<Fish>();
+        foreach (Transform _child in _fishContainer.transform) {
+            _fish = _child.GetComponent<Fish>();
             if (_fish.validSceneName == gameObject.scene.name) 
             {
                 _fishes.Add(_fish);

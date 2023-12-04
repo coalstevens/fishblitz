@@ -8,14 +8,14 @@ public class Gate : MonoBehaviour
 {
     [SerializeField] private InputActionReference _inputActionReference;
     [SerializeField] private Collider2D gateCollider;
-    private InventoryController _inventory;
+    private Inventory _inventory;
     private Animator _animator;
     private bool inRange = false;
     // Start is called before the first frame update
 
     private void Awake()
     {
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<InventoryController>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
         _animator = GetComponent<Animator>();
     }
 

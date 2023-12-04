@@ -9,8 +9,8 @@ public class ItemSlot : MonoBehaviour
 {
     private Reactive<GameObject> _slotItem = new Reactive<GameObject>(null);
     private Image _imageRenderer;
-    [SerializeField] private Sprite emptySlotSprite;
-    [SerializeField] private Sprite fullSlotSprite;
+    [SerializeField] private Sprite _emptySlotSprite;
+    [SerializeField] private Sprite _fullSlotSprite;
 
     public GameObject SlotItem {
         get {
@@ -38,10 +38,10 @@ public class ItemSlot : MonoBehaviour
     
     void UpdateUI() {
         if (_slotItem.Value != null) {
-            _imageRenderer.sprite = fullSlotSprite;
+            _imageRenderer.sprite = _fullSlotSprite;
         }
         else {
-            _imageRenderer.sprite = emptySlotSprite;
+            _imageRenderer.sprite = _emptySlotSprite;
         }
     }
 }

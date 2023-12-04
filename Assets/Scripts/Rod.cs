@@ -5,9 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class Rod : MonoBehaviour, ITool
 {
-    private PlayerMovementController _playerMovementController;
     [SerializeField] private float _minChangeInterval = 3;
     [SerializeField] private float _maxChangeInterval = 10;
+    private PlayerMovementController _playerMovementController;
     private Coroutine _changeStateRoutine;
     private FishBar _fishBar;    
     // Start is called before the first frame update

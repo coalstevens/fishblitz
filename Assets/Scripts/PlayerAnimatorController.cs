@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AnimatorController : MonoBehaviour
+public class PlayerAnimatorController : MonoBehaviour
 {
     private Animator _animator;
     private PlayerMovementController _playerMovementController;
@@ -17,21 +17,21 @@ public class AnimatorController : MonoBehaviour
 
     private void OnStateChange(State curr)
     {
-        Direction facingDir = _playerMovementController.FacingDir.Value;
+        Direction _facingDir = _playerMovementController.FacingDir.Value;
 
         switch (curr)
         {
             case State.Idle:
-                HandleIdle(facingDir);
+                HandleIdle(_facingDir);
                 return;
             case State.Walking:
-                HandleWalking(facingDir);
+                HandleWalking(_facingDir);
                 return;
             case State.Fishing:
-                HandleFishing(facingDir);
+                HandleFishing(_facingDir);
                 return;
             case State.Catching:
-                HandleCatching(facingDir);
+                HandleCatching(_facingDir);
                 return;
             case State.Celebrating:
                 HandleCelebrating();

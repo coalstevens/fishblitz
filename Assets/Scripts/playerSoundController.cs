@@ -20,14 +20,4 @@ public class playerSoundController : MonoBehaviour
         }
         _audioSource.Play();
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

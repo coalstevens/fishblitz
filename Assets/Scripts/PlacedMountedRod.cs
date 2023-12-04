@@ -23,11 +23,7 @@ public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
     [SerializeField] private float _shakeStrength = 1;
     [SerializeField] private int _shakeVibrato = 10;
     [SerializeField] private float _shakeRandomness = 90;
-
-    [Header("Input Options")]
-    [SerializeField] private InputActionReference _inputActionReference;
-    private InventoryController _inventory;
-
+    private Inventory _inventory;
     private SpriteRenderer _spriteRenderer;
     private Reactive<bool> _fishOn = new Reactive<bool>(false);
     private Reactive<bool> _selected = new Reactive<bool>(false);
@@ -52,7 +48,7 @@ public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
     private void Start()
     {
         _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<InventoryController>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
     }
@@ -80,21 +76,21 @@ public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
 
     private void Update()
     {
-        List<Collider2D> results = new List<Collider2D>();
-        Physics2D.OverlapBox(_activeGridCell.GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), results);
+        List<Collider2D> _results = new List<Collider2D>();
+        Physics2D.OverlapBox(_activeGridCell.GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
 
-        bool found = false;
-        foreach (var result in results)
+        bool _found = false;
+        foreach (var _result in _results)
         {
-            var rod = result.gameObject.GetComponent<PlacedMountedRod>();
-            if (rod == this)
+            var _rod = _result.gameObject.GetComponent<PlacedMountedRod>();
+            if (_rod == this)
             {
-                found = true;
+                _found = true;
                 _selected.Value = true;
             }
         }
 
-        if (!found)
+        if (!_found)
         {
             _selected.Value = false;
         }

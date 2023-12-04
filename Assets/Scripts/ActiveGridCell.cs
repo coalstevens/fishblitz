@@ -22,17 +22,17 @@ public class ActiveGridCell : MonoBehaviour
     [SerializeField] private Cursor _cursorE;
     [SerializeField] private Cursor _cursorS;
     [SerializeField] private Cursor _cursorW;
-    [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private Grid _grid;
     [SerializeField] private Tilemap _tilemap;
-    //[SerializeField] private Inventory _inventory;
-    private InventoryController _inventory;
+    private PlayerMovementController _playerMovementController;
+    private Inventory _inventory;
     private Cursor _activeCursor;    
 
     void Start()
     {
+        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<InventoryController>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
     }
 
     private void OnDirectionChange(Direction curr)
@@ -72,24 +72,24 @@ public class ActiveGridCell : MonoBehaviour
             return;
         }
 
-        // empty item slot selected
+        // return if empty item slot selected
         GameObject _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) 
         {
             return;
         }
         
-        // item is not a tool
+        // return if item is not a tool
         ITool _activeTool = _activeItem.GetComponent<ITool>();
         if (_activeTool == null) {
             return;
         }
 
         Vector3Int _cursorLocation = GetActiveCursorLocation();
-        TileBase tile = _tilemap.GetTile(_cursorLocation);
-        TileData tileData = new TileData();
-        tile.GetTileData(_cursorLocation, _tilemap, ref tileData);
-        _activeTool.UseTool(tileData,_cursorLocation);
+        TileBase _tile = _tilemap.GetTile(_cursorLocation);
+        TileData _tileData = new TileData();
+        _tile.GetTileData(_cursorLocation, _tilemap, ref _tileData);
+        _activeTool.UseTool(_tileData,_cursorLocation);
     }
 
     private void OnCursorAction()
@@ -111,14 +111,14 @@ public class ActiveGridCell : MonoBehaviour
             return;
         }
 
-        // empty item slot selected
+        // reutrn if empty item slot selected
         GameObject _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) 
         {
             return;
         }
         
-        // item doesn't use the cursor
+        // return if item doesn't use the cursor
         ICursorUsingItem _cursorUsingItem = _activeItem.GetComponent<ICursorUsingItem>();
         if (_cursorUsingItem == null) {
             return;
@@ -129,15 +129,15 @@ public class ActiveGridCell : MonoBehaviour
 
     private ICursorInteractableObject GetCursorInteractableObject()
     {
-        List<Collider2D> results = new List<Collider2D>();
-        Physics2D.OverlapBox(GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), results);
+        List<Collider2D> _results = new List<Collider2D>();
+        Physics2D.OverlapBox(GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
 
-        foreach (var result in results)
+        foreach (var _result in _results)
         {
-            var placedItem = result.GetComponent<ICursorInteractableObject>();
-            if (placedItem != null)
+            var _placedItem = _result.GetComponent<ICursorInteractableObject>();
+            if (_placedItem != null)
             {
-                return placedItem;
+                return _placedItem;
             }
         }
         return null;
