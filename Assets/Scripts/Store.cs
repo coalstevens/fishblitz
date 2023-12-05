@@ -11,7 +11,6 @@ public enum TradeType
 
 public class Store : MonoBehaviour
 {
-    /*
     [SerializeField] private InputActionReference _action;
     [SerializeField] private SpriteRenderer _storeSpriteRenderer;
     [SerializeField] private Sprite _outlineSprite;
@@ -22,12 +21,12 @@ public class Store : MonoBehaviour
     [SerializeField] private int _keyCost = 10;
     [SerializeField] private int _rodCost = 1;
 
-    private InventoryController _inventory;
+    private Inventory _inventory;
     private Reactive<bool> _inRange = new Reactive<bool>(false);
 
     private void Awake()
     {
-        _inventory = GameObject.FindWithTag("InventoryController").GetComponent<InventoryController>();
+        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
         _inRange.OnChange((_, inRange) => SetOutline(inRange));
         SetOutline(false);
     }
@@ -87,13 +86,13 @@ public class Store : MonoBehaviour
             return;
         }
 
-        if (_inventory.Money < _keyCost)
+        if (_inventory.Gold < _keyCost)
         {
             return;
         }
 
-        _inventory.Money -= _keyCost;
-        _inventory.Keys += 1;
+        _inventory.Gold -= _keyCost;
+        _inventory.AddItem("Key", 1);
         _totalInventory -= 1;
 
         if (IsSoldOut())
@@ -110,13 +109,13 @@ public class Store : MonoBehaviour
             return;
         }
 
-        if (_inventory.Money <= 0)
+        if (_inventory.Gold <= 0)
         {
             return;
         }
 
-        _inventory.Money -= _rodCost;
-        _inventory.MountedRods += 1;
+        _inventory.Gold -= _rodCost;
+        _inventory.AddItem("MountedRod", 1);
         _totalInventory -= 1;
 
         if (IsSoldOut())
@@ -129,5 +128,4 @@ public class Store : MonoBehaviour
     {
         return _totalInventory <= 0;
     }
-    */
 }

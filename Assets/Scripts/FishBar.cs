@@ -172,8 +172,7 @@ public class FishBar : MonoBehaviour
         // If you didn't fail, you get a coin
         if (!_failed.Value)
         {
-            //TODO: Create money
-            //_inventory.Money += 1;
+            _inventory.Gold += 1;
             _playerMovementController.CurrState.Value = State.Celebrating;
             Invoke(nameof(BackToIdle), 1.5f);
             _playerSoundController.PlaySound("Caught");
