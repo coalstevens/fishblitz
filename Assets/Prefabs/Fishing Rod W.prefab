@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: -8375590894817990302}
   - component: {fileID: 4913110220928130671}
   - component: {fileID: 251922772164505438}
+  - component: {fileID: -6844226876294600507}
   m_Layer: 7
   m_Name: Fishing Rod W
   m_TagString: Untagged
@@ -72,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2138312857
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -6902560443119822176, guid: 36661e95007fa4d6e8183c1fd07a2645, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -108,7 +109,6 @@ MonoBehaviour:
   _shakeStrength: 0.1
   _shakeVibrato: 20
   _shakeRandomness: 90
-  _inputActionReference: {fileID: -2269952491713794095, guid: c29e8e0b207bd4ecb952e2f148574f0b, type: 3}
 --- !u!58 &251922772164505438
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -144,3 +144,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.484375
+--- !u!114 &-6844226876294600507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348124566271831225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 5294013433174898541}
   - component: {fileID: 5086689129559003134}
   - component: {fileID: 7131661189280755436}
+  - component: {fileID: -3878735347850266520}
   m_Layer: 10
   m_Name: Gate
   m_TagString: Untagged
@@ -153,8 +154,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2138312857
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 5167106011495317458, guid: 89796be5ae9bd424697982b885661b44, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -247,6 +248,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3878735347850266520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167153126305781420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4261071527403509650
 GameObject:
   m_ObjectHideFlags: 0

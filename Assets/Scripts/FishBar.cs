@@ -18,7 +18,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private GameObject _fishContainer;
-    [SerializeField] private playerSoundController _playerSoundController;
+    [SerializeField] private PlayerSoundController _playerSoundController;
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -122,7 +122,7 @@ public class FishBar : MonoBehaviour
         _triggerPositions = GenerateNormalizedTriggerPositions(_fish);
         GenerateTriggers(_triggerPositions);
 
-        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<playerSoundController>();
+        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
         _indicatorCollider = _fishSpriteObject.GetComponent<Collider2D>();
         _fishObjectRb = _fishSpriteObject.GetComponent<Rigidbody2D>();
         ResetFishObject();

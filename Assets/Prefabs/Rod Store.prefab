@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8357594982581808194}
   - component: {fileID: 3911751984115411142}
   - component: {fileID: 1655930104138235665}
+  - component: {fileID: 2727380344973645068}
   m_Layer: 0
   m_Name: Rod Store
   m_TagString: Untagged
@@ -121,6 +122,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0.03125, y: 2.859375}
   m_Size: {x: 2.875, y: 5.59375}
   m_Direction: 0
+--- !u!114 &2727380344973645068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443780340505877682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6188909665740939768
 GameObject:
   m_ObjectHideFlags: 0
