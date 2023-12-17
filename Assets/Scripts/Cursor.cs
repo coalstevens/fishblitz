@@ -9,10 +9,12 @@ public class Cursor : MonoBehaviour
   [SerializeField] private Direction _activeDirection;
   [SerializeField] private SpriteRenderer _spriteRenderer;
   private PlayerMovementController _playerMovementController;
+  private SpriteRenderer _playerSpriteRenderer;
 
   private void Start()
   {
     _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
+    _playerSpriteRenderer = GameObject.FindWithTag("Player").GetComponent<SpriteRenderer>();
     _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
     _playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr));
   }
@@ -38,5 +40,6 @@ public class Cursor : MonoBehaviour
   private void Update()
   {
     _renderedTransform.position = _grid.WorldToCell(transform.position);
+    _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteRenderer.sortingOrder;
   }
 }

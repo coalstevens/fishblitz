@@ -71,7 +71,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -83,7 +83,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638354632833146150
+  platformSettingsDirtyTick: 638376584455068360
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -146,8 +146,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 99
-      y: 4
+      x: 4
+      y: 191
       width: 87
       height: 179
     spriteID: f688c1394d1b344d79873efa00272a8c
@@ -158,8 +158,128 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
+    uvTransform: {x: 4, y: 191}
+  - name: Larch_Frame_2
+    originalName: 
+    pivot: {x: 0.48529413, y: -0.012987013}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 99
+      y: 4
+      width: 68
+      height: 154
+    spriteID: 1687009254b174746bf296ef557df94b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
     uvTransform: {x: 99, y: 4}
-  spriteSheetImportData: []
+  - name: Larch_Frame_3
+    originalName: 
+    pivot: {x: 0.45945945, y: -0.19999999}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 378
+      width: 37
+      height: 25
+    spriteID: f2c3941a82a6f45a2b6d2a217ba031aa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 378}
+  spriteSheetImportData:
+  - name: Larch_0
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 7
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 378
+      width: 37
+      height: 25
+    spriteID: 10fb62829c58540be9ac2971f6f9242e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Larch_1
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 7
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 191
+      width: 87
+      height: 179
+    spriteID: 6342686b4d0fd4d8faf2ae74e8dad451
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Larch_2
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 7
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 87
+      height: 179
+    spriteID: acb2cd7ebbeb54f769f4e1b080b3fa79
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Larch_3
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 7
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 99
+      y: 4
+      width: 68
+      height: 154
+    spriteID: 806e4615f3fac4c8ea6201f930404795
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
     guid: 430531358
@@ -184,6 +304,22 @@ ScriptedImporter:
         width: 87
         height: 179
       spriteId: f688c1394d1b344d79873efa00272a8c
+    - name: Larch_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 15
+        y: 2
+        width: 68
+        height: 154
+      spriteId: 1687009254b174746bf296ef557df94b
+    - name: Larch_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 31
+        y: 5
+        width: 37
+        height: 25
+      spriteId: f2c3941a82a6f45a2b6d2a217ba031aa
     linkedCells: []
     parentIndex: -1
   platformSettings:

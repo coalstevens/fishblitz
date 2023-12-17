@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a9761fae31f0148ef8093e72b1db6b4f
+guid: 43756b787ce824e3399ecc8e67ec79b3
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 32
+    spritePixelsToUnits: 100
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -71,7 +71,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -83,7 +83,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638359217078158470
+  platformSettingsDirtyTick: 638384280594877260
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Larch2-0x0-96x192
+  - name: WaveTexture
     originalName: 
-    pivot: {x: 0.51724136, y: -0.034285713}
+    pivot: {x: 0.5, y: -0.008403363}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 87
-      height: 175
-    spriteID: 819da46be11874e0d9ba5cd0ceceb2dd
+      width: 350
+      height: 238
+    spriteID: f0615bdbef21c46afb234d37d75c08b5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -138,44 +138,24 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 1, y: -2}
-  spriteSheetImportData:
-  - name: Larch2-0x0-96x192_0
-    originalName: 
-    pivot: {x: 0.5, y: 0.028571429}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 4
-      width: 87
-      height: 175
-    spriteID: 4b36f222bfe3b40b2a2e2403d1fb33d7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+    uvTransform: {x: 4, y: 4}
+  spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -106501421
-    name: Larch2-0x0-96x192
+    guid: -1564326054
+    name: WaveTexture
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Larch2-0x0-96x192
+    - name: WaveTexture
       frameIndex: 0
       cellRect:
         x: 0
-        y: 0
-        width: 96
-        height: 192
-      spriteId: 819da46be11874e0d9ba5cd0ceceb2dd
+        y: 2
+        width: 350
+        height: 238
+      spriteId: f0615bdbef21c46afb234d37d75c08b5
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -217,4 +197,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 96, y: 192}
+  canvasSize: {x: 350, y: 240}

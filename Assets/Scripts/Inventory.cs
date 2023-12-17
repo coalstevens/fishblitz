@@ -7,14 +7,10 @@ using TMPro;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private GameObject _goldUI;
     private GameObject _inventoryContainer;
     private GameObject _itemCursorController;
-    private TextMeshProUGUI _goldText;
 
-    
-    private Reactive<int> _gold = new Reactive<int>(0);
+    public Reactive<int> _gold = new Reactive<int>(0);
     public int Gold 
     {
         get {
@@ -28,8 +24,6 @@ public class Inventory : MonoBehaviour
     {
         _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer");
         _itemCursorController = GameObject.FindGameObjectWithTag("ItemCursorController");
-        UpdateGoldText();
-        _gold.OnChange((curr, prev) => UpdateGoldText());
     }
 
     public GameObject GetActiveItem() 
@@ -171,9 +165,4 @@ public class Inventory : MonoBehaviour
 
         return true;
     }   
-
-    void UpdateGoldText() {
-        _goldText = _goldUI.GetComponent<TextMeshProUGUI>();
-        _goldText.text = _gold.Value.ToString() + "G";
-    }
 }

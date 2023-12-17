@@ -47,27 +47,28 @@ Material:
     m_Floats:
     - _A_Waves_Speed: 0.04
     - _B_Waves_Speed: 0.01
-    - _Bubble_Flow_Speed: 0.1
-    - _Bubble_Noise_Scale: 1
-    - _Bubble_Noise_Speed: 0.1
-    - _Bubble_Texture_Scaler: 1
-    - _Gradient_Subdivisions: 3
+    - _Bubble_Flow_Speed: 0.6
+    - _Bubble_Noise_Scale: 0.1
+    - _Bubble_Noise_Speed: 0.4
+    - _Bubble_Texture_Scaler: 0.1
+    - _Gradient_Subdivisions: 2
+    - _Opacity: 0.838
     - _Pixelization: 32
     - _Rock_Density: 1
     - _Rock_Scale: 4
     - _Rock_XY_Ratio: 0.453
     - _Rocks_Subdivide: 3
-    - _Water_Rocks_Opacity: 0.8
+    - _Water_Rocks_Opacity: 0.9
     m_Colors:
     - _A_Waves_Direction: {r: 0, g: 1, b: 0, a: 0}
-    - _A_Waves_Scale: {r: 0.12, g: 0.8, b: 0, a: 0}
+    - _A_Waves_Scale: {r: 0.06, g: 0.4, b: 0, a: 0}
     - _B_Waves_Direction: {r: 0, g: -1, b: 0, a: 0}
-    - _B_Waves_Scale: {r: 0.08, g: 0.8, b: 0, a: 0}
+    - _B_Waves_Scale: {r: 0.04, g: 0.4, b: 0, a: 0}
     - _Background_Color: {r: 0.09899997, g: 0.06144826, b: 0.04267239, a: 0}
     - _Base_Water_Color: {r: 0.32941175, g: 0.46666664, b: 0.6, a: 0}
-    - _Bubble_Color: {r: 0.7176471, g: 0.7176471, b: 0.7176471, a: 0}
+    - _Bubble_Color: {r: 0.675694, g: 0.675694, b: 0.851, a: 0}
     - _Bubbles_Flow_Direction: {r: 0, g: 1, b: 0, a: 0}
-    - _RippleColor: {r: 0.43529406, g: 0.6039216, b: 0.772549, a: 0}
+    - _RippleColor: {r: 0.42587996, g: 0.6055061, b: 0.78, a: 0}
     - _Rock_Color: {r: 0.40399998, g: 0.40399998, b: 0.40399998, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &837644349463248857
