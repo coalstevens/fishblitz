@@ -10007,6 +10007,7 @@ GameObject:
   - component: {fileID: 432237267}
   - component: {fileID: 432237269}
   - component: {fileID: 432237268}
+  - component: {fileID: 432237270}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -10055,8 +10056,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000G
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
+  m_sharedMaterial: {fileID: 1910066642137800704, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10130,6 +10131,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432237266}
   m_CullTransparentMesh: 1
+--- !u!114 &432237270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432237266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb5aac14fa7842388a2e4498e60f337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &433327329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6812285457286002210, guid: a3d2c41f6f455443588bfaf0701e189f, type: 3}
@@ -16049,8 +16062,8 @@ MonoBehaviour:
   m_LightType: 4
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 0.125658, g: 0.2963223, b: 0.70199996, a: 1}
+  m_Intensity: 0.08
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000e9501117a1b3fb388586d6c99910747f7f9a5fc8
@@ -16112,7 +16125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lightUpdateIntervalGameMins: 1
   _dayLightIntensity: 1
-  _nightLightIntensity: 0.1
+  _nightLightIntensity: 0.08
   _dayTimeLight: {r: 1, g: 1, b: 1, a: 1}
   _nightTimeLight: {r: 0.39215687, g: 0.5647059, b: 1, a: 1}
   _sunriseStartGameHour24h: 6
@@ -16121,18 +16134,18 @@ MonoBehaviour:
   _sunsetEndGameHour24h: 22
   _sunrise:
     serializedVersion: 2
-    key0: {r: 0.9529412, g: 0.5719608, b: 0.19215687, a: 1}
-    key1: {r: 0.9528302, g: 0.7653642, b: 0.19326274, a: 1}
-    key2: {r: 1, g: 1, b: 1, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
+    key1: {r: 0.46457756, g: 0.34866, b: 0.894, a: 1}
+    key2: {r: 0.9529412, g: 0.8625703, b: 0.44597647, a: 0}
+    key3: {r: 1, g: 1, b: 1, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 30455
-    ctime2: 65535
-    ctime3: 0
+    ctime1: 6361
+    ctime2: 23130
+    ctime3: 65535
     ctime4: 0
     ctime5: 0
     ctime6: 0
@@ -16147,14 +16160,14 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 3
+    m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   _sunset:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
     key1: {r: 0.9339623, g: 0.66288924, b: 0.17181383, a: 1}
     key2: {r: 0.8962264, g: 0.27298135, b: 0.13105197, a: 0}
-    key3: {r: 0.3915094, g: 0.5655863, b: 1, a: 0}
+    key3: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -19720,7 +19733,7 @@ GameObject:
   - component: {fileID: 746302772}
   - component: {fileID: 746302771}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: World Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23387,6 +23400,55 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5834f62d332c1486b8eb62f140cf2ecb, type: 3}
+--- !u!1 &846444399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 846444401}
+  - component: {fileID: 846444400}
+  m_Layer: 0
+  m_Name: Wind Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &846444400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846444399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e78fb5aab5c64e97bce777ab24087f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _treeWindShader: {fileID: 2100000, guid: 1c2f5e79da554401282cab5cfa69d914, type: 2}
+  _magnitude: 1
+  _directionOffset: 0
+  _frequency: 0.1
+  _windVector: 0
+--- !u!4 &846444401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846444399}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3100582, y: -3.511621, z: 1.1753483}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &847278491
 GameObject:
   m_ObjectHideFlags: 0
@@ -29155,14 +29217,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 419211f37f49740db9849954a952fa95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameDayInRealMinutes: 5
+  SeasonNames:
+  - Spring
+  - EndOfSpring
+  - Summer
+  - EndOfSummer
+  - Fall
+  - EndOfFall
+  - Winter
+  - EndOfWinter
+  _gameDayInRealMinutes: 1
   _numRegularSeasonDays: 10
   _numTransitionSeasonDays: 5
   _paused: 0
   _gameYear:
     _val: 1
   _gameSeason:
-    _val: 1
+    _val: 0
   _gameDay:
     _val: 1
   _gameHour:
@@ -103999,7 +104070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93c4c7fbd2ad42b6abd668f11ab7137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goldUI: {fileID: 432237266}
+  _gold:
+    _val: 0
 --- !u!1001 &2042947539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116107,3 +116179,4 @@ SceneRoots:
   - {fileID: 746302772}
   - {fileID: 1441551412}
   - {fileID: 567781368}
+  - {fileID: 846444401}
