@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class Wind : MonoBehaviour
 {
-    [Header("Affected Materials")]
+    [Header("Affected Entities")]
     [SerializeField] private Material _treeWindShader;
+    [SerializeField] private ParticleSystem _rain;
+    [SerializeField] private ParticleSystemForceField _rainWindForceField;
+    [SerializeField] private float _rainParticleRotationScalar = 0.1f;
+    [SerializeField] private float _rainXForceScalar = 1;
+    
     [Header("Fluctuation Settings")]
     [Range(0.0f, 1.0f)] public float _flucMagnitude = 1;
     [Range(-0.5f, 0.5f)] public float _flucDirectionOffset = 0;
@@ -49,11 +54,15 @@ public class Wind : MonoBehaviour
                 break;
         }
 
-        UpdateAffectedMaterials();
+        UpdateAffectedEntities();
     }
 
-    private void UpdateAffectedMaterials() {
+    private void UpdateAffectedEntities() {
         _treeWindShader.SetFloat("_BendDirection", _windVector);
+        _rainWindForceField.directionX = _windVector * _rainXForceScalar;
+        //_rain.rotationOverLifetime.z = new ParticleSystem.MinMaxCurve(_windVector * _rainParticleRotationScalar);
+        var rot = _rain.rotationOverLifetime;
+        rot.z = new ParticleSystem.MinMaxCurve(-1 * _windVector * _rainParticleRotationScalar);
     }
      private float GetFluctuationValue() {
         return _flucMagnitude * ((Mathf.Sin(2 * _flucFrequency * Time.time) + Mathf.Sin(Mathf.PI * _flucFrequency * Time.time)) / 4);

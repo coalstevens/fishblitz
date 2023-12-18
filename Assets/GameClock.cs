@@ -25,6 +25,7 @@ public class GameClock : MonoBehaviour
 
     void Start() {
         _gameMinuteInRealSeconds = _gameDayInRealMinutes * 60 / 1440;
+        IncrementGameMinute(); // If the clock is paused this loads in some things to the correct time
     }
     
     void Update() {
