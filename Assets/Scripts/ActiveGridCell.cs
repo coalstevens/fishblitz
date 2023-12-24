@@ -26,7 +26,7 @@ public class ActiveGridCell : MonoBehaviour
     [SerializeField] private Tilemap _tilemap;
     private PlayerMovementController _playerMovementController;
     private Inventory _inventory;
-    private Cursor _activeCursor;    
+    public Cursor _activeCursor;    
 
     void Start()
     {
@@ -100,10 +100,14 @@ public class ActiveGridCell : MonoBehaviour
             return;
         }
         Vector3Int _cursorLocation = GetActiveCursorLocation();
+
+        //TODO what if there isn't a tile?
         TileBase _tile = _tilemap.GetTile(_cursorLocation);
         TileData _tileData = new TileData();
-        _tile.GetTileData(_cursorLocation, _tilemap, ref _tileData);
-
+        if (_tile != null) {
+            _tile.GetTileData(_cursorLocation, _tilemap, ref _tileData);
+        }
+        
         // interact with the object the cursor is on
         ICursorInteractableObject _cursorInteractableObject = GetCursorInteractableObject();
         if (_cursorInteractableObject != null) {
