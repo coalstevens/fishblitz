@@ -5,14 +5,17 @@ public class PlayerAnimatorController : MonoBehaviour
 {
     private Animator _animator;
     private PlayerMovementController _playerMovementController;
+    private Inventory _inventory;
 
     private void Start()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
         _animator = GetComponent<Animator>();
-
+        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
+        
         _playerMovementController.CurrState.OnChange((prev, curr) => OnStateChange(curr));
         _playerMovementController.FacingDir.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Value));
+        _inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Value));
     }
 
     private void OnStateChange(State curr)
@@ -24,7 +27,7 @@ public class PlayerAnimatorController : MonoBehaviour
             case State.Idle:
                 HandleIdle(_facingDir);
                 return;
-            case State.Walking:
+            case State.Walking:  
                 HandleWalking(_facingDir);
                 return;
             case State.Fishing:
@@ -84,27 +87,69 @@ public class PlayerAnimatorController : MonoBehaviour
         }
 
     }
-
     private void HandleWalking(Direction facingDir)
+    {
+        switch (_inventory.GetActiveItem().ItemName)
+        {
+            case "Axe":
+                HandleAxeWalking(facingDir);
+                return;
+            default:
+                HandleNoToolWalking(facingDir);
+                return;
+        }
+    }
+    private void HandleNoToolWalking(Direction facingDir)
     {
         switch (facingDir)
         {
             case Direction.Up:
-                _animator.Play("N_Walk", 0, 2);
+                _animator.Play("N_Walk", 0, 0.25f);
                 return;
             case Direction.Down:
-                _animator.Play("S_Walk", 0, 2);
+                _animator.Play("S_Walk", 0, 0.25f);
                 return;
             case Direction.Right:
-                _animator.Play("E_Walk", 0, 2);
+                _animator.Play("E_Walk", 0, 0.25f);
                 return;
             case Direction.Left:
-                _animator.Play("W_Walk", 0, 2);
+                _animator.Play("W_Walk", 0, 0.25f);
                 return;
         }
     }
 
+    private void HandleAxeWalking(Direction facingDir)
+    {
+        switch (facingDir)
+        {
+            case Direction.Up:
+                _animator.Play("N_AxeWalk", 0, 0.25f);
+                return;
+            case Direction.Down:
+                _animator.Play("S_AxeWalk", 0, 0.25f);
+                return;
+            case Direction.Right:
+                _animator.Play("E_AxeWalk", 0, 0.25f);
+                return;
+            case Direction.Left:
+                _animator.Play("W_AxeWalk", 0, 0.25f);
+                return;
+        }
+    }
+    
     private void HandleIdle(Direction facingDir)
+    {
+        switch (_inventory.GetActiveItem().ItemName)
+        {
+            case "Axe":
+                HandleAxeIdle(facingDir);
+                return;
+            default:
+                HandleNoToolIdle(facingDir);
+                return;
+        }
+    }    
+    private void HandleNoToolIdle(Direction facingDir)
     {
         switch (facingDir)
         {
@@ -119,6 +164,24 @@ public class PlayerAnimatorController : MonoBehaviour
                 return;
             case Direction.Left:
                 _animator.Play("W_Idle");
+                return;
+        }
+    }
+    private void HandleAxeIdle(Direction facingDir)
+    {
+        switch (facingDir)
+        {
+            case Direction.Up:
+                _animator.Play("N_AxeIdle");
+                return;
+            case Direction.Down:
+                _animator.Play("S_AxeIdle");
+                return;
+            case Direction.Right:
+                _animator.Play("E_AxeIdle");
+                return;
+            case Direction.Left:
+                _animator.Play("W_AxeIdle");
                 return;
         }
     }

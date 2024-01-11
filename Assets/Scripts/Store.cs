@@ -26,7 +26,7 @@ public class Store : MonoBehaviour
 
     private void Awake()
     {
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _inRange.OnChange((_, inRange) => SetOutline(inRange));
         SetOutline(false);
     }

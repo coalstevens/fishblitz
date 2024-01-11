@@ -4,7 +4,7 @@ using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class WoodStove : MonoBehaviour, ICursorInteractableObject
+public class WoodStove : MonoBehaviour, IInteractableWorldObject
 {
     // Start is called before the first frame update
     private Animator _animator;
@@ -55,11 +55,12 @@ public class WoodStove : MonoBehaviour, ICursorInteractableObject
         } 
     }
 
-    public void CursorAction(TileData tileData, Vector3 cursorLocation)
+    public bool CursorAction(TileData tileData, Vector3 cursorLocation)
     {
         if((int) _stoveState.Value > 3) {
             _stoveState.Value = 0;
         }
         _stoveState.Value++;
+        return true;
     }
 }

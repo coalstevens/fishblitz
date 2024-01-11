@@ -34,6 +34,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        transform.position = PlayerData.Instance.SceneSpawnPosition;
     }
 
     public void OnMove(InputValue value)

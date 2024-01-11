@@ -1,16 +1,45 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ReactiveUnity;
 using TMPro;
+using UnityEngine.Tilemaps;
+using System.IO;
+using UnityEngine.UI;
+
+// Item type interfaces
+public interface IInventoryItem {
+    public Sprite ItemSprite {get;set;} 
+    public string ItemName {get;}
+    public int Quantity {get;set;}
+    public int StackCapacity{get;}
+}
+public interface IPlayerCursorUsingItem {
+    public void CursorAction(TileData tileData, Vector3 cursorLocation);
+}
+public interface ITool {
+    public void UseTool(TileData tileData, Vector3 cursorLocation);
+}
+
+[System.Serializable]
+public class StartingItem {
+    public string itemName;
+    public int itemQuantity;
+}
 
 public class Inventory : MonoBehaviour
 {
-    private GameObject _inventoryContainer;
+    private string saveFilePath;
     private GameObject _itemCursorController;
-
+    private GameObject _inventoryContainer;
+    private int _totalSlots = 10;
+    private Dictionary<int, IInventoryItem> _slotAssignments;
+    [SerializeField] private Sprite _emptySlotSprite;
+    [SerializeField] private Sprite _filledSlotSprite;
+    [SerializeField] private StartingItem[] _startingItems;
     public Reactive<int> _gold = new Reactive<int>(0);
+    public Reactive<int> ActiveItemSlot = new Reactive<int>(0);
+
     public int Gold 
     {
         get {
@@ -20,149 +49,223 @@ public class Inventory : MonoBehaviour
             _gold.Value = value;
         }
     }
+
     void Start()
     {
-        _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer");
+        DontDestroyOnLoad(gameObject);
         _itemCursorController = GameObject.FindGameObjectWithTag("ItemCursorController");
+        _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer");
+        saveFilePath = Path.Combine(Application.persistentDataPath, "InventoryData.json");
+        _slotAssignments = LoadInventory();
+        UpdateUIAllSlots();
+
+        foreach (StartingItem _item in _startingItems) {
+            AddItem(_item.itemName, _item.itemQuantity);
+        }
     }
 
-    public GameObject GetActiveItem() 
-    {
-        return _itemCursorController.GetComponent<ItemCursorController>().ActiveItem;
+    // returns the IInventoryItem of the active slot if slot is not empty
+    public IInventoryItem GetActiveItem() {
+        if (_slotAssignments.ContainsKey(ActiveItemSlot.Value)) {
+            return _slotAssignments[ActiveItemSlot.Value];
+        }
+        return null;
     }
 
     // Adds quantity to existing item or creates a new item
-    // returns true on success
-    // return false if inventory full
+    // returns false if inventory space isn't sufficient, with no change to inventory.
     public bool AddItem(string itemName, int quantity) {
-        Item _currentItem;
-        int _residual = quantity;
-
         if (quantity == 0) {
             return true;
         }
 
-        foreach (Transform _slot in _inventoryContainer.transform) {
-            // empty item slot
-            if (_slot.childCount == 0) {
-                continue;
-            }
-            
-            _currentItem = _slot.GetChild(0).GetComponent<Item>();
-            // not the item
-            if (_currentItem.Name != itemName) {
-                continue;
-            }
+        if (!HasEnoughInventorySpace(itemName, quantity)) {
+            return false;
+        }
 
-            // item has enough capacity
-            if (_residual + _currentItem.Quantity <= _currentItem.Capacity) {
+        int _residual = quantity;
+        foreach (KeyValuePair<int, IInventoryItem> _entry in _slotAssignments) {
+            IInventoryItem _currentItem = _entry.Value;
+            // not the item
+            if (_currentItem.ItemName != itemName) {
+                continue;
+            }
+            // current item has enough capacity to add residual
+            if (_residual + _currentItem.Quantity <= _currentItem.StackCapacity) {
                 _currentItem.Quantity += _residual;
+                UpdateUIAtSlot(_entry.Key);
+                SaveInventory();
                 return true;
             }
-
-            // increases item quantity to max and calculates residual 
-            if (_residual + _currentItem.Quantity > _currentItem.Capacity) {
-                _currentItem.Quantity = _currentItem.Capacity;
-                _residual = _residual + _currentItem.Quantity - _currentItem.Capacity;  
+            // increases item quantity to max and calculates residual
+            if (_residual + _currentItem.Quantity > _currentItem.StackCapacity) {
+                _currentItem.Quantity = _currentItem.StackCapacity;
+                _residual = _residual + _currentItem.Quantity - _currentItem.StackCapacity;  
+                UpdateUIAtSlot(_entry.Key);
             }
         }
 
-        // loop above only completes if residual > 0
-        return AddItemAsNewObject(itemName, _residual);
+        // All existing stacks of itemName are full
+        // create new stack(s)
+        AddItemIntoEmptySlots(itemName, _residual);
+        SaveInventory();
+        return true;
     }
 
     // Removes a quantity of an item from inventory
+    // Returns false if inventory doesn't have quantity of item, no change to inventory
     public bool RemoveItem(string itemName, int quantity) {
-        List<Item> _foundItems = new List<Item>();
-        Item _currentItem;
-        Transform _firstChild;
-        int _totalQuantity = 0;
+        List<int> _slotsWithTheItem = new();
+        int _playerQuantityOfTheItem = 0;
         int _residual;
 
-        foreach (Transform child in _inventoryContainer.transform) {
-            // empty item slot
-            if (child.childCount == 0) {
-                continue;
+        foreach (KeyValuePair<int, IInventoryItem> _entry in _slotAssignments) {
+            if (_entry.Value.ItemName == itemName) {
+                _slotsWithTheItem.Add(_entry.Key);
+                _playerQuantityOfTheItem += _entry.Value.Quantity;
             }
-            _firstChild = child.GetChild(0);
-            _currentItem = _firstChild.GetComponent<Item>();
-
-            // not the item
-            if (_currentItem.Name != itemName) {
-                continue;
-            }
-
-            _foundItems.Add(_currentItem);
-            _totalQuantity += _currentItem.Quantity;
         }
-
-        // player doesn't have quantity of item
-        if (_totalQuantity < quantity) {
+        
+        if (_playerQuantityOfTheItem < quantity) {
             return false;
         }
 
         // remove items from smallest stacks until removal quantity fulfilled
-        _foundItems = _foundItems.OrderBy(item => item.Quantity).ToList();
+        _slotsWithTheItem = _slotsWithTheItem.OrderBy(slotNum => _slotAssignments[slotNum].Quantity).ToList();
         _residual = quantity;
-        while (_residual > 0) {
-            if (_foundItems[0].Quantity > _residual) {
-                _foundItems[0].Quantity -= _residual;
-                return true;
-            }
-            if(_foundItems[0].Quantity <= _residual) {
-                _residual -= _foundItems[0].Quantity;
-                _foundItems[0].gameObject.GetComponentInParent<ItemSlot>().SlotItem = null;
-                Destroy(_foundItems[0].gameObject);
-                _foundItems.RemoveAt(0);
-            }
-        }
+        foreach (int slot in _slotsWithTheItem) {
 
+            if (_slotAssignments[slot].Quantity > _residual) {
+                _slotAssignments[slot].Quantity -= _residual;
+                UpdateUIAtSlot(slot); 
+                break;
+            }
+            
+            _residual -= _slotAssignments[slot].Quantity;
+            
+            // Find and destroy the item gameobject in the slot
+            foreach (Transform child in _inventoryContainer.transform.GetChild(slot)) {
+                if (child.GetComponent<IInventoryItem>() != null) {
+                    Destroy(child.gameObject);
+                    break;
+                }
+            }
+            _slotAssignments.Remove(slot);
+            UpdateUIAtSlot(slot);
+        }
+        SaveInventory();
         return true;
     }
 
     // Creates a new object in an empty inventory slot(s)
     // Returns false if there's not enough slots for the quantity
     // Returns true on success
-    private bool AddItemAsNewObject(string itemName, int quantity) {
-        GameObject _newItemObject;
-        Item _newItem;
-        int _maxQuantity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<Item>().Capacity;
-
+    private void AddItemIntoEmptySlots(string itemName, int quantity) {
+        int _itemStackCapacity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<IInventoryItem>().StackCapacity;
         List<Transform> _emptySlots = new List<Transform>();
-        int _slotsRequired = (quantity - 1) / _maxQuantity + 1; //round up int trick, see https://www.cs.nott.ac.uk/~psarb2/G51MPC/slides/NumberLogic.pdf
         
-        // check if player inventory has enough empty slots
-        foreach (Transform _child in _inventoryContainer.transform) {
-            if (_child.childCount == 0) {
-                _emptySlots.Add(_child);
-                if (_emptySlots.Count == _slotsRequired) {
-                    break;
-                }
-            }
-        }
-
-        // return false if inventory doesn't have enough empty slots
-        if (_emptySlots.Count < _slotsRequired) {
-            return false;
-        }
-        
-        // fill empty slots with quantity of item, respecting item max capacity
+        // fill empty slots with quantity of item, respecting item stack capacity
         int _residual = quantity;
-        foreach (Transform _slot in _emptySlots) {
-            _newItemObject = Instantiate(Resources.Load<GameObject>("Items/" + itemName), _slot.position + new Vector3(0, 0, 0), Quaternion.identity, _slot);
-            _slot.GetComponent<ItemSlot>().SlotItem = _newItemObject;
-            _newItem = _newItemObject.GetComponent<Item>();
 
-            if (_residual <= _newItem.Capacity) {
+        for (int i = 0; i < _totalSlots; i++) {
+            // if slot isn't empty skip
+            if (_slotAssignments.ContainsKey(i)){
+                continue;
+            }
+
+            // Instantiate new itemName game object as child of slot
+            Transform _slot = _inventoryContainer.transform.GetChild(i).transform;
+            GameObject _newItemObject = Instantiate(Resources.Load<GameObject>("Items/" + itemName), _slot.position + new Vector3(0, 0, 0), Quaternion.identity, _slot);
+            IInventoryItem _newItem = _newItemObject.GetComponent<IInventoryItem>();
+
+            // Set quantity of newItem and add to _slotAssignments 
+            _slotAssignments.Add(i, _newItem);
+            if (_residual <= _newItem.StackCapacity) {
                 _newItem.Quantity = _residual;
+                UpdateUIAtSlot(i); 
                 break;
             }
-            if (_residual > _newItem.Capacity) {
-                _newItem.Quantity = _newItem.Capacity;
-                _residual -= _newItem.Capacity;  
+            else {
+                _newItem.Quantity = _newItem.StackCapacity;
+                _residual -= _newItem.StackCapacity;  
+                UpdateUIAtSlot(i); 
+            }      
+        }
+        return;
+    }   
+
+    // Returns true if player has enough inventory space to add quantity of itemName
+    private bool HasEnoughInventorySpace(string itemName, int quantity) {
+        IInventoryItem _currentItem;
+        int _availableSpace = 0;
+
+        // Sum remaining stack space on existing slots with itemName
+        foreach (KeyValuePair<int, IInventoryItem> _entry in _slotAssignments) {
+            _currentItem = _entry.Value;
+            if (_currentItem.ItemName != itemName) {
+                continue;
+            }
+
+            _availableSpace += _currentItem.StackCapacity - _currentItem.Quantity;
+            if (_availableSpace >= quantity) {
+                return true;
             }
         }
 
-        return true;
-    }   
+        // Add to sum the space in empty slots
+        int _itemStackCapacity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<IInventoryItem>().StackCapacity;
+        int emptySlots = _totalSlots - _slotAssignments.Count;
+        _availableSpace += emptySlots * _itemStackCapacity;
+
+        if (_availableSpace >= quantity) {
+            return true;
+        }
+        return false;
+    }
+
+    // Updates slot sprite and quantity tag
+    private void UpdateUIAtSlot(int slotNum)
+    {
+        Transform _slot = _inventoryContainer.transform.GetChild(slotNum);
+        TextMeshProUGUI _slotQuantityText = _slot.GetComponentInChildren<TextMeshProUGUI>();
+        Image _slotImageRenderer = _slot.GetComponent<Image>();
+        if (!_slotAssignments.ContainsKey(slotNum)) {
+            _slotImageRenderer.sprite = _emptySlotSprite;
+            _slotQuantityText.text = "";
+            return;
+        }
+
+        _slotImageRenderer.sprite = _filledSlotSprite;
+        int _itemQuantity = _slotAssignments[slotNum].Quantity;
+        if (_itemQuantity == 1)
+        {
+            _slotQuantityText.text = "";
+            return;
+        }
+        _slotQuantityText.text = _itemQuantity.ToString();
+    }
+
+    private void UpdateUIAllSlots() {
+        for (int i = 0; i < _totalSlots; i++) {
+            UpdateUIAtSlot(i);
+        }
+    }
+
+    private void SaveInventory() {
+        string json = JsonUtility.ToJson(_slotAssignments);
+        File.WriteAllText(saveFilePath, json);
+    }
+    
+    private Dictionary<int, IInventoryItem> LoadInventory() {
+        if (File.Exists(saveFilePath))
+        {
+            string json = File.ReadAllText(saveFilePath);
+            return JsonUtility.FromJson<Dictionary<int, IInventoryItem>>(json);
+        }
+        else
+        {
+            Debug.LogWarning("Save file not found. Creating new inventory save file");
+            return new Dictionary<int, IInventoryItem>();
+        }
+    }
 }

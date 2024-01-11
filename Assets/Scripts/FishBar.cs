@@ -52,7 +52,7 @@ public class FishBar : MonoBehaviour
     private void Awake()
     {
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _failed.When((prev, curr) => curr, (prev, curr) => OnFail());
         _originalFishObjectPos = _fishSpriteObject.transform.localPosition;
     }

@@ -13,7 +13,7 @@ public class NarratorSpeechController : MonoBehaviour
     [SerializeField] private float _fadeRateAlphaPerFrame = 0.005f;
     [SerializeField] private float _bottomPadding = 1.5f;
     [SerializeField] private float _sidePadding = 0.5f;
-    [SerializeField] private float _lineSpacing = 5;
+    [SerializeField] private float _lineSpacing = 0.2f;
     private float _postTime;
     private int _messageNum = 0;
     void Start() {

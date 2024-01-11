@@ -15,7 +15,7 @@ public class Gate : MonoBehaviour
 
     private void Awake()
     {
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _animator = GetComponent<Animator>();
     }
 

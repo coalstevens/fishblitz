@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using ReactiveUnity;
 using UnityEngine.Tilemaps;
 
-public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
+public class PlacedMountedRod : MonoBehaviour, IInteractableWorldObject
 {
     [Header("Sprite Options")]
     [SerializeField] private Sprite _onSprite;
@@ -48,7 +48,7 @@ public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
     private void Start()
     {
         _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
     }
@@ -96,17 +96,18 @@ public class PlacedMountedRod : MonoBehaviour, ICursorInteractableObject
         }
     }
 
-    public void CursorAction(TileData tileData, Vector3 cursorLocation)
+    public bool CursorAction(TileData tileData, Vector3 cursorLocation)
     {
         if (!_fishOn.Value)
         {
             Shake();
-            return;
+            return true;
         }
 
         StopCoroutine(_changeStateRoutine);
         _inventory.AddItem("MountedRod", 1);
         _fishBar.Play();
         Destroy(gameObject);
+        return true;
     }
 }

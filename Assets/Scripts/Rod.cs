@@ -2,15 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
-public class Rod : MonoBehaviour, ITool
+public class Rod : MonoBehaviour, ITool, IInventoryItem
 {
     [SerializeField] private float _minChangeInterval = 3;
     [SerializeField] private float _maxChangeInterval = 10;
     private PlayerMovementController _playerMovementController;
     private Coroutine _changeStateRoutine;
-    private FishBar _fishBar;    
-    // Start is called before the first frame update
+    private FishBar _fishBar;
+    private const string ITEM_HAME = "Rod";
+    private int _quantity = 0;
+    private const int STACK_CAPACITY = 1;
+    public int StackCapacity {get {return STACK_CAPACITY;}}
+    public string ItemName { get {return ITEM_HAME;} }
+    public Sprite ItemSprite { 
+        get => GetComponent<Image>().sprite;
+        set => GetComponent<Image>().sprite = value;
+    }
+    public int Quantity { 
+        get => _quantity;
+        set => _quantity = value;
+    } 
+
     void Start()
     {
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);

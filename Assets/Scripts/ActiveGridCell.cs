@@ -6,14 +6,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
-public interface ICursorInteractableObject {
-    public void CursorAction(TileData tileData, Vector3 cursorLocation);
-}
-public interface ICursorUsingItem {
-    public void CursorAction(TileData tileData, Vector3 cursorLocation);
-}
-public interface ITool {
-    public void UseTool(TileData tileData, Vector3 cursorLocation);
+public interface IInteractableWorldObject {
+    /// <summary>
+    /// Returns true if an action is completed, returns false if the command is ignored 
+    /// </summary>
+    public bool CursorAction(TileData tileData, Vector3 cursorLocation);
 }
 
 public class ActiveGridCell : MonoBehaviour
@@ -32,7 +29,7 @@ public class ActiveGridCell : MonoBehaviour
     {
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
-        _inventory = GameObject.FindWithTag("InventoryContainer").GetComponent<Inventory>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
     }
 
     private void OnDirectionChange(Direction curr)
@@ -60,7 +57,7 @@ public class ActiveGridCell : MonoBehaviour
     }
 
     private void OnUseTool() {
-        // no interrupting cele
+        // no interrupting celebrating
         if (_playerMovementController.CurrState.Value == State.Celebrating)
         {
             return;
@@ -71,25 +68,27 @@ public class ActiveGridCell : MonoBehaviour
         {
             return;
         }
-
         // return if empty item slot selected
-        GameObject _activeItem = _inventory.GetActiveItem();
+        IInventoryItem _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) 
         {
             return;
         }
-        
+
         // return if item is not a tool
-        ITool _activeTool = _activeItem.GetComponent<ITool>();
-        if (_activeTool == null) {
+        if (_activeItem is not ITool) {
             return;
         }
-
+    
         Vector3Int _cursorLocation = GetActiveCursorLocation();
         TileBase _tile = _tilemap.GetTile(_cursorLocation);
         TileData _tileData = new TileData();
-        _tile.GetTileData(_cursorLocation, _tilemap, ref _tileData);
-        _activeTool.UseTool(_tileData,_cursorLocation);
+        if (_tile != null) {
+            _tile.GetTileData(_cursorLocation, _tilemap, ref _tileData);
+        }
+
+
+        ((ITool)_activeItem).UseTool(_tileData,_cursorLocation);
     }
 
     private void OnCursorAction()
@@ -109,36 +108,37 @@ public class ActiveGridCell : MonoBehaviour
         }
         
         // interact with the object the cursor is on
-        ICursorInteractableObject _cursorInteractableObject = GetCursorInteractableObject();
+        // CursorAction
+        IInteractableWorldObject _cursorInteractableObject = GetCursorInteractableObject();
         if (_cursorInteractableObject != null) {
-            _cursorInteractableObject.CursorAction(_tileData,_cursorLocation);
-            return;
+            if (_cursorInteractableObject.CursorAction(_tileData,_cursorLocation)) {
+                return;
+            }
         }
 
         // reutrn if empty item slot selected
-        GameObject _activeItem = _inventory.GetActiveItem();
+        IInventoryItem _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) 
         {
             return;
         }
-        
+
         // return if item doesn't use the cursor
-        ICursorUsingItem _cursorUsingItem = _activeItem.GetComponent<ICursorUsingItem>();
-        if (_cursorUsingItem == null) {
+        if (_activeItem is not IPlayerCursorUsingItem) {
             return;
         }
 
-        _cursorUsingItem.CursorAction(_tileData,_cursorLocation);
+        ((IPlayerCursorUsingItem)_activeItem).CursorAction(_tileData,_cursorLocation);
     }
 
-    private ICursorInteractableObject GetCursorInteractableObject()
+    private IInteractableWorldObject GetCursorInteractableObject()
     {
         List<Collider2D> _results = new List<Collider2D>();
         Physics2D.OverlapBox(GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
 
         foreach (var _result in _results)
         {
-            var _placedItem = _result.GetComponent<ICursorInteractableObject>();
+            var _placedItem = _result.GetComponent<IInteractableWorldObject>();
             if (_placedItem != null)
             {
                 return _placedItem;

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 255360024068748030}
   - component: {fileID: 1656526099206271792}
   - component: {fileID: 3661331000223353216}
-  - component: {fileID: 3119131470382801371}
+  - component: {fileID: -181850997430595689}
   m_Layer: 5
-  m_Name: Rod
+  m_Name: Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 21, y: 20}
+  m_SizeDelta: {x: 20, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1656526099206271792
 CanvasRenderer:
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -349741700751796793, guid: a539c49c0ca8f4898895ee0c7d7de1f4, type: 3}
+  m_Sprite: {fileID: -2095075080699830929, guid: a539c49c0ca8f4898895ee0c7d7de1f4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3119131470382801371
+--- !u!114 &-181850997430595689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,8 +85,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6928312326342039899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0bbbe2f0013d843558887801686c4789, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d53374cad5da484086d4d19669645b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minChangeInterval: 3
-  _maxChangeInterval: 10

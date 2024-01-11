@@ -39,6 +39,7 @@ public class PlayerSpeechController : MonoBehaviour
     }
 
     public void PostMessage(string message) {
+        
         _textBox.alpha = 1f;
         _textBox.text = message;
         _postedTime = Time.time;
