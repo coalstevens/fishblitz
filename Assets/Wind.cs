@@ -9,11 +9,13 @@ public class Wind : MonoBehaviour
     [SerializeField] private Material _treeWindShader;
     [SerializeField] private ParticleSystem _rain;
     [SerializeField] private ParticleSystemForceField _rainWindForceField;
+    [SerializeField] private PlayerMovementController _playerMovementController;
     [SerializeField] private float _rainParticleRotationScalar = 0.1f;
-    [SerializeField] private float _rainXForceScalar = 1;
+    [SerializeField] private float _rainXForceMultiplier = 1;
+    [SerializeField] private float _playerMoveSpeedMultiplier = 0.4f;
     
     [Header("Fluctuation Settings")]
-    [Range(0.0f, 1.0f)] public float _flucMagnitude = 1;
+    [Range(0.0f, 1.0f)] public float _flucMagnitude = 0.5f;
     [Range(-0.5f, 0.5f)] public float _flucDirectionOffset = 0;
     [SerializeField] private float _flucFrequency = 0.5f;
     
@@ -29,7 +31,7 @@ public class Wind : MonoBehaviour
 
     public enum WindStates {Fluctating, GustBuilding, GustPeak, GustDying }
     public WindStates _windState;
-    public float _windVector;
+    public float _windXVector; // Wind doesn't blow North/South
     private float _gustStartTime;
     private float _flucStartTime;
     private float _flucDuration;
@@ -58,17 +60,38 @@ public class Wind : MonoBehaviour
     }
 
     private void UpdateAffectedEntities() {
-        _treeWindShader.SetFloat("_BendDirection", _windVector);
-        _rainWindForceField.directionX = _windVector * _rainXForceScalar;
-        //_rain.rotationOverLifetime.z = new ParticleSystem.MinMaxCurve(_windVector * _rainParticleRotationScalar);
+        // Adjust the amount of bending on the tree material
+        _treeWindShader.SetFloat("_BendDirection", _windXVector);
+
+        // Add a force to the falling rain 
+        _rainWindForceField.directionX = _windXVector * _rainXForceMultiplier;
+
+        // Add some slight rotation to the raindrops
         var rot = _rain.rotationOverLifetime;
-        rot.z = new ParticleSystem.MinMaxCurve(-1 * _windVector * _rainParticleRotationScalar);
+        rot.z = new ParticleSystem.MinMaxCurve(-1 * _windXVector * _rainParticleRotationScalar);
+        
+        // Update player speed limits
+        if (_windState != WindStates.Fluctating) {
+            CardinalVector _moveSpeedMultiplier;
+            _moveSpeedMultiplier.north = 1;
+            _moveSpeedMultiplier.south = 1;
+            _moveSpeedMultiplier.east = 1 + _windXVector * _playerMoveSpeedMultiplier;   
+            _moveSpeedMultiplier.west = 1 - _windXVector * _playerMoveSpeedMultiplier;
+            _playerMovementController.SetMoveSpeedMultiplier(_moveSpeedMultiplier);
+        }
+        else {
+            _playerMovementController.SetMoveSpeedMultiplier(new CardinalVector(1));
+        }
     }
-     private float GetFluctuationValue() {
+
+    /// <summary>
+    /// Returns a float from a semi-random sinusodial function to simulate wind oscillation.
+    /// </summary>
+    private float GetFluctuationValue() {
         return _flucMagnitude * ((Mathf.Sin(2 * _flucFrequency * Time.time) + Mathf.Sin(Mathf.PI * _flucFrequency * Time.time)) / 4);
     }
     private void FluctuatingHandler() {
-        _windVector = GetFluctuationValue();
+        _windXVector = GetFluctuationValue();
 
         if (!_gustEnabled) {
             return;
@@ -80,9 +103,9 @@ public class Wind : MonoBehaviour
     }
     
     private void GustBuildingHandler() {
-        _windVector += (int) _gustDirection * _gustChangePerFrame;
-        if (Mathf.Abs(_windVector) >= Mathf.Abs(_gustMagnitude)) {
-            _windVector = (int) _gustDirection * _gustMagnitude;
+        _windXVector += (int) _gustDirection * _gustChangePerFrame;
+        if (Mathf.Abs(_windXVector) >= Mathf.Abs(_gustMagnitude)) {
+            _windXVector = (int) _gustDirection * _gustMagnitude;
             _gustStartTime = Time.time;
             _windState = WindStates.GustPeak;
         }
@@ -96,10 +119,10 @@ public class Wind : MonoBehaviour
     }
 
     private void GustDyingHandler() {
-        _windVector -= (int) _gustDirection * _gustChangePerFrame;
+        _windXVector -= (int) _gustDirection * _gustChangePerFrame;
         float fluctuatingTarget = GetFluctuationValue();
-        if (Mathf.Abs(_windVector) <= Mathf.Abs(fluctuatingTarget)) {
-            _windVector = fluctuatingTarget;
+        if (Mathf.Abs(_windXVector) <= Mathf.Abs(fluctuatingTarget)) {
+            _windXVector = fluctuatingTarget;
             EnterFluctuation();
         }
     }

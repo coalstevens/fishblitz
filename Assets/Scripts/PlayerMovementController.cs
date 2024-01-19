@@ -2,6 +2,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
+//using System.Numerics;
 public enum Direction
 {
     Up,
@@ -18,10 +19,23 @@ public enum State
     Catching,
     Celebrating,
 }
-
+public struct CardinalVector
+    {
+        public float north;
+        public float east;
+        public float south;
+        public float west;
+        public CardinalVector(float defaultValue)
+        {
+            north = defaultValue;
+            east = defaultValue;
+            south = defaultValue;
+            west = defaultValue;
+        }
+    }
 public class PlayerMovementController : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 5f;
+    private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currMotionVector = Vector2.zero;
     private Rigidbody2D _rb;
 
@@ -30,11 +44,15 @@ public class PlayerMovementController : MonoBehaviour
     public Reactive<bool> Fishing = new Reactive<bool>(false);
     public Reactive<Direction> FacingDir = new Reactive<Direction>(Direction.Up);
     public Reactive<State> CurrState = new Reactive<State>(State.Idle);
+    private CardinalVector _moveSpeed;
+    private CardinalVector _moveSpeedMultiplier;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         transform.position = PlayerData.Instance.SceneSpawnPosition;
+        _moveSpeed = new CardinalVector(DEFAULT_MOVE_SPEED);
+        _moveSpeedMultiplier = new CardinalVector(1);
     }
 
     public void OnMove(InputValue value)
@@ -86,8 +104,15 @@ public class PlayerMovementController : MonoBehaviour
         {
             return;
         }
-
-        Vector2 _newPos = _rb.position + (_currMotionVector * Time.fixedDeltaTime * _moveSpeed);
+        Vector2 _scalarMoveSpeed; 
+        _scalarMoveSpeed.x = _currMotionVector.x >= 0 ? _moveSpeed.east * _moveSpeedMultiplier.east : 
+                                                        _moveSpeed.west * _moveSpeedMultiplier.west;
+        _scalarMoveSpeed.y = _currMotionVector.y >= 0 ? _moveSpeed.north * _moveSpeedMultiplier.north : 
+                                                        _moveSpeed.south * _moveSpeedMultiplier.south;
+        Vector2 _newPos = _rb.position + (_currMotionVector * Time.fixedDeltaTime * _scalarMoveSpeed);
         _rb.MovePosition(_newPos);
+    }
+    public void SetMoveSpeedMultiplier(CardinalVector newMultiplier) {
+        _moveSpeedMultiplier = newMultiplier;
     }
 }

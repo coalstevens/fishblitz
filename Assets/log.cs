@@ -28,6 +28,7 @@ public class Log : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
             _stump.LoadLog();
         }
     }
+    
     private Stump GetStump(Vector3 cursorLocation)
     {
         List<Collider2D> _results = new List<Collider2D>();
