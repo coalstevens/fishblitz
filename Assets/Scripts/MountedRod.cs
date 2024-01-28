@@ -32,28 +32,26 @@ public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
     } 
     public int StackCapacity {get {return STACK_CAPACITY;}}
 
-    public void CursorAction(TileData tileData, Vector3 cursorLocation) {
-        PlaceRod(tileData, cursorLocation);
-    }
-
     private void Start()
     {
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
     }
     
-    private void PlaceRod(TileData tileData, Vector3 cursorLocation)
+    private void PlaceRod(IInteractableTile interactableTile, Vector3 cursorLocation)
     {
-        if (tileData.gameObject == null) 
-        {
-            return;
-        }
-        bool _canBePlaced = tileData.gameObject.GetComponent<RodPlacement>() != null;
+        Instantiate(((RodPlacement)interactableTile).RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        _inventory.RemoveItem("MountedRod", 1);
+    }
 
-        if (_canBePlaced)
-        {
-            Vector3 tileLocation = tileData.transform.GetPosition();
-            Instantiate(tileData.gameObject.GetComponent<RodPlacement>().RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-            _inventory.RemoveItem("MountedRod", 1);
+    public void UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    {
+        // do nothing
+    }
+
+    public void UseItemOnTile(IInteractableTile interactableTile, Vector3Int cursorLocation)
+    {
+        if (interactableTile is RodPlacement) {
+            PlaceRod(interactableTile, cursorLocation);
         }
     }
 }

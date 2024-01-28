@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3881477795247010830}
   - component: {fileID: 2615210879918376788}
-  - component: {fileID: 3276439986007929515}
-  - component: {fileID: 2960968320711538094}
+  - component: {fileID: 3148057574367160912}
+  - component: {fileID: -8343377848522104789}
   m_Layer: 0
   m_Name: Spruce_Border1
   m_TagString: Untagged
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3276439986007929515
+--- !u!114 &3148057574367160912
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,10 +95,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4737805772135044970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2960968320711538094
+--- !u!114 &-8343377848522104789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,11 +107,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4737805772135044970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8966f95aee2b843238193230c938e5f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 89a26a53307874633b17e0c33a868d53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _summerAdult: {fileID: -6392086805501867803, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
   _fallAdult: {fileID: 0}
   _deadAdult: {fileID: 0}
   _stump: {fileID: -4224356351557711900, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
-  _defaultSprite: 0
+  _treeState:
+    _val: 0

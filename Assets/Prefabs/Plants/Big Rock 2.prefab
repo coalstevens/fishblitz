@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3181539490558953375}
   - component: {fileID: 8329695729413677778}
-  - component: {fileID: 771220707759119315}
   - component: {fileID: 8285493887203200181}
+  - component: {fileID: 1476991956587530937}
   m_Layer: 0
   m_Name: Big Rock 2
   m_TagString: Untagged
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &771220707759119315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6221756347476409415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!60 &8285493887203200181
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -150,3 +138,15 @@ PolygonCollider2D:
       - {x: 0.6750536, y: 0.35778582}
       - {x: 0.9630561, y: 0.65797186}
   m_UseDelaunayMesh: 0
+--- !u!114 &1476991956587530937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6221756347476409415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8343074214950333170}
   - component: {fileID: 4988576459684372901}
-  - component: {fileID: 3588685488260934849}
   - component: {fileID: 617714750316480820}
+  - component: {fileID: -8843915832323036605}
   m_Layer: 0
   m_Name: Big Rock 1
   m_TagString: Untagged
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3588685488260934849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8220889128479125369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &617714750316480820
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -133,3 +121,15 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.54}
   m_Size: {x: 2.01, y: 0.81}
   m_Direction: 1
+--- !u!114 &-8843915832323036605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220889128479125369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

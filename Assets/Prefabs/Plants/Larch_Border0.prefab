@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6812285457286002210}
   - component: {fileID: 8978042134043212749}
-  - component: {fileID: 6695381701762289142}
-  - component: {fileID: 2186698251395369644}
+  - component: {fileID: 4589978007650198844}
+  - component: {fileID: 6111316270790146744}
   m_Layer: 0
   m_Name: Larch_Border0
   m_TagString: Untagged
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &6695381701762289142
+--- !u!114 &4589978007650198844
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,15 +95,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1667917436774412631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8966f95aee2b843238193230c938e5f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 89a26a53307874633b17e0c33a868d53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _summerAdult: {fileID: -9006095326735404816, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
   _fallAdult: {fileID: 8874815692321303739, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
   _deadAdult: {fileID: -1203173822578484502, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
   _stump: {fileID: 1475976496545466275, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
-  _defaultSprite: 0
---- !u!114 &2186698251395369644
+  _treeState:
+    _val: 0
+--- !u!114 &6111316270790146744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,6 +113,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1667917436774412631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -2,20 +2,24 @@ using UnityEngine;
 
 namespace OysterUtils
 {
-  public static class SmoothSceneManager
-  {
-    private static GameObject SceneTransitionOverlayPrefab;
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void OnAfterSceneLoad()
+    public static class SmoothSceneManager
     {
-      SceneTransitionOverlayPrefab = Resources.Load<GameObject>("Prefabs/scene-transition-overlay");
-    }
+        private static GameObject SceneTransitionOverlayPrefab;
 
-    public static void LoadScene(string toSceneName)
-    {
-      GameObject transitionObject = GameObject.Instantiate(SceneTransitionOverlayPrefab, Vector3.zero, Quaternion.identity);
-      transitionObject.GetComponent<SceneTransitionOverlay>().LoadScene(toSceneName);
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        static void OnAfterSceneLoad()
+        {
+            SceneTransitionOverlayPrefab = Resources.Load<GameObject>("Prefabs/scene-transition-overlay");
+        }
+
+        public static void LoadScene(string toSceneName)
+        {
+            SceneSaveLoadManager _saveLoadManager = GameObject.FindObjectOfType<SceneSaveLoadManager>();
+            if (_saveLoadManager != null) {
+                _saveLoadManager.Save();
+            }
+            GameObject transitionObject = GameObject.Instantiate(SceneTransitionOverlayPrefab, Vector3.zero, Quaternion.identity);
+            transitionObject.GetComponent<SceneTransitionOverlay>().LoadScene(toSceneName);
+        }
     }
-  }
 }
