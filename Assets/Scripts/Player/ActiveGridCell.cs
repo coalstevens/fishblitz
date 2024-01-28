@@ -64,6 +64,7 @@ public class ActiveGridCell : MonoBehaviour
         {
             return;
         }
+        
         // return if empty item slot selected
         IInventoryItem _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) 

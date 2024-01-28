@@ -16,8 +16,7 @@ public class PlayerDialogueController : MonoBehaviour
                 // If it still doesn't exist, create a new GameObject with the singleton script attached
                 if (_instance == null)
                 {
-                    GameObject singletonObject = new GameObject("PlayerDialogueControllerError");
-                    _instance = singletonObject.AddComponent<PlayerDialogueController>();
+                    Debug.Log("PlayerDialogueController does not exists.");
                 }
             }
 
@@ -36,6 +35,7 @@ public class PlayerDialogueController : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -44,7 +44,7 @@ public class PlayerDialogueController : MonoBehaviour
     }
     void Start()
     {
-        _textBox = GetComponent<TextMeshProUGUI>();
+        _textBox = GetComponentInChildren<TextMeshProUGUI>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -55,7 +55,7 @@ public class PlayerDialogueController : MonoBehaviour
             return;
         }
 
-        transform.position = _player.position + offset;
+        _textBox.transform.position = _player.position + offset;
 
         // hold message
         if (Time.time - _postedTime < _messageDurationSecs) {

@@ -228,7 +228,6 @@ GameObject:
   - component: {fileID: 1090346448}
   - component: {fileID: 1090346451}
   - component: {fileID: 1090346450}
-  - component: {fileID: 1090346449}
   m_Layer: 5
   m_Name: PlayerDialogueController
   m_TagString: Untagged
@@ -255,21 +254,6 @@ RectTransform:
   m_AnchoredPosition: {x: -751.13745, y: 2.7514648}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1090346449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1090346447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97e1509e74d6f475bb51826020370448, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: 0, y: 3, z: 0}
-  _messageDurationSecs: 5
-  _fadeRateAlphaPerFrame: 0.005
 --- !u!114 &1090346450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +468,7 @@ GameObject:
   - component: {fileID: 1348486670}
   - component: {fileID: 1348486669}
   - component: {fileID: 1348486668}
+  - component: {fileID: 1348486672}
   m_Layer: 0
   m_Name: PlayerDialogue
   m_TagString: Untagged
@@ -574,6 +559,21 @@ RectTransform:
   m_AnchoredPosition: {x: 753.5, y: 525}
   m_SizeDelta: {x: 1507, y: 1050}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1348486672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348486667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97e1509e74d6f475bb51826020370448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 3, z: 0}
+  _messageDurationSecs: 5
+  _fadeRateAlphaPerFrame: 0.005
 --- !u!1 &2073539912 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7646284396845350487, guid: fd19be33cc2974e209551cfc943a589f, type: 3}

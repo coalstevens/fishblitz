@@ -136,7 +136,7 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
         {
             case StoveStates.Dead:
                 // Add wood to ashes
-                if (PlayerHoldingFireWood()) {
+                if (_inventory.IsPlayerHolding("Firewood")) {
                     StokeFlame();
                     _stoveState.Value = StoveStates.Ready;
                     return true;
@@ -170,18 +170,6 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
         } 
     }
 
-    private bool PlayerHoldingFireWood() {
-        IInventoryItem _activeItem = _inventory.GetActiveItem();
-        if (_activeItem == null)
-        {
-            return false;
-        }
-        if (_inventory.GetActiveItem().ItemName != "Firewood")
-        {
-            return false;
-        }
-        return true;
-    }
     private void StokeFlame() {
         _inventory.RemoveItem("Firewood", 1);
         _fireDurationCounterGameHours = 0;

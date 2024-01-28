@@ -140,12 +140,19 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
         _inventory.RemoveItem("DryLog", 1);
         _numDryLogs.Value++;
     }
-    
+
     public void RemoveDryLog() {
-        // no dry logs on rack
-        if (_numDryLogs.Value < 1) {
+        // no logs on rack
+        if (_numDryLogs.Value + _numWetLogs.Value == 0)
+            return;
+        
+        // only wet logs on rack
+        if (_numDryLogs.Value == 0 && _numWetLogs.Value > 0) {
             PlayerDialogueController.Instance.PostMessage("These are all still wet...");
+            return;
         }
+
+        // Add a dry log to inventory
         if (_inventory.AddItem("DryLog", 1)) {
             _numDryLogs.Value--;
         }
@@ -156,22 +163,26 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
     
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        switch (_inventory.GetActiveItem().ItemName) {
-            case "DryLog":
-                if (!IsRackFull()) {
-                    AddDryLog();
-                }
-                break;
-            case "WetLog":
-                if (!IsRackFull()) {
-                    AddWetLog();
-                }
-                break;
-            default:
-                RemoveDryLog();
-                break;
+        if (_inventory.TryGetActiveItem(out var _activeItem)) {
+            switch (_activeItem.ItemName) {
+                case "DryLog":
+                    if (!IsRackFull()) {
+                        AddDryLog();
+                    }
+                    break;
+                case "WetLog":
+                    if (!IsRackFull()) {
+                        AddWetLog();
+                    }
+                    break;
+                default:
+                    RemoveDryLog();
+                    break;
+            }
         }
-
+        else {
+            RemoveDryLog();
+        }
         return true;
     }
 }

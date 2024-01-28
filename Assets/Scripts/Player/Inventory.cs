@@ -59,6 +59,15 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
+    public bool TryGetActiveItem(out IInventoryItem _activeItem) {
+        if (_slotAssignments.ContainsKey(ActiveItemSlot.Value)) {
+            _activeItem = _slotAssignments[ActiveItemSlot.Value];
+            return true;
+        }
+        _activeItem = null;
+        return false;
+    }
+    
     /// <summary>
     /// Adds quantity to existing stacks and creates more stacks if necessary
     /// </summary>
