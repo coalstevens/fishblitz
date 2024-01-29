@@ -18,11 +18,25 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
     private float _fireOnMultiplier = 1.5f;
 
     [SerializeField] Sprite _empty;
-    [SerializeField] Sprite _threeLogs;
-    [SerializeField] Sprite _sixLogs;
-    [SerializeField] Sprite _elevenLogs;
-    [SerializeField] Sprite _fourteenLogs;
-    [SerializeField] Sprite _eighteenLogs;
+    [SerializeField] Sprite _oneLog;
+    [SerializeField] Sprite _twoLog;
+    [SerializeField] Sprite _threeLog;
+    [SerializeField] Sprite _fourLog;
+    [SerializeField] Sprite _fiveLog;
+    [SerializeField] Sprite _sixLog;
+    [SerializeField] Sprite _sevenLog;
+    [SerializeField] Sprite _eightLog;
+    [SerializeField] Sprite _nineLog;
+    [SerializeField] Sprite _tenLog;
+    [SerializeField] Sprite _elevenLog;
+    [SerializeField] Sprite _twelveLog;
+    [SerializeField] Sprite _thirteenLog;
+    [SerializeField] Sprite _fourteenLog;
+    [SerializeField] Sprite _fifteenLog;
+    [SerializeField] Sprite _sixteenLog;
+    [SerializeField] Sprite _seventeenLog;
+    [SerializeField] Sprite _eighteenLog;
+    
     private Temperature _localTemperature;
     public Temperature LocalTemperature { 
         get => _localTemperature;
@@ -87,20 +101,59 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
             case 0:
                 _spriteRenderer.sprite = _empty;
                 break;
+            case 1:
+                _spriteRenderer.sprite = _oneLog;
+                break;
+            case 2:
+                _spriteRenderer.sprite = _twoLog;
+                break;
             case 3:
-                _spriteRenderer.sprite = _threeLogs;
+                _spriteRenderer.sprite = _threeLog;
+                break;
+            case 4:
+                _spriteRenderer.sprite = _fourLog;
+                break;
+            case 5:
+                _spriteRenderer.sprite = _fiveLog;
                 break;
             case 6:
-                _spriteRenderer.sprite = _sixLogs;
+                _spriteRenderer.sprite = _sixLog;
+                break;
+            case 7:
+                _spriteRenderer.sprite = _sevenLog;
+                break;
+            case 8:
+                _spriteRenderer.sprite = _eightLog;
+                break;
+            case 9:
+                _spriteRenderer.sprite = _nineLog;
+                break;
+            case 10:
+                _spriteRenderer.sprite = _tenLog;
                 break;
             case 11:
-                _spriteRenderer.sprite = _elevenLogs;
+                _spriteRenderer.sprite = _elevenLog;
+                break;
+            case 12:
+                _spriteRenderer.sprite = _twelveLog;
+                break;
+            case 13:
+                _spriteRenderer.sprite = _thirteenLog;
                 break;
             case 14:
-                _spriteRenderer.sprite = _fourteenLogs;
+                _spriteRenderer.sprite = _fourteenLog;
+                break;
+            case 15:
+                _spriteRenderer.sprite = _fifteenLog;
+                break;
+            case 16:
+                _spriteRenderer.sprite = _sixteenLog;
+                break;
+            case 17:
+                _spriteRenderer.sprite = _seventeenLog;
                 break;
             case 18:
-                _spriteRenderer.sprite = _eighteenLogs;
+                _spriteRenderer.sprite = _eighteenLog;
                 break;
             default:
                 break;
@@ -127,7 +180,7 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
     }
 
     private bool IsRackFull() {
-        if (_numWetLogs.Value + _numDryLogs.Value + 1 >= _capacity) {
+        if (_numWetLogs.Value + _numDryLogs.Value >= _capacity) {
             PlayerDialogueController.Instance.PostMessage("I can't fit anymore...");
             return true;
         } 

@@ -176,6 +176,7 @@ public class Inventory : MonoBehaviour
             // Instantiate new itemName game object as child of slot
             Transform _slot = _inventoryContainer.transform.GetChild(i).transform;
             GameObject _newItemObject = Instantiate(Resources.Load<GameObject>("Items/" + itemName), _slot.position + new Vector3(0, 0, 0), Quaternion.identity, _slot);
+            _newItemObject.transform.SetAsFirstSibling(); // So quantity text is on top of item sprite
             IInventoryItem _newItem = _newItemObject.GetComponent<IInventoryItem>();
 
             // Set quantity of newItem and add to _slotAssignments 
