@@ -109,9 +109,10 @@ GameObject:
   - component: {fileID: 6498670202926265411}
   - component: {fileID: 373529382752263082}
   - component: {fileID: 2837274495314609798}
-  - component: {fileID: 7116530808025290990}
-  - component: {fileID: 6478114262883678135}
   - component: {fileID: 602916560364616551}
+  - component: {fileID: 3665008228047101925}
+  - component: {fileID: 4465100797053988850}
+  - component: {fileID: 6480221797275966735}
   m_Layer: 0
   m_Name: WoodStove
   m_TagString: Untagged
@@ -208,36 +209,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7116530808025290990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6323635044616395814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19c21c0c0ed43486d87fabe1ebaf4257, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _embersMinIntensity: 0.2
-  _embersMaxIntensity: 1
-  _embersDurationGameHours: 1
-  _fireMinIntensity: 1.3
-  _fireMaxIntensity: 2
-  _hotFireDurationGameHours: 1
---- !u!114 &6478114262883678135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6323635044616395814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &602916560364616551
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -283,3 +254,47 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9375, y: 0.5363822}
   m_EdgeRadius: 0
+--- !u!114 &3665008228047101925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee78f6a7b194492eac77f5c06a90951, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heatSourceRadius: 5
+--- !u!114 &4465100797053988850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6480221797275966735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c21c0c0ed43486d87fabe1ebaf4257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fireDurationCounterGameMinutes: 0
+  _embersMinIntensity: 0.2
+  _embersMaxIntensity: 1
+  _embersDurationGameMinutes: 60
+  _fireMinIntensity: 1.3
+  _fireMaxIntensity: 2
+  _hotFireDurationGameMinutes: 60

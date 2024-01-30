@@ -6,7 +6,7 @@ public class ChangeLevelOnInteract : MonoBehaviour, IInteractable
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
 
-    public Collider2D InteractCollider {
+    public Collider2D ObjCollider {
         get {
             Collider2D _collider = GetComponent<Collider2D>();
             if (_collider != null) {

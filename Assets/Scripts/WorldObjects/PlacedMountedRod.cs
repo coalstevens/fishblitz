@@ -31,7 +31,7 @@ public class PlacedMountedRod : MonoBehaviour, IWorldObject, IInteractable
     private Coroutine _changeStateRoutine;
     private ActiveGridCell _activeGridCell;
 
-    public Collider2D InteractCollider {
+    public Collider2D ObjCollider {
         get {
             Collider2D _collider = GetComponent<Collider2D>();
             if (_collider != null) {
@@ -131,7 +131,7 @@ public class PlacedMountedRod : MonoBehaviour, IWorldObject, IInteractable
         }
 
         StopCoroutine(_changeStateRoutine);
-        _inventory.AddItem("MountedRod", 1);
+        _inventory.TryAddItem("MountedRod", 1);
         _fishBar.Play();
         Destroy(gameObject);
         return true;

@@ -10,7 +10,7 @@ public class Stump : MonoBehaviour, IInteractable, IWorldObject
     private Inventory _inventory;
     private const string IDENTIFIER = "Stump";
 
-    public Collider2D InteractCollider {
+    public Collider2D ObjCollider {
         get {
             Collider2D _collider = GetComponent<Collider2D>();
             if (_collider != null) {
@@ -58,7 +58,7 @@ public class Stump : MonoBehaviour, IInteractable, IWorldObject
             case StumpStates.SplittingLog:
                 _animator.Play("SplittingLog");
                 StartCoroutine(WaitForAnimationToEnd());
-                _inventory.AddItem("Firewood", 3);
+                _inventory.TryAddItem("Firewood", 3);
                 break;
         } 
     }
@@ -70,7 +70,7 @@ public class Stump : MonoBehaviour, IInteractable, IWorldObject
     }
 
     public void LoadLog() {
-        _inventory.RemoveItem("DryLog", 1);
+        _inventory.TryRemoveItem("DryLog", 1);
         _stumpState.Value = StumpStates.LogOn;
     }
 
@@ -86,11 +86,11 @@ public class Stump : MonoBehaviour, IInteractable, IWorldObject
     {
         switch (_stumpState.Value) { 
             case StumpStates.AxeIn:
-                _inventory.AddItem("Axe", 1);
+                _inventory.TryAddItem("Axe", 1);
                 _stumpState.Value = StumpStates.Default;
                 return true;
             case StumpStates.LogOn:
-                _inventory.AddItem("DryLog", 1);
+                _inventory.TryAddItem("DryLog", 1);
                 _stumpState.Value = StumpStates.Default;
                 return true;
             default: 

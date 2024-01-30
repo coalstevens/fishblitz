@@ -1,39 +1,34 @@
+using System;
+using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
+public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject, ITimeSensitive
 {
+    private HeatSourceManager _heatSourceManager;
     private Animator _animator;
     private Inventory _inventory;
     private GameClock _gameClock;
     private enum StoveStates {Dead, Ready, Hot, Embers};
     private Reactive<StoveStates> _stoveState = new Reactive<StoveStates>(StoveStates.Dead);
     private PulseLight _fireLight;
-    private int _fireDurationCounterGameHours;
+    public int _fireDurationCounterGameMinutes;
 
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
     [SerializeField] float _embersMaxIntensity = 1.0f;
-    [SerializeField] private int _embersDurationGameHours = 1;
+    [SerializeField] private int _embersDurationGameMinutes = 60;
 
     [Header("Hot Fire Settings")]
     [SerializeField] float _fireMinIntensity = 1.3f;
     [SerializeField] float _fireMaxIntensity = 2f;
-    [SerializeField] private int _hotFireDurationGameHours = 1;
-    private Temperature _sourceTemperature;
+    [SerializeField] private int _hotFireDurationGameMinutes = 60;
     private const string IDENTIFIER = "WoodStove";
-    public Temperature SourceTemperature {
-        get => _sourceTemperature;
-        set => _sourceTemperature = value;
-    }
 
-    public Collider2D InteractCollider { 
+    public Collider2D ObjCollider { 
         get {
-            Collider2D _collider = GetComponent<Collider2D>();
-            if (_collider != null) {
+            if (TryGetComponent<Collider2D>(out var _collider))
                 return _collider;
-            }
             else {
                 Debug.LogError("WoodStove does not have a collider component.");
                 return null;
@@ -46,44 +41,63 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     }
 
     public int State {
-        get => (int)_stoveState.Value; 
+        get => (int) _stoveState.Value; 
         set => _stoveState.Value = (StoveStates) value; 
     }
 
-    void Start()
+    public HeatSourceManager HeatSource {
+        get {
+            return _heatSourceManager;
+        }
+    }
+
+    public List<float> CountersGameMinutes { 
+        get {
+            List<float> _counters = new() {
+                (float)_fireDurationCounterGameMinutes
+            };
+            return _counters;
+        }
+        set => _fireDurationCounterGameMinutes = (int) value[0];
+    }
+
+    private List<Action> _unsubscribeHooks = new();
+    void Awake()
     {
+        // References
+        _heatSourceManager = GetComponent<HeatSourceManager>();
         _animator = GetComponent<Animator>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _gameClock = GameObject.FindGameObjectWithTag("GameClock").GetComponent<GameClock>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
-        _stoveState.OnChange((curr,prev) => OnStateChange());
-        _gameClock.GameHour.OnChange((curr, prev) => OnGameHourChange());
-        OnStateChange();
+        
+        // Reactive
+        _unsubscribeHooks.Add(_stoveState.OnChange((curr,prev) => OnStateChange()));
+        _unsubscribeHooks.Add(_gameClock.GameMinute.OnChange((curr, prev) => OnGameMinuteTick()));
+        EnterDead();
+    }
+    private void OnDisable() {
+        foreach (var _hook in _unsubscribeHooks) 
+            _hook();
     }
 
-    private void OnGameHourChange()
-    { 
-        switch (_stoveState.Value) 
-        {
+    public void OnGameMinuteTick() { 
+        switch (_stoveState.Value) {
             case StoveStates.Hot:
-                _fireDurationCounterGameHours++;
-                if (_fireDurationCounterGameHours >= _hotFireDurationGameHours) {
+                _fireDurationCounterGameMinutes++;
+                if (_fireDurationCounterGameMinutes >= _hotFireDurationGameMinutes)
                     _stoveState.Value = StoveStates.Embers;
-                }
                 break;
             case StoveStates.Embers:
-                _fireDurationCounterGameHours++;
-                if (_fireDurationCounterGameHours >= _hotFireDurationGameHours + _embersDurationGameHours) {
+                _fireDurationCounterGameMinutes++;
+                if (_fireDurationCounterGameMinutes >= (_hotFireDurationGameMinutes + _embersDurationGameMinutes))
                     _stoveState.Value = StoveStates.Dead;
-                }
                 break;
         } 
     }
 
-    void OnStateChange()
-    {
-        switch (_stoveState.Value) 
-        {
+    void OnStateChange() {
+        switch (_stoveState.Value) {
             case StoveStates.Dead:
                 EnterDead();
                 break;
@@ -97,14 +111,13 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
                 EnterEmbers();
                 break;
         } 
-        ShareHeatSourceTemperatureInParent();
     }
 
     private void EnterHot() {
-        _fireDurationCounterGameHours = 0;
+        _fireDurationCounterGameMinutes = 0;
         _animator.speed = 1f;
         _animator.Play("HotFire");
-        _sourceTemperature = Temperature.Hot;
+        _heatSourceManager.LocalTemperature = Temperature.Hot;
         _fireLight.gameObject.SetActive(true);
         _fireLight.SetIntensity(_fireMinIntensity, _fireMaxIntensity);
     }
@@ -112,7 +125,7 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     private void EnterEmbers() {
         _animator.speed = 0.05f;
         _animator.Play("Embers");
-        _sourceTemperature = Temperature.Warm;
+        _heatSourceManager.LocalTemperature = Temperature.Warm;
         _fireLight.gameObject.SetActive(true);
         _fireLight.SetIntensity(_embersMinIntensity, _embersMaxIntensity);
     }
@@ -120,20 +133,19 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     private void EnterDead() {
         _animator.speed = 1f;
         _animator.Play("Dead");
-        _sourceTemperature = Temperature.Cold;
+        _heatSourceManager.DisableHeatSource();
         _fireLight.gameObject.SetActive(false);
     }
 
     private void EnterReady() {
         _animator.speed = 1f;
         _animator.Play("Ready");
-        _sourceTemperature = Temperature.Cold;
+        _heatSourceManager.DisableHeatSource();
         _fireLight.gameObject.SetActive(false);
     }
 
     public bool CursorInteract(Vector3 cursorLocation) {
-        switch (_stoveState.Value) 
-        {
+        switch (_stoveState.Value) {
             case StoveStates.Dead:
                 // Add wood to ashes
                 if (_inventory.IsPlayerHolding("Firewood")) {
@@ -171,13 +183,7 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     }
 
     private void StokeFlame() {
-        _inventory.RemoveItem("Firewood", 1);
-        _fireDurationCounterGameHours = 0;
+        _inventory.TryRemoveItem("Firewood", 1);
+        _fireDurationCounterGameMinutes = 0;
     }
-    private void ShareHeatSourceTemperatureInParent() {
-        IHeatSensitive[] _heatSensitiveObjects = transform.parent.GetComponentsInChildren<IHeatSensitive>();
-        foreach (IHeatSensitive obj in _heatSensitiveObjects) {
-            obj.LocalTemperature = _sourceTemperature;
-        }
-    } 
 }

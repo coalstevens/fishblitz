@@ -9,6 +9,12 @@ public class WorldObjectSaveData
     public int State;
     public SimpleVector3 Position;
     public Dictionary<string, int> ItemQuantitys;
+    public List<float> CountersGameMinutes;
+}
+
+public class SceneSaveData {
+    public List<WorldObjectSaveData> WorldObjects;
+    public GameClockCapture SceneExitGameTime;
 }
 
 public class SimpleVector3 {
@@ -23,10 +29,10 @@ public class SimpleVector3 {
     }
 }
 
-public class SceneSaveLoadManager : MonoBehaviour
-{
+public class SceneSaveLoadManager : MonoBehaviour {
     private Transform _worldObjectsContainer;
     private string _fileName;
+
     void Start() {
         _worldObjectsContainer = GameObject.FindGameObjectWithTag("WorldObjectsContainer").transform;
         _fileName = GetFileName();
@@ -39,60 +45,102 @@ public class SceneSaveLoadManager : MonoBehaviour
         return _sceneName + "_savedData.json";
     }
 
-    private void LoadSaveFile() {
+    private async void LoadSaveFile() {
+        SceneSaveData _loadedSaveData;
         if (JsonPersistence.JsonExists(_fileName)) {
-            foreach (Transform _child in _worldObjectsContainer) {
-                Destroy(_child.gameObject);
-            }
-            LoadWorldObjects();
+            _loadedSaveData = await JsonPersistence.FromJson<SceneSaveData>(_fileName);
+            LoadWorldObjects(_loadedSaveData);
         }
     }
 
     public void Save() {
-        SaveWorldObjects();
+        SceneSaveData _saveData = new();
+        _saveData.WorldObjects = SaveWorldObjects();
+        _saveData.SceneExitGameTime = GameClock.GenerateCapture();
+
+        JsonPersistence.PersistJson<SceneSaveData>(_saveData, _fileName); 
     }
 
-    private void SaveWorldObjects()
+    private List<WorldObjectSaveData> SaveWorldObjects()
     {
         List<WorldObjectSaveData> _worldObjectsToSave = new List<WorldObjectSaveData>();
         foreach (Transform _child in _worldObjectsContainer) { 
             if (_child.TryGetComponent<IWorldObject>(out IWorldObject _worldObject)) {
+                Debug.Log("Saved a " + _worldObject.Identifier);
                 var _objectToSave = new WorldObjectSaveData {
                     Identifier = _worldObject.Identifier,
                     State = _worldObject.State,
                     Position = new SimpleVector3(_child.gameObject.transform.position)
                 };
 
-                if (_child.TryGetComponent<IItemStorage>(out IItemStorage _itemStorer)) {
+                if (_child.TryGetComponent<IItemStorage>(out var _itemStorer))
                     _objectToSave.ItemQuantitys = _itemStorer.ItemQuantities;
-                }
+
+                if (_child.TryGetComponent<ITimeSensitive>(out var _timeSensitive))
+                    _objectToSave.CountersGameMinutes = _timeSensitive.CountersGameMinutes;
 
                 _worldObjectsToSave.Add(_objectToSave);
             }
         }
-        JsonPersistence.PersistJson<List<WorldObjectSaveData>>(_worldObjectsToSave, _fileName);
+        return _worldObjectsToSave;
     }
 
-    private async void LoadWorldObjects() {
-        var _loadedObjects = await JsonPersistence.FromJson<List<WorldObjectSaveData>>(_fileName);
+    private void LoadWorldObjects(SceneSaveData loadedSaveData) {
+        // Destroy default objects in scene 
+        foreach (Transform _child in _worldObjectsContainer) {
+                Destroy(_child.gameObject);
+        }
+        
+        // Load saved objects
+        var _loadedObjects = loadedSaveData.WorldObjects;
+        List<ITimeSensitive> _timeSensitives = new();
         
         foreach (var _loadedObject in _loadedObjects) {
             GameObject _prefab = Resources.Load<GameObject>("WorldObjects/" + _loadedObject.Identifier);
-
-            if (_prefab != null) {
-                Vector3 _position = new Vector3(_loadedObject.Position.x, _loadedObject.Position.y, _loadedObject.Position.y);
-                GameObject _newObject = Instantiate(_prefab, _position, Quaternion.identity, _worldObjectsContainer);
-                IWorldObject _worldObject = _newObject.GetComponent<IWorldObject>();
-                _worldObject.State = _loadedObject.State;
-
-                if (_worldObject is IItemStorage _itemStorageComponent && _loadedObject.ItemQuantitys != null) {
-                    _itemStorageComponent.ItemQuantities =_loadedObject.ItemQuantitys;
-                }
-            }
-            else
-            {
+            if (_prefab == null) {
                 Debug.LogError($"Prefab not found for identifier: {_loadedObject.Identifier}");
+                continue;
             }
+
+            Vector3 _savedPosition = new Vector3(_loadedObject.Position.x, _loadedObject.Position.y, _loadedObject.Position.y);
+            GameObject _newObject = Instantiate(_prefab, _savedPosition, Quaternion.identity, _worldObjectsContainer);
+            IWorldObject _worldObject = _newObject.GetComponent<IWorldObject>();
+            _worldObject.State = _loadedObject.State;
+
+            if (_worldObject is IItemStorage _itemStorageComponent && _loadedObject.ItemQuantitys != null)
+                _itemStorageComponent.ItemQuantities =_loadedObject.ItemQuantitys;  
+            if (_worldObject is ITimeSensitive _timeSensitive) {
+                _timeSensitive.CountersGameMinutes = _loadedObject.CountersGameMinutes;
+                _timeSensitives.Add(_timeSensitive);
+            }
+            Debug.Log("Loaded a " + _worldObject.Identifier);
+        }
+
+        ProcessElapsedTime(_timeSensitives, loadedSaveData.SceneExitGameTime);
+    }
+
+    private void ProcessElapsedTime(List<ITimeSensitive> worldObjectsToProcess, GameClockCapture pastTime) {
+        int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
+        List<ITimeSensitive> _timeSensitives = new(); 
+        List<ITimeSensitive> _heatSources = new();
+        List<ITimeSensitive> _heatSensitives =new();
+
+        foreach (var _worldObject in worldObjectsToProcess) {
+            if (_worldObject is IHeatSource)
+                _heatSources.Add(_worldObject);
+            else if (_worldObject is IHeatSensitive)
+                _heatSensitives.Add(_worldObject);
+            else
+                _timeSensitives.Add(_worldObject);
+        }
+
+        for (int i = 0; i <_elapsedGameMinutes; i++) {
+            foreach (var _heatSource in _heatSources)
+                _heatSource.OnGameMinuteTick();
+            foreach (var _heatSensitive in _heatSensitives)
+                _heatSensitive.OnGameMinuteTick();
+            foreach (var _worldObject in _timeSensitives)
+                _worldObject.OnGameMinuteTick();
         }
     }
 }

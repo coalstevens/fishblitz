@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         UpdateUIAllSlots();
 
         foreach (StartingItem _item in _startingItems) {
-            AddItem(_item.itemName, _item.itemQuantity);
+            TryAddItem(_item.itemName, _item.itemQuantity);
         }
     }
 
@@ -72,7 +72,7 @@ public class Inventory : MonoBehaviour
     /// Adds quantity to existing stacks and creates more stacks if necessary
     /// </summary>
     /// <returns>False if inventory space isn't sufficient, with no change to inventory.</returns>
-    public bool AddItem(string itemName, int quantity) {
+    public bool TryAddItem(string itemName, int quantity) {
         if (quantity == 0) {
             return true;
         }
@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour
     /// Removes a quantity of an item from inventory, starting from smallest stacks
     /// </summary>
     /// <returns>False if inventory doesn't have quantity of item, no change to inventory</returns>
-    public bool RemoveItem(string itemName, int quantity) {
+    public bool TryRemoveItem(string itemName, int quantity) {
         List<int> _slotsWithTheItem = new();
         int _playerQuantityOfTheItem = 0;
         int _residual;
@@ -158,8 +158,6 @@ public class Inventory : MonoBehaviour
     }
 
     // Creates a new object in an empty inventory slot(s)
-    // Returns false if there's not enough slots for the quantity
-    // Returns true on success
     private void AddItemIntoEmptySlots(string itemName, int quantity) {
         int _itemStackCapacity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<IInventoryItem>().StackCapacity;
         List<Transform> _emptySlots = new List<Transform>();

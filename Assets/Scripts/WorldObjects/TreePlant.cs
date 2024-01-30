@@ -31,6 +31,19 @@ public class TreePlant : MonoBehaviour, IWorldObject
         }
     }
 
+    public Collider2D ObjCollider {
+        get {
+            Collider2D _collider = GetComponent<Collider2D>();
+            if (_collider == null) {
+                Debug.LogError("Tree does not have a collider");
+                return null;
+            }
+            else {
+                return _collider;
+            }
+        }
+    } 
+
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();

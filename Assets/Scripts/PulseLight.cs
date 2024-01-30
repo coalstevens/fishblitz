@@ -10,7 +10,7 @@ public class PulseLight : MonoBehaviour
     [SerializeField] float _minIntensity = 1f;
     [SerializeField] float _maxIntensity = 1.5f;
     [SerializeField] float _intensityChangePerFrame = 0.001f;
-    void Start()
+    void Awake()
     {
         _light = GetComponent<Light2D>();
     }

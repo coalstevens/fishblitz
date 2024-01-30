@@ -1,56 +1,34 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using ReactiveUnity;
-using System;
+
 public class GameClock : MonoBehaviour
 {
-    private static GameClock _instance;
-    public static GameClock Instance
-    {
-        get
-        {
-            // If the instance doesn't exist, find it in the scene
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameClock>();
-
-                if (_instance == null)
-                {
-                    Debug.LogError("Gameclock object does not exist");
-                }
-            }
-
-            return _instance;
-        }
-    }
+    public static GameClock Instance;
+    private float _timeBuffer = 0;
+    private float _gameMinuteInRealSeconds; // Calculated in Start
     public enum Seasons {Spring, EndOfSpring, Summer, EndOfSummer, Fall, EndOfFall, Winter, EndOfWinter};
     public List<string> SeasonNames = new List<string> {"Spring", "EndOfSpring", "Summer", "EndOfSummer", "Fall", "EndOfFall", "Winter", "EndOfWinter"};
     [SerializeField] private float _gameDayInRealMinutes = 1f;
-    private float _gameMinuteInRealSeconds; // Calculated in Start
     [SerializeField] int _numRegularSeasonDays = 10;
     [SerializeField] int _numTransitionSeasonDays = 5; 
     public bool Paused = false;
 
     [Header("Game Start Date/Time")] 
     public Reactive<int> GameYear = new Reactive<int>(1);
-    public Reactive<Seasons> _gameSeason = new Reactive<Seasons>(Seasons.EndOfSpring);
+    public Reactive<Seasons> GameSeason = new Reactive<Seasons>(Seasons.EndOfSpring);
     public Reactive<int> GameDay = new Reactive<int>(1);
     public Reactive<int> GameHour = new Reactive<int>(21);
     public Reactive<int> GameMinute = new Reactive<int>(0);
-    private float _timeBuffer = 0;
+    
     private void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Keeps the GameObject with the singleton alive between scenes
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
         }
         else
-        {
-            Destroy(gameObject); // Ensures that only one instance of the singleton exists
-        }
+            Destroy(gameObject); 
     }
 
     void Start() {
@@ -105,11 +83,11 @@ public class GameClock : MonoBehaviour
     }
 
     void IncrementSeason() {
-        if (_gameSeason.Value == Seasons.EndOfWinter) {
-            _gameSeason.Value = Seasons.Spring; 
+        if (GameSeason.Value == Seasons.EndOfWinter) {
+            GameSeason.Value = Seasons.Spring; 
             GameYear.Value++;
         }
-        _gameSeason.Value++;
+        GameSeason.Value++;
     }
 
     public void SetTime(int minute, int hour) {
@@ -127,18 +105,73 @@ public class GameClock : MonoBehaviour
         GameMinute.Value = minute;
         GameHour.Value = hour;
         GameDay.Value = day;
-        _gameSeason.Value = season;
+        GameSeason.Value = season;
     }
 
     public void SetTime(int minute, int hour, int day, Seasons season, int year) {
         GameMinute.Value = minute;
         GameHour.Value = hour;
         GameDay.Value = day;
-        _gameSeason.Value = season;
+        GameSeason.Value = season;
         GameYear.Value = year;
     }
 
+    public static GameClockCapture GenerateCapture() {
+        return new GameClockCapture(Instance);
+    }
+    public static int CalculateElapsedGameMinutesSinceTime(GameClockCapture pastTime) {
+        GameClockCapture _currentTime = new GameClockCapture(Instance);
+        int _elapsedGameMinutes = Instance.CalculateElapsedGameMinutesSinceZeroTime(_currentTime) - Instance.CalculateElapsedGameMinutesSinceZeroTime(pastTime);
+        return (_elapsedGameMinutes > 0) ? _elapsedGameMinutes : 0;
+    }
+
+    private int CalculateElapsedGameMinutesSinceZeroTime(GameClockCapture _time) {
+        int _elapsedGameMinutes = 0;
+        _elapsedGameMinutes += _time.GameMinute;
+        _elapsedGameMinutes += _time.GameHour * 60;
     
+        for (int i = 0; i < (int) _time.GameSeason; i++) {
+            if (i % 2 == 0) {
+                //regular season
+                _elapsedGameMinutes += Instance._numRegularSeasonDays * 24 * 60;
+            }
+            else {
+                //transition season
+                _elapsedGameMinutes += Instance._numTransitionSeasonDays * 24 * 60;
+            }
+        }
 
+        _elapsedGameMinutes += _time.GameYear * 4 * (Instance._numRegularSeasonDays + Instance._numTransitionSeasonDays) * 24 * 60;
+        
+        return _elapsedGameMinutes;
+    }
 }
+public class GameClockCapture {
+        public int GameMinute;
+        public int GameHour;
+        public int GameDay;
+        public GameClock.Seasons GameSeason;
+        public int GameYear;
 
+        /// <summary>
+        /// Initalizes all values to 0 and Season to EndOfSpring;
+        /// </summary>
+        public GameClockCapture() {
+            GameMinute = 0;
+            GameHour = 0;
+            GameDay = 0;
+            GameSeason = GameClock.Seasons.EndOfSpring;
+            GameYear =0;
+        }
+
+        /// <summary>
+        /// Generates a capture of the current time
+        /// </summary>
+        public GameClockCapture(GameClock _gameClock) {
+            GameMinute = _gameClock.GameMinute.Value;
+            GameHour = _gameClock.GameHour.Value;
+            GameDay = _gameClock.GameDay.Value;
+            GameSeason = _gameClock.GameSeason.Value;
+            GameYear = _gameClock.GameYear.Value;
+        }
+}

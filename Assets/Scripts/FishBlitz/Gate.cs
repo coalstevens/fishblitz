@@ -37,7 +37,7 @@ public class Gate : MonoBehaviour
         }
         if (_inputActionReference.action.WasPressedThisFrame())
         {
-            if (_inventory.RemoveItem("Key", 1)) {
+            if (_inventory.TryRemoveItem("Key", 1)) {
                 openGate();
             }
         }

@@ -92,7 +92,7 @@ public class Store : MonoBehaviour
         }
 
         _inventory.Gold -= _keyCost;
-        _inventory.AddItem("Key", 1);
+        _inventory.TryAddItem("Key", 1);
         _totalInventory -= 1;
 
         if (IsSoldOut())
@@ -115,7 +115,7 @@ public class Store : MonoBehaviour
         }
 
         _inventory.Gold -= _rodCost;
-        _inventory.AddItem("MountedRod", 1);
+        _inventory.TryAddItem("MountedRod", 1);
         _totalInventory -= 1;
 
         if (IsSoldOut())

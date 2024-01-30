@@ -23,7 +23,7 @@ public class TopRightHUD : MonoBehaviour
     void UpdateText() {
         string _textString = "";
         _textString += _gameClock.GameHour.Value.ToString() + "h" + _gameClock.GameMinute.Value.ToString() + "m\n";
-        _textString += _gameClock.SeasonNames[(int) _gameClock._gameSeason.Value] + " " + _gameClock.GameDay.Value.ToString() + "\n";
+        _textString += _gameClock.SeasonNames[(int) _gameClock.GameSeason.Value] + " " + _gameClock.GameDay.Value.ToString() + "\n";
         _textString += "Year: " + _gameClock.GameYear.Value.ToString() + "\n";
         _textString += _inventory.Gold.ToString() + "G";
 

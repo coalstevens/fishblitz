@@ -40,7 +40,7 @@ public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
     private void PlaceRod(IInteractableTile interactableTile, Vector3 cursorLocation)
     {
         Instantiate(((RodPlacement)interactableTile).RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-        _inventory.RemoveItem("MountedRod", 1);
+        _inventory.TryRemoveItem("MountedRod", 1);
     }
 
     public void UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
