@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject, ITimeSensitive
+public enum StoveStates {Dead, Ready, Hot, Embers};
+public class WoodStoveSaveData : WorldObjectSaveData {
+    public StoveStates State;
+}
+public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, ISaveable<WoodStoveSaveData>
 {
+    private const string IDENTIFIER = "WoodStove";
     private HeatSourceManager _heatSourceManager;
     private Animator _animator;
     private Inventory _inventory;
     private GameClock _gameClock;
-    private enum StoveStates {Dead, Ready, Hot, Embers};
     private Reactive<StoveStates> _stoveState = new Reactive<StoveStates>(StoveStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
@@ -23,7 +27,6 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     [SerializeField] float _fireMinIntensity = 1.3f;
     [SerializeField] float _fireMaxIntensity = 2f;
     [SerializeField] private int _hotFireDurationGameMinutes = 60;
-    private const string IDENTIFIER = "WoodStove";
 
     public Collider2D ObjCollider { 
         get {
@@ -34,15 +37,6 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
                 return null;
             }
         }
-    }
-
-    public string Identifier {
-        get => IDENTIFIER;
-    }
-
-    public int State {
-        get => (int) _stoveState.Value; 
-        set => _stoveState.Value = (StoveStates) value; 
     }
 
     public HeatSourceManager HeatSource {
@@ -185,5 +179,19 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, IWorldObject
     private void StokeFlame() {
         _inventory.TryRemoveItem("Firewood", 1);
         _fireDurationCounterGameMinutes = 0;
+    }
+
+    public WoodStoveSaveData Save()
+    {
+        return new WoodStoveSaveData {
+            Identifier = IDENTIFIER,
+            Position = new SimpleVector3(transform.position),
+            State = _stoveState.Value
+        };
+    }
+
+    public void Load(WoodStoveSaveData saveData)
+    {
+        _stoveState.Value = saveData.State;
     }
 }

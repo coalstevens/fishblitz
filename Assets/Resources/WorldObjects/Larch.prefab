@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6812285457286002210}
   - component: {fileID: 8978042134043212749}
-  - component: {fileID: 6695381701762289142}
   - component: {fileID: 6031133616866921772}
   - component: {fileID: -6540250580062709734}
+  - component: {fileID: 7044165579182886953}
+  - component: {fileID: 8449496766792482642}
   m_Layer: 0
   m_Name: Larch
   m_TagString: Untagged
@@ -76,36 +77,17 @@ SpriteRenderer:
   m_SortingLayerID: 2138312857
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9006095326735404816, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  m_Sprite: {fileID: -219177725114896141, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.71875, y: 5.59375}
+  m_Size: {x: 2.65625, y: 5.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!114 &6695381701762289142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667917436774412631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8966f95aee2b843238193230c938e5f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _identifier: Larch
-  _summerAdult: {fileID: -9006095326735404816, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
-  _fallAdult: {fileID: 8874815692321303739, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
-  _deadAdult: {fileID: -1203173822578484502, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
-  _stump: {fileID: 1475976496545466275, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
-  _treeState:
-    _val: 0
 --- !u!58 &6031133616866921772
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -153,3 +135,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7044165579182886953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30b6fbd5617449b18c7da58122f380b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standardLit: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _windyTree: {fileID: 2100000, guid: 1c2f5e79da554401282cab5cfa69d914, type: 2}
+  _summerAdult: {fileID: -219177725114896141, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _fallAdult: {fileID: -1658150280612062015, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _deadAdult: {fileID: 8774161612095344005, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _stump: {fileID: 2820268055570676719, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _treeState:
+    _val: 0
+  _axeIn: {fileID: -6161073909293135302, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _logOn: {fileID: -7845820269112895828, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  _extendedState:
+    _val: 7
+--- !u!95 &8449496766792482642
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 3599355676706738764, guid: e1a89430fbf784399b0a64db7ef45765, type: 3}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

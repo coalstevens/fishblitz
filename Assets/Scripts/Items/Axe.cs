@@ -23,8 +23,8 @@ public class Axe : MonoBehaviour, ITool, IInventoryItem
 
     public void UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
-        if (interactableWorldObject is Stump _stump) {
-            _stump.SplitLog();
+        if (interactableWorldObject is IUseableWithAxe _worldObject) {
+            _worldObject.OnUseAxe();    
         }
     }
 

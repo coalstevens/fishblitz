@@ -500,7 +500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cec2938556ba45f59dcc38633b86027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 0}
   _renderedTransform: {fileID: 2887940725113011546}
   _activeDirection: 2
   _spriteRenderer: {fileID: 4519609824747754123}
@@ -794,7 +793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcdee81e8698546979d43383e7022fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveItem: {fileID: 0}
 --- !u!1 &3802309759255088825
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,7 +838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cec2938556ba45f59dcc38633b86027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 0}
   _renderedTransform: {fileID: 3971035456058243921}
   _activeDirection: 0
   _spriteRenderer: {fileID: 2429432842369832064}
@@ -1665,7 +1662,7 @@ GameObject:
   - component: {fileID: 3650805042953559405}
   - component: {fileID: 4292561622086729838}
   - component: {fileID: 297373552345421495}
-  - component: {fileID: 3741701604602867947}
+  - component: {fileID: 4625980830190734061}
   - component: {fileID: 8225315474834395269}
   - component: {fileID: 1818902689949940280}
   - component: {fileID: 8709176181732877864}
@@ -1790,7 +1787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ab2841081041e09bc0dae1c40ee1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 3
   Fishing:
     _val: 0
   FacingDir:
@@ -1824,8 +1820,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3741701604602867947
-CircleCollider2D:
+--- !u!70 &4625980830190734061
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1856,9 +1852,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.3}
-  serializedVersion: 2
-  m_Radius: 0.28661883
+  m_Offset: {x: 0.0075652823, y: 0.17987663}
+  m_Size: {x: 0.59386265, y: 0.17018716}
+  m_Direction: 1
 --- !u!114 &8225315474834395269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1949,7 +1945,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cec2938556ba45f59dcc38633b86027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 0}
   _renderedTransform: {fileID: 7479186854241281067}
   _activeDirection: 3
   _spriteRenderer: {fileID: 8171657451185671162}
@@ -2149,8 +2144,7 @@ MonoBehaviour:
   _cursorE: {fileID: 6882819743514182693}
   _cursorS: {fileID: 5751388038938764140}
   _cursorW: {fileID: 1178779885948722516}
-  _grid: {fileID: 0}
-  _tilemap: {fileID: 0}
+  _activeCursor: {fileID: 0}
 --- !u!1 &8377160490089215626
 GameObject:
   m_ObjectHideFlags: 0
@@ -2196,7 +2190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cec2938556ba45f59dcc38633b86027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grid: {fileID: 0}
   _renderedTransform: {fileID: 8619555664169517922}
   _activeDirection: 1
   _spriteRenderer: {fileID: 7003721720352599219}

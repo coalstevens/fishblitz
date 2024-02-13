@@ -1,37 +1,22 @@
+using System;
 using ReactiveUnity;
 using UnityEngine;
-public class TreePlant : MonoBehaviour, IWorldObject
-{
-    private enum TreeState {SummerAdult, FallAdult, DeadAdult, Stump};
-    [SerializeField] private string _identifier;
-    [SerializeField] private Sprite _summerAdult;
-    [SerializeField] private Sprite _fallAdult;
-    [SerializeField] private Sprite _deadAdult;
-    [SerializeField] private Sprite _stump;
-    private Reactive<TreeState> _treeState = new Reactive<TreeState>(TreeState.SummerAdult);
-    private SpriteRenderer _spriteRenderer;
 
-    public string Identifier {
-        get {
-            if (_identifier == null) {
-                Debug.LogError("This Tree doesn't have an identifier");
-                return null;
-            }
-            else {
-                return _identifier; 
-            }
-        }
-    }
-    public int State { 
-        get {
-            return (int) _treeState.Value;
-        }
-        set {
-            _treeState.Value = (TreeState) value;
-        }
-    }
+public enum TreeStates {SummerAdult, FallAdult, DeadAdult, Stump};
+public abstract class TreePlant : MonoBehaviour {
 
-    public Collider2D ObjCollider {
+    [Header("Tree Base State")]
+    [SerializeField] protected Material _standardLit;
+    [SerializeField] protected Material _windyTree;
+    [SerializeField] protected Sprite _summerAdult;
+    [SerializeField] protected Sprite _fallAdult;
+    [SerializeField] protected Sprite _deadAdult;
+    [SerializeField] protected Sprite _stump;
+    [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
+    protected SpriteRenderer _spriteRenderer;
+    protected Action _unsubscribe;
+
+    public virtual Collider2D ObjCollider {
         get {
             Collider2D _collider = GetComponent<Collider2D>();
             if (_collider == null) {
@@ -44,25 +29,34 @@ public class TreePlant : MonoBehaviour, IWorldObject
         }
     } 
 
-    void Start()
+    protected virtual void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _treeState.OnChange((prev, curr) => UpdateSprite());
-        UpdateSprite();
+        OnStateChange();
+    }
+    protected virtual void OnEnable() {
+        _unsubscribe = _treeState.OnChange((prev, curr) => OnStateChange());
+    }
+    protected virtual void OnDisable() {
+        _unsubscribe();
     }
 
-    void UpdateSprite() {
+    protected virtual void OnStateChange() {
         switch (_treeState.Value) {
-            case TreeState.SummerAdult:
+            case TreeStates.SummerAdult:
+                _spriteRenderer.material = _windyTree;
                 _spriteRenderer.sprite = _summerAdult;
                 break;
-            case TreeState.FallAdult:
+            case TreeStates.FallAdult:
+                _spriteRenderer.material = _windyTree;
                 _spriteRenderer.sprite = _fallAdult;
                 break;
-            case TreeState.DeadAdult:
+            case TreeStates.DeadAdult:
+                _spriteRenderer.material = _standardLit;
                 _spriteRenderer.sprite = _deadAdult;
                 break;
-            case TreeState.Stump:
+            case TreeStates.Stump:
+                _spriteRenderer.material = _standardLit;
                 _spriteRenderer.sprite = _stump;
                 break;
         }

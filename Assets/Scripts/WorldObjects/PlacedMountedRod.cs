@@ -4,7 +4,13 @@ using DG.Tweening;
 using UnityEngine;
 using ReactiveUnity;
 
-public class PlacedMountedRod : MonoBehaviour, IWorldObject, IInteractable
+public class PlacedMountedRodSaveData : WorldObjectSaveData {
+    public bool fishOnState;
+}
+
+// Used for 4 different prefabs (different rod facing directions)
+// Hence there is lots of serialized members
+public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMountedRodSaveData>
 {
     [SerializeField] private string _identifier;
     
@@ -135,5 +141,19 @@ public class PlacedMountedRod : MonoBehaviour, IWorldObject, IInteractable
         _fishBar.Play();
         Destroy(gameObject);
         return true;
+    }
+
+    public PlacedMountedRodSaveData Save()
+    {
+        return new PlacedMountedRodSaveData {
+            Identifier = _identifier,
+            Position = new SimpleVector3(transform.position),
+            fishOnState = _fishOn.Value            
+        };
+    }
+
+    public void Load(PlacedMountedRodSaveData saveData)
+    {
+        _fishOn.Value = saveData.fishOnState;
     }
 }

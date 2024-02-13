@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReactiveUnity;
 
-public class GameClock : MonoBehaviour
+public class GameClock : Singleton<GameClock>
 {
-    public static GameClock Instance;
     private float _timeBuffer = 0;
     private float _gameMinuteInRealSeconds; // Calculated in Start
     public enum Seasons {Spring, EndOfSpring, Summer, EndOfSummer, Fall, EndOfFall, Winter, EndOfWinter};
@@ -21,26 +20,17 @@ public class GameClock : MonoBehaviour
     public Reactive<int> GameHour = new Reactive<int>(21);
     public Reactive<int> GameMinute = new Reactive<int>(0);
     
-    private void Awake()
-    {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); 
-        }
-        else
-            Destroy(gameObject); 
-    }
-
     void Start() {
         _gameMinuteInRealSeconds = _gameDayInRealMinutes * 60 / 1440;
         IncrementGameMinute(); // If the clock is paused this loads in some things to the correct time
     }
     
     void Update() {
-        if (Paused) {
+        if (Paused)
             return;
-        }
+
         _timeBuffer += Time.deltaTime;
+
         if(_timeBuffer >= _gameMinuteInRealSeconds) {
             _timeBuffer -= _gameMinuteInRealSeconds;
             IncrementGameMinute();

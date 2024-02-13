@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3881477795247010830}
   - component: {fileID: 2615210879918376788}
-  - component: {fileID: 2960968320711538094}
-  - component: {fileID: 2027575541235395123}
   - component: {fileID: -3603326922827351181}
+  - component: {fileID: 3872819686384213603}
+  - component: {fileID: 4815033212498117573}
   m_Layer: 0
   m_Name: Spruce
   m_TagString: Untagged
@@ -76,18 +76,18 @@ SpriteRenderer:
   m_SortingLayerID: 2138312857
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6392086805501867803, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
+  m_Sprite: {fileID: -4220837440353923788, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.6875, y: 5.8125}
+  m_Size: {x: 2.625, y: 5.78125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2960968320711538094
+--- !u!114 &-3603326922827351181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,18 +96,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 4737805772135044970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8966f95aee2b843238193230c938e5f8, type: 3}
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _identifier: Spruce
-  _summerAdult: {fileID: -6392086805501867803, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
+--- !u!114 &3872819686384213603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4737805772135044970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ff9896402ab48d4995ca94bb1f8bc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standardLit: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _windyTree: {fileID: 2100000, guid: 1c2f5e79da554401282cab5cfa69d914, type: 2}
+  _summerAdult: {fileID: -4220837440353923788, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
   _fallAdult: {fileID: 0}
   _deadAdult: {fileID: 0}
-  _stump: {fileID: -4224356351557711900, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
+  _stump: {fileID: -3731196753474601746, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
   _treeState:
     _val: 0
---- !u!58 &2027575541235395123
-CircleCollider2D:
+--- !u!70 &4815033212498117573
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -138,18 +151,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.98}
-  serializedVersion: 2
-  m_Radius: 0.73
---- !u!114 &-3603326922827351181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4737805772135044970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Offset: {x: 0, y: 0.09}
+  m_Size: {x: 0.68, y: 0.31}
+  m_Direction: 1

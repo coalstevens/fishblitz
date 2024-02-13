@@ -16,7 +16,7 @@ namespace OysterUtils
         {
             SceneSaveLoadManager _saveLoadManager = GameObject.FindObjectOfType<SceneSaveLoadManager>();
             if (_saveLoadManager != null) {
-                _saveLoadManager.Save();
+                _saveLoadManager.SaveScene();
             }
             GameObject transitionObject = GameObject.Instantiate(SceneTransitionOverlayPrefab, Vector3.zero, Quaternion.identity);
             transitionObject.GetComponent<SceneTransitionOverlay>().LoadScene(toSceneName);

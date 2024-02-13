@@ -3,21 +3,33 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObject, IItemStorage, ITimeSensitive
+public class WoodRackSaveData : WorldObjectSaveData {
+    public int NumWetLogs;
+    public int NumDryLogs;
+    public List <float> LogTimers;
+}
+
+public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable, ISaveable<WoodRackSaveData>
 {
+    // References
     private SpriteRenderer _spriteRenderer;
-    private GameClock _gameClock;
     private Inventory _inventory;
+    private HeatSensitiveManager _heatSensitiveManager;
+
+    // Reactive
     private Reactive<int> _numWetLogs = new Reactive<int>(0);
     private Reactive<int> _numDryLogs = new Reactive<int>(0);
-    private const int _capacity = 18;
-    private List<float> _logTimers = new List<float>();
-    private float _timeToDryGameMins = 120f;
-    private float _fireOnMultiplier = 1.5f;
-    private HeatSensitiveManager _heatSensitiveManager;
-    [SerializeField] private Sprite[] _rackSprites; 
+    private List<Action> _unsubscribeHooks = new();
     
+    // Basic Fields
     private const string IDENTIFIER = "WoodRack";
+    private const int _rackLogCapacity = 18;
+    private const float _timeToDryGameMins = 120f;
+    private List<float> _logDryingTimers = new List<float>();
+    private float _temperatureMultiplier = 1.5f;
+
+    // Inspector    
+    [SerializeField] private Sprite[] _rackSprites; 
 
     public Collider2D ObjCollider {
         get {
@@ -31,61 +43,25 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
             }
         }
     }
-
-    public string Identifier {
-        get => IDENTIFIER;
-    }
-    
-    // the state in WoodRack is defined by _numWetlogs and _numDrylogs
-    // itemQuantityPair is used to load/unload this object
-    public int State { 
-        get => 0;
-        set {
-            //do nothing
-        }
-    }
-
-    public Dictionary<string, int> ItemQuantities { 
-        get {
-            var _items = new Dictionary<string, int> {
-                {"WetLog", _numWetLogs.Value},
-                {"DryLog", _numDryLogs.Value}
-            };
-            return _items;
-        }
-        set {
-            _numDryLogs.Value = value["DryLog"];
-            _numWetLogs.Value = value["WetLog"];
-        }
-    }
-
     HeatSensitiveManager IHeatSensitive.HeatSensitive {
         get => _heatSensitiveManager;
     }
-    public List<float> CountersGameMinutes { 
-        get => _logTimers;
-        set => _logTimers = value; 
-    }
-
-    private List<Action> _unsubscribeHooks = new();
     
-    void Awake()
+    private void Start()
     {   
         // References
         _heatSensitiveManager = GetComponent<HeatSensitiveManager>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _gameClock = GameObject.FindGameObjectWithTag("GameClock").GetComponent<GameClock>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
-
-        // Reactive
-        _unsubscribeHooks.Add(_numWetLogs.OnChange((prev,curr) => UpdateRackSprite()));
-        _unsubscribeHooks.Add(_numDryLogs.OnChange((prev,curr) => UpdateRackSprite()));
-        _unsubscribeHooks.Add(_gameClock.GameMinute.OnChange((prev,curr) => OnGameMinuteTick()));
-    }
-
-    private void Start() {
         UpdateRackSprite();
     }
+
+    private void OnEnable() {
+        _unsubscribeHooks.Add(_numWetLogs.OnChange((prev,curr) => UpdateRackSprite()));
+        _unsubscribeHooks.Add(_numDryLogs.OnChange((prev,curr) => UpdateRackSprite()));
+        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((prev,curr) => OnGameMinuteTick()));
+    }
+
     private void OnDisable() {
         foreach(var _hook in _unsubscribeHooks)
             _hook();
@@ -96,15 +72,15 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
     }
 
     public void OnGameMinuteTick() {
-        for (int i = 0; i < _logTimers.Count; i++) {
+        for (int i = 0; i < _logDryingTimers.Count; i++) {
             if (_heatSensitiveManager.LocalTemperature == Temperature.Hot || _heatSensitiveManager.LocalTemperature == Temperature.Warm) {
-                _logTimers[i] +=  1 * _fireOnMultiplier;
+                _logDryingTimers[i] +=  1 * _temperatureMultiplier;
             }
             else {
-                _logTimers[i]++;
+                _logDryingTimers[i]++;
             }
         }
-        int _numOfExpiredTimers = _logTimers.RemoveAll(timerCount => timerCount >= _timeToDryGameMins);
+        int _numOfExpiredTimers = _logDryingTimers.RemoveAll(timerCount => timerCount >= _timeToDryGameMins);
         _numWetLogs.Value -= _numOfExpiredTimers;
         _numDryLogs.Value += _numOfExpiredTimers;
     }
@@ -112,11 +88,11 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
     public void AddWetLog() {
         _inventory.TryRemoveItem("WetLog", 1);
         _numWetLogs.Value++;
-        _logTimers.Add(0);
+        _logDryingTimers.Add(0);
     }
 
     private bool IsRackFull() {
-        if (_numWetLogs.Value + _numDryLogs.Value >= _capacity) {
+        if (_numWetLogs.Value + _numDryLogs.Value >= _rackLogCapacity) {
             PlayerDialogueController.Instance.PostMessage("I can't fit anymore...");
             return true;
         } 
@@ -174,4 +150,22 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, IWorldObje
         }
         return true;
     }
+
+    public WoodRackSaveData Save() {
+        return new WoodRackSaveData() {
+            Identifier = IDENTIFIER,
+            Position = new SimpleVector3(transform.position),
+            NumWetLogs = _numWetLogs.Value,
+            NumDryLogs = _numDryLogs.Value,
+            LogTimers = _logDryingTimers
+        };
+    }
+
+    public void Load(WoodRackSaveData saveData)
+    {
+        _logDryingTimers = saveData.LogTimers;
+        _numWetLogs.Value = saveData.NumWetLogs;
+        _numDryLogs.Value = saveData.NumDryLogs;
+    }
+
 }
