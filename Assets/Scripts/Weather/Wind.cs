@@ -76,8 +76,12 @@ public class Wind : MonoBehaviour
             CardinalVector _moveSpeedMultiplier;
             _moveSpeedMultiplier.north = 1;
             _moveSpeedMultiplier.south = 1;
-            _moveSpeedMultiplier.east = 1 + _windXVector * _playerMoveSpeedMultiplier;   
-            _moveSpeedMultiplier.west = 1 - _windXVector * _playerMoveSpeedMultiplier;
+            _moveSpeedMultiplier.east = (_windXVector > 0) ?
+                                        1 + _windXVector * _windXVector * _playerMoveSpeedMultiplier / 3 :
+                                        1 + _windXVector * _windXVector * _playerMoveSpeedMultiplier;
+            _moveSpeedMultiplier.west = (_windXVector > 0) ? 
+                                        1 - _windXVector * _windXVector * _playerMoveSpeedMultiplier :
+                                        1 - _windXVector * _windXVector * _playerMoveSpeedMultiplier / 3;
             _playerMovementController.SetMoveSpeedMultiplier(_moveSpeedMultiplier);
         }
         else {
