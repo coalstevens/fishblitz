@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using ReactiveUnity;
-
-public class PlacedMountedRodSaveData : WorldObjectSaveData {
-    public bool fishOnState;
-}
+using System;
 
 // Used for 4 different prefabs (different rod facing directions)
 // Hence there is lots of serialized members
-public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMountedRodSaveData>
+public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable
 {
+    private class PlacedMountedRodSaveData {
+        public bool fishOnState;
+    }
     [SerializeField] private string _identifier;
     
     [Header("Sprite Options")]
@@ -36,6 +36,7 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMo
     private FishBar _fishBar;
     private Coroutine _changeStateRoutine;
     private ActiveGridCell _activeGridCell;
+    private List<Action> _unsubscribeHooks = new();
 
     public Collider2D ObjCollider {
         get {
@@ -66,11 +67,26 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMo
 
     private void Awake()
     {
+        // References
+        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
+        _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _fishOn.OnChange((_, curr) => ChangeSprite(curr, _selected.Value));
-        _fishOn.OnChange((_, curr) => Shake());
-        _selected.OnChange((_, selected) => ChangeSprite(_fishOn.Value, selected));
+    }
+    
+    private void OnEnable() {
+        // Reactive
+        _unsubscribeHooks.Add(_fishOn.OnChange((_, curr) => ChangeSprite(curr, _selected.Value)));
+        _unsubscribeHooks.Add(_fishOn.OnChange((_, curr) => Shake()));
+        _unsubscribeHooks.Add(_selected.OnChange((_, selected) => ChangeSprite(_fishOn.Value, selected)));
+
         ChangeSprite(_fishOn.Value, _selected.Value);
+    }
+
+    private void OnDisable() {
+        foreach (var hook in _unsubscribeHooks)
+            hook();
     }
 
     private void Shake()
@@ -78,19 +94,11 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMo
         transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
     }
 
-    private void Start()
-    {
-        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
-        _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
-    }
-
     private IEnumerator ChangeStateRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(_minChangeInterval, _maxChangeInterval));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(_minChangeInterval, _maxChangeInterval));
             _fishOn.Value = !_fishOn.Value;
         }
     }
@@ -143,17 +151,22 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable<PlacedMo
         return true;
     }
 
-    public PlacedMountedRodSaveData Save()
+    public SaveData Save()
     {
-        return new PlacedMountedRodSaveData {
-            Identifier = _identifier,
-            Position = new SimpleVector3(transform.position),
+        var _extendedData = new PlacedMountedRodSaveData {
             fishOnState = _fishOn.Value            
         };
+
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(_identifier);
+        _saveData.AddTransformPosition(transform.position);
+        _saveData.AddExtendedSaveData<PlacedMountedRodSaveData>(_extendedData);
+        return _saveData;
     }
 
-    public void Load(PlacedMountedRodSaveData saveData)
+    public void Load(SaveData saveData)
     {
-        _fishOn.Value = saveData.fishOnState;
+        var _extendedData = saveData.GetExtendedSaveData<PlacedMountedRodSaveData>();
+        _fishOn.Value = _extendedData.fishOnState;
     }
 }

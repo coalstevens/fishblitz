@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class WoodRackSaveData : WorldObjectSaveData {
-    public int NumWetLogs;
-    public int NumDryLogs;
-    public List <float> LogTimers;
-}
 
-public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable, ISaveable<WoodRackSaveData>
+public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable, ISaveable
 {
+    // SaveData
+    private class WoodRackSaveData {
+        public int NumWetLogs;
+        public int NumDryLogs;
+        public List <float> LogTimers;
+    }
+
     // References
     private SpriteRenderer _spriteRenderer;
     private Inventory _inventory;
@@ -47,7 +49,7 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable,
         get => _heatSensitiveManager;
     }
     
-    private void Start()
+    private void Awake()
     {   
         // References
         _heatSensitiveManager = GetComponent<HeatSensitiveManager>();
@@ -151,21 +153,27 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable,
         return true;
     }
 
-    public WoodRackSaveData Save() {
-        return new WoodRackSaveData() {
-            Identifier = IDENTIFIER,
-            Position = new SimpleVector3(transform.position),
+    public SaveData Save() {
+        var _extendedData = new WoodRackSaveData() {
             NumWetLogs = _numWetLogs.Value,
             NumDryLogs = _numDryLogs.Value,
             LogTimers = _logDryingTimers
         };
+
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddTransformPosition(transform.position);
+        _saveData.AddExtendedSaveData<WoodRackSaveData>(_extendedData);
+
+        return _saveData;
     }
 
-    public void Load(WoodRackSaveData saveData)
+    public void Load(SaveData saveData)
     {
-        _logDryingTimers = saveData.LogTimers;
-        _numWetLogs.Value = saveData.NumWetLogs;
-        _numDryLogs.Value = saveData.NumDryLogs;
+        var _extendedData = saveData.GetExtendedSaveData<WoodRackSaveData>();
+        _logDryingTimers = _extendedData.LogTimers;
+        _numWetLogs.Value = _extendedData.NumWetLogs;
+        _numDryLogs.Value = _extendedData.NumDryLogs;
     }
 
 }

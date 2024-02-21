@@ -29,7 +29,7 @@ public abstract class TreePlant : MonoBehaviour {
         }
     } 
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         OnStateChange();

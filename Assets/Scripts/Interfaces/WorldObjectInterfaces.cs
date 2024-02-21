@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISaveable<T> where T : WorldObjectSaveData
-{
-    T Save();
-    void Load(T saveData);
+public interface ISaveable {
+    SaveData Save();
+    void Load(SaveData saveData);
 }
 
 //TODO define me plox

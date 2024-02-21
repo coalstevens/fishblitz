@@ -1,20 +1,23 @@
-public class SpruceSaveData : WorldObjectSaveData {
-    public TreeStates TreeState;
-}
-public class Spruce : TreePlant, ISaveable<SpruceSaveData> {
+public class Spruce : TreePlant, ISaveable {
     private const string IDENTIFIER = "Spruce";
-
-    public void Load(SpruceSaveData saveData)
-    {
-        _treeState.Value = saveData.TreeState;
+    private class SpruceSaveData {
+        public TreeStates TreeState;
     }
-
-    public SpruceSaveData Save()
+    public SaveData Save()
     {
-        return new SpruceSaveData {
-            Identifier = IDENTIFIER,
-            Position = new SimpleVector3(transform.position),
+        var _extendedData = new SpruceSaveData {
             TreeState = _treeState.Value
         };
+
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddTransformPosition(transform.position);
+        _saveData.AddExtendedSaveData<SpruceSaveData>(_extendedData);
+        return _saveData;
+    }
+    public void Load(SaveData saveData)
+    {
+        var _extendedData = saveData.GetExtendedSaveData<SpruceSaveData>();
+        _treeState.Value = _extendedData.TreeState;
     }
 }

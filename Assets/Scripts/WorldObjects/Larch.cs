@@ -3,33 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
-public enum ExtendedStates{AxeIn = 4, LogOn, Splitting, BaseState};
 
-public class LarchSaveData : WorldObjectSaveData {
-    public ExtendedStates ExtendedState;
-    public TreeStates TreeState;
-}
 
 // Note: If you switch from basestate.stump to an extendedstate, then back to basestate.stump
 // you can't trigger the transition by setting basestate as OnChange won't be called
 // as basestate was always basestate.stump
-public class Larch : TreePlant, IInteractable, IUseableWithAxe, ISaveable<LarchSaveData>
-{
+public class Larch : TreePlant, IInteractable, IUseableWithAxe, ISaveable {
     private const string IDENTIFIER = "Larch";
+    private enum ExtendedStates{AxeIn = 4, LogOn, Splitting, BaseState};
+    private class LarchSaveData {
+        public ExtendedStates ExtendedState;
+        public TreeStates TreeState;
+    }
     
     [Header("Extended State")]
     [SerializeField] private Sprite _axeIn;
     [SerializeField] private Sprite _logOn;
     [SerializeField] private Reactive<ExtendedStates> _extendedState = new Reactive<ExtendedStates>(ExtendedStates.BaseState);
     private Inventory _inventory;
-    Animator _animator;
-    List<Action> _unsubscribeHooks = new();
+    private Animator _animator;
+    private List<Action> _unsubscribeHooks = new();
 
-    protected override void Start() {
+    protected override void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
-        _animator.enabled = false;
+        _animator.enabled = false; 
         OnExtendedStateChange();
     }
 
@@ -61,6 +60,7 @@ public class Larch : TreePlant, IInteractable, IUseableWithAxe, ISaveable<LarchS
                 return;
             default:
                 // Extended case null. Check base states
+                _animator.enabled = false;
                 OnStateChange();
             break;
         }
@@ -105,22 +105,23 @@ public class Larch : TreePlant, IInteractable, IUseableWithAxe, ISaveable<LarchS
         }
     }
 
-    public LarchSaveData Save()
-    {
-        return new LarchSaveData() {
-            Identifier = IDENTIFIER,
-            Position = new SimpleVector3(transform.position),
+    public SaveData Save() {
+        var _extendedData = new LarchSaveData() {
             ExtendedState = _extendedState.Value,
             TreeState = _treeState.Value,
         };
+
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddTransformPosition(transform.position);
+        _saveData.AddExtendedSaveData<LarchSaveData>(_extendedData);
+        //Debug.Log(_saveData._identifier + ", " + _saveData._position.x + ", " + _saveData._position.y + ", " + _saveData._position.z);
+        return _saveData;
     }
 
-    public void Load(LarchSaveData saveData)
-    {
-        OnDisable();
-        _treeState.Value = saveData.TreeState;
-        _extendedState.Value = saveData.ExtendedState;
-        OnEnable();
-        OnExtendedStateChange();
+    public void Load(SaveData saveData) {
+        var _extendedData = saveData.GetExtendedSaveData<LarchSaveData>();
+        _treeState.Value = _extendedData.TreeState;
+        _extendedState.Value = _extendedData.ExtendedState;
     }
 }

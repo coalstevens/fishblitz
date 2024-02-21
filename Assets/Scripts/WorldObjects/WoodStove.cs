@@ -4,12 +4,13 @@ using ReactiveUnity;
 using UnityEngine;
 
 public enum StoveStates {Dead, Ready, Hot, Embers};
-public class WoodStoveSaveData : WorldObjectSaveData {
-    public StoveStates State;
-}
-public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, ISaveable<WoodStoveSaveData>
+public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, ISaveable
 {
     private const string IDENTIFIER = "WoodStove";
+    private class WoodStoveSaveData {
+        public StoveStates State;
+        public int FireDurationCounterGameMinutes;
+    }
     private HeatSourceManager _heatSourceManager;
     private Animator _animator;
     private Inventory _inventory;
@@ -45,16 +46,6 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
         }
     }
 
-    public List<float> CountersGameMinutes { 
-        get {
-            List<float> _counters = new() {
-                (float)_fireDurationCounterGameMinutes
-            };
-            return _counters;
-        }
-        set => _fireDurationCounterGameMinutes = (int) value[0];
-    }
-
     private List<Action> _unsubscribeHooks = new();
     void Awake()
     {
@@ -70,6 +61,7 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
         _unsubscribeHooks.Add(_gameClock.GameMinute.OnChange((curr, prev) => OnGameMinuteTick()));
         EnterDead();
     }
+
     private void OnDisable() {
         foreach (var _hook in _unsubscribeHooks) 
             _hook();
@@ -181,17 +173,24 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
         _fireDurationCounterGameMinutes = 0;
     }
 
-    public WoodStoveSaveData Save()
+    public SaveData Save()
     {
-        return new WoodStoveSaveData {
-            Identifier = IDENTIFIER,
-            Position = new SimpleVector3(transform.position),
-            State = _stoveState.Value
+        var _extendedData = new WoodStoveSaveData {
+            State = _stoveState.Value,
+            FireDurationCounterGameMinutes = _fireDurationCounterGameMinutes
         };
+
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddTransformPosition(transform.position);
+        _saveData.AddExtendedSaveData<WoodStoveSaveData>(_extendedData);
+        return _saveData;
     }
 
-    public void Load(WoodStoveSaveData saveData)
+    public void Load(SaveData saveData)
     {
-        _stoveState.Value = saveData.State;
+        var _extendedData = saveData.GetExtendedSaveData<WoodStoveSaveData>();
+        _stoveState.Value = _extendedData.State;
+        _fireDurationCounterGameMinutes = _extendedData.FireDurationCounterGameMinutes;
     }
 }
