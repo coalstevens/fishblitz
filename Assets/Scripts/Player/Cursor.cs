@@ -19,7 +19,7 @@ public class Cursor : MonoBehaviour
         _playerSpriteRenderer = GameObject.FindWithTag("Player").GetComponent<SpriteRenderer>();
         _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
         _playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr));
-        //_grid = GameObject.FindObjectOfType<Grid>();
+        OnDirectionChange(_playerMovementController.FacingDir.Value);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

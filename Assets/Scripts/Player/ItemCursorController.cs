@@ -7,11 +7,15 @@ public class ItemCursorController : MonoBehaviour
     private Transform _inventoryContainer;
     private GameObject _itemCursor;
     
-    void Start()
-    {
+    void Start() {
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer").transform;
         _itemCursor = GameObject.FindGameObjectWithTag("ItemCursor");
+        StartCoroutine(WaitForUIUpdate());
+    }
+
+    IEnumerator WaitForUIUpdate() {
+        yield return null;
         SetActiveSlot(0);
     }
 

@@ -115,7 +115,6 @@ public class Larch : TreePlant, IInteractable, IUseableWithAxe, ISaveable {
         _saveData.AddIdentifier(IDENTIFIER);
         _saveData.AddTransformPosition(transform.position);
         _saveData.AddExtendedSaveData<LarchSaveData>(_extendedData);
-        //Debug.Log(_saveData._identifier + ", " + _saveData._position.x + ", " + _saveData._position.y + ", " + _saveData._position.z);
         return _saveData;
     }
 

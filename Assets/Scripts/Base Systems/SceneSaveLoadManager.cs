@@ -21,8 +21,6 @@ public class SceneSaveLoadManager : MonoBehaviour {
     }
 
     public void SaveScene() {
-        Debug.Log("Saving Scene");
-        
         SceneSaveData _sceneSaveData = new();
         _sceneSaveData.SaveDatas = GatherSaveDataInParent(_impermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.GenerateCapture();
@@ -33,7 +31,6 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private async void LoadScene() {
         String _fileName = GetFileName();
-        Debug.Log(_fileName);
 
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
@@ -60,7 +57,6 @@ public class SceneSaveLoadManager : MonoBehaviour {
         foreach (Transform _child in parent)
             if (_child.TryGetComponent<ISaveable>(out var _saveable) ) {
                 SaveData _savedata = _saveable.Save();
-                Debug.Log("Saving a: " + _savedata._identifier);
                 _saveDatas.Add(_savedata);
             }
         return _saveDatas; 
@@ -75,7 +71,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private void ProcessElapsedTimeInParent(GameClockCapture pastTime, Transform parent) {  
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
-        Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
+        // Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
         List<ITickable> _tickables = new();
 
         // get tickables

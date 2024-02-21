@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,7 @@ public class ActiveGridCell : MonoBehaviour
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _grid = GameObject.FindObjectOfType<Grid>();
     }
+    
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         _grid = GameObject.FindObjectOfType<Grid>();
     }

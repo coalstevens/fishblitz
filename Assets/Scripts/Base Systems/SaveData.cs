@@ -58,7 +58,6 @@ public class SaveData {
     }
 
     public GameObject InstantiateGameObjectFromSaveData(Transform parent) {
-        Debug.Log("Loading a: " + _identifier);
         if (_identifier == null) {
             Debug.LogError("There is no identifier to load the Worldobject");
             return null;
@@ -72,7 +71,6 @@ public class SaveData {
 
         Vector3 _savedPosition = _position == null ? Vector3.zero : new Vector3(_position.x, _position.y, _position.z); 
         GameObject _newObject = UnityEngine.Object.Instantiate(_prefab, _savedPosition, Quaternion.identity, parent);
-        Debug.Log("Instantiated a new " + _identifier);
 
         return _newObject;
     }

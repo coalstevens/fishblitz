@@ -14,7 +14,7 @@ public class StartingItem {
 
 public class Inventory : MonoBehaviour
 {
-    private string saveFilePath;
+    private string _saveFilePath;
     private GameObject _itemCursorController;
     private GameObject _inventoryContainer;
     private int _totalSlots = 10;
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         _itemCursorController = GameObject.FindGameObjectWithTag("ItemCursorController");
         _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer");
-        saveFilePath = Path.Combine(Application.persistentDataPath, "InventoryData.json");
+        _saveFilePath = Path.Combine(Application.persistentDataPath, "InventoryData.json");
         _slotAssignments = LoadInventory();
         UpdateUIAllSlots();
 
@@ -252,13 +252,13 @@ public class Inventory : MonoBehaviour
 
     private void SaveInventory() {
         string json = JsonUtility.ToJson(_slotAssignments);
-        File.WriteAllText(saveFilePath, json);
+        File.WriteAllText(_saveFilePath, json);
     }
     
     private Dictionary<int, IInventoryItem> LoadInventory() {
-        if (File.Exists(saveFilePath))
+        if (File.Exists(_saveFilePath))
         {
-            string json = File.ReadAllText(saveFilePath);
+            string json = File.ReadAllText(_saveFilePath);
             return JsonUtility.FromJson<Dictionary<int, IInventoryItem>>(json);
         }
         else
