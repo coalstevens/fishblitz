@@ -3,16 +3,64 @@ using System.Collections.Generic;
 using System.IO;
 using OysterUtils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BootManager : MonoBehaviour
 {
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
+    private SpriteRenderer _player;
+    private Transform _activeGridCell;
+    private Transform _itemCursor;
+    private Transform _inventoryContainer;
+    private Transform _topRightHUD;
     void Start()
     {
-        SmoothSceneManager.LoadScene(_toScene);
-        PlayerData.Instance.SceneSpawnPosition = _sceneSpawnLocation; 
+        // Events
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+        // References
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
+        _activeGridCell = GameObject.FindGameObjectWithTag("ActiveGridCell").transform;
+        _itemCursor = GameObject.FindGameObjectWithTag("ItemCursor").transform;
+        _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer").transform;
+        _topRightHUD = GameObject.FindGameObjectWithTag("TopRightHUD").transform;
+
+        // Disable visual elements
+        _player.enabled = false;
+        _activeGridCell.gameObject.SetActive(false);
+        _itemCursor.gameObject.SetActive(false);
+        _inventoryContainer.gameObject.SetActive(false);
+        _topRightHUD.gameObject.SetActive(false);
+
         ClearAllFilesInPersistentDataPath();
+        StartCoroutine(OpeningDialogue());
+    }
+
+    IEnumerator OpeningDialogue() {
+        yield return new WaitForSeconds(1f);
+        NarratorSpeechController.Instance.PostMessage("You are wet.");
+        yield return new WaitForSeconds(2f);
+        NarratorSpeechController.Instance.PostMessage("You are cold.");
+        yield return new WaitForSeconds(2f);
+        NarratorSpeechController.Instance.PostMessage("You are exhausted.");
+        yield return new WaitForSeconds(5f); 
+        LoadInitialScene();
+    }
+
+    void LoadInitialScene() {
+        SmoothSceneManager.LoadScene(_toScene);
+        PlayerData.Instance.SceneSpawnPosition = _sceneSpawnLocation;
+    }
+
+    void OnSceneUnloaded(Scene current) {
+        // Turn on visual elements
+        _player.enabled = true;
+        _activeGridCell.gameObject.SetActive(true);
+        _itemCursor.gameObject.SetActive(true);
+        _inventoryContainer.gameObject.SetActive(true);
+        _topRightHUD.gameObject.SetActive(true);
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
     void ClearAllFilesInPersistentDataPath()
