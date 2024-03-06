@@ -35,7 +35,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         DontDestroyOnLoad(gameObject);
         _itemCursorController = GameObject.FindGameObjectWithTag("ItemCursorController");

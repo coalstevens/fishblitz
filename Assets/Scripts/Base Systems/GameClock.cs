@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ReactiveUnity;
+using UnityEditor.Build.Content;
 
 public class GameClock : Singleton<GameClock>
 {
@@ -109,6 +110,17 @@ public class GameClock : Singleton<GameClock>
     public static GameClockCapture GenerateCapture() {
         return new GameClockCapture(Instance);
     }
+    public void SkipToTime(int hour, int minute) {
+        while (GameHour.Value != hour && GameMinute.Value != minute)
+            IncrementGameMinute();
+    }
+
+    public void SkipTime(int minutes) {
+        for (int i = 0; i < minutes; i++) {
+            IncrementGameMinute();
+        }
+    }
+
     public static int CalculateElapsedGameMinutesSinceTime(GameClockCapture pastTime) {
         GameClockCapture _currentTime = new GameClockCapture(Instance);
         int _elapsedGameMinutes = Instance.CalculateElapsedGameMinutesSinceZeroTime(_currentTime) - Instance.CalculateElapsedGameMinutesSinceZeroTime(pastTime);
