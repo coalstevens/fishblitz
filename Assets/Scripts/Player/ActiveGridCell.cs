@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,21 +16,31 @@ public class ActiveGridCell : MonoBehaviour
     private PlayerMovementController _playerMovementController;
     private Inventory _inventory;
     public Cursor _activeCursor;    
-
-    void Start()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        _activeCursor = _cursorE;
-        _tilemaps = FindObjectsOfType<Tilemap>();
-        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
-        _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _grid = GameObject.FindObjectOfType<Grid>();
-    }
+    private List<Action> _unsubscribeHooks = new();
     
+    private void OnEnable() {
+        _activeCursor = _cursorE;
+        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _tilemaps = FindObjectsOfType<Tilemap>();
+        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
+        _unsubscribeHooks.Add(_playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr)));
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        foreach (var hook in _unsubscribeHooks)
+            hook();
+    }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         _grid = GameObject.FindObjectOfType<Grid>();
+        if (_grid != null) {
+            Debug.Log("Found the grid");
+        }
+        else {
+            Debug.Log("Can't find a grid");
+        }
     }
+
     private void OnDirectionChange(Direction curr)
     {
         switch (curr)
@@ -51,6 +62,8 @@ public class ActiveGridCell : MonoBehaviour
 
     public Vector3Int GetActiveCursorLocation()
     {
+        if (_grid == null)
+            Debug.LogError("Grid is null, can't find active cursor location");
         return _grid.WorldToCell(_activeCursor.transform.position);
     }
 
@@ -120,7 +133,7 @@ public class ActiveGridCell : MonoBehaviour
         {
             return;
         }
-
+    
         // return if item doesn't use the cursor
         if (_activeItem is not IPlayerCursorUsingItem) {
             return;

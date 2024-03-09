@@ -4,7 +4,7 @@ using ReactiveUnity;
 using UnityEngine;
 
 
-public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable, ISaveable
+public class WoodRack : MonoBehaviour, IInteractable, ITickable, ISaveable
 {
     // SaveData
     private class WoodRackSaveData {
@@ -16,7 +16,7 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable,
     // References
     private SpriteRenderer _spriteRenderer;
     private Inventory _inventory;
-    private HeatSensitiveManager _heatSensitiveManager;
+    private HeatSensitive _heatSensitive;
 
     // Reactive
     private Reactive<int> _numWetLogs = new Reactive<int>(0);
@@ -45,14 +45,11 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable,
             }
         }
     }
-    HeatSensitiveManager IHeatSensitive.HeatSensitive {
-        get => _heatSensitiveManager;
-    }
     
     private void Awake()
     {   
         // References
-        _heatSensitiveManager = GetComponent<HeatSensitiveManager>();
+        _heatSensitive = GetComponent<HeatSensitive>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         UpdateRackSprite();
@@ -75,7 +72,7 @@ public class WoodRack : MonoBehaviour, IHeatSensitive, IInteractable, ITickable,
 
     public void OnGameMinuteTick() {
         for (int i = 0; i < _logDryingTimers.Count; i++) {
-            if (_heatSensitiveManager.LocalTemperature == Temperature.Hot || _heatSensitiveManager.LocalTemperature == Temperature.Warm) {
+            if (_heatSensitive.Temperature == Temperature.Hot || _heatSensitive.Temperature == Temperature.Warm) {
                 _logDryingTimers[i] +=  1 * _temperatureMultiplier;
             }
             else {

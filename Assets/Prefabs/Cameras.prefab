@@ -847,7 +847,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 200, y: -108}
+  m_AnchoredPosition: {x: 200, y: -108.00001}
   m_SizeDelta: {x: 356, y: 151}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &2257055117908091156
@@ -2599,10 +2599,9 @@ GameObject:
   m_Component:
   - component: {fileID: 459834229587421087}
   - component: {fileID: 1760256139418003714}
-  - component: {fileID: 7212835651239105420}
   m_Layer: 5
-  m_Name: Narrator
-  m_TagString: Untagged
+  m_Name: NarratorMessageContainer
+  m_TagString: NarratorMessageContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2634,24 +2633,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8613478080645519956}
   m_CullTransparentMesh: 1
---- !u!114 &7212835651239105420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8613478080645519956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75a39c5c3204a4a8bb7eb9b835775dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _messagePrefab: {fileID: 6834897798882846490, guid: bc5d33e994e194dd591ad2487dd1e870, type: 3}
-  _messageDurationSecs: 5
-  _fadeRateAlphaPerFrame: 0.005
-  _bottomPadding: 1.5
-  _sidePadding: 0.5
-  _lineSpacing: 0.3
 --- !u!1 &8718462141298829828
 GameObject:
   m_ObjectHideFlags: 0

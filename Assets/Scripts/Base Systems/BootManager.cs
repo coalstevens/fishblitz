@@ -32,7 +32,8 @@ public class BootManager : MonoBehaviour
         _itemCursor.gameObject.SetActive(false);
         _inventoryContainer.gameObject.SetActive(false);
         _topRightHUD.gameObject.SetActive(false);
-
+        //PlayerCondition.Instance.GetComponent<PlayerTemperatureManager>().enabled = false;
+        // PlayerCondition.Instance.GetComponent<PlayerDryingManager>().enabled = false;
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
@@ -40,11 +41,9 @@ public class BootManager : MonoBehaviour
     IEnumerator OpeningDialogue() {
         yield return new WaitForSeconds(1f);
         NarratorSpeechController.Instance.PostMessage("You are wet.");
-        yield return new WaitForSeconds(2f);
-        NarratorSpeechController.Instance.PostMessage("You are cold.");
-        yield return new WaitForSeconds(2f);
+        NarratorSpeechController.Instance.PostMessage("You are freezing.");
         NarratorSpeechController.Instance.PostMessage("You are exhausted.");
-        yield return new WaitForSeconds(5f); 
+        yield return new WaitForSeconds(11f); 
         LoadInitialScene();
     }
 
@@ -60,6 +59,8 @@ public class BootManager : MonoBehaviour
         _itemCursor.gameObject.SetActive(true);
         _inventoryContainer.gameObject.SetActive(true);
         _topRightHUD.gameObject.SetActive(true);
+        // PlayerCondition.Instance.GetComponent<PlayerTemperatureManager>().enabled = true;
+        // PlayerCondition.Instance.GetComponent<PlayerDryingManager>().enabled = true;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 

@@ -7,7 +7,7 @@ public class ItemCursorController : MonoBehaviour
     private Transform _inventoryContainer;
     private GameObject _itemCursor;
     
-    void Start() {
+    void Awake() {
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer").transform;
         _itemCursor = GameObject.FindGameObjectWithTag("ItemCursor");

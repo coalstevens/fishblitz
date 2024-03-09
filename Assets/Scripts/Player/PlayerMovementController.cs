@@ -36,25 +36,6 @@ public struct CardinalVector
     }
 public class PlayerMovementController : MonoBehaviour
 {
-    private static PlayerMovementController _instance;
-    public static PlayerMovementController Instance
-    {
-        get
-        {
-            // If the instance doesn't exist, find it in the scene
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PlayerMovementController>();
-
-                if (_instance == null)
-                {
-                    Debug.LogError("Player object does not exist");
-                }
-            }
-
-            return _instance;
-        }
-    }
     private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currMotionVector = Vector2.zero;
     private Rigidbody2D _rb;
@@ -67,22 +48,15 @@ public class PlayerMovementController : MonoBehaviour
     private CardinalVector _moveSpeed;
     private CardinalVector _moveSpeedMultiplier;
 
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Keeps the GameObject with the singleton alive between scenes
-        }
-        else
-        {
-            Destroy(gameObject); // Ensures that only one instance of the singleton exists
-        }
-        SceneManager.sceneLoaded += OnSceneLoaded;
+    private void Awake() {
         _rb = GetComponent<Rigidbody2D>();
         transform.position = PlayerData.Instance.SceneSpawnPosition;
         _moveSpeed = new CardinalVector(DEFAULT_MOVE_SPEED);
         _moveSpeedMultiplier = new CardinalVector(1);
+    }
+
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {

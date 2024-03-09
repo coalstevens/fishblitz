@@ -17,14 +17,6 @@ public interface IInteractable {
     public bool CursorInteract(Vector3 cursorLocation);
 }
 
-public interface IHeatSensitive {
-    public HeatSensitiveManager HeatSensitive{get;}
-}
-
-public interface IHeatSource {
-    public HeatSourceManager HeatSource {get;}
-}
-
 public interface ITickable {
     public void OnGameMinuteTick();
 }

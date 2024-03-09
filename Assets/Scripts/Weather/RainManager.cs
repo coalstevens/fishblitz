@@ -7,7 +7,8 @@ public enum RainStates {Raining, NotRaining}; // clearsky?
 public class RainManager : Singleton<RainManager> {
     private Transform _playerCamera;
     public event Action<RainStates> RainStateChange;
-    private Transform _rainParticleSystem;
+    private GameObject _rainParticleSystem;
+    private const float RAIN_Y_OFFSET = 9.25f;
     private string _sceneName;
     private RainStates _rainState = RainStates.Raining;
 
@@ -33,16 +34,21 @@ public class RainManager : Singleton<RainManager> {
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         _sceneName = SceneManager.GetActiveScene().name;
-        _rainParticleSystem = GameObject.FindGameObjectWithTag("Rain").transform;
+        _rainParticleSystem = GameObject.FindGameObjectWithTag("Rain");
     }
 
     void Update()
     {
         switch (_sceneName) { 
             case "Outside":
-                _rainParticleSystem.position = _playerCamera.position;    
+                //_rainParticleSystem.transform.position = _playerCamera.position;
+                Vector3 _newPosition = _playerCamera.position;
+                _newPosition.y += RAIN_Y_OFFSET;
+                _rainParticleSystem.transform.position = _newPosition; 
                 break;
             case "Abandonded Shed":
+                break;
+            case "Boot":
                 break;
         }
     }

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using ReactiveUnity;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class Cursor : MonoBehaviour
 {
@@ -11,15 +12,21 @@ public class Cursor : MonoBehaviour
     private PlayerMovementController _playerMovementController;
     private Grid _grid;
     private SpriteRenderer _playerSpriteRenderer;
+    private List<Action> _unsubscribeHooks = new();
 
-    private void Start()
+    private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _playerSpriteRenderer = GameObject.FindWithTag("Player").GetComponent<SpriteRenderer>();
-        _playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr));
-        _playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr));
+        _unsubscribeHooks.Add(_playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr)));
         OnDirectionChange(_playerMovementController.FacingDir.Value);
+    }
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        foreach (var hook in _unsubscribeHooks)
+            hook();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -7,10 +8,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     public static T Instance {
         get {
             if (_instance == null) {
-                _instance = FindObjectOfType<T>();
-                if (_instance == null) {
-                    Debug.LogError("An instance of this class doesn't exist");
-                }
+                Debug.LogError("This singleton property was accessed before awake was called");
             }
             return _instance;
         }
@@ -20,9 +18,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (_instance == null) {
             _instance = this as T;
+            // Debug.Log("Singleton created:" + gameObject.name);
             DontDestroyOnLoad(gameObject);
         }
         else {
+            Debug.Log("Singleton class destroyed game object: " + gameObject.name);
             Destroy(gameObject);
         }
     }

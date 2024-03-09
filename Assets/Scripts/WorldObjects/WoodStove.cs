@@ -4,17 +4,17 @@ using ReactiveUnity;
 using UnityEngine;
 
 public enum StoveStates {Dead, Ready, Hot, Embers};
-public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, ISaveable
+public class WoodStove : MonoBehaviour, IInteractable, ITickable, ISaveable
 {
     private const string IDENTIFIER = "WoodStove";
     private class WoodStoveSaveData {
         public StoveStates State;
         public int FireDurationCounterGameMinutes;
     }
-    private HeatSourceManager _heatSourceManager;
     private Animator _animator;
     private Inventory _inventory;
     private GameClock _gameClock;
+    private LocalHeatSource _localHeatSource;
     private Reactive<StoveStates> _stoveState = new Reactive<StoveStates>(StoveStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
@@ -40,18 +40,12 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
         }
     }
 
-    public HeatSourceManager HeatSource {
-        get {
-            return _heatSourceManager;
-        }
-    }
-
     private List<Action> _unsubscribeHooks = new();
     void Awake()
     {
         // References
-        _heatSourceManager = GetComponent<HeatSourceManager>();
         _animator = GetComponent<Animator>();
+        _localHeatSource = GetComponent<LocalHeatSource>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _gameClock = GameObject.FindGameObjectWithTag("GameClock").GetComponent<GameClock>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
@@ -103,7 +97,8 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
         _fireDurationCounterGameMinutes = 0;
         _animator.speed = 1f;
         _animator.Play("HotFire");
-        _heatSourceManager.LocalTemperature = Temperature.Hot;
+        _localHeatSource.enabled = true;
+        _localHeatSource.Temperature = Temperature.Warm;
         _fireLight.gameObject.SetActive(true);
         _fireLight.SetIntensity(_fireMinIntensity, _fireMaxIntensity);
     }
@@ -111,7 +106,8 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
     private void EnterEmbers() {
         _animator.speed = 0.05f;
         _animator.Play("Embers");
-        _heatSourceManager.LocalTemperature = Temperature.Warm;
+        _localHeatSource.enabled = true;
+        _localHeatSource.Temperature = Temperature.Warm;
         _fireLight.gameObject.SetActive(true);
         _fireLight.SetIntensity(_embersMinIntensity, _embersMaxIntensity);
     }
@@ -119,14 +115,14 @@ public class WoodStove : MonoBehaviour, IInteractable, IHeatSource, ITickable, I
     private void EnterDead() {
         _animator.speed = 1f;
         _animator.Play("Dead");
-        _heatSourceManager.DisableHeatSource();
+        _localHeatSource.enabled = false;
         _fireLight.gameObject.SetActive(false);
     }
 
     private void EnterReady() {
         _animator.speed = 1f;
         _animator.Play("Ready");
-        _heatSourceManager.DisableHeatSource();
+        _localHeatSource.enabled = false;
         _fireLight.gameObject.SetActive(false);
     }
 
