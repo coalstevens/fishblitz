@@ -79,6 +79,7 @@ public class Wind : MonoBehaviour
             CardinalVector _moveSpeedMultiplier;
             _moveSpeedMultiplier.north = 1;
             _moveSpeedMultiplier.south = 1;
+            // movespeed is reduced 1/3 when its a headwind 
             _moveSpeedMultiplier.east = (_windXVector > 0) ?
                                         1 + _windXVector * _windXVector * _playerMoveSpeedMultiplier / 3 :
                                         1 + _windXVector * _windXVector * _playerMoveSpeedMultiplier;

@@ -49,14 +49,14 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
     public void UseToolOnTile(IInteractableTile interactableTile, Vector3Int cursorLocation)
     {
         //if fishing stop fishing
-        if (_playerMovementController.CurrState.Value == State.Fishing) {
-            _playerMovementController.CurrState.Value = State.Idle;
+        if (_playerMovementController.PlayerState.Value == PlayerStates.Fishing) {
+            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
             StopCoroutine(_changeStateRoutine);
             return;
         }
 
         if (interactableTile is RodPlacement) {
-            _playerMovementController.CurrState.Value = State.Fishing;
+            _playerMovementController.PlayerState.Value = PlayerStates.Fishing;
             _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
         }
     }

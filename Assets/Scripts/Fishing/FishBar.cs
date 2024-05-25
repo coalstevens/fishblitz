@@ -159,7 +159,7 @@ public class FishBar : MonoBehaviour
 
     private IEnumerator PlayRoutine(float duration)
     {
-        _playerMovementController.CurrState.Value = State.Catching;
+        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
         float _time = 0;
         while (_time < duration)
         {
@@ -173,13 +173,12 @@ public class FishBar : MonoBehaviour
         if (!_failed.Value)
         {
             _inventory.Gold += 1;
-            _playerMovementController.CurrState.Value = State.Celebrating;
-            Invoke(nameof(BackToIdle), 1.5f);
+            _playerMovementController.PlayerState.Value = PlayerStates.Celebrating;
             _playerSoundController.PlaySound("Caught");
         }
         else
         {
-            _playerMovementController.CurrState.Value = State.Idle;
+            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
         }
 
         gameObject.SetActive(false);
@@ -187,7 +186,7 @@ public class FishBar : MonoBehaviour
 
     private void BackToIdle()
     {
-        _playerMovementController.CurrState.Value = State.Idle;
+        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
     }
 
     private void OnUseTool()

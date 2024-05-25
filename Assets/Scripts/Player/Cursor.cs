@@ -4,10 +4,16 @@ using ReactiveUnity;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
+/// <summary>
+/// Handles the Player world cursor.
+/// Only active in scenes with a grid.
+/// There are 4 cursor gameObjects, one for each cardinal direction.
+/// Only the cursor matching the player facing direction should be active.
+/// </summary>
 public class Cursor : MonoBehaviour
 {
     [SerializeField] public Transform _renderedTransform;
-    [SerializeField] private Direction _activeDirection;
+    [SerializeField] private FacingDirections _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     private PlayerMovementController _playerMovementController;
     private Grid _grid;
@@ -16,12 +22,16 @@ public class Cursor : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        // References
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _playerSpriteRenderer = GameObject.FindWithTag("Player").GetComponent<SpriteRenderer>();
-        _unsubscribeHooks.Add(_playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr)));
-        _unsubscribeHooks.Add(_playerMovementController.Fishing.OnChange((prev, curr) => OnFishingChange(curr)));
-        OnDirectionChange(_playerMovementController.FacingDir.Value);
+
+        // Subscriptions
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev,curr) => TryHideCursor(curr)));
+
+        OnDirectionChange(_playerMovementController.FacingDirection.Value);
     }
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -34,22 +44,21 @@ public class Cursor : MonoBehaviour
         _grid = GameObject.FindObjectOfType<Grid>();
     }
 
-    private void OnFishingChange(bool curr)
+    private void TryHideCursor(PlayerStates playerState)
     {
-        bool maybeTrue = _playerMovementController.FacingDir.Value == _activeDirection;
-        _spriteRenderer.enabled = curr ? false : maybeTrue;
+        // If player is in an Acting State, hide the cursor
+        if (playerState != PlayerStates.Idle && playerState != PlayerStates.Walking) {
+            _spriteRenderer.enabled = false;
+            return;
+        }
+        
+        bool playerFacingCursor = _playerMovementController.FacingDirection.Value == _cursorActiveDirection;
+        _spriteRenderer.enabled = playerFacingCursor;
     }
 
-    private void OnDirectionChange(Direction curr)
+    private void OnDirectionChange(FacingDirections currentDirection)
     {
-        if (curr == _activeDirection)
-        {
-            _spriteRenderer.enabled = true;
-        }
-        else
-        {
-            _spriteRenderer.enabled = false;
-        }
+        _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;
     }
 
     private void Update()

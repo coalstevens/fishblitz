@@ -13,88 +13,111 @@ public class PlayerAnimatorController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         
-        _playerMovementController.CurrState.OnChange((prev, curr) => OnStateChange(curr));
-        _playerMovementController.FacingDir.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Value));
-        _inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.CurrState.Value));
+        _playerMovementController.PlayerState.OnChange((prev, curr) => OnStateChange(curr));
+        _playerMovementController.FacingDirection.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));
+        _inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));
     }
 
-    private void OnStateChange(State curr)
+    private void OnStateChange(PlayerStates curr)
     {
-        Direction _facingDir = _playerMovementController.FacingDir.Value;
+        FacingDirections _facingDir = _playerMovementController.FacingDirection.Value;
 
         switch (curr)
         {
-            case State.Idle:
+            case PlayerStates.Idle:
                 HandleIdle(_facingDir);
-                return;
-            case State.Walking:  
+                break;
+            case PlayerStates.Walking:  
                 HandleWalking(_facingDir);
-                return;
-            case State.Fishing:
+                break;
+            case PlayerStates.Fishing:
                 HandleFishing(_facingDir);
-                return;
-            case State.Catching:
+                break;
+            case PlayerStates.Catching:
                 HandleCatching(_facingDir);
-                return;
-            case State.Celebrating:
+                break;
+            case PlayerStates.Axing:
+                HandleChopping(_facingDir);
+                break;
+            case PlayerStates.Celebrating:
                 HandleCelebrating();
-                return;
+                break;
             default:
-                return;
+                break;
         }
     }
 
     private void HandleCelebrating()
     {
         _animator.Play("Caught");
+        Invoke(nameof(SetPlayerIdle), 1.5f);
     }
 
-    private void HandleFishing(Direction facingDir)
+    private void HandleFishing(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _animator.Play("N_Fish");
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_Fish");
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_Fish");
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_Fish");
-                return;
+                break;
         }
     }
-
-    private void HandleCatching(Direction facingDir) 
+    private void HandleChopping(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
+                _animator.Play("N_Chop");
+                break;
+            case FacingDirections.South:
+                _animator.Play("S_Chop");
+                break;
+            case FacingDirections.East:
+                _animator.Play("E_Chop");
+                break;
+            case FacingDirections.West:
+                _animator.Play("W_Chop");
+                break;
+        }
+        Invoke(nameof(SetPlayerIdle), 0.610f);
+    }
+
+    private void HandleCatching(FacingDirections facingDir) 
+    {
+        switch (facingDir)
+        {
+            case FacingDirections.North:
                 _animator.Play("N_Catch");
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_Catch");
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_Catch");
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_Catch");
-                return;
+                break;
         }
 
     }
-    private void HandleWalking(Direction facingDir)
+    private void HandleWalking(FacingDirections facingDir)
     {
         if (_inventory.TryGetActiveItem(out var _activeItem)) {
             switch (_activeItem.ItemName)
             {
                 case "Axe":
                     HandleAxeWalking(facingDir);
-                    return;
+                    break;
                 default:
                     break;
             }
@@ -102,92 +125,96 @@ public class PlayerAnimatorController : MonoBehaviour
         HandleNoToolWalking(facingDir);
     }
     
-    private void HandleNoToolWalking(Direction facingDir)
+    private void HandleNoToolWalking(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _animator.Play("N_Walk", 0, 0.25f);
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_Walk", 0, 0.25f);
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_Walk", 0, 0.25f);
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_Walk", 0, 0.25f);
-                return;
+                break;
         }
     }
 
-    private void HandleAxeWalking(Direction facingDir)
+    private void HandleAxeWalking(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _animator.Play("N_AxeWalk", 0, 0.25f);
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_AxeWalk", 0, 0.25f);
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_AxeWalk", 0, 0.25f);
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_AxeWalk", 0, 0.25f);
-                return;
+                break;
         }
     }
     
-    private void HandleIdle(Direction facingDir)
+    private void HandleIdle(FacingDirections facingDir)
     {
         if (_inventory.TryGetActiveItem(out var _activeItem)) {
             switch (_activeItem.ItemName)
             {
                 case "Axe":
                     HandleAxeIdle(facingDir);
-                    return;
+                    break;
                 default:
                     break;
             }
         }
         HandleNoToolIdle(facingDir);
     }    
-    private void HandleNoToolIdle(Direction facingDir)
+    private void HandleNoToolIdle(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _animator.Play("N_Idle");
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_Idle");
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_Idle");
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_Idle");
-                return;
+                break;
         }
     }
-    private void HandleAxeIdle(Direction facingDir)
+    private void HandleAxeIdle(FacingDirections facingDir)
     {
         switch (facingDir)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _animator.Play("N_AxeIdle");
-                return;
-            case Direction.Down:
+                break;
+            case FacingDirections.South:
                 _animator.Play("S_AxeIdle");
-                return;
-            case Direction.Right:
+                break;
+            case FacingDirections.East:
                 _animator.Play("E_AxeIdle");
-                return;
-            case Direction.Left:
+                break;
+            case FacingDirections.West:
                 _animator.Play("W_AxeIdle");
-                return;
+                break;
         }
+    }
+
+    private void SetPlayerIdle() {
+        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
     }
 }

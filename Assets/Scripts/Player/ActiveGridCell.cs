@@ -23,7 +23,7 @@ public class ActiveGridCell : MonoBehaviour
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         _tilemaps = FindObjectsOfType<Tilemap>();
         _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
-        _unsubscribeHooks.Add(_playerMovementController.FacingDir.OnChange((prev, curr) => OnDirectionChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable() {
@@ -41,20 +41,20 @@ public class ActiveGridCell : MonoBehaviour
         }
     }
 
-    private void OnDirectionChange(Direction curr)
+    private void OnDirectionChange(FacingDirections curr)
     {
         switch (curr)
         {
-            case Direction.Up:
+            case FacingDirections.North:
                 _activeCursor = _cursorN;
                 return;
-            case Direction.Right:
+            case FacingDirections.East:
                 _activeCursor = _cursorE;
                 return;
-            case Direction.Down:
+            case FacingDirections.South:
                 _activeCursor = _cursorS;
                 return;
-            case Direction.Left:
+            case FacingDirections.West:
                 _activeCursor = _cursorW;
                 return;
         }
@@ -68,17 +68,11 @@ public class ActiveGridCell : MonoBehaviour
     }
 
     private void OnUseTool() {
-        // no interrupting celebrating
-        if (_playerMovementController.CurrState.Value == State.Celebrating)
-        {
+        // can't interrupt these
+        if (_playerMovementController.PlayerState.Value == PlayerStates.Celebrating ||
+            _playerMovementController.PlayerState.Value == PlayerStates.Catching ||
+            _playerMovementController.PlayerState.Value == PlayerStates.Axing)
             return;
-        }
-        
-        // no interrupting catching
-        if (_playerMovementController.CurrState.Value == State.Catching)
-        {
-            return;
-        }
         
         // return if empty item slot selected
         IInventoryItem _activeItem = _inventory.GetActiveItem();
@@ -99,20 +93,22 @@ public class ActiveGridCell : MonoBehaviour
             ((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation);
             return;
         }
-        else {
-            // use the tool on the tile
-            IInteractableTile _interactableTile = FindCursorInteractableTile(_cursorLocation);
-            if (_interactableTile != null) {
-                ((ITool)_activeItem).UseToolOnTile(_interactableTile,_cursorLocation);
-                return;
-            }
+
+        // use the tool on the tile
+        IInteractableTile _interactableTile = FindCursorInteractableTile(_cursorLocation);
+        if (_interactableTile != null) {
+            ((ITool)_activeItem).UseToolOnTile(_interactableTile,_cursorLocation);
+            return;
         }
+
+        // swing at nothing
+        _playerMovementController.PlayerState.Value = PlayerStates.Axing;
     }
 
     private void OnCursorAction()
     {
         // no action when the player is not idle or walking
-        if (_playerMovementController.CurrState.Value != State.Idle && _playerMovementController.CurrState.Value != State.Walking )
+        if (_playerMovementController.PlayerState.Value != PlayerStates.Idle && _playerMovementController.PlayerState.Value != PlayerStates.Walking )
         {
             return;
         }

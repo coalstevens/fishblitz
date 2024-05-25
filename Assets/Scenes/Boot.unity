@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b25f82161c834f8cb02d1c89231ea89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _skipIntro: 1
   _toScene: Outside
   _sceneSpawnLocation: {x: 0, y: 0, z: 0}
 --- !u!4 &1138146526
@@ -889,7 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderedTransform: {fileID: 3954879801911783310}
-  _activeDirection: 1
+  _cursorActiveDirection: 1
   _spriteRenderer: {fileID: 2327914333060431967}
 --- !u!4 &1150011694561817546
 Transform:
@@ -1118,7 +1119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderedTransform: {fileID: 2789758820501735623}
-  _activeDirection: 3
+  _cursorActiveDirection: 3
   _spriteRenderer: {fileID: 3466594292935354134}
 --- !u!1 &2270036432839103881
 GameObject:
@@ -2154,7 +2155,7 @@ PrefabInstance:
       objectReference: {fileID: 3608614012594081342}
     - target: {fileID: 9121905934632156056, guid: cb55b7d272b2e473d9c3f702a32521f8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -108
+      value: -108.00003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2232,7 +2233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderedTransform: {fileID: 8531979031875377085}
-  _activeDirection: 0
+  _cursorActiveDirection: 0
   _spriteRenderer: {fileID: 6974750090708220012}
 --- !u!114 &5759258631856072397
 MonoBehaviour:
@@ -2265,7 +2266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderedTransform: {fileID: 7595418375940526518}
-  _activeDirection: 2
+  _cursorActiveDirection: 2
   _spriteRenderer: {fileID: 9206693803101191783}
 --- !u!1 &6034255813906379654
 GameObject:
@@ -3169,11 +3170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8ab2841081041e09bc0dae1c40ee1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fishing:
+  FacingDirection:
     _val: 0
-  FacingDir:
-    _val: 0
-  CurrState:
+  PlayerState:
     _val: 1
 --- !u!114 &8858123078557904003
 MonoBehaviour:

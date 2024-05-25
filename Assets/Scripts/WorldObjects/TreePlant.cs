@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using ReactiveUnity;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected Sprite _deadAdult;
     [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
     protected SpriteRenderer _spriteRenderer;
+    
+    private PlayerMovementController _playerMovementController;
     protected Action _unsubscribe;
 
     protected const int _HITS_TO_FALL = 5;
@@ -22,6 +25,7 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         OnStateChange();
     }
     protected virtual void OnEnable()
@@ -57,12 +61,19 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
 
     public void OnUseAxe()
     {
-        if (_hitCount < _HITS_TO_FALL)
+        if (_hitCount < _HITS_TO_FALL - 1)
         {
-            Debug.Log("Chop");
             _hitCount++;
             return;
         }
+        StartCoroutine(FallTree());
+    }
+
+    /// <summary>
+    /// Spawns a stump and a falling tree. Deletes the standing tree.
+    /// </summary>
+    IEnumerator FallTree() {
+        yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerStates.Axing);
 
         GameObject _larchStump = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/LarchStump"),
                                                                 transform.position,

@@ -129,7 +129,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 190
+      y: 270
       width: 156
       height: 69
     spriteID: cf0e41acae09e4cbeb748af215365c97
@@ -140,8 +140,28 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 190}
+    uvTransform: {x: 4, y: 270}
   - name: FallenLarch_Frame_2
+    originalName: 
+    pivot: {x: 1.0503144, y: 0.6388889}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 190
+      width: 159
+      height: 72
+    spriteID: d123d69839c1349a593b771ba7f5790e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 190}
+  - name: FallenLarch_Frame_3
     originalName: 
     pivot: {x: 1.0696203, y: 0.5176471}
     alignment: 9
@@ -152,7 +172,7 @@ ScriptedImporter:
       y: 97
       width: 158
       height: 85
-    spriteID: d123d69839c1349a593b771ba7f5790e
+    spriteID: e9fa64c69944a4ad29e90a3aa815ce7c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -161,7 +181,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 97}
-  - name: FallenLarch_Frame_3
+  - name: FallenLarch_Frame_1
     originalName: 
     pivot: {x: 0.97109824, y: 0.5176471}
     alignment: 9
@@ -172,26 +192,6 @@ ScriptedImporter:
       y: 4
       width: 173
       height: 85
-    spriteID: e9fa64c69944a4ad29e90a3aa815ce7c
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
-  - name: FallenLarch_Frame_1
-    originalName: 
-    pivot: {x: 0.9666667, y: 0.48529413}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 267
-      width: 150
-      height: 68
     spriteID: 99efc289514e347e3aabd05b6fb35e92
     spriteBone: []
     spriteOutline: []
@@ -200,7 +200,27 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 267}
+    uvTransform: {x: 4, y: 4}
+  - name: FallenLarch_Frame_4
+    originalName: 
+    pivot: {x: 0.9666667, y: 0.48529413}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 347
+      width: 150
+      height: 68
+    spriteID: 63f6b6430b94f4d5cb7f124602a637af
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 347}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -221,27 +241,35 @@ ScriptedImporter:
     - name: FallenLarch_Frame_1
       frameIndex: 1
       cellRect:
-        x: 12
-        y: 4
-        width: 158
-        height: 85
+        x: 14
+        y: 2
+        width: 159
+        height: 72
       spriteId: d123d69839c1349a593b771ba7f5790e
     - name: FallenLarch_Frame_2
       frameIndex: 2
       cellRect:
-        x: 13
+        x: 12
         y: 4
-        width: 173
+        width: 158
         height: 85
       spriteId: e9fa64c69944a4ad29e90a3aa815ce7c
     - name: FallenLarch_Frame_3
       frameIndex: 3
       cellRect:
+        x: 13
+        y: 4
+        width: 173
+        height: 85
+      spriteId: 99efc289514e347e3aabd05b6fb35e92
+    - name: FallenLarch_Frame_4
+      frameIndex: 4
+      cellRect:
         x: 36
         y: 15
         width: 150
         height: 68
-      spriteId: 99efc289514e347e3aabd05b6fb35e92
+      spriteId: 63f6b6430b94f4d5cb7f124602a637af
     linkedCells: []
     parentIndex: -1
   platformSettings:
