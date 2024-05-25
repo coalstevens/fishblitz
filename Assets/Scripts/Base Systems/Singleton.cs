@@ -8,7 +8,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     public static T Instance {
         get {
             if (_instance == null) {
-                Debug.LogError("This singleton property was accessed before awake was called");
+                Debug.LogError("This singleton was attempted to be accessed without an instance.");
             }
             return _instance;
         }

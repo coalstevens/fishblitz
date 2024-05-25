@@ -111,7 +111,7 @@ public class GameClock : Singleton<GameClock>
         return new GameClockCapture(Instance);
     }
     public void SkipToTime(int hour, int minute) {
-        while (GameHour.Value != hour && GameMinute.Value != minute)
+        while (GameHour.Value != hour || GameMinute.Value != minute)
             IncrementGameMinute();
     }
 

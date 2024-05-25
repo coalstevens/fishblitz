@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class BootManager : MonoBehaviour
 {
+    [SerializeField] private bool _skipIntro = true;
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
     private SpriteRenderer _player;
@@ -39,11 +40,13 @@ public class BootManager : MonoBehaviour
     }
 
     IEnumerator OpeningDialogue() {
-        yield return new WaitForSeconds(1f);
-        NarratorSpeechController.Instance.PostMessage("You are wet.");
-        NarratorSpeechController.Instance.PostMessage("You are freezing.");
-        NarratorSpeechController.Instance.PostMessage("You are exhausted.");
-        yield return new WaitForSeconds(11f); 
+        if (_skipIntro != true) {
+            yield return new WaitForSeconds(1f);
+            NarratorSpeechController.Instance.PostMessage("You are wet.");
+            NarratorSpeechController.Instance.PostMessage("You are freezing.");
+            NarratorSpeechController.Instance.PostMessage("You are exhausted.");
+            yield return new WaitForSeconds(11f); 
+        }
         LoadInitialScene();
     }
 

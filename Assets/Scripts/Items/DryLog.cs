@@ -19,8 +19,8 @@ public class DryLog : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
 
     public void UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
-        if (interactableWorldObject is Larch _larch) {
-            _larch.LoadLog();
+        if (interactableWorldObject is LarchStump _larchStump) {
+            _larchStump.LoadLog();
         }
     }
 

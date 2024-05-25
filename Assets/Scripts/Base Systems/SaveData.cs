@@ -2,12 +2,13 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
+
 public class SaveData {
     public string _identifier;
     public SimpleVector3 _position;
     public string _extendedData;
 
-    // Exists because you can't json serialize a Vector3 
+    // SimpleVector3 exists because you can't json serialize a Vector3, not sure why. This works.
     public class SimpleVector3 {
         public float x;
         public float y;
@@ -34,8 +35,6 @@ public class SaveData {
     }
 
     public bool AddExtendedSaveData<T>(T data) {
-        // THIS IS WHERE YOU WERE
-        // _EXTENDEDDATA IS NOT SAVING TO JSON, SEE TEXTEDIT
         try {
             _extendedData = JsonConvert.SerializeObject(data);
             return true;

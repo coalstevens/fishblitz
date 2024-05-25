@@ -6,7 +6,7 @@ class PlayerHungerManager : MonoBehaviour {
     // Food Stuffs
     private const int DAY_REQUIRED_CALORIES = 500;
     private const int HISTORIC_CALORIES_DAYS_COUNTED = 5;
-    private int _todaysCalories;
+    private int _todaysCalories = 0;
     private int[] _historicCalories = new int[HISTORIC_CALORIES_DAYS_COUNTED];
 
     public void LogTodaysCalories() {

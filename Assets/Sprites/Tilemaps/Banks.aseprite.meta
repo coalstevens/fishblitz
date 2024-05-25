@@ -77,6 +77,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -89,13 +90,14 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638448854027462820
+  platformSettingsDirtyTick: 638461042074248290
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -142,13 +144,13 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: GrassToDryStone_0
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 28
-      y: 484
+      x: 170
+      y: 492
       width: 32
       height: 32
     spriteID: 80de105e3d12d4d6aafa97348ed52f97
@@ -162,7 +164,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_1
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -182,7 +184,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_2
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -202,7 +204,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_3
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -222,7 +224,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_4
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -242,7 +244,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_5
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -262,7 +264,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_6
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -282,7 +284,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_7
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -295,14 +297,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 9, y: 1}
+      - {x: 7, y: -4}
+      - {x: 3, y: -6}
+      - {x: -3, y: -8}
+      - {x: -7, y: -16}
+      - {x: -2, y: -16}
+      - {x: 0, y: -14}
+      - {x: 7, y: -12}
+      - {x: 10, y: -6}
+      - {x: 16, y: -1}
+      - {x: 16, y: 8}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_8
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -315,14 +329,25 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 7}
+      - {x: -16, y: -3}
+      - {x: -10, y: -10}
+      - {x: -5, y: -11}
+      - {x: -3, y: -15}
+      - {x: 0, y: -16}
+      - {x: 7, y: -16}
+      - {x: 3, y: -13}
+      - {x: 1, y: -6}
+      - {x: -9, y: -1}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_9
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -335,14 +360,22 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 4, y: -1}
+      - {x: -1, y: -5}
+      - {x: 0, y: -16}
+      - {x: 6, y: -16}
+      - {x: 6, y: -5}
+      - {x: 16, y: -5}
+      - {x: 16, y: -1}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_10
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -362,7 +395,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_11
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -375,14 +408,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 7, y: -4}
+      - {x: 2, y: -1}
+      - {x: -4, y: -1}
+      - {x: -16, y: -3}
+      - {x: -16, y: -6}
+      - {x: -9, y: -6}
+      - {x: -5, y: -4}
+      - {x: 2, y: -4}
+      - {x: 6, y: -7}
+      - {x: 16, y: -7}
+      - {x: 16, y: -3}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_12
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -395,14 +440,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 13, y: -3}
+      - {x: 7, y: -4}
+      - {x: 3, y: -1}
+      - {x: -9, y: -1}
+      - {x: -16, y: -3}
+      - {x: -16, y: -7}
+      - {x: -11, y: -5}
+      - {x: 3, y: -5}
+      - {x: 7, y: -7}
+      - {x: 16, y: -7}
+      - {x: 16, y: -3}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_13
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -422,7 +479,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_14
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -442,7 +499,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_15
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -462,7 +519,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_16
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -475,14 +532,25 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 10, y: 1}
+      - {x: 3, y: -1}
+      - {x: 0, y: -11}
+      - {x: -4, y: -13}
+      - {x: -6, y: -16}
+      - {x: -2, y: -16}
+      - {x: 6, y: -12}
+      - {x: 9, y: -6}
+      - {x: 16, y: 1}
+      - {x: 16, y: 8}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_17
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -495,14 +563,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -8, y: 16}
+      - {x: -16, y: 7}
+      - {x: -16, y: 2}
+      - {x: -9, y: 5}
+      - {x: -6, y: 10}
+      - {x: 0, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_18
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -515,14 +590,22 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 1, y: 16}
+      - {x: 8, y: 8}
+      - {x: 10, y: 4}
+      - {x: 16, y: 2}
+      - {x: 16, y: 9}
+      - {x: 8, y: 11}
+      - {x: 8, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_19
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -535,14 +618,24 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 7}
+      - {x: -16, y: -2}
+      - {x: -11, y: -8}
+      - {x: -4, y: -9}
+      - {x: 3, y: -16}
+      - {x: 6, y: -16}
+      - {x: 4, y: -10}
+      - {x: -2, y: -4}
+      - {x: -9, y: -1}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_20
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -562,7 +655,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_21
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -575,14 +668,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -5, y: 16}
+      - {x: -5, y: 5}
+      - {x: -16, y: 6}
+      - {x: -16, y: -5}
+      - {x: 0, y: -5}
+      - {x: 0, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_22
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -602,7 +702,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_23
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -622,7 +722,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_24
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -635,14 +735,24 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 7, y: 4}
+      - {x: 3, y: 8}
+      - {x: -16, y: 8}
+      - {x: -16, y: -5}
+      - {x: -12, y: -8}
+      - {x: -7, y: -8}
+      - {x: -2, y: -5}
+      - {x: -1, y: -16}
+      - {x: 6, y: -16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_25
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -662,7 +772,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_26
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -682,7 +792,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_27
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -695,14 +805,19 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -2, y: 16}
+      - {x: -7, y: 16}
+      - {x: 16, y: -9}
+      - {x: 16, y: -3}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_28
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -715,14 +830,19 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: -7}
+      - {x: -16, y: -10}
+      - {x: -8, y: -16}
+      - {x: -4, y: -16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_29
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -735,14 +855,20 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 16, y: -3}
+      - {x: 10, y: -7}
+      - {x: 3, y: -16}
+      - {x: 8, y: -16}
+      - {x: 16, y: -8}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_30
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -755,14 +881,24 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -6, y: 5}
+      - {x: -16, y: -2}
+      - {x: -16, y: -7}
+      - {x: -11, y: -1}
+      - {x: -3, y: 3}
+      - {x: -1, y: 9}
+      - {x: 6, y: 16}
+      - {x: 2, y: 16}
+      - {x: -5, y: 10}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_31
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -782,7 +918,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_32
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -802,7 +938,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_33
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -822,7 +958,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_34
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -835,14 +971,22 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: -4}
+      - {x: -16, y: -7}
+      - {x: -7, y: -7}
+      - {x: -7, y: -16}
+      - {x: 2, y: -16}
+      - {x: 3, y: -9}
+      - {x: -5, y: -4}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_35
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -855,14 +999,25 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -3, y: 16}
+      - {x: -5, y: 12}
+      - {x: -5, y: 6}
+      - {x: 0, y: 0}
+      - {x: 0, y: -8}
+      - {x: -3, y: -12}
+      - {x: -3, y: -16}
+      - {x: 7, y: -16}
+      - {x: 7, y: 4}
+      - {x: 7, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_36
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -882,7 +1037,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_37
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -895,14 +1050,23 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -7, y: 16}
+      - {x: -7, y: -16}
+      - {x: 1, y: -16}
+      - {x: 1, y: -6}
+      - {x: -2, y: -2}
+      - {x: 3, y: 3}
+      - {x: 3, y: 8}
+      - {x: -1, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_38
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -915,14 +1079,25 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -8, y: 16}
+      - {x: 0, y: 10}
+      - {x: 3, y: 1}
+      - {x: 16, y: -7}
+      - {x: 16, y: -4}
+      - {x: 13, y: -1}
+      - {x: 9, y: 0}
+      - {x: 6, y: 3}
+      - {x: 4, y: 10}
+      - {x: -2, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_39
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -935,14 +1110,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 2, y: 16}
+      - {x: -3, y: 12}
+      - {x: -4, y: 4}
+      - {x: -6, y: 2}
+      - {x: -10, y: 2}
+      - {x: -16, y: -3}
+      - {x: -16, y: -7}
+      - {x: -9, y: -1}
+      - {x: 0, y: 2}
+      - {x: 0, y: 11}
+      - {x: 8, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_40
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -962,7 +1149,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_41
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -975,14 +1162,22 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -7, y: 16}
+      - {x: -7, y: -16}
+      - {x: -1, y: -16}
+      - {x: 2, y: -4}
+      - {x: -1, y: 2}
+      - {x: 1, y: 7}
+      - {x: 1, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_42
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -995,14 +1190,28 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 6, y: 16}
+      - {x: 0, y: 16}
+      - {x: -1, y: 6}
+      - {x: -3, y: 1}
+      - {x: 1, y: -3}
+      - {x: 5, y: -4}
+      - {x: 9, y: -6}
+      - {x: 12, y: -6}
+      - {x: 16, y: -3}
+      - {x: 16, y: 7}
+      - {x: 12, y: 4}
+      - {x: 7, y: 5}
+      - {x: 5, y: 8}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_43
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1022,7 +1231,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_44
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1035,14 +1244,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -2, y: 16}
+      - {x: 0, y: 10}
+      - {x: -3, y: -2}
+      - {x: -16, y: -2}
+      - {x: -16, y: -6}
+      - {x: -2, y: -6}
+      - {x: 3, y: -9}
+      - {x: 9, y: -6}
+      - {x: 9, y: 3}
+      - {x: 6, y: 8}
+      - {x: 6, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_45
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1055,14 +1276,29 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 11, y: 3}
+      - {x: 4, y: 1}
+      - {x: 0, y: 1}
+      - {x: -5, y: 2}
+      - {x: -5, y: -11}
+      - {x: -6, y: -16}
+      - {x: 3, y: -16}
+      - {x: 3, y: -11}
+      - {x: 0, y: -9}
+      - {x: 0, y: -4}
+      - {x: 7, y: -3}
+      - {x: 10, y: -6}
+      - {x: 16, y: -6}
+      - {x: 16, y: 8}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_46
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1082,7 +1318,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_47
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1102,7 +1338,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_48
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1115,14 +1351,26 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -6, y: 16}
+      - {x: -4, y: 7}
+      - {x: -4, y: -4}
+      - {x: 10, y: -4}
+      - {x: 16, y: -5}
+      - {x: 16, y: -3}
+      - {x: 8, y: 0}
+      - {x: 0, y: -1}
+      - {x: 0, y: 7}
+      - {x: 1, y: 8}
+      - {x: 0, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_49
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1142,7 +1390,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_50
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1162,7 +1410,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_51
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1182,7 +1430,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_52
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1202,7 +1450,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_53
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1222,7 +1470,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_54
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1235,14 +1483,24 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 2, y: 16}
+      - {x: -1, y: 8}
+      - {x: -1, y: 0}
+      - {x: 1, y: -4}
+      - {x: 2, y: -16}
+      - {x: 8, y: -16}
+      - {x: 3, y: 4}
+      - {x: 4, y: 8}
+      - {x: 7, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_55
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1262,7 +1520,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_56
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1282,7 +1540,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_57
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1302,7 +1560,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_58
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1322,7 +1580,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_59
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1342,7 +1600,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_60
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1362,7 +1620,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_61
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1382,7 +1640,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_62
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1402,7 +1660,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_63
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1422,7 +1680,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_64
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1435,14 +1693,19 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 7}
+      - {x: -16, y: -5}
+      - {x: 16, y: -5}
+      - {x: 16, y: 7}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_65
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1462,7 +1725,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_66
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -1482,7 +1745,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: GrassToDryStone_67
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -2135,6 +2398,7 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
+  generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 384, y: 512}

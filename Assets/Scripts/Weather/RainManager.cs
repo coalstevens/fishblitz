@@ -6,15 +6,16 @@ public enum RainStates {Raining, NotRaining}; // clearsky?
 
 public class RainManager : Singleton<RainManager> {
     private Transform _playerCamera;
+    private RainStates _rainState = RainStates.Raining; // SUBSCRIBE WITH EVENTS
     public event Action<RainStates> RainStateChange;
     private GameObject _rainParticleSystem;
-    private const float RAIN_Y_OFFSET = 9.25f;
+    private const float RAIN_Y_OFFSET = 6f;
     private string _sceneName;
-    private RainStates _rainState = RainStates.Raining;
 
     void Start() {
         _playerCamera = GameObject.FindWithTag("MainCamera").transform;
     }
+
     void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -49,6 +50,8 @@ public class RainManager : Singleton<RainManager> {
             case "Abandonded Shed":
                 break;
             case "Boot":
+                break;
+            default:
                 break;
         }
     }

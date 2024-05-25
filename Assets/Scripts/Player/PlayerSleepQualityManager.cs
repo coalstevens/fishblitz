@@ -11,7 +11,7 @@ public class PlayerSleepQualityManager : MonoBehaviour
     private const float PAST_CURFEW_REDUCER = 0.4f;
     private const float NAP_RECOVERY_FRACTION_OF_FULL_SLEEP = 0.3f;
     private Dictionary<Temperature, float> _temperatureBasedSleepReducers = new Dictionary<Temperature, float> {
-        [Temperature.Freezing] = 0.1f,
+        [Temperature.Freezing] = 0.9f,
         [Temperature.Cold] = 0.25f,
         [Temperature.Neutral] = 0f,
         [Temperature.Warm] = 0f,

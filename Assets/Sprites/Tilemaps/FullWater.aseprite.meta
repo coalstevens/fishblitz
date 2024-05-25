@@ -77,6 +77,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -89,13 +90,14 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638446553385529020
+  platformSettingsDirtyTick: 638461027834582780
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -142,7 +144,7 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: FullWater_0
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -162,7 +164,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_1
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -182,7 +184,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_2
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -202,7 +204,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_3
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -215,14 +217,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: 16, y: -3}
+      - {x: 2, y: -3}
+      - {x: 2, y: -16}
+      - {x: -16, y: -16}
+      - {x: -16, y: 16}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_4
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -235,14 +244,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -4}
+      - {x: 3.1882477, y: -4}
+      - {x: 10, y: -6}
+      - {x: 16, y: -5}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_5
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -255,14 +271,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -4}
+      - {x: -12, y: -3}
+      - {x: 3, y: -3}
+      - {x: 16, y: -4}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_6
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -282,7 +305,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_7
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -302,7 +325,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_8
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -322,7 +345,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_9
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -342,7 +365,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_10
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -355,14 +378,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -2, y: 16}
+      - {x: -2, y: 0}
+      - {x: -16, y: 0}
+      - {x: -16, y: -16}
+      - {x: 16, y: -16}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_11
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -373,16 +403,28 @@ ScriptedImporter:
       height: 32
     spriteID: adc74aca97a334cf5a0accf28a146d15
     spriteBone: []
-    spriteOutline: []
+    spriteOutline:
+    - outline:
+      - {x: -16, y: -16}
+      - {x: 3, y: -16}
+      - {x: 3, y: -1}
+      - {x: -1, y: -1}
+      - {x: -16, y: -1}
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: -16}
+      - {x: 3, y: -16}
+      - {x: 3, y: -1}
+      - {x: -6, y: -1}
+      - {x: -16, y: -1}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_12
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -402,7 +444,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_13
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -422,7 +464,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_14
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -442,7 +484,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_15
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -462,7 +504,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_16
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -475,14 +517,22 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -6}
+      - {x: -9, y: -5}
+      - {x: 0, y: -10}
+      - {x: -1, y: -16}
+      - {x: 16, y: -16}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_17
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -495,14 +545,23 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -16}
+      - {x: 1, y: -16}
+      - {x: 4, y: -8}
+      - {x: 4, y: 1}
+      - {x: 0, y: 6}
+      - {x: 0, y: 11}
+      - {x: 3, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_18
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -515,14 +574,25 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -4, y: 16}
+      - {x: -4, y: 11}
+      - {x: 0, y: 7}
+      - {x: -2, y: 2}
+      - {x: -4, y: -1}
+      - {x: -4, y: -5}
+      - {x: -2, y: -12}
+      - {x: -4, y: -16}
+      - {x: 16, y: -16}
+      - {x: 16, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_19
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -542,7 +612,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_20
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -562,7 +632,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_21
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -582,7 +652,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_22
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -595,14 +665,21 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -16}
+      - {x: 16, y: -16}
+      - {x: 16, y: 1}
+      - {x: 2, y: 1}
+      - {x: 2, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_23
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -615,14 +692,20 @@ ScriptedImporter:
     spriteBone: []
     spriteOutline: []
     vertices: []
-    spritePhysicsOutline: []
+    spritePhysicsOutline:
+    - outline:
+      - {x: -16, y: 16}
+      - {x: -16, y: -5}
+      - {x: 0, y: -4}
+      - {x: 3, y: 6}
+      - {x: 3, y: 16}
     indices: 
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   - name: FullWater_24
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -642,7 +725,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_25
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -662,7 +745,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_26
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -682,7 +765,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_27
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -702,7 +785,7 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: FullWater_28
     originalName: 
-    pivot: {x: 0, y: 0}
+    pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -775,6 +858,7 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
+  generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 384, y: 256}

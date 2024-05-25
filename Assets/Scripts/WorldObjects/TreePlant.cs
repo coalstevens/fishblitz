@@ -2,8 +2,9 @@ using System;
 using ReactiveUnity;
 using UnityEngine;
 
-public enum TreeStates {SummerAdult, FallAdult, DeadAdult, Stump};
-public abstract class TreePlant : MonoBehaviour {
+public enum TreeStates { SummerAdult, FallAdult, DeadAdult, Stump };
+public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
+{
 
     [Header("Tree Base State")]
     [SerializeField] protected Material _standardLit;
@@ -11,38 +12,31 @@ public abstract class TreePlant : MonoBehaviour {
     [SerializeField] protected Sprite _summerAdult;
     [SerializeField] protected Sprite _fallAdult;
     [SerializeField] protected Sprite _deadAdult;
-    [SerializeField] protected Sprite _stump;
     [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
     protected SpriteRenderer _spriteRenderer;
     protected Action _unsubscribe;
 
-    public virtual Collider2D ObjCollider {
-        get {
-            Collider2D _collider = GetComponent<Collider2D>();
-            if (_collider == null) {
-                Debug.LogError("Tree does not have a collider");
-                return null;
-            }
-            else {
-                return _collider;
-            }
-        }
-    } 
+    protected const int _HITS_TO_FALL = 5;
+    protected int _hitCount = 0;
 
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         OnStateChange();
     }
-    protected virtual void OnEnable() {
+    protected virtual void OnEnable()
+    {
         _unsubscribe = _treeState.OnChange((prev, curr) => OnStateChange());
     }
-    protected virtual void OnDisable() {
+    protected virtual void OnDisable()
+    {
         _unsubscribe();
     }
 
-    protected virtual void OnStateChange() {
-        switch (_treeState.Value) {
+    protected virtual void OnStateChange()
+    {
+        switch (_treeState.Value)
+        {
             case TreeStates.SummerAdult:
                 _spriteRenderer.material = _windyTree;
                 _spriteRenderer.sprite = _summerAdult;
@@ -55,10 +49,38 @@ public abstract class TreePlant : MonoBehaviour {
                 _spriteRenderer.material = _standardLit;
                 _spriteRenderer.sprite = _deadAdult;
                 break;
-            case TreeStates.Stump:
-                _spriteRenderer.material = _standardLit;
-                _spriteRenderer.sprite = _stump;
+            default:
+                Debug.LogError("TreePlant state machine defaulted");
                 break;
         }
+    }
+
+    public void OnUseAxe()
+    {
+        if (_hitCount < _HITS_TO_FALL)
+        {
+            Debug.Log("Chop");
+            _hitCount++;
+            return;
+        }
+
+        GameObject _larchStump = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/LarchStump"),
+                                                                transform.position,
+                                                                Quaternion.identity,
+                                                                GameObject.FindGameObjectWithTag("Impermanent").transform);
+
+        GameObject _fallenLarch = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/FallenLarch"),
+                                                                 transform.position + new Vector3(-0.5f, 1f, 0), // falls some distance to the side of stump
+                                                                 Quaternion.identity,
+                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
+
+        _fallenLarch.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
+        _fallenLarch.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
+        Destroy(gameObject);
+    }
+
+    public bool CursorInteract(Vector3 cursorLocation)
+    {
+        return false;
     }
 }

@@ -64,12 +64,12 @@ public class PlayerCondition : Singleton<PlayerCondition>
     private void EndDay() {
         _playerHungerManager.LogTodaysCalories();
     }
-    private void Sleep() {
+    public void Sleep() {
         GameClock.Instance.SkipToTime(_playerSleepManager.GetAwakeHour(), 0);
         NarratorSpeechController.Instance.PostMessage(_playerSleepManager.GetAwakeMessage());
         _currentEnergy = _playerSleepManager.GetEnergyFromSleep(_maxEnergy, _hungerRecoveryPercentageOfMax, _hungerRecoveryPercentageOfMax);
     }
-    private void Nap() {
+    public void Nap() {
         GameClock.Instance.SkipTime(NAP_DURATION_GAMEHOURS * 60);
         _currentEnergy += _playerSleepManager.GetEnergyGainedFromNap(_maxEnergy, _hungerRecoveryPercentageOfMax, _sleepRecoveryPercentageOfMax);
     }
