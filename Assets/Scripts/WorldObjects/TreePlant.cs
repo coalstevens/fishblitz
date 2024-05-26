@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using ReactiveUnity;
 using UnityEngine;
 
@@ -14,6 +15,13 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected Sprite _fallAdult;
     [SerializeField] protected Sprite _deadAdult;
     [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
+   
+   [Header("Shake Properties")]
+   [SerializeField] float _shakeDuration = 0.5f;
+   [SerializeField] float _shakeStrength = 7f;
+   [SerializeField] int _shakeVibrato = 10;
+   [SerializeField] float _shakeRandomness = 90f;
+
     protected SpriteRenderer _spriteRenderer;
     private PlayerMovementController _playerMovementController;
     protected Action _unsubscribe;
@@ -62,7 +70,8 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     {
         if (_hitCount < _HITS_TO_FALL - 1)
         {
-            _hitCount++;
+            _hitCount++;   
+            transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
             return;
         }
         StartCoroutine(FallTree());
