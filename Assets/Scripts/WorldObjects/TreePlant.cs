@@ -15,7 +15,6 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected Sprite _deadAdult;
     [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
     protected SpriteRenderer _spriteRenderer;
-    
     private PlayerMovementController _playerMovementController;
     protected Action _unsubscribe;
 
@@ -70,24 +69,46 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     }
 
     /// <summary>
-    /// Spawns a stump and a falling tree. Deletes the standing tree.
+    /// Spawns a stump and a falling tree. Deletes the standing tree (this object).
     /// </summary>
     IEnumerator FallTree() {
+        // wait for axing animation to finish
         yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerStates.Axing);
+        bool _fallsEast = WillTreeFallEast();
+        string _fallenTreeIdentifier = _fallsEast ? "WorldObjects/E_FallenLarch" :  "WorldObjects/W_FallenLarch";
+        Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0) : new Vector3(-0.5f, 1f, 0);
 
         GameObject _larchStump = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/LarchStump"),
                                                                 transform.position,
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
 
-        GameObject _fallenLarch = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/FallenLarch"),
-                                                                 transform.position + new Vector3(-0.5f, 1f, 0), // falls some distance to the side of stump
-                                                                 Quaternion.identity,
-                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
-
+        GameObject _fallenLarch = UnityEngine.Object.Instantiate(Resources.Load<GameObject>(_fallenTreeIdentifier),
+                                                                transform.position + _fallenTreePosition, // falls some distance to the side of stump
+                                                                Quaternion.identity,
+                                                                GameObject.FindGameObjectWithTag("Impermanent").transform);
+        
         _fallenLarch.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
         _fallenLarch.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Determines tree fall direction
+    /// </summary>
+    private bool WillTreeFallEast() { 
+        switch (_playerMovementController.FacingDirection.Value) {
+            case FacingDirections.West:
+                return false;
+            case FacingDirections.East:
+                return true;
+            case FacingDirections.North:
+            case FacingDirections.South:
+                return UnityEngine.Random.value < 0.5;
+            default:
+                Debug.LogError("DoesTreeFallEast defaulted.");
+                return false;
+        }
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
