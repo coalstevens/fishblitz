@@ -7,9 +7,9 @@ using System.IO;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class StartingItem {
-    public string itemName;
-    public int itemQuantity;
+public class SpawnItemData {
+    public string identifier;
+    public int quantity;
 }
 
 public class Inventory : MonoBehaviour
@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour
     private Dictionary<int, IInventoryItem> _slotAssignments;
     [SerializeField] private Sprite _emptySlotSprite;
     [SerializeField] private Sprite _filledSlotSprite;
-    [SerializeField] private StartingItem[] _startingItems;
+    [SerializeField] private SpawnItemData[] _startingItems;
     public Reactive<int> _gold = new Reactive<int>(0);
     public Reactive<int> ActiveItemSlot = new Reactive<int>(0);
 
@@ -44,8 +44,8 @@ public class Inventory : MonoBehaviour
         _slotAssignments = LoadInventory();
         UpdateUIAllSlots();
 
-        foreach (StartingItem _item in _startingItems) {
-            TryAddItem(_item.itemName, _item.itemQuantity);
+        foreach (SpawnItemData _item in _startingItems) {
+            TryAddItem(_item.identifier, _item.quantity);
         }
     }
 

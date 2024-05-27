@@ -1,21 +1,31 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using ReactiveUnity;
 using UnityEngine;
 
-public class FallenLarch : MonoBehaviour
+public class FallenLarch : MonoBehaviour, IInteractable, IUseableWithAxe
 {
     [SerializeField] private Sprite _W_Idle;
     [SerializeField] private Sprite _E_Idle;
     [SerializeField] private Sprite _falling;
     [SerializeField] private bool _fallsEast;
+
+   [Header("Shake Properties")]
+   [SerializeField] float _shakeDuration = 0.5f;
+   [SerializeField] float _shakeStrength = 7f;
+   [SerializeField] int _shakeVibrato = 10;
+   [SerializeField] float _shakeRandomness = 90f;
     Animator _animator;
     private enum States { Idle, Falling };
     Reactive<States> _state = new Reactive<States>(States.Falling);
     Action _unsubscribe;
     SpriteRenderer _spriteRenderer; 
     Collider2D _collider;
-    void Start()
+    private int _hitCount = 0;
+    private const int _HITS_TO_DESTROY = 5;
+
+    void Awake()
     {
         // References
         _animator = GetComponent<Animator>();
@@ -69,5 +79,21 @@ public class FallenLarch : MonoBehaviour
         GetComponentInChildren<StaticSpriteSorting>().enabled = true;
 
         _state.Value = States.Idle;
+    }
+
+    public bool CursorInteract(Vector3 cursorLocation)
+    {
+        return false; // does nothing
+    }
+
+    public void OnUseAxe()
+    {
+        if (_hitCount < _HITS_TO_DESTROY - 1)
+        {
+            _hitCount++;   
+            transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
+            return;
+        }
+        Destroy(gameObject);
     }
 }

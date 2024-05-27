@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 4557808638140897363}
   - component: {fileID: 7304161010196656253}
   - component: {fileID: 6938546424267943343}
+  - component: {fileID: 610692000655363215}
   m_Layer: 0
   m_Name: E_FallenLarch
   m_TagString: Untagged
@@ -183,6 +184,10 @@ MonoBehaviour:
   _E_Idle: {fileID: -4032848435425977184, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
   _falling: {fileID: -142243955360043195, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
   _fallsEast: 1
+  _shakeDuration: 0.5
+  _shakeStrength: 7
+  _shakeVibrato: 10
+  _shakeRandomness: 90
 --- !u!95 &6938546424267943343
 Animator:
   serializedVersion: 5
@@ -204,3 +209,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &610692000655363215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824272052186368021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2f82c58cff8d4d4484fd58637ca8e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnOnDestroy: 1
+  _itemsToSpawn:
+  - identifier: WetLog
+    quantity: 5
+  _spawnArea: {fileID: 4557808638140897363}
+  _speed: 3
+  _drag: 3

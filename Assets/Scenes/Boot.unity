@@ -432,14 +432,12 @@ MonoBehaviour:
   _emptySlotSprite: {fileID: 3397045219344176937, guid: 5a82b6cb093db4d9dbee9841ba8a573d, type: 3}
   _filledSlotSprite: {fileID: -9148104578882603104, guid: 5a82b6cb093db4d9dbee9841ba8a573d, type: 3}
   _startingItems:
-  - itemName: Rod
-    itemQuantity: 1
-  - itemName: MountedRod
-    itemQuantity: 5
-  - itemName: DryLog
-    itemQuantity: 3
-  - itemName: WetLog
-    itemQuantity: 20
+  - identifier: DryLog
+    quantity: 3
+  - identifier: WetLog
+    quantity: 3
+  - identifier: Rod
+    quantity: 1
   _gold:
     _val: 0
   ActiveItemSlot:
@@ -2155,7 +2153,7 @@ PrefabInstance:
       objectReference: {fileID: 3608614012594081342}
     - target: {fileID: 9121905934632156056, guid: cb55b7d272b2e473d9c3f702a32521f8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -108.00003
+      value: -108
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
