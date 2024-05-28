@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 [System.Serializable]
 public class SpawnItemData {
+    public SpawnItemData(string identifier, int quantity) {
+        this.identifier = identifier;
+        this.quantity = quantity;
+    }
     public string identifier;
     public int quantity;
 }
@@ -194,7 +198,7 @@ public class Inventory : MonoBehaviour
     }   
 
     // Returns true if player has enough inventory space to add quantity of itemName
-    private bool HasEnoughInventorySpace(string itemName, int quantity) {
+    public bool HasEnoughInventorySpace(string itemName, int quantity) {
         IInventoryItem _currentItem;
         int _availableSpace = 0;
 

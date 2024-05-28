@@ -31,7 +31,8 @@ public class FallenLarch : MonoBehaviour, IInteractable, IUseableWithAxe
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _collider = GetComponent<Collider2D>();
-
+  
+        Shake();
         string _animationToPlay = _fallsEast ? "E_Falling" : "W_Falling";
         _animator.Play(_animationToPlay);
         _collider.enabled = false; // collider disabled while falling
@@ -91,9 +92,13 @@ public class FallenLarch : MonoBehaviour, IInteractable, IUseableWithAxe
         if (_hitCount < _HITS_TO_DESTROY - 1)
         {
             _hitCount++;   
-            transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
+            Shake();
             return;
         }
         Destroy(gameObject);
+    }
+
+    public void Shake() {
+        transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
     }
 }

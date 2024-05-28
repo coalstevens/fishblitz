@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SpawnItemsOnDestroy : MonoBehaviour
+public class SpawnLooseItemsOnDestroy : MonoBehaviour
 {
     [SerializeField] bool _spawnOnDestroy = true;
     [SerializeField] private SpawnItemData[] _itemsToSpawn;
@@ -37,22 +38,35 @@ public class SpawnItemsOnDestroy : MonoBehaviour
     {
         foreach (var _item in _itemsToSpawn)
         {
-            GameObject _spawnItem = Resources.Load<GameObject>("Items/" + _item.identifier + "_Loose");
+            GameObject _spawnItem = Resources.Load<GameObject>("Items/" + _item.identifier);
             if (_spawnItem == null)
             {
-                Debug.LogError("The spawn item could not be found");
+                Debug.LogError("The spawn item doesn't exist.");
                 continue;
             }
+            Sprite _itemImage = _spawnItem.GetComponent<Image>().sprite;
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(_item.quantity))
             {
-                GameObject _spawnedItem = Instantiate(_spawnItem,
-                                                     _spawnPosition,
-                                                     Quaternion.identity,
-                                                     _sceneItemSpawnContainer);
+                GameObject _spawnedItem = SpawnLooseItem(new SpawnItemData(_item.identifier, 1), _itemImage, _spawnPosition);
                 SetLaunchSpeed(_spawnedItem);
             }
         }
+    }
+
+    private GameObject SpawnLooseItem(SpawnItemData item, Sprite itemSprite, Vector3 spawnPosition) {
+        // Spawn a generic loose item
+        GameObject _spawnedItem = Instantiate(Resources.Load<GameObject>("Items/LooseItem"),
+                                                spawnPosition,
+                                                Quaternion.identity,
+                                                _sceneItemSpawnContainer);
+        
+        // Apply item sprite to loose item
+        _spawnedItem.GetComponentInChildren<SpriteRenderer>().sprite = itemSprite;
+
+        // Transfer item info
+        _spawnedItem.GetComponent<LooseItem>().Item = item;
+        return _spawnedItem;
     }
 
     private void OnDisable() {

@@ -71,7 +71,8 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
         if (_hitCount < _HITS_TO_FALL - 1)
         {
             _hitCount++;   
-            transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
+            //transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
+            transform.DOShakePosition(_shakeDuration,_shakeStrength,_shakeVibrato,_shakeRandomness);
             return;
         }
         StartCoroutine(FallTree());
