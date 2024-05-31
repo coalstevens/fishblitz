@@ -10,7 +10,9 @@ public class ChangeLevel : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        SmoothSceneManager.LoadScene(_toScene);
-        PlayerData.Instance.SceneSpawnPosition = _sceneSpawnLocation;
+        if (other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>()) {
+            SmoothSceneManager.LoadScene(_toScene);
+            PlayerData.Instance.SceneSpawnPosition = _sceneSpawnLocation;
+        }
     }
 }
