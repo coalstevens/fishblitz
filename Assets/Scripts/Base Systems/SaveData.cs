@@ -4,9 +4,9 @@ using UnityEngine;
 
 
 public class SaveData {
-    public string _identifier;
-    public SimpleVector3 _position;
-    public string _extendedData;
+    public string Identifier;
+    public SimpleVector3 Position;
+    public string ExtendedData;
 
     // SimpleVector3 exists because you can't json serialize a Vector3, not sure why. This works.
     public class SimpleVector3 {
@@ -26,17 +26,17 @@ public class SaveData {
             Debug.LogError($"Prefab not found for identifier: {identifier}");
             return false;
         }
-        _identifier = identifier;
+        Identifier = identifier;
         return true;
     }
         
     public void AddTransformPosition(Vector3 position) {
-        _position = new SimpleVector3(position);
+        Position = new SimpleVector3(position);
     }
 
     public bool AddExtendedSaveData<T>(T data) {
         try {
-            _extendedData = JsonConvert.SerializeObject(data);
+            ExtendedData = JsonConvert.SerializeObject(data);
             return true;
         }
         catch (Exception ex) {
@@ -48,7 +48,7 @@ public class SaveData {
     public T GetExtendedSaveData<T>()
     {
         try {
-            return JsonConvert.DeserializeObject<T>(_extendedData);
+            return JsonConvert.DeserializeObject<T>(ExtendedData);
         }
         catch (Exception ex) {
             Console.WriteLine($"Error converting JSON to object: {ex.Message}");
@@ -57,18 +57,18 @@ public class SaveData {
     }
 
     public GameObject InstantiateGameObjectFromSaveData(Transform parent) {
-        if (_identifier == null) {
+        if (Identifier == null) {
             Debug.LogError("There is no identifier to load the Worldobject");
             return null;
         }
 
-        GameObject _prefab = Resources.Load<GameObject>("WorldObjects/" + _identifier);
+        GameObject _prefab = Resources.Load<GameObject>("WorldObjects/" + Identifier);
         if (parent == null) { 
             Debug.LogError("The parent gameobject doesn't exist.");
             return null;
         }
 
-        Vector3 _savedPosition = _position == null ? Vector3.zero : new Vector3(_position.x, _position.y, _position.z); 
+        Vector3 _savedPosition = Position == null ? Vector3.zero : new Vector3(Position.x, Position.y, Position.z); 
         GameObject _newObject = UnityEngine.Object.Instantiate(_prefab, _savedPosition, Quaternion.identity, parent);
 
         return _newObject;

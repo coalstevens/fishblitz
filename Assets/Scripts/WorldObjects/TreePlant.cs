@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using ReactiveUnity;
+using UnityEditor;
 using UnityEngine;
 
 public enum TreeStates { SummerAdult, FallAdult, DeadAdult, Stump };
@@ -15,12 +16,17 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected Sprite _fallAdult;
     [SerializeField] protected Sprite _deadAdult;
     [SerializeField] protected Reactive<TreeStates> _treeState = new Reactive<TreeStates>(TreeStates.SummerAdult);
-   
-   [Header("Shake Properties")]
-   [SerializeField] float _shakeDuration = 0.5f;
-   [SerializeField] float _shakeStrength = 7f;
-   [SerializeField] int _shakeVibrato = 10;
-   [SerializeField] float _shakeRandomness = 90f;
+
+    [Header("Fallen Tree")]
+    [SerializeField] protected GameObject _E_fallenTree;
+    [SerializeField] protected GameObject _W_fallenTree;
+    [SerializeField] protected GameObject _stump;
+
+    [Header("Shake Properties")]
+    [SerializeField] float _shakeDuration = 0.5f;
+    [SerializeField] float _shakeStrength = 0.05f;
+    [SerializeField] int _shakeVibrato = 10;
+    [SerializeField] float _shakeRandomness = 90f;
 
     protected SpriteRenderer _spriteRenderer;
     private PlayerMovementController _playerMovementController;
@@ -70,9 +76,8 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     {
         if (_hitCount < _HITS_TO_FALL - 1)
         {
-            _hitCount++;   
-            //transform.DOShakeRotation(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
-            transform.DOShakePosition(_shakeDuration,_shakeStrength,_shakeVibrato,_shakeRandomness);
+            _hitCount++;
+            transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
             return;
         }
         StartCoroutine(FallTree());
@@ -81,23 +86,24 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     /// <summary>
     /// Spawns a stump and a falling tree. Deletes the standing tree (this object).
     /// </summary>
-    IEnumerator FallTree() {
+    IEnumerator FallTree()
+    {
         // wait for axing animation to finish
         yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerStates.Axing);
         bool _fallsEast = WillTreeFallEast();
-        string _fallenTreeIdentifier = _fallsEast ? "WorldObjects/E_FallenLarch" :  "WorldObjects/W_FallenLarch";
+        GameObject _fallenTree = _fallsEast ? _E_fallenTree : _W_fallenTree;
         Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0) : new Vector3(-0.5f, 1f, 0);
 
-        GameObject _larchStump = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("WorldObjects/LarchStump"),
+        GameObject _larchStump = UnityEngine.Object.Instantiate(_stump,
                                                                 transform.position,
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
 
-        GameObject _fallenLarch = UnityEngine.Object.Instantiate(Resources.Load<GameObject>(_fallenTreeIdentifier),
+        GameObject _fallenLarch = UnityEngine.Object.Instantiate(_fallenTree,
                                                                 transform.position + _fallenTreePosition, // falls some distance to the side of stump
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
-        
+
         _fallenLarch.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
         _fallenLarch.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
         Destroy(gameObject);
@@ -106,8 +112,10 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     /// <summary>
     /// Determines tree fall direction
     /// </summary>
-    private bool WillTreeFallEast() { 
-        switch (_playerMovementController.FacingDirection.Value) {
+    private bool WillTreeFallEast()
+    {
+        switch (_playerMovementController.FacingDirection.Value)
+        {
             case FacingDirections.West:
                 return false;
             case FacingDirections.East:

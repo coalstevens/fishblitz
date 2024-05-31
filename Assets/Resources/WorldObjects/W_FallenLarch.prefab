@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6812285457286002210}
   - component: {fileID: 2785344821184485068}
-  - component: {fileID: -4127110770689745750}
   - component: {fileID: 3174461756675346385}
+  - component: {fileID: 8347839937859466531}
   - component: {fileID: 6400350118229307613}
   m_Layer: 0
   m_Name: W_FallenLarch
@@ -71,26 +71,6 @@ CapsuleCollider2D:
   m_Offset: {x: -2.27116, y: -0.71266615}
   m_Size: {x: 3.9817042, y: 1.1751213}
   m_Direction: 1
---- !u!114 &-4127110770689745750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667917436774412631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee5c809cfef9a493bbd585b2f6b428d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _W_Idle: {fileID: -3636352279123513399, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
-  _E_Idle: {fileID: -4032848435425977184, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
-  _falling: {fileID: -142243955360043195, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
-  _fallsEast: 0
-  _shakeDuration: 0.5
-  _shakeStrength: 0.05
-  _shakeVibrato: 10
-  _shakeRandomness: 90
 --- !u!95 &3174461756675346385
 Animator:
   serializedVersion: 5
@@ -112,6 +92,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8347839937859466531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5216258947834c739e76c91ed45cc1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fallsEast: 0
+  _idle: {fileID: -3636352279123513399, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _falling: {fileID: -142243955360043195, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _shakeDuration: 0.5
+  _shakeStrength: 0.05
+  _shakeVibrato: 10
+  _shakeRandomness: 90
+  _identifier: W_FallenLarch
 --- !u!114 &6400350118229307613
 MonoBehaviour:
   m_ObjectHideFlags: 0
