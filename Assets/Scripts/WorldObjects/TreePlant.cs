@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using ReactiveUnity;
-using UnityEditor;
 using UnityEngine;
 
 public enum TreeStates { SummerAdult, FallAdult, DeadAdult, Stump };
@@ -84,28 +83,35 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     }
 
     /// <summary>
-    /// Spawns a stump and a falling tree. Deletes the standing tree (this object).
+    /// Spawns a stump and a falling tree. Deletes the standing tree (this object instance).
     /// </summary>
     IEnumerator FallTree()
     {
-        // wait for axing animation to finish
+        // Wait for axing animation to finish
         yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerStates.Axing);
+
+        // Determine which tree prefab to select
         bool _fallsEast = WillTreeFallEast();
-        GameObject _fallenTree = _fallsEast ? _E_fallenTree : _W_fallenTree;
+        GameObject _treeToFall = _fallsEast ? _E_fallenTree : _W_fallenTree;
+
+        // Falls a hand-picked distance to the side of the stump
         Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0) : new Vector3(-0.5f, 1f, 0);
 
+        // Instantiating
         GameObject _larchStump = UnityEngine.Object.Instantiate(_stump,
                                                                 transform.position,
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
 
-        GameObject _fallenLarch = UnityEngine.Object.Instantiate(_fallenTree,
+        GameObject _fallenTree = UnityEngine.Object.Instantiate(_treeToFall,
                                                                 transform.position + _fallenTreePosition, // falls some distance to the side of stump
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
 
-        _fallenLarch.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
-        _fallenLarch.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
+        // Want falling tree to appear infront of stump.
+        // FallingTree.cs re-enables sprite sorting after falling
+        _fallenTree.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
+        _fallenTree.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
         Destroy(gameObject);
     }
 

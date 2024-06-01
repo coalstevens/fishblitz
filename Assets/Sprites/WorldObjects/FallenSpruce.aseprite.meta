@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 100
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -75,8 +75,8 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    defaultPivotAlignment: 9
+    customPivotPosition: {x: 0.921875, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
@@ -88,8 +88,8 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
-    customPivotPosition: {x: 0.5, y: 0.5}
+    defaultPivotAlignment: 9
+    customPivotPosition: {x: 0.921875, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638527027321158160
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: FallenSpruce_Frame_0
     originalName: 
-    pivot: {x: 0.4457831, y: -0.05952381}
+    pivot: {x: 0.99999994, y: 0.65753424}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
-      width: 166
-      height: 84
+      y: 96
+      width: 165
+      height: 73
     spriteID: c42f0ccaf593e44e7b6360bf5df3c5ef
     spriteBone: []
     spriteOutline: []
@@ -140,18 +140,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 4, y: 96}
   - name: FallenSpruce_Frame_1
     originalName: 
-    pivot: {x: 0.4556213, y: -0.22535211}
+    pivot: {x: 0.9939394, y: 0.65753424}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 96
-      width: 169
-      height: 71
+      y: 177
+      width: 165
+      height: 73
     spriteID: 481e357b7b08743a0a5a1be65fcfb983
     spriteBone: []
     spriteOutline: []
@@ -160,18 +160,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 96}
+    uvTransform: {x: 4, y: 177}
   - name: FallenSpruce_Frame_2
     originalName: 
-    pivot: {x: 0.49999997, y: -0.2112676}
+    pivot: {x: 1.0421686, y: 0.5119048}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 175
+      y: 4
       width: 166
-      height: 71
+      height: 84
     spriteID: 5cb9027ab3680417baa69299c9a1581a
     spriteBone: []
     spriteOutline: []
@@ -180,7 +180,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 175}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -190,33 +190,69 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: FallenSpruce_Frame_0
-      frameIndex: 0
-      cellRect:
-        x: 22
-        y: 5
-        width: 166
-        height: 84
-      spriteId: c42f0ccaf593e44e7b6360bf5df3c5ef
     - name: FallenSpruce_Frame_1
       frameIndex: 1
       cellRect:
-        x: 19
-        y: 16
-        width: 169
-        height: 71
-      spriteId: 481e357b7b08743a0a5a1be65fcfb983
+        x: 12
+        y: 0
+        width: 165
+        height: 73
+      spriteId: c42f0ccaf593e44e7b6360bf5df3c5ef
     - name: FallenSpruce_Frame_2
       frameIndex: 2
       cellRect:
         x: 13
-        y: 15
+        y: 0
+        width: 165
+        height: 73
+      spriteId: 481e357b7b08743a0a5a1be65fcfb983
+    - name: FallenSpruce_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 4
+        y: 5
         width: 166
-        height: 71
+        height: 84
       spriteId: 5cb9027ab3680417baa69299c9a1581a
     linkedCells: []
     parentIndex: -1
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 

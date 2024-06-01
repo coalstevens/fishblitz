@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class FallenLarch : FallenTree, ISaveable
+public class FallenSpruce : FallenTree, ISaveable
 {
     [SerializeField] private string _identifier;
-    private class FallenLarchSaveData
+    private class FallenSpruceSaveData
     {
         public FallenTreeStates State;
     }
 
     public SaveData Save()
     {
-        var _extendedData = new FallenLarchSaveData()
+        var _extendedData = new FallenSpruceSaveData()
         {
             State = _state.Value,
         };
@@ -18,16 +18,17 @@ public class FallenLarch : FallenTree, ISaveable
         var _saveData = new SaveData();
         _saveData.AddIdentifier(_identifier);
         _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<FallenLarchSaveData>(_extendedData);
+        _saveData.AddExtendedSaveData<FallenSpruceSaveData>(_extendedData);
         return _saveData;
     }
 
     public void Load(SaveData saveData)
     {
-        var _extendedData = saveData.GetExtendedSaveData<FallenLarchSaveData>();
+        var _extendedData = saveData.GetExtendedSaveData<FallenSpruceSaveData>();
         _identifier = saveData.Identifier;
         _state.Value = _extendedData.State;
         if (_state.Value == FallenTreeStates.Idle)
             StopAnimation(); 
     }
 }
+

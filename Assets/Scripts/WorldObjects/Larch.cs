@@ -1,4 +1,4 @@
-public class Larch : TreePlant, IUseableWithAxe, ISaveable
+public class Larch : TreePlant, ISaveable
 {
     private const string IDENTIFIER = "Larch";
     private class LarchSaveData

@@ -1,11 +1,15 @@
-public class Spruce : TreePlant, ISaveable {
+public class Spruce : TreePlant, ISaveable
+{
     private const string IDENTIFIER = "Spruce";
-    private class SpruceSaveData {
+    private class SpruceSaveData
+    {
         public TreeStates TreeState;
     }
+
     public SaveData Save()
     {
-        var _extendedData = new SpruceSaveData {
+        var _extendedData = new SpruceSaveData
+        {
             TreeState = _treeState.Value
         };
 
@@ -15,6 +19,7 @@ public class Spruce : TreePlant, ISaveable {
         _saveData.AddExtendedSaveData<SpruceSaveData>(_extendedData);
         return _saveData;
     }
+
     public void Load(SaveData saveData)
     {
         var _extendedData = saveData.GetExtendedSaveData<SpruceSaveData>();

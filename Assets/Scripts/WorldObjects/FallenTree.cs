@@ -17,10 +17,12 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] float _shakeStrength = 0.05f;
     [SerializeField] int _shakeVibrato = 10;
     [SerializeField] float _shakeRandomness = 90f;
+
     public enum FallenTreeStates { Idle, Falling };
     protected Reactive<FallenTreeStates> _state = new Reactive<FallenTreeStates>(FallenTreeStates.Falling);
     private const int _HITS_TO_DESTROY = 5;
     private int _hitCount = 0;
+    
     Animator _animator;
     Action _unsubscribe;
     SpriteRenderer _spriteRenderer;
@@ -67,6 +69,11 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
     {
         // minus 0.01f so no flash of start of animation
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length - 0.01f);
+        StopAnimation();
+        _state.Value = FallenTreeStates.Idle;
+    }
+
+    protected void StopAnimation() {
         _animator.StopPlayback();
         _animator.enabled = false;
         _collider.enabled = true;
@@ -79,8 +86,6 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
 
         // Requires enabling because it was disabled to make the falling animation look good.  
         GetComponentInChildren<StaticSpriteSorting>().enabled = true;
-
-        _state.Value = FallenTreeStates.Idle;
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
