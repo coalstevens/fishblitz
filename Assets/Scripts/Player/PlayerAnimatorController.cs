@@ -119,10 +119,10 @@ public class PlayerAnimatorController : MonoBehaviour
                     HandleAxeWalking(facingDir);
                     break;
                 default:
+                    HandleNoToolWalking(facingDir);
                     break;
             }
         }
-        HandleNoToolWalking(facingDir);
     }
     
     private void HandleNoToolWalking(FacingDirections facingDir)
@@ -172,10 +172,10 @@ public class PlayerAnimatorController : MonoBehaviour
                     HandleAxeIdle(facingDir);
                     break;
                 default:
+                    HandleNoToolIdle(facingDir);
                     break;
             }
         }
-        HandleNoToolIdle(facingDir);
     }    
     private void HandleNoToolIdle(FacingDirections facingDir)
     {
