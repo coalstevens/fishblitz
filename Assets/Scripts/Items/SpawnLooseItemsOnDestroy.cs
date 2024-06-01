@@ -3,8 +3,21 @@ using UnityEngine.UI;
 
 public class SpawnLooseItemsOnDestroy : MonoBehaviour
 {
+    [System.Serializable]
+    public class ItemSpawnData
+    {
+        public ItemSpawnData(string identifier, int minQuantity, int maxQuantity)
+        {
+            this.identifier = identifier;
+            this.minQuantity = minQuantity;
+            this.maxQuantity = maxQuantity;
+        }
+        public string identifier;
+        public int minQuantity;
+        public int maxQuantity;
+    }
     [SerializeField] bool _spawnOnDestroy = true;
-    [SerializeField] private SpawnItemData[] _itemsToSpawn;
+    [SerializeField] private ItemSpawnData[] _itemsToSpawn;
     [SerializeField] private Collider2D _spawnArea;
 
     [Header("Object Spawn Velocity Settings")]
@@ -16,9 +29,9 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
     private void Awake()
     {
         // Collider has to be enabled to get the bounds
-        if(_spawnArea.enabled)
+        if (_spawnArea.enabled)
             _bounds = _spawnArea.bounds;
-        else 
+        else
         {
             _spawnArea.enabled = true;
             _bounds = _spawnArea.bounds;
@@ -46,21 +59,22 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
             }
             Sprite _itemImage = _spawnItem.GetComponent<Image>().sprite;
 
-            foreach (var _spawnPosition in GetRandomPositionsWithinCollider(_item.quantity))
+            foreach (var _spawnPosition in GetRandomPositionsWithinCollider(Random.Range(_item.minQuantity, _item.maxQuantity)))
             {
-                GameObject _spawnedItem = SpawnLooseItem(new SpawnItemData(_item.identifier, 1), _itemImage, _spawnPosition);
+                GameObject _spawnedItem = SpawnLooseItem(new ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
                 SetLaunchSpeed(_spawnedItem);
             }
         }
     }
 
-    private GameObject SpawnLooseItem(SpawnItemData item, Sprite itemSprite, Vector3 spawnPosition) {
+    private GameObject SpawnLooseItem(ItemData item, Sprite itemSprite, Vector3 spawnPosition)
+    {
         // Spawn a generic loose item
         GameObject _spawnedItem = Instantiate(Resources.Load<GameObject>("Items/LooseItem"),
                                                 spawnPosition,
                                                 Quaternion.identity,
                                                 _sceneItemSpawnContainer);
-        
+
         // Apply item sprite to loose item
         _spawnedItem.GetComponentInChildren<SpriteRenderer>().sprite = itemSprite;
 
@@ -69,15 +83,16 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
         return _spawnedItem;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
     }
     Vector3[] GetRandomPositionsWithinCollider(int quantity)
     {
         Vector3[] _positions = new Vector3[quantity];
         for (int i = 0; i < quantity; i++)
         {
-            _positions[i] = new Vector3(Random.Range(_bounds.min.x, _bounds.max.x), 
-                                        Random.Range(_bounds.min.y, _bounds.max.y), 
+            _positions[i] = new Vector3(Random.Range(_bounds.min.x, _bounds.max.x),
+                                        Random.Range(_bounds.min.y, _bounds.max.y),
                                         0);
         }
         return _positions;
@@ -90,7 +105,8 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
         _rb.velocity = GenerateRandomDirection() * _speed;
     }
 
-    public Vector3 GenerateRandomDirection() {
+    public Vector3 GenerateRandomDirection()
+    {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         Vector3 randomDirection = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0);
         randomDirection.Normalize();

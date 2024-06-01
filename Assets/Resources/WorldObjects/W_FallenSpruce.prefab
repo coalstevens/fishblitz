@@ -127,7 +127,8 @@ MonoBehaviour:
   _spawnOnDestroy: 1
   _itemsToSpawn:
   - identifier: WetLog
-    quantity: 5
+    minQuantity: 2
+    maxQuantity: 6
   _spawnArea: {fileID: 2785344821184485068}
   _speed: 3
   _drag: 3

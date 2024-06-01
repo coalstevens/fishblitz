@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LooseItem : MonoBehaviour
 {
-    [SerializeField] public SpawnItemData Item;
+    [SerializeField] public ItemData Item;
     [SerializeField] public bool IsMagnetic = false;
 
     Animator _animator;
