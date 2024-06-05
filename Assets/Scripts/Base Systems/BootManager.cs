@@ -51,8 +51,7 @@ public class BootManager : MonoBehaviour
     }
 
     void LoadInitialScene() {
-        SmoothSceneManager.LoadScene(_toScene);
-        PlayerData.Instance.SceneSpawnPosition = _sceneSpawnLocation;
+        LevelChanger.ChangeLevel(_toScene, _sceneSpawnLocation);
     }
 
     void OnSceneUnloaded(Scene current) {

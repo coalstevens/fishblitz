@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Persistence;
 using System;
+using UnityEditor.Build;
 
-// Note about instantiating:
+// Note about instantiating objects here:
 // World objects instantiated by this Manager should use Awake() instead of Start()
 // Start() is called before first frame of scene, which has already passed.
 // Awake() is called when a prefab object is instantiated.

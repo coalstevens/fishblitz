@@ -40,7 +40,8 @@ public class PlayerDryingManager : MonoBehaviour, ITickable {
     }
 
     private void OnDisable() {
-        RainManager.Instance.RainStateChange -= OnRainStateChange;
+        if (RainManager.Instance != null)
+            RainManager.Instance.RainStateChange -= OnRainStateChange;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (var hook in _unsubscribeHooks) {
             hook();

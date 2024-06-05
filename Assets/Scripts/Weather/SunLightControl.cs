@@ -30,12 +30,13 @@ public class SunLightControl : MonoBehaviour
     private int _minuteCounter = 0;
     public float debug;
 
-    void Start()
+    void Awake()
     {
         _light = GetComponent<Light2D>();
         _gameClock = GameObject.FindWithTag("GameClock").GetComponent<GameClock>();
         _gameClock.GameMinute.OnChange((prev, curr) => OnMinuteChange());
         _lightState.OnChange((prev,curr) => UpdateLight());
+        UpdateLight();
     }
 
     // Update is called once per frame

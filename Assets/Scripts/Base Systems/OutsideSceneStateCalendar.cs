@@ -34,6 +34,7 @@ public class OutsideSceneStateCalendar : MonoBehaviour
         _riverCalendar[(1, GameClock.Seasons.Spring, 2)] = RiverStates.FullDirt;
     }
     void SetSceneState(RiverStates newState) {
+        DisableAllVariableGameObjects();
         switch (newState) {    
             case RiverStates.Puddles:
                 _waterPuddles.SetActive(true);

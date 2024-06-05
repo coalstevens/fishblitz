@@ -112,16 +112,21 @@ public class PlayerAnimatorController : MonoBehaviour
     }
     private void HandleWalking(FacingDirections facingDir)
     {
-        if (_inventory.TryGetActiveItem(out var _activeItem)) {
-            switch (_activeItem.ItemName)
-            {
-                case "Axe":
-                    HandleAxeWalking(facingDir);
-                    break;
-                default:
-                    HandleNoToolWalking(facingDir);
-                    break;
-            }
+        // Active item null
+        if (!_inventory.TryGetActiveItem(out var _activeItem)) {
+            HandleNoToolWalking(facingDir);
+            return;
+        }
+
+        // Active item switch
+        switch (_activeItem.ItemName)
+        {
+            case "Axe":
+                HandleAxeWalking(facingDir);
+                break;
+            default:
+                HandleNoToolWalking(facingDir);
+                break;
         }
     }
     
@@ -165,18 +170,24 @@ public class PlayerAnimatorController : MonoBehaviour
     
     private void HandleIdle(FacingDirections facingDir)
     {
-        if (_inventory.TryGetActiveItem(out var _activeItem)) {
-            switch (_activeItem.ItemName)
-            {
-                case "Axe":
-                    HandleAxeIdle(facingDir);
-                    break;
-                default:
-                    HandleNoToolIdle(facingDir);
-                    break;
-            }
+        // Active item null
+        if (!_inventory.TryGetActiveItem(out var _activeItem)) {
+            HandleNoToolIdle(facingDir);
+            return;
+        }
+        
+        // Active item switch
+        switch (_activeItem.ItemName)
+        {
+            case "Axe":
+                HandleAxeIdle(facingDir);
+                break;
+            default:
+                HandleNoToolIdle(facingDir);
+                break;
         }
     }    
+
     private void HandleNoToolIdle(FacingDirections facingDir)
     {
         switch (facingDir)
