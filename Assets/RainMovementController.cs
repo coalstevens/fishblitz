@@ -10,14 +10,15 @@ public class RainMovementController : MonoBehaviour
         _playerCamera = GameObject.FindGameObjectWithTag("Player").transform;
         _rain = GetComponent<ParticleSystem>();
 
-        if (RainManager.Instance.RainState == RainStates.NotRaining) {
+        if (RainManager.Instance.RainState == RainStates.NotRaining)
+        {
             _rain.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             return;
         }
-        
+
         SetEmitterPosition(PlayerData.Instance.SceneSpawnPosition, EMITTER_Y_OFFSET);
         _rain.Clear();
-        
+
         // this is a manual prewarm!
         // its beautiful, stunning, just the best
         _rain.Simulate(_rain.main.duration);
