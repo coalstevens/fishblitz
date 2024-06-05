@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2956030922089192725}
   - component: {fileID: 5792712052920068362}
   - component: {fileID: 5628540962408279564}
+  - component: {fileID: 1977123971369485847}
   m_Layer: 0
   m_Name: Rain
   m_TagString: Rain
@@ -42,15 +43,15 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378220457235833857}
   serializedVersion: 8
-  lengthInSec: 5
-  simulationSpeed: 3
+  lengthInSec: 2
+  simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -117,8 +118,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 7
+      scalar: 0.0001
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -871,7 +872,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3000
+      scalar: 12000
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1602,8 +1603,8 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -3.5
-      minScalar: -2
+      scalar: -10.5
+      minScalar: -6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4830,6 +4831,18 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1977123971369485847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378220457235833857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 176568ccc644447ddb0606bd211add44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5980368976121126473
 GameObject:
   m_ObjectHideFlags: 0
@@ -4841,7 +4854,6 @@ GameObject:
   - component: {fileID: 6161061078179367962}
   - component: {fileID: 5353321822249704387}
   - component: {fileID: 6430882324421820231}
-  - component: {fileID: 5177056665250399968}
   m_Layer: 0
   m_Name: RainSplash
   m_TagString: Untagged
@@ -9667,7 +9679,7 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 2
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ae9efcfc7c51b421084f7016ef20d7e8, type: 2}
@@ -9688,8 +9700,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 2138312857
-  m_SortingLayer: 3
+  m_SortingLayerID: -908687739
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -9721,15 +9733,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &5177056665250399968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5980368976121126473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7c59ab6723f748429a9423d9432555d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
