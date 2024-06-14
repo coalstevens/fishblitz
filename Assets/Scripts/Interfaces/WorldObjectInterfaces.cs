@@ -6,10 +6,6 @@ public interface ISaveable {
     void Load(SaveData saveData);
 }
 
-//TODO define me plox
-public interface IInteractableTile {
-}
-
 public interface IInteractable {
     /// <summary>
     /// Returns false if the object ignores the command.

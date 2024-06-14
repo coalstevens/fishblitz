@@ -17,15 +17,17 @@ public class DryLog : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
         set => _quantity = value;
     }
 
-    public void UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool IPlayerCursorUsingItem.UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is LarchStump _larchStump) {
             _larchStump.LoadLog();
+            return true;
         }
+        return false;
     }
 
-    public void UseItemOnTile(IInteractableTile interactableTile, Vector3Int cursorLocation)
+    bool IPlayerCursorUsingItem.UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
     {
-        // do nothing
+        return false; // does nothing
     }
 }

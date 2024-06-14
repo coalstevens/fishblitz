@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using ReactiveUnity;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
@@ -37,21 +32,24 @@ public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
     }
     
-    private void PlaceRod(IInteractableTile interactableTile, Vector3 cursorLocation)
+    // TODO
+    private void PlaceRod(Vector3 cursorLocation)
     {
-        Instantiate(((RodPlacement)interactableTile).RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-        _inventory.TryRemoveItem("MountedRod", 1);
+        // Instantiate(((RodPlacement)interactableTile).RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        // _inventory.TryRemoveItem("MountedRod", 1);
     }
 
-    public void UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool IPlayerCursorUsingItem.UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
-        // do nothing
+        return false; // do nothing
     }
 
-    public void UseItemOnTile(IInteractableTile interactableTile, Vector3Int cursorLocation)
+    public bool UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
     {
-        if (interactableTile is RodPlacement) {
-            PlaceRod(interactableTile, cursorLocation);
+        if (tilemapLayerName == "Water") {
+            PlaceRod(cursorLocation);
+            return true;
         }
+        return false;
     }
 }

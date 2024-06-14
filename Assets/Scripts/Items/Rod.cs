@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class Rod : MonoBehaviour, ITool, IInventoryItem
@@ -41,23 +38,35 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         }
     }
 
-    public void UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool ITool.UseToolOnInteractableTileMap(string tilemapLayerName, UnityEngine.Vector3Int cursorLocation)
     {
-        // do nothing
-    }
-
-    public void UseToolOnTile(IInteractableTile interactableTile, Vector3Int cursorLocation)
-    {
-        //if fishing stop fishing
+        Debug.Log("Used rod on tilemap");
+        // if fishing stop fishing
         if (_playerMovementController.PlayerState.Value == PlayerStates.Fishing) {
             _playerMovementController.PlayerState.Value = PlayerStates.Idle;
             StopCoroutine(_changeStateRoutine);
-            return;
+            return true;
         }
 
-        if (interactableTile is RodPlacement) {
+        // if cursor is on water, start fishing
+        if (tilemapLayerName == "Water") {
             _playerMovementController.PlayerState.Value = PlayerStates.Fishing;
             _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
+            return true;
         }
+        
+        return false;
+    }
+
+    public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    {
+        Debug.Log("Used rod on world object");
+        return false; // does nothing
+    }
+
+    public void SwingTool()
+    {
+        Debug.Log("Swung fishing rod");
+        return; // does nothing. Make a casting animation?
     }
 }
