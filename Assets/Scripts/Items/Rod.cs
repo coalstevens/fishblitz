@@ -28,7 +28,7 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
     }
-    private IEnumerator ChangeStateRoutine()
+    private IEnumerator WaitForFishToBite()
     {
         while (true)
         {
@@ -51,7 +51,7 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         // if cursor is on water, start fishing
         if (tilemapLayerName == "Water") {
             _playerMovementController.PlayerState.Value = PlayerStates.Fishing;
-            _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
+            _changeStateRoutine = StartCoroutine(WaitForFishToBite());
             return true;
         }
         

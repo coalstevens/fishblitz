@@ -1,17 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
-public class Fish : MonoBehaviour
+public class FishType : MonoBehaviour
 {
-    public string validSceneName;
+    public List<string> CatchableSceneNames;
     // Start is called before the first frame update
     [Header("Fish Catching Behavior")]
-    public float PlayDuration = 5f;
-    public int NumTriggers; // always a trigger press at the end 
-    public float MinimumTriggerGap;
-    public float SpecialGap;
-    public enum modifier { normal, doubles, triples, mega };
-    public modifier gameModifier;
+    public float GameSpeed = 5f;
+    public int NumberOfTriggers; // including final trigger at the very top
+    public float MinimumTriggerSpacing; // triggers can't be closer together than this
+    public float StackedTriggerSpacing; // custom gap for stacked trigger types
+    public enum StackedTriggerType { none, doubles, mega };
+    public StackedTriggerType GameModifier;
+    public bool HasOscillatingTriggers;
+    public float OscillatingSpeed;
+    [Range(0.0f, 1.0f)] public float OscillationLengthNormalized;
 }

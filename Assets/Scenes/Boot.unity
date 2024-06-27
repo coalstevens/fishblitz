@@ -1323,7 +1323,7 @@ MonoBehaviour:
   _startHeight: 0
   _endHeight: 3.6875
   _barSprite: {fileID: 7194700091764086988}
-  _fishSpriteObject: {fileID: 7413689163179244878}
+  _fishCursor: {fileID: 7413689163179244878}
   _triggersContainer: {fileID: 4066459615131255785}
   _fishBarTriggerPrefab: {fileID: 4812331003245839871, guid: eac5bb9e0ff1f47fca304d717a13a825, type: 3}
   _fishContainer: {fileID: 8568984729448367343}
@@ -1339,6 +1339,11 @@ MonoBehaviour:
   _greyOverlay: {fileID: -8394412529934902686, guid: 315f7b477b9e944c3b39833ee84e36a9, type: 3}
   _redOverlay: {fileID: -3635662006037801568, guid: 315f7b477b9e944c3b39833ee84e36a9, type: 3}
   _blinkDuration: 0.1
+  _logger:
+    _info: 1
+    _verbose: 1
+    _prefix: Fishing
+    _color: green
 --- !u!224 &576821925366159122
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1761,7 +1766,7 @@ MonoBehaviour:
   GameSeason:
     _val: 1
   GameDay:
-    _val: 3
+    _val: 1
   GameHour:
     _val: 12
   GameMinute:
@@ -3677,7 +3682,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.015625}
+  m_Offset: {x: 0, y: 0.015624881}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.42857143}
@@ -3688,7 +3693,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.375, y: 0.21875}
+  m_Size: {x: 0.375, y: 0.09354329}
   m_EdgeRadius: 0
 --- !u!1 &4066459615131255785
 GameObject:
@@ -4520,12 +4525,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  validSceneName: Level 1
-  PlayDuration: 3
-  NumTriggers: 7
-  MinimumTriggerGap: 0.1
-  SpecialGap: 0.05
-  gameModifier: 1
+  CatchableSceneNames:
+  - Outside
+  GameSpeed: 2
+  NumberOfTriggers: 4
+  MinimumTriggerSpacing: 0
+  StackedTriggerSpacing: 0
+  GameModifier: 0
+  HasOscillatingTriggers: 1
+  OscillatingSpeed: 0.5
+  OscillationLengthNormalized: 0.1
 --- !u!114 &5774731060823377587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5842,12 +5851,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  validSceneName: Level 1
-  PlayDuration: 3
-  NumTriggers: 5
-  MinimumTriggerGap: 0.1
-  SpecialGap: 0
-  gameModifier: 0
+  CatchableSceneNames:
+  - Outside
+  GameSpeed: 2
+  NumberOfTriggers: 6
+  MinimumTriggerSpacing: 0
+  StackedTriggerSpacing: 0
+  GameModifier: 0
+  HasOscillatingTriggers: 0
+  OscillatingSpeed: 0
+  OscillationLengthNormalized: 0
 --- !u!1 &7949753271394668006
 GameObject:
   m_ObjectHideFlags: 0
@@ -6184,7 +6197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4778002720753839840}
   m_Layer: 0
-  m_Name: Fishes
+  m_Name: FishTypes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
