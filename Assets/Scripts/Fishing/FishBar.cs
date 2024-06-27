@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using ReactiveUnity;
 using UnityEngine.SceneManagement;
 
 public class FishBar : MonoBehaviour
@@ -31,7 +30,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] private SpriteRenderer _overlaySpriteRenderer; // Highlights all of fish bar
     [SerializeField] private Sprite _greyOverlay;
     [SerializeField] private Sprite _redOverlay;
-    [SerializeField] private float _blinkDuration = 0.1f;
+    [SerializeField] private float _blinkDuration = 0.2f;
 
     [SerializeField] Logger _logger = new();
 
@@ -40,10 +39,10 @@ public class FishBar : MonoBehaviour
     private Collider2D _indicatorCollider;
     private List<FishBarTrigger> _triggers;
 
-    private int _triggerIndex = 0;
-    private Reactive<bool> _failed = new Reactive<bool>(false);
+    private int _triggerIndex;
+    private bool _failed;
+    private bool _won;
     private Vector2 _originalFishCursorPos;
-    private bool _won = false;
     private FishType _fishType;
     private Inventory _inventory;
     
@@ -56,7 +55,6 @@ public class FishBar : MonoBehaviour
     {
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _failed.When((prev, curr) => curr, (prev, curr) => OnFail());
         _originalFishCursorPos = _fishCursor.transform.localPosition;
     }
 
@@ -83,7 +81,7 @@ public class FishBar : MonoBehaviour
             Destroy(_child.gameObject);
         ResetFishCursor();
         _overlaySpriteRenderer.sprite = null;
-        _failed.Value = false;
+        _failed = false;
         _won = false;
 
         // Configure new game
@@ -110,6 +108,9 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = _greyOverlay;
 
         LaunchFishCursor();
+        yield return new WaitForSeconds(2);
+        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        EndGame();
     }
 
     private void ResetFishCursor()
@@ -131,16 +132,10 @@ public class FishBar : MonoBehaviour
     // Called from FishBarTrigger
     private void PassedFishBarTrigger(FishBarTrigger fishBarTrigger)
     {
-        // returns if final trigger was hit successfully
-        if (_won)
-        {
-            return;
-        }
-
         // if the next trigger to hit is the one just passed, it was missed
         if (GetNextTrigger() == fishBarTrigger)
         {
-            _failed.Value = true;
+            _failed = true;
         }
     }
 
@@ -152,7 +147,7 @@ public class FishBar : MonoBehaviour
     }
 
     // Move cursor and stretch fillbar to match
-    public void SetCompletion(float percent)
+    public void UpdateCursor(float percent)
     {
         float _currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
         _barSprite.size = new Vector2(_barSprite.size.x, _currHeight);
@@ -160,10 +155,8 @@ public class FishBar : MonoBehaviour
         // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
         // - Using a RB is giving control of the position to Unity so it can handle collisions
         //   It's hopefully fine in this case since everything is a trigger and only overlap each other
-        if (!_failed.Value)
-        {
+        if (!_failed)
             _fishCursor.transform.localPosition = new Vector2(_fishCursor.transform.localPosition.x, _currHeight);
-        }
     }
 
     private IEnumerator PlayRoutine(float duration)
@@ -175,28 +168,33 @@ public class FishBar : MonoBehaviour
         // Move cursor and stretch fillbar
         while (_time < duration)
         {
-            SetCompletion(Mathf.InverseLerp(0, duration, _time));
+            UpdateCursor(Mathf.InverseLerp(0, duration, _time));
             float _elapsed = Time.deltaTime;
             yield return new WaitForSeconds(_elapsed);
             _time += _elapsed;
+            if (_failed) {
+                OnFail();
+                yield break;
+            }
         }
 
-        // Check result
-        if (_failed.Value)
-        {
-            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
-        }
+        // This is essentially just checking whether the last trigger got hit or not
+        if (_won)
+            OnWin();
         else
-        {
+            OnFail();
+    }
+
+    private void OnWin() {
             _playerMovementController.PlayerState.Value = PlayerStates.Celebrating;
             _playerSoundController.PlaySound("Caught");
             // TODO: Add fish item to inventory, make fish items
-        }
-
-        // End game
-        gameObject.SetActive(false);
+            EndGame();
     }
 
+    private void EndGame() {
+        gameObject.SetActive(false);
+    }
 
     /// <summary>
     /// Determines result of keypress. Success, Hit, or Failed
@@ -204,10 +202,8 @@ public class FishBar : MonoBehaviour
     private void OnUseTool()
     {
         // ignore if lost already
-        if (_failed.Value)
-        {
+        if (_failed)
             return;
-        }
 
         // Check for hit or miss
         FishBarTrigger _next = GetNextTrigger();
@@ -221,14 +217,12 @@ public class FishBar : MonoBehaviour
 
             // That was the last one. we won!
             if (_triggerIndex == _triggers.Count)
-            {
                 _won = true;
-            }
         }
         else
         {
             // Missed! Pressed over nothing or wrong trigger
-            _failed.Value = true;
+            _failed = true;
         }
     }
 
