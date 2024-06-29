@@ -4,6 +4,17 @@ public class FishBarTrigger : MonoBehaviour
 {
     [SerializeField] private Sprite _fulfilledSprite;
     [SerializeField] private Sprite _unfulfilledSprite;
+    private bool _fulfilled = false;
+    public bool Fulfilled {
+        get => _fulfilled;
+        set {
+            _fulfilled = value;
+            _spriteRenderer.sprite = _fulfilled ? _fulfilledSprite : _unfulfilledSprite;
+            if(_fulfilled) 
+                _audioSource.Play();
+        }
+    }
+    
     private AudioSource _audioSource;
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
@@ -18,21 +29,12 @@ public class FishBarTrigger : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<Collider2D>();
         _audioSource = GetComponent<AudioSource>();
-        SetSprite(false);
+        Fulfilled = false;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         gameObject.SendMessageUpwards("PassedFishBarTrigger", this, SendMessageOptions.DontRequireReceiver);
-    }
-
-    // Called from fishbar 
-    public void SetSprite(bool fulfilled)
-    {
-        _spriteRenderer.sprite = fulfilled ? _fulfilledSprite : _unfulfilledSprite;
-        if(fulfilled) {
-            _audioSource.Play();
-        }
     }
 
     public Collider2D GetCollider()

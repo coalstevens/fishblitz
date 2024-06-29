@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] private GameObject _fishCursor;
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
-    [SerializeField] private GameObject _fishContainer;
+    [SerializeField] private GameObject _fishTypeContainer;
     [SerializeField] private PlayerSoundController _playerSoundController;
 
     [Header("Shake Options")]
@@ -35,66 +36,119 @@ public class FishBar : MonoBehaviour
     [SerializeField] Logger _logger = new();
 
     private PlayerMovementController _playerMovementController;
-    private Rigidbody2D _fishObjectRb;
-    private Collider2D _indicatorCollider;
-    private List<FishBarTrigger> _triggers;
-
-    private int _triggerIndex;
-    private bool _failed;
-    private bool _roundWon;
-    private int _roundNumber = 0;
-    private Vector2 _originalFishCursorPos = new Vector2(0f, 3.68658f);
-    private FishType _fishType;
     private Inventory _inventory;
+    private Collider2D _gameCursorCollider;
+    private Rigidbody2D _gameCursorRB;
+    private List<FishBarTrigger> _triggers;
+    private bool _failed;
+    private int _roundNumber;
+    private Vector2 _gameCursorStartPosition = new Vector2(0f, 3.68658f); // Start position of cursor
+    private FishType _fishType;
     
     // Fields below map the normalized trigger positions to the 
     // actual length of the fishbar play area, uses y = mx + b
     public static readonly float TRIGGER_MAPPING_SLOPE = 3.35f;
     public static readonly float TRIGGER_MAPPING_INTERCEPT = 0.35f;
 
-    // Play the fish bar game
+    // Play the fishing mini game
     public void Play()
     {
+        // Get references
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        //_originalFishCursorPos = _fishCursor.transform.localPosition;
+        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
+        _gameCursorCollider = _fishCursor.GetComponent<Collider2D>();
+        _gameCursorRB = _fishCursor.GetComponent<Rigidbody2D>();
 
-        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
-        _logger.Info("New game started.");
         InitializeNewGame();
-   
-        _logger.Info($"Round {_roundNumber} start");
-        InitializeRound(_fishType.Rounds[_roundNumber]);
+        InitializeNewRound(_fishType.Rounds[_roundNumber]);
         StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
     }
 
     private void InitializeNewGame()
     {
-        gameObject.SetActive(true);
-
-        // Get references
-        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
-        _indicatorCollider = _fishCursor.GetComponent<Collider2D>();
-        _fishObjectRb = _fishCursor.GetComponent<Rigidbody2D>();
-        
+        _logger.Info("New game started.");
+        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
+        gameObject.SetActive(true); 
         _fishType = GetRandomValidFishType();
         _overlaySpriteRenderer.sprite = null;
         _failed = false;
         _roundNumber = 0;
     }
 
-    private void InitializeRound(FishingRound round) 
+    private void InitializeNewRound(FishingRound round) 
     {
-        // Reset for round
-        _triggerIndex = 0;
-        _roundWon = false;
+        _logger.Info($"Round {_roundNumber} start");
+
+        // Reset game
         foreach (Transform _child in _triggersContainer.transform)
             Destroy(_child.gameObject);
         ResetFishCursor();
 
         // Configure next round
         _triggers = InstantiateTriggers(GenerateNormalizedTriggerPositions(round));
-        if (round.HasOscillatingTriggers) ConfigureTriggerOscillation(_triggers, round);
+        if (round.HasOscillatingTriggers) 
+            ConfigureTriggerOscillation(_triggers, round);
+    }
+
+    // Called from FishBarTrigger
+    // Checks whether passed trigger was unfulfilled
+    private void PassedFishBarTrigger(FishBarTrigger fishBarTrigger)
+    {
+        if (fishBarTrigger.Fulfilled == false)
+            _failed = true;
+    }
+
+    private IEnumerator PlayRound(float duration)
+    {
+        // Gameplay loop
+        float _time = 0f;
+        while (_time < duration)
+        {
+            UpdateGameCursor(Mathf.InverseLerp(0, duration, _time));
+            float _elapsed = Time.deltaTime;
+            yield return new WaitForSeconds(_elapsed);
+            _time += _elapsed;
+            if (_failed)
+                break;
+        }
+        
+        // Check if failed
+        if (_failed || _triggers.Any(trigger => trigger.Fulfilled == false)) {
+            OnFail();
+            yield break;
+        }
+
+        // Round won! Check if it was the last round
+        _roundNumber++;
+        if (_roundNumber >= _fishType.Rounds.Count) {
+            OnGameWin();
+            yield break;
+        }
+
+        // Move to next round
+        InitializeNewRound(_fishType.Rounds[_roundNumber]);
+        StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
+    }
+
+    // Move cursor and stretch fillbar to match
+    public void UpdateGameCursor(float percent)
+    {
+        float _currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
+        _barSprite.size = new Vector2(_barSprite.size.x, _currHeight);
+
+        // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
+        // - Using a RB is giving control of the position to Unity so it can handle collisions
+        //   It's hopefully fine in this case since everything is a trigger and only overlap each other
+        if (!_failed)
+            _fishCursor.transform.localPosition = new Vector2(_fishCursor.transform.localPosition.x, _currHeight);
+    }
+
+    private void OnGameWin() {
+        _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
+        _playerSoundController.PlaySound("Caught");
+        // TODO: Add fish item to inventory, make fish items
+        EndGame();
     }
 
     private void OnFail()
@@ -115,88 +169,8 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = _greyOverlay;
 
         LaunchFishCursor();
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1.5f);
         _playerMovementController.PlayerState.Value = PlayerStates.Idle;
-        EndGame();
-    }
-
-    private void ResetFishCursor()
-    {
-        _fishObjectRb.transform.SetLocalPositionAndRotation(_originalFishCursorPos, Quaternion.identity);
-        _fishObjectRb.bodyType = RigidbodyType2D.Kinematic;
-    }
-
-    private void LaunchFishCursor()
-    {
-        _fishObjectRb.bodyType = RigidbodyType2D.Dynamic;
-        _fishObjectRb.mass = _mass;
-
-        Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
-        _fishObjectRb.AddForceAtPosition(randomForce, (Vector2)_fishCursor.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
-        _playerSoundController.PlaySound("Missed");
-    }
-
-    // Called from FishBarTrigger
-    private void PassedFishBarTrigger(FishBarTrigger fishBarTrigger)
-    {
-        // if the next trigger to hit is the one just passed, it was missed
-        if (GetNextTrigger() == fishBarTrigger)
-        {
-            _failed = true;
-        }
-    }
-
-    // Returns next trigger player is supposed to hit
-    private FishBarTrigger GetNextTrigger()
-    {
-        int idx = _triggerIndex >= _triggers.Count ? _triggers.Count - 1 : _triggerIndex;
-        return _triggers[idx];
-    }
-
-    // Move cursor and stretch fillbar to match
-    public void UpdateCursor(float percent)
-    {
-        float _currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
-        _barSprite.size = new Vector2(_barSprite.size.x, _currHeight);
-
-        // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
-        // - Using a RB is giving control of the position to Unity so it can handle collisions
-        //   It's hopefully fine in this case since everything is a trigger and only overlap each other
-        if (!_failed)
-            _fishCursor.transform.localPosition = new Vector2(_fishCursor.transform.localPosition.x, _currHeight);
-    }
-
-    private IEnumerator PlayRound(float duration)
-    {
-        float _time = 0f;
-        while (_time < duration)
-        {
-            UpdateCursor(Mathf.InverseLerp(0, duration, _time));
-            float _elapsed = Time.deltaTime;
-            yield return new WaitForSeconds(_elapsed);
-            _time += _elapsed;
-            if (_failed)
-                break;
-        }
-        
-        if (_failed || !_roundWon) {
-            OnFail();
-            yield break;
-        }
-        
-        _roundNumber++;
-        if (_roundNumber >= _fishType.Rounds.Count) {
-            OnGameWin();
-            yield break;
-        }
-        InitializeRound(_fishType.Rounds[_roundNumber]);
-        StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
-    }
-
-    private void OnGameWin() {
-        _playerMovementController.PlayerState.Value = PlayerStates.Celebrating;
-        _playerSoundController.PlaySound("Caught");
-        // TODO: Add fish item to inventory, make fish items
         EndGame();
     }
 
@@ -214,29 +188,46 @@ public class FishBar : MonoBehaviour
             return;
 
         // Check for hit or miss
-        FishBarTrigger _next = GetNextTrigger();
+        // Checks for unfulfilled triggers under game cursor
         List<Collider2D> _results = new List<Collider2D>();
-        _indicatorCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _results);
-        if (_results.Contains(_next.GetCollider()))
-        {
-            // yay! a hit!
-            _next.SetSprite(true);
-            _triggerIndex += 1;
+        _gameCursorCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _results);
+        List<FishBarTrigger> _overlappedTriggers = _results
+            .Select(collider => collider.GetComponent<FishBarTrigger>())
+            .Where(trigger => trigger != null)
+            .OrderBy(trigger => trigger.transform.position.y)
+            .ToList();
 
-            // That was the last one. we won!
-            if (_triggerIndex == _triggers.Count)
-                _roundWon = true;
+        foreach(var trigger in _overlappedTriggers) {
+            if (trigger.Fulfilled) 
+                continue;
+            // Yay, a hit!
+            trigger.Fulfilled = true;
+            return;
         }
-        else
-        {
-            // Missed! Pressed over nothing or wrong trigger
-            _failed = true;
-        }
+
+        // Missed!
+        _failed = true;
+    }
+
+    private void ResetFishCursor()
+    {
+        _gameCursorRB.transform.SetLocalPositionAndRotation(_gameCursorStartPosition, Quaternion.identity);
+        _gameCursorRB.bodyType = RigidbodyType2D.Kinematic;
+    }
+
+    private void LaunchFishCursor()
+    {
+        _gameCursorRB.bodyType = RigidbodyType2D.Dynamic;
+        _gameCursorRB.mass = _mass;
+
+        Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
+        _gameCursorRB.AddForceAtPosition(randomForce, (Vector2)_fishCursor.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
+        _playerSoundController.PlaySound("Missed");
     }
 
     /// <summary>
     /// Generates trigger positions for game.
-    /// Ordered from bottom to top.
+    /// Ordered from bottom to top of gamebar 
     /// </summary>
     private float[] GenerateNormalizedTriggerPositions(FishingRound fishingRound)
     {
@@ -332,7 +323,7 @@ public class FishBar : MonoBehaviour
     {
         FishType _fish;
         List<FishType> _fishes = new List<FishType>();
-        foreach (Transform _child in _fishContainer.transform)
+        foreach (Transform _child in _fishTypeContainer.transform)
         {
             _fish = _child.GetComponent<FishType>();
             if (_fish.CatchableSceneNames.Contains(SceneManager.GetActiveScene().name))
