@@ -41,8 +41,9 @@ public class FishBar : MonoBehaviour
 
     private int _triggerIndex;
     private bool _failed;
-    private bool _won;
-    private Vector2 _originalFishCursorPos;
+    private bool _roundWon;
+    private int _roundNumber = 0;
+    private Vector2 _originalFishCursorPos = new Vector2(0f, 3.68658f);
     private FishType _fishType;
     private Inventory _inventory;
     
@@ -51,19 +52,20 @@ public class FishBar : MonoBehaviour
     public static readonly float TRIGGER_MAPPING_SLOPE = 3.35f;
     public static readonly float TRIGGER_MAPPING_INTERCEPT = 0.35f;
 
-    private void Awake()
-    {
-        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _originalFishCursorPos = _fishCursor.transform.localPosition;
-    }
-
     // Play the fish bar game
     public void Play()
     {
+        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
+        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        //_originalFishCursorPos = _fishCursor.transform.localPosition;
+
+        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
         _logger.Info("New game started.");
         InitializeNewGame();
-        StartCoroutine(PlayRoutine(_fishType.GameSpeed));
+   
+        _logger.Info($"Round {_roundNumber} start");
+        InitializeRound(_fishType.Rounds[_roundNumber]);
+        StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
     }
 
     private void InitializeNewGame()
@@ -74,20 +76,25 @@ public class FishBar : MonoBehaviour
         _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
         _indicatorCollider = _fishCursor.GetComponent<Collider2D>();
         _fishObjectRb = _fishCursor.GetComponent<Rigidbody2D>();
+        
+        _fishType = GetRandomValidFishType();
+        _overlaySpriteRenderer.sprite = null;
+        _failed = false;
+        _roundNumber = 0;
+    }
 
-        // Reset Game
+    private void InitializeRound(FishingRound round) 
+    {
+        // Reset for round
         _triggerIndex = 0;
+        _roundWon = false;
         foreach (Transform _child in _triggersContainer.transform)
             Destroy(_child.gameObject);
         ResetFishCursor();
-        _overlaySpriteRenderer.sprite = null;
-        _failed = false;
-        _won = false;
 
-        // Configure new game
-        _fishType = GetRandomValidFishType();
-        _triggers = InstantiateTriggers(GenerateNormalizedTriggerPositions(_fishType));
-        if (_fishType.HasOscillatingTriggers) ConfigureTriggerOscillation(_triggers, _fishType);
+        // Configure next round
+        _triggers = InstantiateTriggers(GenerateNormalizedTriggerPositions(round));
+        if (round.HasOscillatingTriggers) ConfigureTriggerOscillation(_triggers, round);
     }
 
     private void OnFail()
@@ -159,37 +166,38 @@ public class FishBar : MonoBehaviour
             _fishCursor.transform.localPosition = new Vector2(_fishCursor.transform.localPosition.x, _currHeight);
     }
 
-    private IEnumerator PlayRoutine(float duration)
+    private IEnumerator PlayRound(float duration)
     {
-        // Start
-        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
         float _time = 0f;
-
-        // Move cursor and stretch fillbar
         while (_time < duration)
         {
             UpdateCursor(Mathf.InverseLerp(0, duration, _time));
             float _elapsed = Time.deltaTime;
             yield return new WaitForSeconds(_elapsed);
             _time += _elapsed;
-            if (_failed) {
-                OnFail();
-                yield break;
-            }
+            if (_failed)
+                break;
         }
-
-        // This is essentially just checking whether the last trigger got hit or not
-        if (_won)
-            OnWin();
-        else
+        
+        if (_failed || !_roundWon) {
             OnFail();
+            yield break;
+        }
+        
+        _roundNumber++;
+        if (_roundNumber >= _fishType.Rounds.Count) {
+            OnGameWin();
+            yield break;
+        }
+        InitializeRound(_fishType.Rounds[_roundNumber]);
+        StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
     }
 
-    private void OnWin() {
-            _playerMovementController.PlayerState.Value = PlayerStates.Celebrating;
-            _playerSoundController.PlaySound("Caught");
-            // TODO: Add fish item to inventory, make fish items
-            EndGame();
+    private void OnGameWin() {
+        _playerMovementController.PlayerState.Value = PlayerStates.Celebrating;
+        _playerSoundController.PlaySound("Caught");
+        // TODO: Add fish item to inventory, make fish items
+        EndGame();
     }
 
     private void EndGame() {
@@ -217,7 +225,7 @@ public class FishBar : MonoBehaviour
 
             // That was the last one. we won!
             if (_triggerIndex == _triggers.Count)
-                _won = true;
+                _roundWon = true;
         }
         else
         {
@@ -230,18 +238,18 @@ public class FishBar : MonoBehaviour
     /// Generates trigger positions for game.
     /// Ordered from bottom to top.
     /// </summary>
-    private float[] GenerateNormalizedTriggerPositions(FishType fishType)
+    private float[] GenerateNormalizedTriggerPositions(FishingRound fishingRound)
     {
-        float[] _triggerPositions = new float[fishType.NumberOfTriggers];
+        float[] _triggerPositions = new float[fishingRound.NumberOfTriggers];
 
         bool _triggersTooClose;
         _triggerPositions[0] = 1.0f; // Trigger right at end
 
-        switch (fishType.GameModifier)
+        switch (fishingRound.GameModifier)
         {
             // Generates triggers in singles spaced apart
-            case FishType.StackedTriggerType.none:
-                for (int i = 1; i < fishType.NumberOfTriggers; i++)
+            case FishingRound.StackedTriggerType.none:
+                for (int i = 1; i < fishingRound.NumberOfTriggers; i++)
                 {
                     _triggerPositions[i] = Random.Range(0.1f, 0.9f);
                     do
@@ -249,7 +257,7 @@ public class FishBar : MonoBehaviour
                         _triggersTooClose = false;
                         for (int j = 0; j < i; j++)
                         {
-                            if (Mathf.Abs(_triggerPositions[i] - _triggerPositions[j]) < fishType.MinimumTriggerSpacing)
+                            if (Mathf.Abs(_triggerPositions[i] - _triggerPositions[j]) < fishingRound.MinimumTriggerSpacing)
                             {
                                 _triggerPositions[i] = Random.Range(0.1f, 0.9f);
                                 _triggersTooClose = true;
@@ -260,15 +268,15 @@ public class FishBar : MonoBehaviour
                 break;
 
             // Generates triggers in pairs spaced apart
-            case FishType.StackedTriggerType.doubles:
+            case FishingRound.StackedTriggerType.doubles:
                 int k = 1;
-                if (fishType.NumberOfTriggers % 2 == 0)
+                if (fishingRound.NumberOfTriggers % 2 == 0)
                 {
-                    _triggerPositions[1] = 1.0f - fishType.StackedTriggerSpacing;
+                    _triggerPositions[1] = 1.0f - fishingRound.StackedTriggerSpacing;
                     k++;
                 }
 
-                for (; k < fishType.NumberOfTriggers; k += 2)
+                for (; k < fishingRound.NumberOfTriggers; k += 2)
                 {
                     _triggerPositions[k] = Random.Range(0.1f, 0.9f);
 
@@ -277,7 +285,7 @@ public class FishBar : MonoBehaviour
                         _triggersTooClose = false;
                         for (int j = 0; j < k; j++)
                         {
-                            if (Mathf.Abs(_triggerPositions[k] - _triggerPositions[j]) < fishType.MinimumTriggerSpacing)
+                            if (Mathf.Abs(_triggerPositions[k] - _triggerPositions[j]) < fishingRound.MinimumTriggerSpacing)
                             {
                                 _triggerPositions[k] = Random.Range(0.1f, 0.9f);
                                 _triggersTooClose = true;
@@ -285,17 +293,17 @@ public class FishBar : MonoBehaviour
                         }
                     } while (_triggersTooClose);
 
-                    _triggerPositions[k + 1] = _triggerPositions[k] + fishType.StackedTriggerSpacing;
+                    _triggerPositions[k + 1] = _triggerPositions[k] + fishingRound.StackedTriggerSpacing;
                 }
 
                 break;
 
             // generates a stack of triggers
-            case FishType.StackedTriggerType.mega:
-                _triggerPositions[1] = Random.Range(0.1f, 0.9f - fishType.StackedTriggerSpacing * fishType.NumberOfTriggers);
-                for (int i = 1; i < fishType.NumberOfTriggers; i++)
+            case FishingRound.StackedTriggerType.mega:
+                _triggerPositions[1] = Random.Range(0.1f, 0.9f - fishingRound.StackedTriggerSpacing * fishingRound.NumberOfTriggers);
+                for (int i = 1; i < fishingRound.NumberOfTriggers; i++)
                 {
-                    _triggerPositions[i + 1] = _triggerPositions[1] + fishType.StackedTriggerSpacing;
+                    _triggerPositions[i + 1] = _triggerPositions[1] + fishingRound.StackedTriggerSpacing;
                 }
                 break;
         }
@@ -339,11 +347,11 @@ public class FishBar : MonoBehaviour
         return _fish;
     }
 
-    void ConfigureTriggerOscillation(List<FishBarTrigger> triggers, FishType fishType)
+    void ConfigureTriggerOscillation(List<FishBarTrigger> triggers, FishingRound fishingRound)
     {
         // Ends because the final index is the final trigger,
         // and the final trigger should not oscillate
         for (int i = 0; i < triggers.Count - 1; i++)
-            triggers[i].InitalizeOscillation(fishType);
+            triggers[i].InitalizeOscillation(fishingRound);
     }
 }

@@ -4527,14 +4527,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CatchableSceneNames:
   - Outside
-  GameSpeed: 2
-  NumberOfTriggers: 4
-  MinimumTriggerSpacing: 0
-  StackedTriggerSpacing: 0
-  GameModifier: 0
-  HasOscillatingTriggers: 1
-  OscillatingSpeed: 0.5
-  OscillationLengthNormalized: 0.1
+  Rounds:
+  - GameSpeed: 2
+    NumberOfTriggers: 5
+    MinimumTriggerSpacing: 0
+    StackedTriggerSpacing: 0
+    GameModifier: 0
+    HasOscillatingTriggers: 0
+    OscillatingSpeed: 0
+    OscillationLengthNormalized: 0
+  - GameSpeed: 2
+    NumberOfTriggers: 5
+    MinimumTriggerSpacing: 0
+    StackedTriggerSpacing: 0
+    GameModifier: 0
+    HasOscillatingTriggers: 1
+    OscillatingSpeed: 0.25
+    OscillationLengthNormalized: 0.1
+  - GameSpeed: 2
+    NumberOfTriggers: 5
+    MinimumTriggerSpacing: 0
+    StackedTriggerSpacing: 0
+    GameModifier: 0
+    HasOscillatingTriggers: 1
+    OscillatingSpeed: 0.5
+    OscillationLengthNormalized: 0.1
 --- !u!114 &5774731060823377587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5853,14 +5870,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CatchableSceneNames:
   - Outside
-  GameSpeed: 2
-  NumberOfTriggers: 6
-  MinimumTriggerSpacing: 0
-  StackedTriggerSpacing: 0
-  GameModifier: 0
-  HasOscillatingTriggers: 0
-  OscillatingSpeed: 0
-  OscillationLengthNormalized: 0
+  Rounds:
+  - GameSpeed: 3
+    NumberOfTriggers: 3
+    MinimumTriggerSpacing: 0.05
+    StackedTriggerSpacing: 0
+    GameModifier: 0
+    HasOscillatingTriggers: 0
+    OscillatingSpeed: 0
+    OscillationLengthNormalized: 0
+  - GameSpeed: 2
+    NumberOfTriggers: 5
+    MinimumTriggerSpacing: 0.05
+    StackedTriggerSpacing: 4
+    GameModifier: 0
+    HasOscillatingTriggers: 0
+    OscillatingSpeed: 0
+    OscillationLengthNormalized: 0
+  - GameSpeed: 2
+    NumberOfTriggers: 7
+    MinimumTriggerSpacing: 0.05
+    StackedTriggerSpacing: 0
+    GameModifier: 0
+    HasOscillatingTriggers: 0
+    OscillatingSpeed: 0
+    OscillationLengthNormalized: 0
 --- !u!1 &7949753271394668006
 GameObject:
   m_ObjectHideFlags: 0

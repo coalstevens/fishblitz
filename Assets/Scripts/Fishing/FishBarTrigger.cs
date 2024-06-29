@@ -11,7 +11,7 @@ public class FishBarTrigger : MonoBehaviour
     private float _oscillationLowerBound; 
     private float _oscillationUpperBound;
     private bool _movingUp;
-    FishType _fishType;
+    FishingRound _round;
 
     public void Start()
     {
@@ -46,7 +46,7 @@ public class FishBarTrigger : MonoBehaviour
 
     // Moves trigger transform up and down within oscillation bounds
     private void Oscillate() {
-        float increment = _fishType.OscillatingSpeed * Time.fixedDeltaTime;
+        float increment = _round.OscillatingSpeed * Time.fixedDeltaTime;
         if (_movingUp)
         {   
             if (transform.localPosition.y + increment > _oscillationUpperBound) {
@@ -68,15 +68,15 @@ public class FishBarTrigger : MonoBehaviour
         }
     }
 
-    public void InitalizeOscillation(FishType fishType) {
-        _fishType = fishType;
+    public void InitalizeOscillation(FishingRound fishingRound) {
+        _round = fishingRound;
         _oscillating = true;
         ConfigureOscillationBounds();
         ConfigureRandomOscillationStart();
     }
 
     private void ConfigureOscillationBounds() {
-        float _oscillationLength = _fishType.OscillationLengthNormalized * FishBar.TRIGGER_MAPPING_SLOPE;
+        float _oscillationLength = _round.OscillationLengthNormalized * FishBar.TRIGGER_MAPPING_SLOPE;
 
         // trigger can not oscillate outside of game play area bounds
         float _playerAreaUpperBound = FishBar.TRIGGER_MAPPING_SLOPE + FishBar.TRIGGER_MAPPING_INTERCEPT;
