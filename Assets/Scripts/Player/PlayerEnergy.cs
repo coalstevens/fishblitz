@@ -15,6 +15,12 @@ public class PlayerCondition : Singleton<PlayerCondition>
         }
     }
     
+    public Temperature AmbientTemperature {
+        get {
+            return _playerTemperatureManager.AmbientTemperature;
+        }
+    }
+    
     public bool PlayerIsWet {
         get {
             return _playerDryingManager.PlayerIsWet.Value;
@@ -65,7 +71,13 @@ public class PlayerCondition : Singleton<PlayerCondition>
         _playerHungerManager.LogTodaysCalories();
     }
     public void Sleep() {
-        GameClock.Instance.SkipToTime(_playerSleepManager.GetAwakeHour(), 0);
+        // Pause time counters and skip time
+        _playerTemperatureManager.Paused = true;
+        _playerDryingManager.Paused = true;
+        GameClock.Instance.SkipToTime(GameClock.Instance.GameDay.Value + 1, _playerSleepManager.GetAwakeHour(), 0);
+        _playerTemperatureManager.Paused = false;
+        _playerDryingManager.Paused = false;
+
         NarratorSpeechController.Instance.PostMessage(_playerSleepManager.GetAwakeMessage());
         _currentEnergy = _playerSleepManager.GetEnergyFromSleep(_maxEnergy, _hungerRecoveryPercentageOfMax, _hungerRecoveryPercentageOfMax);
     }

@@ -15,6 +15,10 @@ public class Cursor : MonoBehaviour
     [SerializeField] public Transform _renderedTransform;
     [SerializeField] private FacingDirections _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Collider2D _collider;
+    public Collider2D Collider {
+        get => _collider;
+    }
     private PlayerMovementController _playerMovementController;
     private Grid _grid;
     private SpriteRenderer _playerSpriteRenderer;
@@ -59,6 +63,7 @@ public class Cursor : MonoBehaviour
     private void OnDirectionChange(FacingDirections currentDirection)
     {
         _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;
+        _collider.enabled = currentDirection == _cursorActiveDirection;
     }
 
     private void Update()

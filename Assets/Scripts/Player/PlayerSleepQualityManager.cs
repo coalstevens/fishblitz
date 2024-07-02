@@ -72,7 +72,7 @@ public class PlayerSleepQualityManager : MonoBehaviour
         return (_recovery < _minimumRecoveryFromSleep) ? _minimumRecoveryFromSleep : (int) _recovery;
     }
     
-    /// <returns> The energy gained after the nap</returns>
+    /// <returns> The energy gained after the nap </returns>
     public int GetEnergyGainedFromNap(int maxEnergy, float hungerRecoveryRatio, float sleepRecoveryRatio) {
         float _potentialRecovery = maxEnergy * NAP_RECOVERY_FRACTION_OF_FULL_SLEEP;
         float _recovery = 0;
@@ -87,7 +87,9 @@ public class PlayerSleepQualityManager : MonoBehaviour
     }
 
     private float GetTemperatureReducer() {
-        Temperature _playerTemp = PlayerCondition.Instance.PlayerTemperature;
+        // The sleeping temperature is the current ambient temperature
+        // e.g. the player turned the fire on before going to sleep so they get a warm sleep
+        Temperature _playerTemp = PlayerCondition.Instance.AmbientTemperature;
         if (!_temperatureBasedSleepReducers.TryGetValue(_playerTemp, out var _reducer)) {
             Debug.LogError("There is no sleep reducer for this temperature");
             return 0f;

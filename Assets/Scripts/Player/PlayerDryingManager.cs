@@ -22,6 +22,8 @@ public class PlayerDryingManager : MonoBehaviour, ITickable {
     private const int DURATION_TO_GET_WET_GAMEMINS = 30;
     private int _wettingGameMinCounter;
 
+    public bool Paused = false;
+
     // State
     private enum WetnessStates {Wet, Dry, Drying, Wetting}; 
     [SerializeField] private Reactive<WetnessStates> _state = new Reactive<WetnessStates>(WetnessStates.Wet);
@@ -122,6 +124,10 @@ public class PlayerDryingManager : MonoBehaviour, ITickable {
     }
 
     private void HandleState() {
+        // Counter increments
+        if (Paused)
+            return;
+
         switch(_state.Value) {
             case WetnessStates.Wet:
                 break;

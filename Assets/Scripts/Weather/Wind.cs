@@ -153,4 +153,9 @@ public class Wind : MonoBehaviour
         _flucDuration = UnityEngine.Random.Range(_gustMinIntervalSec, _gustMaxIntervalSec);
         _flucStartTime = Time.time;
     }
+    
+    private void OnDestroy() {
+        // Reset multiplier when exiting scene
+        _playerMovementController.SetMoveSpeedMultiplier(new CardinalVector(1));
+    }
 }

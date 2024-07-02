@@ -110,8 +110,8 @@ public class GameClock : Singleton<GameClock>
     public static GameClockCapture GenerateCapture() {
         return new GameClockCapture(Instance);
     }
-    public void SkipToTime(int hour, int minute) {
-        while (GameHour.Value != hour || GameMinute.Value != minute)
+    public void SkipToTime(int day, int hour, int minute) {
+        while (GameDay.Value != day || GameHour.Value != hour || GameMinute.Value != minute)
             IncrementGameMinute();
     }
 

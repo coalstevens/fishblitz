@@ -131,6 +131,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1629533055}
     m_Modifications:
+    - target: {fileID: 602916560364616551, guid: ab5d79c4d955e464ca3aa0987ed531a4, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 602916560364616551, guid: ab5d79c4d955e464ca3aa0987ed531a4, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6323635044616395814, guid: ab5d79c4d955e464ca3aa0987ed531a4, type: 3}
       propertyPath: m_Name
       value: WoodStove
@@ -7022,7 +7030,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 30
       minScalar: 10
       maxCurve:
         serializedVersion: 2

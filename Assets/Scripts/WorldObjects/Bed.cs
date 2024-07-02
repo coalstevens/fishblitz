@@ -11,8 +11,8 @@ public class Bed : MonoBehaviour, IInteractable
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        PlayerCondition.Instance.Sleep();
         LevelChanger.ChangeLevel("Abandoned Shed", _player.transform.position);
+        PlayerCondition.Instance.Sleep();
         return true;
     }
 }

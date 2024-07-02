@@ -136,7 +136,10 @@ public class ActiveGridCell : MonoBehaviour
         List<IInteractable> _foundInteractables = new List<IInteractable>();
 
         // get list of colliders at cursor tile location
-        Physics2D.OverlapBox(cursorLocation + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
+        Physics2D.OverlapCollider(_activeCursor.Collider, new ContactFilter2D().NoFilter(), _results);
+
+        foreach (var result in _results)
+            Debug.Log(result.gameObject.name);
 
         // get list of interactables
         foreach (var _result in _results)

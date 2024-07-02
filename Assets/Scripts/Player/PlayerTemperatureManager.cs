@@ -21,6 +21,7 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
     private List<Action> _unsubscribeHooks = new List<Action>();
     public int _counterToMatchAmbientGamemins = 0;
     private bool _playerIsWet = true;
+    public bool Paused = false;
 
     // References
     private PlayerDryingManager _playerDryingManager;
@@ -29,6 +30,13 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
             return _adjustedPlayerTemperature.Value;
         }
     }
+
+    public Temperature AmbientTemperature {
+        get {
+            return _unadjustedPlayerTemperature.Value;
+        }
+    }
+
     private void OnEnable() {
         _playerDryingManager = GetComponent<PlayerDryingManager>();
         _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_,_) => OnGameMinuteTick()));
@@ -57,6 +65,7 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
             Debug.LogError("There is no temp change message associated with the adjusted temp.");
         NarratorSpeechController.Instance.PostMessage(_message);
     }
+
     private void OnUnadjustedTemperatureChange() {
         _counterToMatchAmbientGamemins = 0;
         SetAdjustedTemperature();
@@ -66,6 +75,10 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
     public void OnGameMinuteTick() {
         // boot case
         if (_ambientHeatSources.Count == 0)
+            return;
+
+        // to stop player temperature from changing
+        if (Paused)
             return;
         
         // temp matches ambient already

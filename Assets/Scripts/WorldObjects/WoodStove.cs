@@ -28,19 +28,8 @@ public class WoodStove : MonoBehaviour, IInteractable, ITickable, ISaveable
     [SerializeField] float _fireMinIntensity = 1.3f;
     [SerializeField] float _fireMaxIntensity = 2f;
     [SerializeField] private int _hotFireDurationGameMinutes = 60;
-
-    public Collider2D ObjCollider { 
-        get {
-            if (TryGetComponent<Collider2D>(out var _collider))
-                return _collider;
-            else {
-                Debug.LogError("WoodStove does not have a collider component.");
-                return null;
-            }
-        }
-    }
-
     private List<Action> _unsubscribeHooks = new();
+    
     void Awake()
     {
         // References
@@ -127,6 +116,7 @@ public class WoodStove : MonoBehaviour, IInteractable, ITickable, ISaveable
     }
 
     public bool CursorInteract(Vector3 cursorLocation) {
+        Debug.Log("interacted with stove");
         switch (_stoveState.Value) {
             case StoveStates.Dead:
                 // Add wood to ashes
