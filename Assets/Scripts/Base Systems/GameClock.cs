@@ -12,7 +12,7 @@ public class GameClock : Singleton<GameClock>
     [SerializeField] private float _gameDayInRealMinutes = 1f;
     [SerializeField] int _numRegularSeasonDays = 10;
     [SerializeField] int _numTransitionSeasonDays = 5; 
-    public bool Paused = false;
+    public bool GameclockPaused = false; // State of gameClock (Gameclock doesn't increment but gametime still passes)
 
     [Header("Game Start Date/Time")] 
     public Reactive<int> GameYear = new Reactive<int>(1);
@@ -20,6 +20,7 @@ public class GameClock : Singleton<GameClock>
     public Reactive<int> GameDay = new Reactive<int>(1);
     public Reactive<int> GameHour = new Reactive<int>(21);
     public Reactive<int> GameMinute = new Reactive<int>(0);
+    public Reactive<bool> GameIsPaused = new Reactive<bool>(false); // State of true gametime
     
     void Start() {
         _gameMinuteInRealSeconds = _gameDayInRealMinutes * 60 / 1440;
@@ -27,7 +28,7 @@ public class GameClock : Singleton<GameClock>
     }
     
     void Update() {
-        if (Paused)
+        if (GameclockPaused)
             return;
 
         _timeBuffer += Time.deltaTime;
@@ -38,10 +39,10 @@ public class GameClock : Singleton<GameClock>
         }  
     }
     public void PauseGameClock() {
-        Paused = true;
+        GameclockPaused = true;
     }
     public void ResumeGameClock() {
-        Paused = false;
+        GameclockPaused = false;
     }
     void IncrementGameMinute() {
             if (GameMinute.Value >= 59) {
@@ -147,7 +148,26 @@ public class GameClock : Singleton<GameClock>
         
         return _elapsedGameMinutes;
     }
+
+    public void PauseGame() {
+        // already paused
+        if (GameIsPaused.Value)
+            return;
+
+        GameIsPaused.Value = true;
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame() {
+        // already resumed
+        if (!GameIsPaused.Value)
+            return;
+        
+        GameIsPaused.Value = false;
+        Time.timeScale = 1f;
+    }
 }
+
 public class GameClockCapture {
         public int GameMinute;
         public int GameHour;

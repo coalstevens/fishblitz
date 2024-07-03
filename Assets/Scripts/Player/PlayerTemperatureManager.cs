@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
+/// <summary>
+/// Manages the player temperature.
+/// dryTemperature is set to ambientTemperature after a duration.
+/// if the player is dry, actualTemperature == dryTemperature
+/// else actualTemperature == dryTemperature - 1 temp step
+/// </summary>
 public class PlayerTemperatureManager : HeatSensitive, ITickable
 {
     private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string> {
@@ -16,24 +22,24 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
 
     // State
     // private Temperature _ambientTemperature = Temperature.Cold;
-    public Reactive<Temperature> _unadjustedPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
-    public Reactive<Temperature> _adjustedPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
+    public Reactive<Temperature> _dryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
+    public Reactive<Temperature> _actualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
     private List<Action> _unsubscribeHooks = new List<Action>();
     public int _counterToMatchAmbientGamemins = 0;
     private bool _playerIsWet = true;
-    public bool Paused = false;
+    private bool _skipMessage = false;
 
     // References
     private PlayerDryingManager _playerDryingManager;
     public override Temperature Temperature {
         get {
-            return _adjustedPlayerTemperature.Value;
+            return _actualPlayerTemperature.Value;
         }
     }
 
     public Temperature AmbientTemperature {
         get {
-            return _unadjustedPlayerTemperature.Value;
+            return _ambientTemperature.Value;
         }
     }
 
@@ -41,8 +47,9 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
         _playerDryingManager = GetComponent<PlayerDryingManager>();
         _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_,_) => OnGameMinuteTick()));
         _unsubscribeHooks.Add(_playerDryingManager.PlayerIsWet.OnChange((_,curr) => OnWetnessChange(curr)));
-        _unsubscribeHooks.Add(_unadjustedPlayerTemperature.OnChange((_,_) => OnUnadjustedTemperatureChange()));
-        _unsubscribeHooks.Add(_adjustedPlayerTemperature.OnChange((_,_) => OnAdjustedTemperatureChange()));
+        _unsubscribeHooks.Add(_dryPlayerTemperature.OnChange((_,_) => OnDryTemperatureChange()));
+        _unsubscribeHooks.Add(_actualPlayerTemperature.OnChange((_,_) => OnActualTemperatureChange()));
+        _unsubscribeHooks.Add(_ambientTemperature.OnChange((prev, curr) => OnAmbientTemperatureChange(prev, curr)));
     }
 
     private void OnDisable() {
@@ -50,74 +57,82 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
             hook();
     }
 
-    private void OnWetnessChange(bool playerIsWet) {
-        _playerIsWet = playerIsWet;
-        SetAdjustedTemperature();
-    }
+    private void UpdateActualTemperature() {
+        // Player is dry
+        if (!_playerIsWet) {  
+            _actualPlayerTemperature.Value = _dryPlayerTemperature.Value;
+            return;
+        }
+        
+        // Player is cold as can be already
+        if (_dryPlayerTemperature.Value == Temperature.Freezing) {
+            _actualPlayerTemperature = _dryPlayerTemperature;
+            return;
+        }
 
-    private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature) {
-        if (previousTemperature < currentTemperature)
-            _counterToMatchAmbientGamemins = 0;
+        // Player is wet, 1 step colder
+        _actualPlayerTemperature.Value = _dryPlayerTemperature.Value - 1;
     }
-
-    private void OnAdjustedTemperatureChange() {
-        if (!_temperatureChangeMessages.TryGetValue(_adjustedPlayerTemperature.Value, out var _message)) 
-            Debug.LogError("There is no temp change message associated with the adjusted temp.");
-        NarratorSpeechController.Instance.PostMessage(_message);
-    }
-
-    private void OnUnadjustedTemperatureChange() {
-        _counterToMatchAmbientGamemins = 0;
-        SetAdjustedTemperature();
-    }
-    
 
     public void OnGameMinuteTick() {
         // boot case
         if (_ambientHeatSources.Count == 0)
             return;
 
-        // to stop player temperature from changing
-        if (Paused)
+        // no temp changes during sleep
+        if (PlayerCondition.Instance.PlayerIsAsleep)
             return;
         
         // temp matches ambient already
-        if (_unadjustedPlayerTemperature.Value == _ambientTemperature)
+        if (_dryPlayerTemperature.Value == _ambientTemperature.Value)
             return;
 
         // counter till switch to match ambient
         _counterToMatchAmbientGamemins++;
         if (_counterToMatchAmbientGamemins >= DURATION_TO_MATCH_AMBIENT_GAMEMINS) {
-            _unadjustedPlayerTemperature.Value = _ambientTemperature;
+            _dryPlayerTemperature.Value = _ambientTemperature.Value;
         }
     }
 
-    private void SetAdjustedTemperature() {
-        // Player is dry
-        if (!_playerIsWet) {  
-            _adjustedPlayerTemperature.Value = _unadjustedPlayerTemperature.Value;
+    private void OnWetnessChange(bool playerIsWet) {
+        _playerIsWet = playerIsWet;
+        UpdateActualTemperature();
+    }
+
+    private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature) {
+        // Player gets cold fast, and warm slow
+        if (previousTemperature < currentTemperature)
+            _counterToMatchAmbientGamemins = 0;
+    }
+
+    private void OnActualTemperatureChange() {
+        if (_skipMessage) {
+            _skipMessage = false;
+            Debug.Log("Player temperature narrator message skipped");
             return;
         }
-        
-        // Player is cold as can be already
-        if (_unadjustedPlayerTemperature.Value == Temperature.Freezing) {
-            _adjustedPlayerTemperature = _unadjustedPlayerTemperature;
-            return;
+        // Post temperature change message
+        if (!_temperatureChangeMessages.TryGetValue(_actualPlayerTemperature.Value, out var _message)) 
+            Debug.LogError("There is no temp change message associated with the adjusted temp.");
+        NarratorSpeechController.Instance.PostMessage(_message);
+    }
+
+    private void OnDryTemperatureChange() {
+        _counterToMatchAmbientGamemins = 0;
+        UpdateActualTemperature();
+    }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_skipMessage"> Skips message if </param>
+    public bool TryUpdatePlayerTempInstantly(bool _skipMessage) {
+        if (_dryPlayerTemperature.Value != _ambientTemperature.Value) {
+            _skipMessage = true;
+            _dryPlayerTemperature.Value = _ambientTemperature.Value;
+            return true;
         }
-
-        // Player is wet, 1 step colder
-        _adjustedPlayerTemperature.Value = _unadjustedPlayerTemperature.Value - 1;
+        return false;
     }
-    protected override void SetAmbientTemperature() {
-        Temperature _previousAmbientTemperature = _ambientTemperature;
-        Temperature _hottestTemperature = (Temperature) 0;
-        foreach (var _source in _ambientHeatSources)
-            if (_source.Temperature > _hottestTemperature)
-                _hottestTemperature = _source.Temperature;
 
-        if (_hottestTemperature == _ambientTemperature)
-            return;
-        _ambientTemperature = _hottestTemperature;
-        OnAmbientTemperatureChange(_previousAmbientTemperature, _ambientTemperature);
-    }
 }

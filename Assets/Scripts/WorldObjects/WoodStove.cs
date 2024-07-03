@@ -116,7 +116,6 @@ public class WoodStove : MonoBehaviour, IInteractable, ITickable, ISaveable
     }
 
     public bool CursorInteract(Vector3 cursorLocation) {
-        Debug.Log("interacted with stove");
         switch (_stoveState.Value) {
             case StoveStates.Dead:
                 // Add wood to ashes

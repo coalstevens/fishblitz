@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
+
+// Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
 public class NarratorSpeechController : Singleton<NarratorSpeechController>
 {
@@ -60,12 +59,12 @@ public class NarratorSpeechController : Singleton<NarratorSpeechController>
 
         // log details
         _postedMessages.Add(_newMessage);
-        _messageStartTimes.Add(Time.time);
+        _messageStartTimes.Add(Time.unscaledTime);
     }
 
     private void CheckMessageLifeSpans() {
         for (int i = 0; i < _postedMessages.Count; i++) {
-            if (Time.time - _messageStartTimes[i] < _messageDurationSecs) {
+            if (Time.unscaledTime - _messageStartTimes[i] < _messageDurationSecs) {
                 continue;
             }
             //fade message

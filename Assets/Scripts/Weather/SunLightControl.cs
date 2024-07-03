@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using ReactiveUnity;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 public class SunLightControl : MonoBehaviour
-{
-    
+{ 
     private GameClock _gameClock;
     public int _lightUpdateIntervalGameMins = 10;
     [Header("Daytime and Nightime")]
@@ -36,6 +32,7 @@ public class SunLightControl : MonoBehaviour
         _gameClock = GameObject.FindWithTag("GameClock").GetComponent<GameClock>();
         _gameClock.GameMinute.OnChange((prev, curr) => OnMinuteChange());
         _lightState.OnChange((prev,curr) => UpdateLight());
+        SetState();
         UpdateLight();
     }
 
@@ -47,7 +44,10 @@ public class SunLightControl : MonoBehaviour
             return;
         }
         _minuteCounter = 0;
+        SetState();
+    }
 
+    void SetState() {
         // sunset
         if (_gameClock.GameHour.Value >= _sunsetStartGameHour24h && _gameClock.GameHour.Value < _sunsetEndGameHour24h) {
             _lightState.Value = LightStates.Sunset;

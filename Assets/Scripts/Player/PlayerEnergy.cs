@@ -1,7 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEditor.Rendering.LookDev;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Player condition serves as a simple mediator to all its component scripts
 public class PlayerCondition : Singleton<PlayerCondition>
@@ -53,6 +57,8 @@ public class PlayerCondition : Singleton<PlayerCondition>
     private PlayerHungerManager _playerHungerManager;
     private PlayerSleepQualityManager _playerSleepManager;
     private PlayerTemperatureManager _playerTemperatureManager;
+    public bool PlayerIsAsleep = false;
+    [SerializeField] private SleepMenu _sleepMenu;
 
     void OnEnable() {
         _playerDryingManager = GetComponent<PlayerDryingManager>();
@@ -70,19 +76,48 @@ public class PlayerCondition : Singleton<PlayerCondition>
     private void EndDay() {
         _playerHungerManager.LogTodaysCalories();
     }
-    public void Sleep() {
-        // Pause time counters and skip time
-        _playerTemperatureManager.Paused = true;
-        _playerDryingManager.Paused = true;
-        GameClock.Instance.SkipToTime(GameClock.Instance.GameDay.Value + 1, _playerSleepManager.GetAwakeHour(), 0);
-        _playerTemperatureManager.Paused = false;
-        _playerDryingManager.Paused = false;
 
+    public void Sleep() {
+        StartCoroutine(SleepRoutine());
+    }
+
+    private IEnumerator SleepRoutine() {
+        // Transition to sleep menu
+        PlayerIsAsleep = true;
+        _sleepMenu.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(SleepMenu.FADE_DURATION_SEC);
+        GameClock.Instance.PauseGame();
+
+        // The player temp is instantly updated to the ambient temperature.
+        // The player will not change temp or wetness while asleep.
+        //    An example of why this is useful: If player lights a fire before going to bed 
+        //    their sleep quality will improve, and they don't have to stand around waiting
+        //    for the player temperature to match ambient.
+        // The player does have to stand around to dry off. Getting into bed wet should be miserable.
+        _playerTemperatureManager.TryUpdatePlayerTempInstantly(true);
+
+        // Skip to awake hour
+        GameClock.Instance.SkipToTime(GameClock.Instance.GameDay.Value + 1, _playerSleepManager.GetAwakeHour(PlayerTemperature), 0);
+
+        // Delays and post awake message
+        yield return new WaitForSecondsRealtime(2f);
         NarratorSpeechController.Instance.PostMessage(_playerSleepManager.GetAwakeMessage());
+        yield return new WaitForSecondsRealtime(4f);
+
+        // Transition back to game
+        _sleepMenu.FadeOut();
+        GameClock.Instance.ResumeGame();
+        PlayerIsAsleep = false;
+        yield return new WaitForSecondsRealtime(SleepMenu.FADE_DURATION_SEC);
+        _sleepMenu.gameObject.SetActive(false);
+
+        // Recover energy
         _currentEnergy = _playerSleepManager.GetEnergyFromSleep(_maxEnergy, _hungerRecoveryPercentageOfMax, _hungerRecoveryPercentageOfMax);
     }
+
     public void Nap() {
         GameClock.Instance.SkipTime(NAP_DURATION_GAMEHOURS * 60);
         _currentEnergy += _playerSleepManager.GetEnergyGainedFromNap(_maxEnergy, _hungerRecoveryPercentageOfMax, _sleepRecoveryPercentageOfMax);
+        throw new NotImplementedException();
     }
 }

@@ -36,8 +36,8 @@ public class PlayerSleepQualityManager : MonoBehaviour
         return _latestSleepScore;
     }
     
-    public int GetAwakeHour() {
-        if (!_temperatureBasedAwakeHour.TryGetValue(PlayerCondition.Instance.PlayerTemperature, out var _hour)) {
+    public int GetAwakeHour(Temperature temperature) {
+        if (!_temperatureBasedAwakeHour.TryGetValue(temperature, out var _hour)) {
             Debug.LogError("There is no awake hour for the given temperature");
             return 7; // default to 7am
         }
