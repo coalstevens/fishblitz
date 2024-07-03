@@ -123,9 +123,13 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
     }
     
     /// <summary>
-    /// 
+    /// Attempts to set the player's dry temperature to match the ambient temperature instantly.
     /// </summary>
-    /// <param name="_skipMessage"> Skips message if </param>
+    /// <param name="_skipMessage"> If true, skips the narrator message on success.</param>
+    /// <returns>
+    /// Returns true if the player's dry temperature was updated to match the ambient temperature; 
+    /// returns false if the temperatures were already equal.
+    /// </returns>
     public bool TryUpdatePlayerTempInstantly(bool _skipMessage) {
         if (_dryPlayerTemperature.Value != _ambientTemperature.Value) {
             _skipMessage = true;
@@ -134,5 +138,4 @@ public class PlayerTemperatureManager : HeatSensitive, ITickable
         }
         return false;
     }
-
 }
