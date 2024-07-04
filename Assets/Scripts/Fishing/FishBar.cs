@@ -9,12 +9,20 @@ public class FishBar : MonoBehaviour
 {
     [SerializeField] private float _startHeight;
     [SerializeField] private float _endHeight;
+
     [SerializeField] private SpriteRenderer _barSprite;
     [SerializeField] private GameObject _fishCursor;
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private GameObject _fishTypeContainer;
-    [SerializeField] private PlayerSoundController _playerSoundController;
+    
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip _missedSFX;
+    [SerializeField] private AudioClip _caughtSFX;
+    [SerializeField] private AudioClip _hitTriggerSFX;
+    [SerializeField] private AudioClip _reelingInSFX;
+
+    private System.Action _stopReelingSFXHook;
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -57,7 +65,6 @@ public class FishBar : MonoBehaviour
         // Get references
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
         _playerCollider = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
         _gameCursorCollider = _fishCursor.GetComponent<Collider2D>();
         _gameCursorRB = _fishCursor.GetComponent<Rigidbody2D>();
@@ -70,6 +77,7 @@ public class FishBar : MonoBehaviour
     private void InitializeNewGame()
     {
         _logger.Info("New game started.");
+        _stopReelingSFXHook = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
         _playerMovementController.PlayerState.Value = PlayerStates.Catching;
         gameObject.SetActive(true); 
         _fishType = GetRandomValidFishType();
@@ -148,8 +156,9 @@ public class FishBar : MonoBehaviour
 
     private void OnGameWin() {
         _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
-        _playerSoundController.PlaySound("Caught");
+        AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.TryAddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
+        _stopReelingSFXHook();
         EndGame();
     }
 
@@ -171,6 +180,7 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = _greyOverlay;
 
         LaunchFishCursor();
+        _stopReelingSFXHook();
         yield return new WaitForSeconds(1.5f);
         _playerMovementController.PlayerState.Value = PlayerStates.Idle;
         EndGame();
@@ -204,6 +214,7 @@ public class FishBar : MonoBehaviour
                 continue;
             // Yay, a hit!
             trigger.Fulfilled = true;
+            AudioManager.Instance.PlaySFX(_hitTriggerSFX);
             return;
         }
 
@@ -224,7 +235,7 @@ public class FishBar : MonoBehaviour
 
         Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
         _gameCursorRB.AddForceAtPosition(randomForce, (Vector2)_fishCursor.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
-        _playerSoundController.PlaySound("Missed");
+        AudioManager.Instance.PlaySFX(_missedSFX);
     }
 
     /// <summary>

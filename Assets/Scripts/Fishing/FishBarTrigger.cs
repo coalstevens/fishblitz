@@ -10,12 +10,9 @@ public class FishBarTrigger : MonoBehaviour
         set {
             _fulfilled = value;
             _spriteRenderer.sprite = _fulfilled ? _fulfilledSprite : _unfulfilledSprite;
-            if(_fulfilled) 
-                _audioSource.Play();
         }
     }
     
-    private AudioSource _audioSource;
     private SpriteRenderer _spriteRenderer;
     private Collider2D _collider;
     private bool _oscillating = false;
@@ -28,7 +25,6 @@ public class FishBarTrigger : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _collider = GetComponent<Collider2D>();
-        _audioSource = GetComponent<AudioSource>();
         Fulfilled = false;
     }
 
