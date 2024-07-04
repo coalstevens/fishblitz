@@ -36,6 +36,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] Logger _logger = new();
 
     private PlayerMovementController _playerMovementController;
+    private Collider2D _playerCollider;
     private Inventory _inventory;
     private Collider2D _gameCursorCollider;
     private Rigidbody2D _gameCursorRB;
@@ -57,6 +58,7 @@ public class FishBar : MonoBehaviour
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _playerSoundController = GameObject.FindWithTag("PlayerSounds").GetComponent<PlayerSoundController>();
+        _playerCollider = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
         _gameCursorCollider = _fishCursor.GetComponent<Collider2D>();
         _gameCursorRB = _fishCursor.GetComponent<Rigidbody2D>();
 
@@ -147,7 +149,7 @@ public class FishBar : MonoBehaviour
     private void OnGameWin() {
         _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
         _playerSoundController.PlaySound("Caught");
-        // TODO: Add fish item to inventory, make fish items
+        _inventory.TryAddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
         EndGame();
     }
 

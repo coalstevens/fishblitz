@@ -1532,7 +1532,7 @@ GameObject:
   - component: {fileID: 1501199439277603156}
   - component: {fileID: 5759258631856072397}
   m_Layer: 0
-  m_Name: Fish2
+  m_Name: Kokanee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3954,7 +3954,7 @@ GameObject:
   - component: {fileID: 7109949283600130180}
   - component: {fileID: 7928074262606258127}
   m_Layer: 0
-  m_Name: Fish1
+  m_Name: Rainbow Trout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4858,6 +4858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CatchableSceneNames:
   - Outside
+  CaughtItem: Kokanee
   Rounds:
   - GameSpeed: 2
     NumberOfTriggers: 5
@@ -6240,6 +6241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CatchableSceneNames:
   - Outside
+  CaughtItem: RainbowTrout
   Rounds:
   - GameSpeed: 3
     NumberOfTriggers: 3
@@ -6837,7 +6839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dryingPointsCounter: 0
   Paused: 0
-  _state:
+  _wetnessState:
     _val: 0
   PlayerIsWet:
     _val: 1

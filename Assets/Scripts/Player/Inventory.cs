@@ -114,6 +114,13 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    public void TryAddItemOrDrop(string itemName, int quantity, Collider2D spawnCollider, float dropDrag = 1, float dropSpeed = 1) {
+        if (!TryAddItem(itemName, quantity)) {
+            SpawnItems.ItemSpawnData[] _itemToSpawn = {new SpawnItems.ItemSpawnData (itemName, quantity, quantity)};
+            SpawnItems.SpawnItemsFromCollider(spawnCollider, _itemToSpawn, dropSpeed, dropDrag);
+        }
+    }
+
     /// <summary>
     /// Removes a quantity of an item from inventory, starting from smallest stacks
     /// </summary>
