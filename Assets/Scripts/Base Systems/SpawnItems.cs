@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-public static class SpawnItems {
+public static class SpawnItems
+{
     [System.Serializable]
     public class ItemSpawnData
     {
@@ -29,13 +30,32 @@ public static class SpawnItems {
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, Random.Range(_item.minQuantity, _item.maxQuantity)))
             {
-                GameObject _spawnedItem = SpawnLooseItem(new ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
+                GameObject _spawnedItem = InstantiateLooseItem(new ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
                 SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
             }
         }
     }
 
-    private static GameObject SpawnLooseItem(ItemData item, Sprite itemSprite, Vector3 spawnPosition)
+    public static void SpawnLooseItems(string itemName, Vector3[] spawnPositions, bool playBounceAnimation = true, float launchSpeed = 1, float launchDrag = 1)
+    {
+        GameObject _spawnItem = Resources.Load<GameObject>("Items/" + itemName);
+        if (_spawnItem == null)
+        {
+            Debug.LogError("The spawn item doesn't exist.");
+            return;
+        }
+        Sprite _itemImage = _spawnItem.GetComponent<Image>().sprite;
+
+        foreach (var _spawnPosition in spawnPositions)
+        {
+            GameObject _spawnedItem = InstantiateLooseItem(new ItemData(itemName, 1), _itemImage, _spawnPosition);
+            if (!playBounceAnimation)
+                _spawnedItem.GetComponent<Animator>().Play("Idle"); // skips bounce animation
+            SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
+        }
+    }
+
+    private static GameObject InstantiateLooseItem(ItemData item, Sprite itemSprite, Vector3 spawnPosition)
     {
         // Spawn a generic loose item
         GameObject _spawnedItem = Object.Instantiate(Resources.Load<GameObject>("Items/LooseItem"),
@@ -50,7 +70,7 @@ public static class SpawnItems {
         _spawnedItem.GetComponent<LooseItem>().Item = item;
         return _spawnedItem;
     }
-    
+
     private static Vector3[] GetRandomPositionsWithinCollider(Collider2D collider, int quantity)
     {
         // Get bounds, collider has to be enabled
@@ -82,7 +102,7 @@ public static class SpawnItems {
         _rb.velocity = GenerateRandomDirection() * launchSpeed;
     }
 
-    public static Vector3 GenerateRandomDirection()
+    private static Vector3 GenerateRandomDirection()
     {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         Vector3 randomDirection = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0);

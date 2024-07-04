@@ -55,8 +55,7 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
             case StumpStates.Splitting:
                 _animator.enabled = true;
                 _animator.Play("Splitting");
-                StartCoroutine(WaitForAnimationToEnd());
-                _inventory.TryAddItem("Firewood", 3);
+                StartCoroutine(WaitForAnimationThenSpawnFirewood());
                 return;
             case StumpStates.Idle:
                 _spriteRenderer.sprite = _idle;
@@ -65,6 +64,17 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
                 Debug.LogError("LarchStump state machine defaulted.");
                 break;
         }
+    }
+
+    private Vector3[] GetFirewoodSpawnPositions()
+    {
+        // Positions were determined via trial and error to match location with splitting animation
+        Vector3[] _spawnPositions = {
+                                     new Vector3(transform.position.x + 0.7f, transform.position.y + 0.7f, 0),
+                                     new Vector3(transform.position.x - 1.1f, transform.position.y + 0.5f, 0),
+                                     new Vector3(transform.position.x + 0.9f, transform.position.y - 0.3f, 0),
+                                    };
+        return _spawnPositions;
     }
 
     public void OnUseAxe()
@@ -79,9 +89,15 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
             _state.Value = StumpStates.LogOn;
     }
 
-    private IEnumerator WaitForAnimationToEnd()
+    private IEnumerator WaitForAnimationThenSpawnFirewood()
     {
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+
+        // spawn firewood
+        Vector3[] _spawnPositions = GetFirewoodSpawnPositions();
+        SpawnItems.SpawnLooseItems("Firewood", _spawnPositions, false, 0, 0);
+
+        // stop animator
         _animator.StopPlayback();
         _animator.enabled = false;
         _state.Value = StumpStates.Idle;
