@@ -14,6 +14,7 @@ public class AudioManager : Singleton<AudioManager>
 
     Stack<AudioSource> _SFXPool = new();
     Stack<AudioSource> _loopingSFXPool = new();
+    private const float FADE_DURATION_SECS = 2f;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     /// <returns>Returns a hook to pause the </returns>
-    public Action PlayLoopingSFX(AudioClip clip, float volume = 1)
+    public Action PlayLoopingSFX(AudioClip clip, float volume = 1, bool FadeIn = false)
     {
         AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
         if (_source is null)
@@ -41,9 +42,18 @@ public class AudioManager : Singleton<AudioManager>
             return null;
         }
         _source.clip = clip;
-        _source.volume = volume;
         _source.loop = true;
-        _source.Play();
+        if (FadeIn)
+        {
+            _source.volume = 0;
+            _source.Play();
+            StartCoroutine(FadeInAudio(_source, FADE_DURATION_SECS, volume));
+        }
+        else
+        {
+            _source.volume = volume;
+            _source.Play();
+        }
         return () => DeactivateAudioSource(_source, _loopingSFXPool);
     }
 
@@ -84,5 +94,19 @@ public class AudioManager : Singleton<AudioManager>
         yield return new WaitForSeconds(source.clip.length);
         source.gameObject.SetActive(false);
         sourcePool.Push(source);
+    }
+    public AudioSource audioSource;
+
+    private IEnumerator FadeInAudio(AudioSource source, float duration, float targetVolume)
+    {
+        float startTime = Time.time;
+
+        while (source.volume < targetVolume)
+        {
+            float elapsed = Time.time - startTime;
+            source.volume = Mathf.Lerp(0, targetVolume, elapsed / duration);
+            yield return null;
+        }
+        source.volume = targetVolume;
     }
 }

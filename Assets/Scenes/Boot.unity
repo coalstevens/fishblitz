@@ -2296,6 +2296,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RainState: 0
+  _indoorRainSFX: {fileID: 8300000, guid: f5d5462cb03f94c0cab0c3f83c1f6d4e, type: 3}
+  _outdoorRainSFX: {fileID: 8300000, guid: df97200eeae5940ce858e203a6927863, type: 3}
 --- !u!4 &1809928526
 Transform:
   m_ObjectHideFlags: 0
@@ -3659,7 +3661,7 @@ MonoBehaviour:
   GameSeason:
     _val: 1
   GameDay:
-    _val: 1
+    _val: 2
   GameHour:
     _val: 12
   GameMinute:
