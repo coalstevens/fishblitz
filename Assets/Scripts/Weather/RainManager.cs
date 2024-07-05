@@ -51,10 +51,10 @@ public class RainManager : Singleton<RainManager>
         switch (SceneManager.GetActiveScene().name)
         {
             case "Abandoned Shed":
-                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_indoorRainSFX, 1, true);
+                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_indoorRainSFX, 0.5f, true);
                 break;
             case "Outside":
-                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_outdoorRainSFX, 1, true);
+                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_outdoorRainSFX, 0.5f, true);
                 break;
             default:
                 StopRainAudio();

@@ -1,19 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
+using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] AudioSource _musicPlayer; // Dedicated audisource for playing music
-    [SerializeField] Transform _loopingSFXPlayerContainer; // Dedicated audiosource for looping SFX, like rain
-    [SerializeField] Transform _SFXPlayerContainer; // Parent for a pool of SFX audio sources
-
-    Stack<AudioSource> _SFXPool = new();
-    Stack<AudioSource> _loopingSFXPool = new();
+    [SerializeField] AudioSource _musicPlayer; // Dedicated audiosource for playing music
+    [SerializeField] Transform _loopingSFXPlayerContainer; // Container for looping SFX audio sources, like rain
+    [SerializeField] Transform _SFXPlayerContainer; // Container for one-shot SFX audio sources
+    [SerializeField] private Logger _logger = new();
+    private Stack<AudioSource> _SFXPool = new();
+    private Stack<AudioSource> _loopingSFXPool = new();
     private const float FADE_DURATION_SECS = 2f;
 
     private void Start()
@@ -23,55 +21,113 @@ public class AudioManager : Singleton<AudioManager>
 
         foreach (var _source in _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>(true))
             _loopingSFXPool.Push(_source);
+
+        _logger.Info($"SFX pool count: {_SFXPool.Count}    Looping pool count: {_loopingSFXPool.Count}");
     }
 
-    public void PlayMusic(AudioClip clip)
+    public Action PlayMusic(AudioClip clip, float volume, bool fadeIn)
     {
-        _musicPlayer.clip = clip;
-        _musicPlayer.loop = true;
-        _musicPlayer.Play();
-    }
-
-    /// <returns>Returns a hook to pause the </returns>
-    public Action PlayLoopingSFX(AudioClip clip, float volume = 1, bool FadeIn = false)
-    {
-        AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
-        if (_source is null)
+        if (clip == null)
         {
-            Debug.LogError("There are no more looping SFX audio sources available");
+            _logger.Warning("The music clip is null.");
             return null;
         }
+
+        _musicPlayer.clip = clip;
+        _musicPlayer.loop = true;
+
+        if (fadeIn)
+        {
+            _musicPlayer.volume = 0;
+            _musicPlayer.Play();
+            StartCoroutine(FadeInAudio(_musicPlayer, FADE_DURATION_SECS, volume));
+        }
+        else
+        {
+            _musicPlayer.volume = volume;
+            _musicPlayer.Play();
+        }
+        return () => DeactivateAudioSource(_musicPlayer, _loopingSFXPool);
+    }
+
+    /// <summary>
+    /// Plays a looping SFX clip with optional fade in and fade out effects.
+    /// </summary>
+    public Action PlayLoopingSFX(AudioClip clip, float volume = 1, bool fadeIn = false, bool fadeOut = false, float fadeDurationSecs = FADE_DURATION_SECS)
+    {
+        if (clip == null)
+        {
+            _logger.Warning("The attached looping SFX clip is null.");
+            return null;
+        }
+
+        AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
+        if (_source == null)
+        {
+            _logger.Warning("There are no more looping SFX audio sources available.");
+            return null;
+        }
+
+        _logger.Info($"Playing looping SFX: {clip.name} with source: {_source.GetInstanceID()}");
+
         _source.clip = clip;
         _source.loop = true;
-        if (FadeIn)
+
+        if (fadeIn)
         {
             _source.volume = 0;
             _source.Play();
-            StartCoroutine(FadeInAudio(_source, FADE_DURATION_SECS, volume));
+            StartCoroutine(FadeInAudio(_source, fadeDurationSecs, volume));
         }
         else
         {
             _source.volume = volume;
             _source.Play();
         }
-        return () => DeactivateAudioSource(_source, _loopingSFXPool);
+
+        Action deactivateAction = () => 
+        {
+            _logger.Info($"Deactivating looping SFX source: {_source.GetInstanceID()}");
+            if (fadeOut)
+            {
+                StartCoroutine(FadeOutAndDeactivateAudioSource(_source, fadeDurationSecs, _loopingSFXPool));
+            }
+            else
+            {
+                DeactivateAudioSource(_source, _loopingSFXPool);
+            }
+        };
+
+        return deactivateAction;
     }
 
     private void DeactivateAudioSource(AudioSource source, Stack<AudioSource> pool)
     {
+        if (pool.Contains(source)) {
+            _logger.Warning("You must make the deactivate audio source callback null after use.");
+            return;
+        }
         source.Stop();
         source.gameObject.SetActive(false);
         pool.Push(source);
+        _logger.Info($"Deactivated and returned source: {source.GetInstanceID()} to pool. Pool count: {pool.Count}");
     }
 
     public void PlaySFX(AudioClip clip, float volume = 1)
     {
-        AudioSource _source = GetPlayerFromPool(_SFXPool);
-        if (_source is null)
+        if (clip == null)
         {
-            Debug.LogError("There are no more SFX audio sources available");
+            _logger.Warning("The SFX clip is null.");
             return;
         }
+        AudioSource _source = GetPlayerFromPool(_SFXPool);
+        if (_source == null)
+        {
+            _logger.Warning("There are no more SFX audio sources available.");
+            return;
+        }
+
+        _logger.Info($"Playing SFX: {clip.name} with source: {_source.GetInstanceID()}");
 
         _source.clip = clip;
         _source.volume = volume;
@@ -86,27 +142,44 @@ public class AudioManager : Singleton<AudioManager>
             return null;
         AudioSource _source = pool.Pop();
         _source.gameObject.SetActive(true);
+        _logger.Info($"Retrieved source: {_source.GetInstanceID()} from pool. Pool count: {pool.Count}");
         return _source;
     }
 
     private IEnumerator DisableAudioSourceAfterSound(AudioSource source, Stack<AudioSource> sourcePool)
     {
         yield return new WaitForSeconds(source.clip.length);
-        source.gameObject.SetActive(false);
         sourcePool.Push(source);
+        source.gameObject.SetActive(false);
+        _logger.Info($"Disabled and returned source: {source.GetInstanceID()} to pool after playing. Pool count: {sourcePool.Count}");
     }
-    public AudioSource audioSource;
 
     private IEnumerator FadeInAudio(AudioSource source, float duration, float targetVolume)
     {
-        float startTime = Time.time;
+        float _startTime = Time.time;
 
         while (source.volume < targetVolume)
         {
-            float elapsed = Time.time - startTime;
+            float elapsed = Time.time - _startTime;
             source.volume = Mathf.Lerp(0, targetVolume, elapsed / duration);
             yield return null;
         }
         source.volume = targetVolume;
+    }
+
+    private IEnumerator FadeOutAndDeactivateAudioSource(AudioSource source, float duration, Stack<AudioSource> pool)
+    {
+        float _startTime = Time.time;
+        float _startVolume = source.volume;
+
+        while (source.volume > 0)
+        {
+            float elapsed = Time.time - _startTime;
+            source.volume = math.lerp(_startVolume, 0, elapsed / duration);
+            yield return null;
+        }
+
+        source.volume = 0;
+        DeactivateAudioSource(source, pool);
     }
 }

@@ -22,7 +22,7 @@ public class FishBar : MonoBehaviour
     [SerializeField] private AudioClip _hitTriggerSFX;
     [SerializeField] private AudioClip _reelingInSFX;
 
-    private System.Action _stopReelingSFXHook;
+    private System.Action _stopReelingSFXCB;
 
     [Header("Shake Options")]
     [SerializeField] private float _shakeDuration = 1;
@@ -77,7 +77,7 @@ public class FishBar : MonoBehaviour
     private void InitializeNewGame()
     {
         _logger.Info("New game started.");
-        _stopReelingSFXHook = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
+        _stopReelingSFXCB = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
         _playerMovementController.PlayerState.Value = PlayerStates.Catching;
         gameObject.SetActive(true); 
         _fishType = GetRandomValidFishType();
@@ -158,7 +158,8 @@ public class FishBar : MonoBehaviour
         _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.TryAddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
-        _stopReelingSFXHook();
+        _stopReelingSFXCB();
+        _stopReelingSFXCB = null;
         EndGame();
     }
 
@@ -180,7 +181,7 @@ public class FishBar : MonoBehaviour
         _overlaySpriteRenderer.sprite = _greyOverlay;
 
         LaunchFishCursor();
-        _stopReelingSFXHook();
+        _stopReelingSFXCB();
         yield return new WaitForSeconds(1.5f);
         _playerMovementController.PlayerState.Value = PlayerStates.Idle;
         EndGame();

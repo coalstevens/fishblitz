@@ -25,4 +25,9 @@ public interface ITool {
     /// Swings at nothing; plays tool animation.
     /// </summary>
     public void SwingTool();
+
+    /// <summary>
+    /// Plays a sound when the tool interacts with the target
+    /// </summary>
+    public void PlayToolHitSound();
 }

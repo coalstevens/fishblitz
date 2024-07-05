@@ -1,10 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using ReactiveUnity;
 
 public class Wind : MonoBehaviour
 {
+    [SerializeField] private AudioClip _gustSFX;
+
+    // There is a forcefield for particle systems
     [Header("Non Particle System Affected Entities")]
     [SerializeField] private Material _treeWindShader;
     [SerializeField] private ParticleSystem _rain;
@@ -29,20 +31,44 @@ public class Wind : MonoBehaviour
     [SerializeField] private GustDirections _gustDirection = GustDirections.East;
 
     public enum WindStates { Fluctating, GustBuilding, GustPeak, GustDying }
-    public WindStates _windState;
+    public Reactive<WindStates> WindState = new Reactive<WindStates>(WindStates.Fluctating);
     public float _windXVector; // Wind doesn't blow North/South
     private float _gustStartTime;
     private float _flucStartTime;
     private float _flucDuration;
+    private Action _unsubscribe;
+    private Action _stopSoundCB;
 
     void Start()
     {
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
         EnterFluctuation();
     }
+
+    void OnStateChange(WindStates previous, WindStates current)
+    {
+        switch (current)
+        {
+            case WindStates.GustBuilding: 
+                _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_gustSFX, 1, false, true, 2);
+                break;
+            case WindStates.GustDying:
+                _stopSoundCB?.Invoke();
+                _stopSoundCB = null;
+                break;
+        }
+    }
+
+    void OnDisable()
+    {
+        _unsubscribe();
+    }
+
     void Update()
     {
-        switch (_windState)
+        // Update wind vector
+        switch (WindState.Value)
         {
             case WindStates.Fluctating:
                 FluctuatingHandler();
@@ -74,7 +100,7 @@ public class Wind : MonoBehaviour
         rot.z = new ParticleSystem.MinMaxCurve(-1 * _windXVector * _rainParticleRotationScalar);
 
         // Update player speed limits
-        if (_windState != WindStates.Fluctating)
+        if (WindState.Value != WindStates.Fluctating)
         {
             CardinalVector _moveSpeedMultiplier;
             _moveSpeedMultiplier.north = 1;
@@ -101,6 +127,7 @@ public class Wind : MonoBehaviour
     {
         return _flucMagnitude * ((Mathf.Sin(2 * _flucFrequency * Time.time) + Mathf.Sin(Mathf.PI * _flucFrequency * Time.time)) / 4);
     }
+
     private void FluctuatingHandler()
     {
         _windXVector = GetFluctuationValue();
@@ -112,7 +139,7 @@ public class Wind : MonoBehaviour
 
         if (Time.time - _flucStartTime >= _flucDuration)
         {
-            _windState = WindStates.GustBuilding;
+            WindState.Value = WindStates.GustBuilding;
         }
     }
 
@@ -123,7 +150,7 @@ public class Wind : MonoBehaviour
         {
             _windXVector = (int)_gustDirection * _gustMagnitude;
             _gustStartTime = Time.time;
-            _windState = WindStates.GustPeak;
+            WindState.Value = WindStates.GustPeak;
         }
     }
 
@@ -132,7 +159,7 @@ public class Wind : MonoBehaviour
     {
         if (Time.time - _gustStartTime >= _gustPeakDurationSecs)
         {
-            _windState = WindStates.GustDying;
+            WindState.Value = WindStates.GustDying;
         }
     }
 
@@ -149,12 +176,13 @@ public class Wind : MonoBehaviour
 
     private void EnterFluctuation()
     {
-        _windState = WindStates.Fluctating;
+        WindState.Value = WindStates.Fluctating;
         _flucDuration = UnityEngine.Random.Range(_gustMinIntervalSec, _gustMaxIntervalSec);
         _flucStartTime = Time.time;
     }
-    
-    private void OnDestroy() {
+
+    private void OnDestroy()
+    {
         // Reset multiplier when exiting scene
         _playerMovementController.SetMoveSpeedMultiplier(new CardinalVector(1));
     }

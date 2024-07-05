@@ -87,14 +87,18 @@ public class ActiveGridCell : MonoBehaviour
         Vector3Int _cursorLocation = GetActiveCursorLocation();
         IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(_cursorLocation);
         if (_interactableWorldObject != null)
-            if (((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
+            if (((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation)) {
+                ((ITool)_activeItem).PlayToolHitSound();
                 return;
+            }
 
         // try to use tool on tilemap
         string _interactableTilemapName = FindPlayerCursorInteractableTileMap(_cursorLocation);
         if (_interactableTilemapName != null)
-            if (((ITool)_activeItem).UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
+            if (((ITool)_activeItem).UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation)) {
+                ((ITool)_activeItem).PlayToolHitSound();
                 return;
+            }
 
         // swing at nothing
         ((ITool)_activeItem).SwingTool();

@@ -69,4 +69,9 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         Debug.Log("Swung fishing rod");
         return; // does nothing. Make a casting animation?
     }
+
+    public void PlayToolHitSound()
+    {
+        // has no sound
+    }
 }

@@ -17,6 +17,8 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
     [SerializeField] private Sprite _logOn;
     [SerializeField] private Sprite _idle;
     [SerializeField] private Reactive<StumpStates> _state = new Reactive<StumpStates>(StumpStates.Idle);
+    [SerializeField] private AudioClip _fallingSplitWoodSFX;
+
     private Inventory _inventory;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
@@ -91,7 +93,11 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
 
     private IEnumerator WaitForAnimationThenSpawnFirewood()
     {
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+        // Let animation play, and add split wood sound effext in the middle.
+        float _animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(_animationLength - 0.2f);
+        AudioManager.Instance.PlaySFX(_fallingSplitWoodSFX);
+        yield return new WaitForSeconds(_animationLength - (_animationLength - 0.2f));
 
         // spawn firewood
         Vector3[] _spawnPositions = GetFirewoodSpawnPositions();
