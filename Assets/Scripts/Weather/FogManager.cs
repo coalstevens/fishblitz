@@ -9,6 +9,7 @@ public class FogManager : MonoBehaviour
     {
         _fog = GetComponent<SpriteRenderer>();
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        OnRainStateChange(_isRaining ? RainStates.Raining : RainStates.NotRaining);
     }
 
     void OnEnable() {
@@ -35,6 +36,6 @@ public class FogManager : MonoBehaviour
     void Update()
     {
         if (_isRaining)
-            transform.position = new Vector3(_playerCamera.position.x, _playerCamera.position.y, transform.position.z);
+            transform.position = _playerCamera.position;
     }
 }

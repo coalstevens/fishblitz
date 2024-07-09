@@ -1,4 +1,5 @@
 using System;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +11,6 @@ public class RainManager : Singleton<RainManager>
     public event Action<RainStates> RainStateChange; // Subscribe with events
     [SerializeField] private AudioClip _indoorRainSFX;
     [SerializeField] private AudioClip _outdoorRainSFX;
-    private GameObject _rainParticleSystem;
     private Action _stopRainAudioHook;
 
     private void OnEnable()
@@ -23,20 +23,26 @@ public class RainManager : Singleton<RainManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public void Enable()
+    public void StartRain()
     {
-        _rainParticleSystem.gameObject.SetActive(true);
+        if (RainState == RainStates.Raining)
+            return;
+        GameObject.FindGameObjectWithTag("Rain")?.SetActive(true);
         RainState = RainStates.Raining;
         RainStateChange.Invoke(RainState);
     }
 
-    public void Disable()
+    public void StopRain()
     {
-        _rainParticleSystem.gameObject.SetActive(false);
+        if (RainState == RainStates.NotRaining)
+            return;
+        GameObject.FindGameObjectWithTag("Rain")?.SetActive(false);
+        StopRainAudio();
         RainState = RainStates.NotRaining;
         RainStateChange.Invoke(RainState);
-
+        RainStateChange = null;
     }
+    
     private void StopRainAudio()
     {
         if (_stopRainAudioHook != null)
@@ -51,7 +57,7 @@ public class RainManager : Singleton<RainManager>
         switch (SceneManager.GetActiveScene().name)
         {
             case "Abandoned Shed":
-                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_indoorRainSFX, 0.5f, true);
+                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_indoorRainSFX, 1, true);
                 break;
             case "Outside":
                 _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_outdoorRainSFX, 0.5f, true);
@@ -67,9 +73,17 @@ public class RainManager : Singleton<RainManager>
     {
         if (scene.name == "Boot")
             return;
-        if (RainState == RainStates.NotRaining)
+
+        if (RainState == RainStates.Raining) {
+            GameObject.FindGameObjectWithTag("Rain")?.SetActive(true);
+            StopRainAudio();
+            StartRainAudio();
             return;
-        StopRainAudio();
-        StartRainAudio();
+        }
+
+        if (RainState == RainStates.NotRaining) {
+            GameObject.FindGameObjectWithTag("Rain")?.SetActive(false);
+            return;
+        }
     }
 }

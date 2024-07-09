@@ -4,37 +4,59 @@ using UnityEngine;
 public enum RiverStates{Puddles, Flood, FullGrass, Shallow, FullDirt};                   
 public class OutsideSceneStateCalendar : MonoBehaviour
     {
-    [SerializeField] GameObject _waterFull;
-    [SerializeField] GameObject _waterPuddles;
-    [SerializeField] GameObject _waterShallow;
-    [SerializeField] GameObject _waterFlood;
-    [SerializeField] GameObject _banksGrass;
-    [SerializeField] GameObject _banksDirt;
+    [SerializeField] private GameObject _waterFull;
+    [SerializeField] private GameObject _waterPuddles;
+    [SerializeField] private GameObject _waterShallow;
+    [SerializeField] private GameObject _waterFlood;
+    [SerializeField] private GameObject _banksGrass;
+    [SerializeField] private GameObject _banksDirt;
 
-    Dictionary<(int gameYear, GameClock.Seasons season, int gameDay), RiverStates> _riverCalendar;
+    private Dictionary<(int gameYear, GameClock.Seasons season, int gameDay), RiverStates> _riverCalendar;
 
-    void Start()
+    private void Start()
     {
         InitalizeCalendar();
-        DisableAllVariableGameObjects();
-        SetSceneState(_riverCalendar[(GameClock.Instance.GameYear.Value,
-                                      GameClock.Instance.GameSeason.Value,
-                                      GameClock.Instance.GameDay.Value)]);
-                                
+        DisableAllRiverTilemaps();
+        _riverCalendar.TryGetValue((GameClock.Instance.GameYear.Value,
+                                   GameClock.Instance.GameSeason.Value,
+                                   GameClock.Instance.GameDay.Value),
+                                   out RiverStates result);
+        SetSceneState(result);                           
     }
 
-    void InitalizeCalendar() {
-        _riverCalendar = new();
-        _riverCalendar[(1, GameClock.Seasons.EndOfSpring, 1)] = RiverStates.Puddles; 
-        _riverCalendar[(1, GameClock.Seasons.EndOfSpring, 2)] = RiverStates.Shallow; 
-        _riverCalendar[(1, GameClock.Seasons.EndOfSpring, 3)] = RiverStates.FullGrass; 
-        _riverCalendar[(1, GameClock.Seasons.EndOfSpring, 4)] = RiverStates.Flood;
-        _riverCalendar[(1, GameClock.Seasons.EndOfSpring, 5)] = RiverStates.Flood;
-        _riverCalendar[(1, GameClock.Seasons.Spring, 1)] = RiverStates.FullDirt;
-        _riverCalendar[(1, GameClock.Seasons.Spring, 2)] = RiverStates.FullDirt;
+    private void InitalizeCalendar() {
+        _riverCalendar = new()
+        {
+            [(1, GameClock.Seasons.EndOfSpring, 11)] = RiverStates.Puddles,
+            [(1, GameClock.Seasons.EndOfSpring, 12)] = RiverStates.Shallow,
+            [(1, GameClock.Seasons.EndOfSpring, 13)] = RiverStates.FullGrass,
+            [(1, GameClock.Seasons.EndOfSpring, 14)] = RiverStates.Flood,
+            [(1, GameClock.Seasons.EndOfSpring, 15)] = RiverStates.Flood,
+            [(1, GameClock.Seasons.Summer, 1)] = RiverStates.FullDirt,
+            [(1, GameClock.Seasons.Summer, 2)] = RiverStates.FullDirt,
+            [(1, GameClock.Seasons.Summer, 3)] = RiverStates.FullGrass,
+            [(1, GameClock.Seasons.Summer, 4)] = RiverStates.FullGrass
+        };
     }
-    void SetSceneState(RiverStates newState) {
-        DisableAllVariableGameObjects();
+
+    private void SetSceneState(RiverStates newState) {
+        HandleRiver(newState);
+        HandleRain();
+    }
+
+    private void HandleRain() {
+        switch(GameClock.Instance.GameSeason.Value) {
+            case GameClock.Seasons.EndOfSpring:
+                RainManager.Instance.StartRain();
+                break;
+            case GameClock.Seasons.Summer:
+                RainManager.Instance.StopRain();
+                break;
+        }
+    }
+
+    private void HandleRiver(RiverStates newState) {
+        DisableAllRiverTilemaps();
         switch (newState) {    
             case RiverStates.Puddles:
                 _waterPuddles.SetActive(true);
@@ -63,7 +85,7 @@ public class OutsideSceneStateCalendar : MonoBehaviour
         }
     }
 
-    void DisableAllVariableGameObjects() {
+    private void DisableAllRiverTilemaps() {
         _waterFlood.SetActive(false);
         _waterFull.SetActive(false);
         _waterPuddles.SetActive(false);

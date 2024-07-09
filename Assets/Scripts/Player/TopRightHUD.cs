@@ -59,17 +59,17 @@ public class TopRightHUD : MonoBehaviour
         // i guess i was indecisive about whether the side seasons have their own date numbers
         // hence this workaround
         int _gameDay = GameClock.Instance.GameDay.Value;
-        _gameDay += GameClock.Instance.GameSeason.Value switch {
-            GameClock.Seasons.Spring => 0,
-            GameClock.Seasons.Summer => 0,
-            GameClock.Seasons.Fall => 0,
-            GameClock.Seasons.Winter => 0,
-            GameClock.Seasons.EndOfSpring => 10,
-            GameClock.Seasons.EndOfSummer => 10,
-            GameClock.Seasons.EndOfFall => 10,
-            GameClock.Seasons.EndOfWinter => 10,  
-            _ => 0,
-        };
+        // _gameDay += GameClock.Instance.GameSeason.Value switch {
+        //     GameClock.Seasons.Spring => 0,
+        //     GameClock.Seasons.Summer => 0,
+        //     GameClock.Seasons.Fall => 0,
+        //     GameClock.Seasons.Winter => 0,
+        //     GameClock.Seasons.EndOfSpring => 10,
+        //     GameClock.Seasons.EndOfSummer => 10,
+        //     GameClock.Seasons.EndOfFall => 10,
+        //     GameClock.Seasons.EndOfWinter => 10,  
+        //     _ => 0,
+        // };
 
         // "1st" thru "15th" 
         _dateText.text = $"The {_gameDay}";

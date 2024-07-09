@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using ReactiveUnity;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum TreeStates { SummerAdult, FallAdult, DeadAdult, Stump };
@@ -21,15 +22,26 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected GameObject _W_fallenTree;
     [SerializeField] protected GameObject _stump;
 
-    [Header("Shake Properties")]
-    [SerializeField] float _shakeDuration = 0.5f;
-    [SerializeField] float _shakeStrength = 0.05f;
-    [SerializeField] int _shakeVibrato = 10;
-    [SerializeField] float _shakeRandomness = 90f;
+    [Header("Chop Shake Properties")]
+    [SerializeField] protected float _chopShakeDuration = 0.5f;
+    [SerializeField] protected float _chopShakeStrength = 0.05f;
+    [SerializeField] protected int _chopShakeVibrato = 10;
+    [SerializeField] protected float _chopShakeRandomness = 90f;
+    
+    [Header("Gust Shake Material Properties")]
+    [SerializeField] protected float _gustWindStrength = 1f;
+    [SerializeField] protected float _gustSpeed = 30f;
+    [SerializeField] protected float _bendScaler = 1f;
+
+    protected float _originalWindStrength = 0.5f;
+    protected float _originalGustSpeed = 0.4f;
+    protected float _originalBendScaler = 1f;
 
     protected SpriteRenderer _spriteRenderer;
     private PlayerMovementController _playerMovementController;
     protected Action _unsubscribe;
+    protected Wind _windManager;
+    protected Vector3 _originalPosition;
 
     protected const int _HITS_TO_FALL = 5;
     protected int _hitCount = 0;
@@ -44,6 +56,7 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     {
         _unsubscribe = _treeState.OnChange((prev, curr) => OnStateChange());
     }
+
     protected virtual void OnDisable()
     {
         _unsubscribe();
@@ -76,7 +89,7 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
         if (_hitCount < _HITS_TO_FALL - 1)
         {
             _hitCount++;
-            transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
+            transform.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
             return;
         }
         StartCoroutine(FallTree());

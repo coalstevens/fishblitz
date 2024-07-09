@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 using ReactiveUnity;
+using System.Collections.Generic;
+using System.Collections;
+using Unity.Mathematics;
 
 public class Wind : MonoBehaviour
 {
@@ -8,7 +11,12 @@ public class Wind : MonoBehaviour
 
     // There is a forcefield for particle systems
     [Header("Non Particle System Affected Entities")]
-    [SerializeField] private Material _treeWindShader;
+    [SerializeField] private Material _larchMaterial;
+    [SerializeField] private Material _spruceMaterial;
+    [SerializeField] private float _larchGustSpeed = 5;
+    [SerializeField] private float _spruceGustSpeed = 5;
+    [SerializeField] private float _larchGustStrength = 1;
+    [SerializeField] private float _spruceGustStrength = 0.5f;
     [SerializeField] private ParticleSystem _rain;
     [SerializeField] private ParticleSystemForceField _windAOE;
     private PlayerMovementController _playerMovementController;
@@ -31,18 +39,25 @@ public class Wind : MonoBehaviour
     [SerializeField] private GustDirections _gustDirection = GustDirections.East;
 
     public enum WindStates { Fluctating, GustBuilding, GustPeak, GustDying }
-    public Reactive<WindStates> WindState = new Reactive<WindStates>(WindStates.Fluctating);
-    public float _windXVector; // Wind doesn't blow North/South
+    private Reactive<WindStates> WindState = new Reactive<WindStates>(WindStates.Fluctating);
+    private float _windXVector; // State variable. (Wind only blows east/west)
     private float _gustStartTime;
     private float _flucStartTime;
     private float _flucDuration;
     private Action _unsubscribe;
     private Action _stopSoundCB;
+    private float _larchOriginalSpeed = 0.4f;
+    private float _larchOriginalStrength = 0.5f;
+    private float _spruceOriginalSpeed = 0.4f;
+    private float _spruceOriginalStrength = 0.5f;
+    private Transform _playerCamera;
 
     void Start()
     {
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
+        GetOriginalTreeValues();
         EnterFluctuation();
     }
 
@@ -53,7 +68,11 @@ public class Wind : MonoBehaviour
             case WindStates.GustBuilding: 
                 _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_gustSFX, 1, false, true, 2);
                 break;
+            case WindStates.GustPeak:
+                StartTreeShake();
+                break;
             case WindStates.GustDying:
+                StopTreeShake();
                 _stopSoundCB?.Invoke();
                 _stopSoundCB = null;
                 break;
@@ -62,11 +81,16 @@ public class Wind : MonoBehaviour
 
     void OnDisable()
     {
+        StopTreeShake();
+        _stopSoundCB?.Invoke();
+        _stopSoundCB = null;
         _unsubscribe();
     }
 
     void Update()
     {
+        _windAOE.transform.position = _playerCamera.transform.position;
+
         // Update wind vector
         switch (WindState.Value)
         {
@@ -83,14 +107,14 @@ public class Wind : MonoBehaviour
                 GustDyingHandler();
                 break;
         }
-
-        UpdateAffectedEntities();
+        ApplyWindVectorToAffectedEntities();
     }
 
-    private void UpdateAffectedEntities()
+    private void ApplyWindVectorToAffectedEntities()
     {
         // Adjust the amount of bending on the tree material
-        _treeWindShader.SetFloat("_BendDirection", _windXVector);
+        _larchMaterial.SetFloat("_BendDirection", _windXVector);
+        _spruceMaterial.SetFloat("_BendDirection", _windXVector);
 
         // Set the force field force
         _windAOE.directionX = _windXVector;
@@ -185,5 +209,31 @@ public class Wind : MonoBehaviour
     {
         // Reset multiplier when exiting scene
         _playerMovementController.SetMoveSpeedMultiplier(new CardinalVector(1));
+        
+        ResetTreeMaterials();
+    }
+
+    public void GetOriginalTreeValues() {
+        _spruceOriginalSpeed = _spruceMaterial.GetVector("_WindSpeed").x;
+        _spruceOriginalStrength = _spruceMaterial.GetFloat("_WindStrength");
+        _larchOriginalSpeed = _larchMaterial.GetVector("_WindSpeed").x;
+        _larchOriginalStrength = _larchMaterial.GetFloat("_WindStrength");
+    }
+   public void StartTreeShake() {
+        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceGustSpeed,0,0,0));
+        _spruceMaterial.SetFloat("_WindStrength", _spruceGustStrength);
+        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchGustSpeed,0,0,0));
+        _larchMaterial.SetFloat("_WindStrength", _larchGustStrength);
+    }
+
+    public void StopTreeShake() {
+        ResetTreeMaterials();
+    } 
+
+    private void ResetTreeMaterials() {
+        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceOriginalSpeed,0,0,0));
+        _spruceMaterial.SetFloat("_WindStrength", _spruceOriginalStrength);
+        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchOriginalSpeed,0,0,0));
+        _larchMaterial.SetFloat("_WindStrength", _larchOriginalStrength);
     }
 }
