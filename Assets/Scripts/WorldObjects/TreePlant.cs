@@ -120,7 +120,8 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
                                                                 transform.position + _fallenTreePosition, // falls some distance to the side of stump
                                                                 Quaternion.identity,
                                                                 GameObject.FindGameObjectWithTag("Impermanent").transform);
-
+        _fallenTree.GetComponent<FallenTree>().PlayFallingAnimation();
+        
         // Want falling tree to appear infront of stump.
         // FallingTree.cs re-enables sprite sorting after falling
         _fallenTree.GetComponentInChildren<StaticSpriteSorting>().enabled = false;

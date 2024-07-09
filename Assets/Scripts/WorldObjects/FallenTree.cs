@@ -22,18 +22,22 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
     protected Reactive<FallenTreeStates> _state = new Reactive<FallenTreeStates>(FallenTreeStates.Falling);
     private const int _HITS_TO_DESTROY = 5;
     private int _hitCount = 0;
-    
+
     Animator _animator;
-    Action _unsubscribe;
+    Action _unsubscribeCB;
     SpriteRenderer _spriteRenderer;
     Collider2D _collider;
 
-    void Awake()
+    private void Awake()
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _collider = GetComponent<Collider2D>();
 
+    }
+
+    public void PlayFallingAnimation()
+    {
         Shake();
         string _animationToPlay = _fallsEast ? "E_Falling" : "W_Falling";
         _animator.Play(_animationToPlay);
@@ -43,16 +47,16 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
         StartCoroutine(WaitForFallingAnimationToEnd());
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        _unsubscribe = _state.OnChange((curr, prev) => OnStateChange());
+        _unsubscribeCB = _state.OnChange((curr, prev) => OnStateChange());
     }
-    void OnDisable()
+    private void OnDisable()
     {
-        _unsubscribe();
+        _unsubscribeCB();
     }
 
-    void OnStateChange()
+    private void OnStateChange()
     {
         switch (_state.Value)
         {
@@ -73,7 +77,8 @@ public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
         _state.Value = FallenTreeStates.Idle;
     }
 
-    protected void StopAnimation() {
+    protected void StopAnimation()
+    {
         _animator.StopPlayback();
         _animator.enabled = false;
         _collider.enabled = true;

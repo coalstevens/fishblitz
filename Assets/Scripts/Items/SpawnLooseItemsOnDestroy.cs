@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// This function excludes when the object is destroyed by scene exit.
+/// </summary>
 public class SpawnLooseItemsOnDestroy : MonoBehaviour
 {
     [SerializeField] bool _spawnOnDestroy = true;
@@ -9,13 +12,12 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
     [Header("Object Spawn Velocity Settings")]
     [SerializeField] float _speed = 1;
     [SerializeField] float _drag = 1;
-    
+
     private void OnDestroy()
     {
         if (!_spawnOnDestroy)
             return;
-
-        SpawnItems.SpawnItemsFromCollider(_spawnArea, _itemsToSpawn, _speed, _drag);
+        if (gameObject.scene.isLoaded)
+            SpawnItems.SpawnItemsFromCollider(_spawnArea, _itemsToSpawn, _speed, _drag);
     }
-
 }
