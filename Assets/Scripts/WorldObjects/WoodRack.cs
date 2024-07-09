@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ReactiveUnity;
+using Unity.Collections;
 using UnityEngine;
 
 
@@ -21,7 +22,7 @@ public class WoodRack : MonoBehaviour, IInteractable, ITickable, ISaveable
     // Reactive
     private Reactive<int> _numWetLogs = new Reactive<int>(0);
     private Reactive<int> _numDryLogs = new Reactive<int>(0);
-    private List<Action> _unsubscribeHooks = new();
+    private List<Action> _unsubscribeCBs = new();
     
     // Basic Fields
     private const string IDENTIFIER = "WoodRack";
@@ -56,17 +57,23 @@ public class WoodRack : MonoBehaviour, IInteractable, ITickable, ISaveable
     }
 
     private void OnEnable() {
-        _unsubscribeHooks.Add(_numWetLogs.OnChange((prev,curr) => UpdateRackSprite()));
-        _unsubscribeHooks.Add(_numDryLogs.OnChange((prev,curr) => UpdateRackSprite()));
-        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((prev,curr) => OnGameMinuteTick()));
+        _unsubscribeCBs.Add(_numWetLogs.OnChange((prev,curr) => UpdateRackSprite()));
+        _unsubscribeCBs.Add(_numDryLogs.OnChange((prev,curr) => UpdateRackSprite()));
+        _unsubscribeCBs.Add(_numWetLogs.When((prev, curr) => prev > 0 && curr == 0, (prev, curr) => AllLogsDry()));
+        _unsubscribeCBs.Add(GameClock.Instance.GameMinute.OnChange((prev,curr) => OnGameMinuteTick()));
     }
 
     private void OnDisable() {
-        foreach(var _hook in _unsubscribeHooks)
-            _hook();
+        foreach(var _cb in _unsubscribeCBs)
+            _cb();
     }
 
-    void UpdateRackSprite() {
+    private void AllLogsDry() {
+        if (_numDryLogs.Value > 0) 
+            NarratorSpeechController.Instance.PostMessage("All logs on the woodrack have dried out.");
+    }
+
+    private void UpdateRackSprite() {
         _spriteRenderer.sprite = _rackSprites[_numDryLogs.Value+_numWetLogs.Value];
     }
 
