@@ -46,6 +46,7 @@ public class BootManager : MonoBehaviour
             NarratorSpeechController.Instance.PostMessage("You are freezing.");
             NarratorSpeechController.Instance.PostMessage("You are exhausted.");
             yield return new WaitForSeconds(11f); 
+            NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
         }
         LoadInitialScene();
     }
