@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Persistence;
 using System;
-using UnityEditor.Build;
 
 // Note about instantiating objects here:
 // World objects instantiated by this Manager should use Awake() instead of Start()
@@ -21,13 +20,13 @@ public class SceneSaveLoadManager : MonoBehaviour {
         LoadScene();
     }
 
-    public void SaveScene() {
+    public async void SaveScene() {
         SceneSaveData _sceneSaveData = new();
         _sceneSaveData.SaveDatas = GatherSaveDataInParent(_impermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.GenerateCapture();
 
         // Save
-        JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
+        await JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
     }
 
     private async void LoadScene() {
@@ -91,4 +90,3 @@ public class SceneSaveLoadManager : MonoBehaviour {
         return _sceneName + "_savedData.json";
     }
 }
-

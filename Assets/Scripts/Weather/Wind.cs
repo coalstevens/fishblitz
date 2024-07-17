@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 using ReactiveUnity;
-using System.Collections.Generic;
-using System.Collections;
-using Unity.Mathematics;
 
 public class Wind : MonoBehaviour
 {
+    [Header("Sound Effects")]
     [SerializeField] private AudioClip _gustSFX;
+    [SerializeField] private float _notGustingVolume = 0.2f;
+    [SerializeField] private float _gustingVolume = 1.0f;
 
     // There is a forcefield for particle systems
     [Header("Non Particle System Affected Entities")]
@@ -31,7 +31,8 @@ public class Wind : MonoBehaviour
     [Header("Gust Settings")]
     [SerializeField] private bool _gustEnabled = true;
     [SerializeField] private float _gustPeakDurationSecs = 5;
-    [SerializeField] private float _gustChangePerFrame = 0.001f;
+    [SerializeField] private float _gustGrowthPerFrame = 0.001f;
+    [SerializeField] private float _gustDecayPerFrame = 0.0002f;
     [SerializeField] private float _gustMagnitude = 1;
     [SerializeField] private float _gustMinIntervalSec = 10;
     [SerializeField] private float _gustMaxIntervalSec = 20;
@@ -57,6 +58,7 @@ public class Wind : MonoBehaviour
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
+        _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_gustSFX, _notGustingVolume, false, true, 2); 
         GetOriginalTreeValues();
         EnterFluctuation();
     }
@@ -66,15 +68,14 @@ public class Wind : MonoBehaviour
         switch (current)
         {
             case WindStates.GustBuilding: 
-                _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_gustSFX, 1, false, true, 2);
+                AudioManager.Instance.TryAdjustVolume(_gustSFX, _gustingVolume, 1f);
                 break;
             case WindStates.GustPeak:
                 StartTreeShake();
                 break;
             case WindStates.GustDying:
+                AudioManager.Instance.TryAdjustVolume(_gustSFX, _notGustingVolume, 5f);
                 StopTreeShake();
-                _stopSoundCB?.Invoke();
-                _stopSoundCB = null;
                 break;
         }
     }
@@ -169,7 +170,7 @@ public class Wind : MonoBehaviour
 
     private void GustBuildingHandler()
     {
-        _windXVector += (int)_gustDirection * _gustChangePerFrame;
+        _windXVector += (int)_gustDirection * _gustGrowthPerFrame;
         if (Mathf.Abs(_windXVector) >= Mathf.Abs(_gustMagnitude))
         {
             _windXVector = (int)_gustDirection * _gustMagnitude;
@@ -189,7 +190,7 @@ public class Wind : MonoBehaviour
 
     private void GustDyingHandler()
     {
-        _windXVector -= (int)_gustDirection * _gustChangePerFrame;
+        _windXVector -= (int)_gustDirection * _gustDecayPerFrame;
         float fluctuatingTarget = GetFluctuationValue();
         if (Mathf.Abs(_windXVector) <= Mathf.Abs(fluctuatingTarget))
         {

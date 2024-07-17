@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEditor.Rendering.LookDev;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // Player condition serves as a simple mediator to all its component scripts
 public class PlayerCondition : Singleton<PlayerCondition>

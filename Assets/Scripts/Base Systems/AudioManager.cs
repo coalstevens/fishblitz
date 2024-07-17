@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] AudioSource _musicPlayer; // Dedicated audiosource for playing music
-    [SerializeField] Transform _loopingSFXPlayerContainer; // Container for looping SFX audio sources, like rain
-    [SerializeField] Transform _SFXPlayerContainer; // Container for one-shot SFX audio sources
+    [SerializeField] private Transform _loopingSFXPlayerContainer; // Container for looping SFX audio sources, like rain
+    [SerializeField] private Transform _SFXContainer; // Container for one-shot SFX audio sources
     [SerializeField] private Logger _logger = new();
     private Stack<AudioSource> _SFXPool = new();
     private Stack<AudioSource> _loopingSFXPool = new();
@@ -16,7 +19,7 @@ public class AudioManager : Singleton<AudioManager>
 
     private void Start()
     {
-        foreach (var _source in _SFXPlayerContainer.GetComponentsInChildren<AudioSource>(true))
+        foreach (var _source in _SFXContainer.GetComponentsInChildren<AudioSource>(true))
             _SFXPool.Push(_source);
 
         foreach (var _source in _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>(true))
@@ -181,5 +184,33 @@ public class AudioManager : Singleton<AudioManager>
 
         source.volume = 0;
         DeactivateAudioSource(source, pool);
+    }
+
+    // this function is kinda shit
+    // there should be a more direct way for the caller to change the volume
+    public bool TryAdjustVolume(AudioClip clip, float volume, float rampDuration) {
+        // Combine all audio sources into one list
+        var allSources = _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>()
+            .Concat(_SFXContainer.GetComponentsInChildren<AudioSource>());
+        allSources.Append<AudioSource>(_musicPlayer);
+
+        // Find the audio source with the matching clip
+        AudioSource _sourcePlayingClip = allSources.FirstOrDefault(s => s.clip == clip);
+        if (_sourcePlayingClip != null) {
+            StartCoroutine(RampAudio(_sourcePlayingClip, volume, rampDuration));
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator RampAudio(AudioSource source, float volume, float rampDuration) {
+        float _elapsed = 0;
+        float _startVolume = source.volume;
+        while (_elapsed < rampDuration) {
+            source.volume = Mathf.Lerp(_startVolume, volume, _elapsed / rampDuration);
+            _elapsed += Time.deltaTime;
+            yield return null;
+        }
+        source.volume = volume;
     }
 }
