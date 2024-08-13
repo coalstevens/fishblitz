@@ -40,7 +40,7 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
 
     bool ITool.UseToolOnInteractableTileMap(string tilemapLayerName, UnityEngine.Vector3Int cursorLocation)
     {
-        Debug.Log("Used rod on tilemap");
+        // Debug.Log("Used rod on tilemap");
         // if fishing stop fishing
         if (_playerMovementController.PlayerState.Value == PlayerStates.Fishing) {
             _playerMovementController.PlayerState.Value = PlayerStates.Idle;

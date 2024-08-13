@@ -34,7 +34,9 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
-            Debug.Log("No save file exists yet for scene: " + SceneManager.GetActiveScene().name);
+            string sceneName = SceneManager.GetActiveScene().name;
+            // Debug.Log("No save file exists yet for scene: " + sceneName);
+            PrintFirstTimeSceneVisitedMessage(sceneName);
             return;
         }
 
@@ -45,6 +47,19 @@ public class SceneSaveLoadManager : MonoBehaviour {
         var _loadedSaveData = await JsonPersistence.FromJson<SceneSaveData>(_fileName);
         LoadSaveDataIntoParent(_loadedSaveData.SaveDatas, _impermanentContainer);
         ProcessElapsedTimeInParent(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
+    }
+
+    private void PrintFirstTimeSceneVisitedMessage(string sceneName) 
+    {
+        switch(sceneName) {
+            case "Outside": 
+                NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
+                break;
+            case "Abandoned Shed":
+                break;
+            default:
+                break;
+        }
     }
     
     private void DestroyChildren(Transform parent) {

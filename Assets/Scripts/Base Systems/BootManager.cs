@@ -33,8 +33,6 @@ public class BootManager : MonoBehaviour
         _itemCursor.gameObject.SetActive(false);
         _inventoryContainer.gameObject.SetActive(false);
         _topRightHUD.gameObject.SetActive(false);
-        //PlayerCondition.Instance.GetComponent<PlayerTemperatureManager>().enabled = false;
-        // PlayerCondition.Instance.GetComponent<PlayerDryingManager>().enabled = false;
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
@@ -46,7 +44,6 @@ public class BootManager : MonoBehaviour
             NarratorSpeechController.Instance.PostMessage("You are freezing.");
             NarratorSpeechController.Instance.PostMessage("You are exhausted.");
             yield return new WaitForSeconds(11f); 
-            NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
         }
         LoadInitialScene();
     }
@@ -62,8 +59,6 @@ public class BootManager : MonoBehaviour
         _itemCursor.gameObject.SetActive(true);
         _inventoryContainer.gameObject.SetActive(true);
         _topRightHUD.gameObject.SetActive(true);
-        // PlayerCondition.Instance.GetComponent<PlayerTemperatureManager>().enabled = true;
-        // PlayerCondition.Instance.GetComponent<PlayerDryingManager>().enabled = true;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
@@ -75,7 +70,5 @@ public class BootManager : MonoBehaviour
         {
             File.Delete(file);
         }
-
-        Debug.Log("All files in persistent data path deleted.");
     }
 }

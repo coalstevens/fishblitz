@@ -36,11 +36,11 @@ public class ActiveGridCell : MonoBehaviour
         _grid = GameObject.FindObjectOfType<Grid>();
         if (_grid != null)
         {
-            Debug.Log("Found the grid");
+            // Debug.Log("Found the grid");
         }
         else
         {
-            Debug.Log("Can't find a grid");
+            // Debug.Log("Can't find a grid");
         }
     }
 

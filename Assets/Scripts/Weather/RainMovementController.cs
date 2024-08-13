@@ -32,7 +32,8 @@ public class RainMovementController : MonoBehaviour
 
     private void OnDisable()
     {
-        RainManager.Instance.RainStateChange -= OnRainStateChange;
+        if (RainManager.Instance != null)
+            RainManager.Instance.RainStateChange -= OnRainStateChange;
     }
 
     private void Update()

@@ -10,6 +10,8 @@ public class OutsideSceneStateCalendar : MonoBehaviour
     [SerializeField] private GameObject _waterFlood;
     [SerializeField] private GameObject _banksGrass;
     [SerializeField] private GameObject _banksDirt;
+    [SerializeField] private Transform _shallowRocksSubmerged;
+    [SerializeField] private Transform _allRocks;
 
     private Dictionary<(int gameYear, GameClock.Seasons season, int gameDay), RiverStates> _riverCalendar;
 
@@ -65,23 +67,40 @@ public class OutsideSceneStateCalendar : MonoBehaviour
             case RiverStates.Shallow:
                 _waterShallow.SetActive(true);
                 _banksGrass.SetActive(true);
+                SubmergeShallowRocks();
                 break;
             case RiverStates.Flood:
                 _waterFlood.SetActive(true);
                 _banksDirt.SetActive(true);
+                SubmergeAllRocks();
                 break;
             case RiverStates.FullDirt:
                 _waterFull.SetActive(true);
                 _banksDirt.SetActive(true);
+                SubmergeAllRocks();
                 break;
             case RiverStates.FullGrass:
                 _banksGrass.SetActive(true);
                 _waterFull.SetActive(true);
+                SubmergeAllRocks();
                 break;
             default:
                 _banksGrass.SetActive(true);
                 _waterFull.SetActive(true);
                 break;
+        }
+    }
+    private void SubmergeShallowRocks() {
+        foreach (SpriteRenderer rock in _shallowRocksSubmerged.GetComponentsInChildren<SpriteRenderer>()) {
+            rock.sortingLayerName = "Background";
+            rock.sortingOrder = -6;
+        }
+    }
+    private void SubmergeAllRocks() {
+        SubmergeShallowRocks();
+        foreach (SpriteRenderer rock in _allRocks.GetComponentsInChildren<SpriteRenderer>()) {
+            rock.sortingLayerName = "Background";
+            rock.sortingOrder = -6;
         }
     }
 
