@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem.EnhancedTouch;
 
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
@@ -7,9 +6,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public static T Instance {
         get {
-            if (_instance == null) {
-                Debug.LogError("This singleton was attempted to be accessed without an instance.");
-            }
             return _instance;
         }
     }

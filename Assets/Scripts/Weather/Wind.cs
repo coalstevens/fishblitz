@@ -83,7 +83,8 @@ public class Wind : MonoBehaviour
     void OnDisable()
     {
         StopTreeShake();
-        _stopSoundCB?.Invoke();
+        if (AudioManager.Instance != null)
+            _stopSoundCB?.Invoke();
         _stopSoundCB = null;
         _unsubscribe();
     }

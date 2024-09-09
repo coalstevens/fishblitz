@@ -4,7 +4,7 @@ public class FogManager : MonoBehaviour
 {
     private SpriteRenderer _fog;
     private Transform _playerCamera;
-    bool _isRaining = true;
+    private bool _isRaining = true;
     void Start()
     {
         _fog = GetComponent<SpriteRenderer>();
@@ -17,7 +17,8 @@ public class FogManager : MonoBehaviour
     }
 
     void OnDisable() {
-        RainManager.Instance.RainStateChange -= OnRainStateChange;
+        if (RainManager.Instance != null)
+            RainManager.Instance.RainStateChange -= OnRainStateChange;
     }
 
     private void OnRainStateChange(RainStates state)
@@ -25,17 +26,17 @@ public class FogManager : MonoBehaviour
         if (state == RainStates.Raining)
         {
             _isRaining = true;
-            _fog.enabled = false;
+            _fog.enabled = true;
         }
         else
         {
             _isRaining = false;
-            _fog.enabled = true;
+            _fog.enabled = false;
         }
     }
     void Update()
     {
         if (_isRaining)
-            transform.position = _playerCamera.position;
+            transform.position = new Vector3 (_playerCamera.position.x, _playerCamera.position.y);
     }
 }
