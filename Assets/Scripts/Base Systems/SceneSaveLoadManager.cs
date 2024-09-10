@@ -20,16 +20,16 @@ public class SceneSaveLoadManager : MonoBehaviour {
         LoadScene();
     }
 
-    public async void SaveScene() {
+    public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
         _sceneSaveData.SaveDatas = GatherSaveDataInParent(_impermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.GenerateCapture();
 
         // Save
-        await JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
+        JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
     }
 
-    private async void LoadScene() {
+    private void LoadScene() {
         String _fileName = GetFileName();
 
         // no save file
@@ -44,7 +44,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         DestroyChildren(_impermanentContainer);
 
         // load from save
-        var _loadedSaveData = await JsonPersistence.FromJson<SceneSaveData>(_fileName);
+        var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
         LoadSaveDataIntoParent(_loadedSaveData.SaveDatas, _impermanentContainer);
         ProcessElapsedTimeInParent(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
     }
