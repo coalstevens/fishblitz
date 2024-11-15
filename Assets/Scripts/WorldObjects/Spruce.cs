@@ -1,5 +1,8 @@
+using UnityEngine;
+
 public class Spruce : TreePlant, ISaveable
 {
+
     private const string IDENTIFIER = "Spruce";
     private class SpruceSaveData
     {

@@ -44,20 +44,20 @@ public class ActiveGridCell : MonoBehaviour
         }
     }
 
-    private void OnDirectionChange(FacingDirections curr)
+    private void OnDirectionChange(FacingDirection curr)
     {
         switch (curr)
         {
-            case FacingDirections.North:
+            case FacingDirection.North:
                 _activeCursor = _cursorN;
                 return;
-            case FacingDirections.East:
+            case FacingDirection.East:
                 _activeCursor = _cursorE;
                 return;
-            case FacingDirections.South:
+            case FacingDirection.South:
                 _activeCursor = _cursorS;
                 return;
-            case FacingDirections.West:
+            case FacingDirection.West:
                 _activeCursor = _cursorW;
                 return;
         }

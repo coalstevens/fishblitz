@@ -39,8 +39,8 @@ public class BorderTree : MonoBehaviour
             case TreeStates.DeadAdult:
                 _spriteRenderer.sprite = _deadAdult;
                 break;
-            case TreeStates.Stump:
-                _spriteRenderer.sprite = _stump;
+            default:
+                Debug.Log("Invalid State Reached");
                 break;
         }
     }

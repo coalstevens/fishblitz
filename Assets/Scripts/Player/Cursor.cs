@@ -13,7 +13,7 @@ using System.Collections.Generic;
 public class Cursor : MonoBehaviour
 {
     [SerializeField] public Transform _renderedTransform;
-    [SerializeField] private FacingDirections _cursorActiveDirection;
+    [SerializeField] private FacingDirection _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Collider2D _collider;
     public Collider2D Collider {
@@ -60,7 +60,7 @@ public class Cursor : MonoBehaviour
         _spriteRenderer.enabled = playerFacingCursor;
     }
 
-    private void OnDirectionChange(FacingDirections currentDirection)
+    private void OnDirectionChange(FacingDirection currentDirection)
     {
         _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;
         _collider.enabled = currentDirection == _cursorActiveDirection;

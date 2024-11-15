@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
 using UnityEngine.SceneManagement;
-//using System.Numerics;
-public enum FacingDirections
+public enum FacingDirection
 {
     North,
     South,
@@ -39,7 +38,7 @@ public class PlayerMovementController : MonoBehaviour
     private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currentMotion = Vector2.zero;
     private Rigidbody2D _rb;
-    public Reactive<FacingDirections> FacingDirection = new Reactive<FacingDirections>(FacingDirections.North);
+    public Reactive<FacingDirection> FacingDirection = new Reactive<FacingDirection>(global::FacingDirection.North);
     public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(global::PlayerStates.Idle);
     private CardinalVector _maxMoveSpeeds; // Upper limit of player velocity
     private CardinalVector _moveSpeedsMultiplier; // Can be publicly adjusted to impact player movespeed
@@ -74,13 +73,13 @@ public class PlayerMovementController : MonoBehaviour
             return;
 
         if (_currentMotion.x > 0)
-            FacingDirection.Value = FacingDirections.East;
+            FacingDirection.Value = global::FacingDirection.East;
         else if (_currentMotion.x < 0)
-            FacingDirection.Value = FacingDirections.West;
+            FacingDirection.Value = global::FacingDirection.West;
         else if (_currentMotion.y > 0)
-            FacingDirection.Value = FacingDirections.North;
+            FacingDirection.Value = global::FacingDirection.North;
         else if (_currentMotion.y < 0)
-            FacingDirection.Value = FacingDirections.South;
+            FacingDirection.Value = global::FacingDirection.South;
 
         if (_currentMotion.magnitude > 0)
             PlayerState.Value = PlayerStates.Walking;

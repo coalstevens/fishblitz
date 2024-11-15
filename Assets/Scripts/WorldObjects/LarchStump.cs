@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveable
+public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveable, IPerchable
 {
     private const string IDENTIFIER = "LarchStump";
     private enum StumpStates { AxeIn, LogOn, Splitting, Idle };
@@ -18,11 +18,13 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
     [SerializeField] private Sprite _idle;
     [SerializeField] private Reactive<StumpStates> _state = new Reactive<StumpStates>(StumpStates.Idle);
     [SerializeField] private AudioClip _fallingSplitWoodSFX;
+    [SerializeField] private Collider2D _birdPerchTarget;
 
     private Inventory _inventory;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
     private List<Action> _unsubscribeHooks = new();
+    private bool _isBirdPerched = false;
 
     private void Awake()
     {
@@ -70,7 +72,7 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
 
     private Vector3[] GetFirewoodSpawnPositions()
     {
-        // Positions were determined via trial and error to match location with splitting animation
+        // Positions were determined via trial and error to match spawn location with splitting animation
         Vector3[] _spawnPositions = {
                                      new Vector3(transform.position.x + 0.7f, transform.position.y + 0.7f, 0),
                                      new Vector3(transform.position.x - 1.1f, transform.position.y + 0.5f, 0),
@@ -152,5 +154,45 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
     {
         var _extendedData = saveData.GetExtendedSaveData<StumpSaveData>();
         _state.Value = _extendedData.State;
+    }
+
+    public Vector2 GetPositionTarget()
+    {
+        Bounds bounds = _birdPerchTarget.bounds;
+        Vector2 randomPoint;
+
+        do
+        {
+            float x = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
+            float y = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
+            randomPoint = new Vector2(x, y);
+        } while (!_birdPerchTarget.OverlapPoint(randomPoint));
+
+        return randomPoint;
+    }
+
+    public bool AreBirdsFrightened()
+    {
+        return false; 
+    }
+
+    public void OnBirdEntry(BirdBrain bird)
+    {
+        _isBirdPerched = true;
+    }
+
+    public void OnBirdExit(BirdBrain bird)
+    {
+        _isBirdPerched = false;
+    }
+
+    public bool IsThereSpace()
+    {
+        return !_isBirdPerched;
+    }
+
+    public int GetSortingOrder()
+    {
+        return GetComponent<SpriteRenderer>().sortingOrder;
     }
 }

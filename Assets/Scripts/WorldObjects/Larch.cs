@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Larch : TreePlant, ISaveable
 {
     private const string IDENTIFIER = "Larch";

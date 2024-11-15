@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using ReactiveUnity;
 using Unity.Mathematics;
 using UnityEngine;
 
-public enum TreeStates { SummerAdult, FallAdult, DeadAdult, Stump };
-public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
+public enum TreeStates { SummerAdult, FallAdult, DeadAdult};
+public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe, IShelterable
 {
 
     [Header("Tree Base State")]
@@ -32,6 +33,11 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     [SerializeField] protected float _gustWindStrength = 1f;
     [SerializeField] protected float _gustSpeed = 30f;
     [SerializeField] protected float _bendScaler = 1f;
+    
+    [Header("Birding")]
+    [SerializeField] private Collider2D _birdShelterTarget;
+    protected List<BirdBrain> _birdsInTree = new List<BirdBrain>();
+    protected bool _areBirdsFrightened = false;
 
     protected float _originalWindStrength = 0.5f;
     protected float _originalGustSpeed = 0.4f;
@@ -89,10 +95,15 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
         if (_hitCount < _HITS_TO_FALL - 1)
         {
             _hitCount++;
-            transform.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
+            _areBirdsFrightened = true;
+            ShakeTree();
             return;
         }
         StartCoroutine(FallTree());
+    }
+
+    protected void ShakeTree() {
+        transform.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
     }
 
     /// <summary>
@@ -136,12 +147,12 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     {
         switch (_playerMovementController.FacingDirection.Value)
         {
-            case FacingDirections.West:
+            case FacingDirection.West:
                 return false;
-            case FacingDirections.East:
+            case FacingDirection.East:
                 return true;
-            case FacingDirections.North:
-            case FacingDirections.South:
+            case FacingDirection.North:
+            case FacingDirection.South:
                 return UnityEngine.Random.value < 0.5;
             default:
                 Debug.LogError("DoesTreeFallEast defaulted.");
@@ -152,5 +163,44 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe
     public bool CursorInteract(Vector3 cursorLocation)
     {
         return false;
+    }
+
+    public void OnBirdEntry(BirdBrain bird)
+    {
+        // transform.localScale = new Vector2
+        // (
+        //     transform.localScale.x,
+        //     -transform.localScale.y
+        // );
+
+        if (!_birdsInTree.Contains(bird)) {
+            _birdsInTree.Add(bird);
+            ShakeTree();
+        }
+    }
+
+    public void OnBirdExit(BirdBrain bird) {
+        if (_birdsInTree.Contains(bird)) {
+            _birdsInTree.Remove(bird);
+            if(_birdsInTree.Count == 0)
+                _areBirdsFrightened = false;
+            ShakeTree();
+        }
+    }
+
+    public Vector2 GetPositionTarget()
+    {
+       Bounds _bounds = _birdShelterTarget.bounds;
+        
+        return new Vector2 
+        (
+            UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
+            UnityEngine.Random.Range(_bounds.min.y, _bounds.max.y)
+        );
+    }
+
+    public bool AreBirdsFrightened()
+    {
+        return _areBirdsFrightened;
     }
 }
