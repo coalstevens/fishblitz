@@ -22,7 +22,6 @@ public interface IPerchable : IBirdLandingSpot
 public class BirdBrain : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Collider2D _worldCollider;
     [SerializeField] private Collider2D _viewDistance;
     [SerializeField] private Collider2D _frightDistance;
 
@@ -63,6 +62,7 @@ public class BirdBrain : MonoBehaviour
     private Rigidbody2D _rb;
     private List<Action> _unsubscribeHooks = new();
     public Vector2 _targetPosition;
+    private Collider2D _worldCollider;
 
     public enum BirdStates { FLYING, FLEEING, PERCHED, SHELTERED, GROUNDED, LANDING };
     public Reactive<BirdStates> _birdState = new Reactive<BirdStates>(BirdStates.FLYING);
@@ -72,8 +72,9 @@ public class BirdBrain : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
-        _worldBounds = _worldCollider.bounds;
         _renderer = GetComponentInChildren<SpriteRenderer>();
+        _worldCollider = GameObject.FindGameObjectWithTag("World").GetComponent<Collider2D>();
+        _worldBounds = _worldCollider.bounds;
 
         _unsubscribeHooks.Add(_facingDirection.OnChange((_, _) => MatchAnimationToFacingDirection()));
         _unsubscribeHooks.Add(_birdState.OnChange((prev, curr) => OnStateChange(prev, curr)));

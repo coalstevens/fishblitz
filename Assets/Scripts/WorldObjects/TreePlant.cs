@@ -122,15 +122,22 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
         Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0) : new Vector3(-0.5f, 1f, 0);
 
         // Instantiating
-        GameObject _larchStump = UnityEngine.Object.Instantiate(_stump,
-                                                                transform.position,
-                                                                Quaternion.identity,
-                                                                GameObject.FindGameObjectWithTag("Impermanent").transform);
+        GameObject _larchStump = UnityEngine.Object.Instantiate
+        (
+            _stump,
+            transform.position,
+            Quaternion.identity,
+            GameObject.FindGameObjectWithTag("Impermanent").transform
+        );
 
-        GameObject _fallenTree = UnityEngine.Object.Instantiate(_treeToFall,
-                                                                transform.position + _fallenTreePosition, // falls some distance to the side of stump
-                                                                Quaternion.identity,
-                                                                GameObject.FindGameObjectWithTag("Impermanent").transform);
+        GameObject _fallenTree = UnityEngine.Object.Instantiate
+        (
+            _treeToFall,
+            transform.position + _fallenTreePosition, // falls some distance to the side of stump
+            Quaternion.identity,
+            GameObject.FindGameObjectWithTag("Impermanent").transform
+        );
+        
         _fallenTree.GetComponent<FallenTree>().PlayFallingAnimation();
         
         // Want falling tree to appear infront of stump.
