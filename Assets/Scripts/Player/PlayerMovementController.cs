@@ -18,6 +18,7 @@ public enum PlayerStates
     Axing,
     Catching,
     Celebrating,
+    Birding,
 }
 public struct CardinalVector
 {
@@ -86,6 +87,7 @@ public class PlayerMovementController : MonoBehaviour
         else
             PlayerState.Value = PlayerStates.Idle;
     }
+
     private void FixedUpdate()
     {
         // Can only move when in Idle or Walking
