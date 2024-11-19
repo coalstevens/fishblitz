@@ -1,81 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BirdingGame : MonoBehaviour
 {
-    [SerializeField] private float _beamRotationSpeed = 2f;
-    [SerializeField] private float _triggerSpeed = 2f;
-    [SerializeField] private Transform _trailingLine;
-    [SerializeField] private Transform _middleLine;
-    [SerializeField] private Transform _leadingLine;
+    [Header("General")]
+    [SerializeField] private float _gameDuration = 5f;
+    [SerializeField] private float _beamRotationSpeedDegreesPerSecond = 150f;
 
-    // Trigger
-    private Vector2 _triggerStartPosition = new Vector2(1.4103f, 0.932f); // Values found experimentally
-    private Vector2 _triggerEndPosition = new Vector2(6.7228f, 0.932f);
-    private List<(int position, int height)> _beamDimensionsPixels = new() { // Measured from drawing
-        (0, 2),
-        (1, 4),
-        (5, 6),
-        (20, 8),
-        (34, 10),
-        (48, 12),
-        (62, 14),
-        (76, 16),
-        (90, 18),
-        (104, 20),
-        (118, 22),
-        (132, 24),
-        (146, 26),
-        (160, 28),
-    };
+    [Header("Trigger")]
+    [SerializeField] private List<Sprite> _triggerAnimationFrames = new();
+    [SerializeField] private PolygonCollider2D _minTriggerCollider;
+    [SerializeField] private PolygonCollider2D _maxTriggerCollider;
 
-    private float _pixelSize = 1f/32f;
-    
-    private List<(Transform line, int index)> _triggerLines = new();
+    private float _gameTimeElapsed;
+    private int _currentTriggerFrameIndex;
+    private Vector2[] _minColliderVertices;
+    private Vector2[] _maxColliderVertices;
+    private float _triggerFrameChangeInterval;
+    private float _timeSinceLastTriggerFrameChange;
+
+    // Points below found by aligning things in Unity 
+    private Vector2 _triggerStartPoint = new Vector2(0.53125f, -0.46875f);
+    private Vector2 _triggerEndPoint = new Vector2(5.257f, 0f);
 
     private PlayerMovementController _playerMovementController;
     private Vector2 _motionInput = Vector2.zero;
     private Transform _beam;
+    private Transform _trigger;
+    private PolygonCollider2D _triggerCollider;
+    private SpriteRenderer _triggerSpriteRenderer;
+
     void Awake()
     {
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         _beam = transform.GetChild(0);
+        _trigger = _beam.GetChild(0);
+        _triggerSpriteRenderer = _trigger.GetComponent<SpriteRenderer>();
+        _triggerCollider = _trigger.GetComponent<PolygonCollider2D>();
 
-        _triggerLines.Add((_trailingLine, 0));
-        _triggerLines.Add((_middleLine, 0));
-        _triggerLines.Add((_leadingLine, 0));
-    }
-    
-    void ResetTriggerLineIndices() {
-        for(int i = 0; i < _triggerLines.Count; i++)
-            _triggerLines[i] = new (_triggerLines[i].line, 0);
+        InitializeTriggerCollider();
+        _triggerFrameChangeInterval = _gameDuration / (_triggerAnimationFrames.Count + 1);
     }
 
     private void FixedUpdate()
     {
-        RotateBeam();
-        UpdateTriggerLinePosition();
-        UpdateTriggerLinesScaling();
-    }
+        _gameTimeElapsed += Time.fixedDeltaTime;
+        _timeSinceLastTriggerFrameChange += Time.fixedDeltaTime;
 
-    private void RotateBeam() {
-        _beam.localEulerAngles = new Vector3
-        (
-            _beam.localEulerAngles.x,
-            _beam.localEulerAngles.y,
-            _beam.localEulerAngles.z + (_motionInput.x * Time.fixedDeltaTime * _beamRotationSpeed)
-        );
+        if (_gameTimeElapsed >= _gameDuration)
+        {
+            Stop();
+            return;
+        }
+
+        if (_timeSinceLastTriggerFrameChange >= _triggerFrameChangeInterval)
+        {
+            _timeSinceLastTriggerFrameChange = 0;
+            AdvanceToNextTriggerFrame();
+            InterpolateTriggerColliderSize();
+        }
+
+        RotateBeam();
+        UpdateTriggerPosition();
     }
 
     public void Play()
     {
         gameObject.SetActive(true);
-        ResetTriggerLineIndices();
-        InitializeTriggerLinePositions();
-        InitializeTriggerLineScales();
+        _motionInput = Vector2.zero;
+        _gameTimeElapsed = 0;
+        ResetTrigger();
+        AlignBeamToFacingDirection();
+        _triggerSpriteRenderer.sprite = _triggerAnimationFrames[_currentTriggerFrameIndex];
     }
 
     public void Stop()
@@ -83,54 +81,96 @@ public class BirdingGame : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void InitializeTriggerLinePositions()
+    private void AdvanceToNextTriggerFrame()
     {
-        float[] _offsets = { -1, 0, 1 }; // Offsets for trailing, middle, leading lines
-        for (int i = 0; i < _triggerLines.Count; i++)
+        _currentTriggerFrameIndex++;
+        if (_currentTriggerFrameIndex < _triggerAnimationFrames.Count)
+            _triggerSpriteRenderer.sprite = _triggerAnimationFrames[_currentTriggerFrameIndex];
+    }
+
+    private void InterpolateTriggerColliderSize()
+    {
+        for (int i = 0; i < _triggerCollider.points.Length; i++)
         {
-            _triggerLines[i].line.localPosition = new Vector2
+            _triggerCollider.points[i].x = Mathf.Lerp
             (
-                _triggerStartPosition.x + (_offsets[i] * _pixelSize),
-                _triggerStartPosition.y
+                _maxColliderVertices[i].x,
+                _minColliderVertices[i].x,
+                _gameTimeElapsed / _gameDuration
+            );
+
+            _triggerCollider.points[i].y = Mathf.Lerp
+            (
+                _maxColliderVertices[i].y,
+                _minColliderVertices[i].y,
+                _gameTimeElapsed / _gameDuration
             );
         }
     }
-    
-    private void InitializeTriggerLineScales() 
+
+    private void RotateBeam()
     {
-        for(int i = 0; i <_triggerLines.Count; i++)
-            _triggerLines[i].line.localScale = new Vector2 (1,1);
+        _beam.localEulerAngles = new Vector3
+        (
+            _beam.localEulerAngles.x,
+            _beam.localEulerAngles.y,
+            _beam.localEulerAngles.z + (_motionInput.x * Time.fixedDeltaTime * _beamRotationSpeedDegreesPerSecond)
+        );
     }
 
-    private void UpdateTriggerLinesScaling() {
-        for(int i = 0; i < _triggerLines.Count; i++) {
-            if (_triggerLines[i].index >= _beamDimensionsPixels.Count)
-                continue;
 
-            if (_triggerLines[i].line.localPosition.x < _triggerStartPosition.x + _beamDimensionsPixels[_triggerLines[i].index].position * _pixelSize)
-                continue;
-
-            _triggerLines[i].line.localScale = new Vector2
-            (
-                _triggerLines[i].line.localScale.x,
-                _beamDimensionsPixels[_triggerLines[i].index].height / 2
-            );
-
-            _triggerLines[i] = (_triggerLines[i].line, _triggerLines[i].index + 1);
-        }
+    private void ResetTrigger()
+    {
+        _timeSinceLastTriggerFrameChange = 0;
+        _currentTriggerFrameIndex = 0;
+        if (_trigger == null)
+            Debug.Log("trigger");
+        if (_triggerStartPoint == null)
+            Debug.Log("startpoints");
+        _trigger.localPosition= _triggerStartPoint;
+        _triggerSpriteRenderer.sprite = _triggerAnimationFrames[_currentTriggerFrameIndex];
+        _triggerCollider.points = _maxColliderVertices;
     }
 
-    private void UpdateTriggerLinePosition()
+    private void InitializeTriggerCollider()
     {
-        float _moveDistance = Time.fixedDeltaTime * _triggerSpeed;
-        for (int i = 0; i < _triggerLines.Count; i++)
+        _maxColliderVertices = _minTriggerCollider.points;
+        _minColliderVertices = _maxTriggerCollider.points;
+        if
+        (
+            _maxColliderVertices.Length != _minColliderVertices.Length ||
+            _maxColliderVertices.Length != _triggerCollider.points.Length
+        )
         {
-            _triggerLines[i].line.localPosition = new Vector2
-            (
-                _triggerLines[i].line.localPosition.x + _moveDistance,
-                _triggerLines[i].line.localPosition.y
-            );
+            Debug.LogError("The number of verticies of the polygon colliders don't match.");
         }
+    }
+
+    private void UpdateTriggerPosition()
+    {
+        float _newXPosition = Mathf.Lerp(_triggerStartPoint.x, _triggerEndPoint.x, _gameTimeElapsed / _gameDuration);
+        _trigger.localPosition = new Vector2
+        (
+            _newXPosition,
+            _trigger.localPosition.y
+        );
+    }
+
+    private void AlignBeamToFacingDirection()
+    {
+        _beam.localEulerAngles = new Vector3
+        (
+            _beam.localEulerAngles.x,
+            _beam.localEulerAngles.y,
+            _playerMovementController.FacingDirection.Value switch
+            {
+                FacingDirection.East => 0f,
+                FacingDirection.North => 90f,
+                FacingDirection.West => 180f,
+                FacingDirection.South => 270f,
+                _ => _beam.localEulerAngles.z
+            }
+        );
     }
 
     public void OnMove(InputValue value)
