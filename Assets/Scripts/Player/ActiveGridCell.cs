@@ -34,14 +34,6 @@ public class ActiveGridCell : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _grid = GameObject.FindObjectOfType<Grid>();
-        if (_grid != null)
-        {
-            // Debug.Log("Found the grid");
-        }
-        else
-        {
-            // Debug.Log("Can't find a grid");
-        }
     }
 
     private void OnDirectionChange(FacingDirection curr)
@@ -75,8 +67,12 @@ public class ActiveGridCell : MonoBehaviour
         // can't interrupt these
         if (_playerMovementController.PlayerState.Value == PlayerStates.Celebrating ||
             _playerMovementController.PlayerState.Value == PlayerStates.Catching ||
-            _playerMovementController.PlayerState.Value == PlayerStates.Axing)
+            _playerMovementController.PlayerState.Value == PlayerStates.Axing ||
+            _playerMovementController.PlayerState.Value == PlayerStates.Birding)
+        {
+            Debug.Log("Activegridcell returned");
             return;
+        }
 
         // check active inventory slot for tool
         IInventoryItem _activeItem = _inventory.GetActiveItem();
@@ -87,7 +83,8 @@ public class ActiveGridCell : MonoBehaviour
         Vector3Int _cursorLocation = GetActiveCursorLocation();
         IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(_cursorLocation);
         if (_interactableWorldObject != null)
-            if (((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation)) {
+            if (((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
+            {
                 ((ITool)_activeItem).PlayToolHitSound();
                 return;
             }
@@ -95,7 +92,8 @@ public class ActiveGridCell : MonoBehaviour
         // try to use tool on tilemap
         string _interactableTilemapName = FindPlayerCursorInteractableTileMap(_cursorLocation);
         if (_interactableTilemapName != null)
-            if (((ITool)_activeItem).UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation)) {
+            if (((ITool)_activeItem).UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
+            {
                 ((ITool)_activeItem).PlayToolHitSound();
                 return;
             }

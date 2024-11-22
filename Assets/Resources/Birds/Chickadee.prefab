@@ -76,6 +76,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 208783697297014677}
+  - component: {fileID: 4604394623336481317}
   - component: {fileID: 6724720882062252639}
   - component: {fileID: 8308902192013366318}
   - component: {fileID: 2985183667386420714}
@@ -95,7 +96,7 @@ Transform:
   m_GameObject: {fileID: 3956817024216338719}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.1990647, y: 6.4998713, z: 0.42623436}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -104,6 +105,21 @@ Transform:
   - {fileID: 7758245149523990386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4604394623336481317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3956817024216338719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46632a77365134d7395263a9570ed2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Chickadee
+  Icon: {fileID: 7690392852382276561, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
+  Caught: 0
 --- !u!114 &6724720882062252639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7a49b05c34d4e81b251963b924250f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _worldCollider: {fileID: 0}
   _viewDistance: {fileID: 1798136891552204298}
   _frightDistance: {fileID: 350138464402429585}
   _flightSpeedLimit: 2
@@ -198,7 +213,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02, y: 0.13}
+  m_Offset: {x: 0.05, y: 0.16}
   serializedVersion: 2
   m_Radius: 0.11
 --- !u!1 &4119929554772199349
@@ -276,7 +291,7 @@ SpriteRenderer:
   m_SortingLayerID: 2138312857
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7690392852382276561, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
+  m_Sprite: {fileID: 919966473809115317, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

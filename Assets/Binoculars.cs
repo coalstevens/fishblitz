@@ -39,9 +39,9 @@ public class Binoculars : MonoBehaviour, IInventoryItem, ITool
 
     public void SwingTool()
     {
+        Debug.Log("Binoculars swung");
         if (_playerMovementController.PlayerState.Value == PlayerStates.Birding) {
-            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
-            _birdingGame.Stop();
+            Debug.Log("Binoculars returned");
             return;
         }
 

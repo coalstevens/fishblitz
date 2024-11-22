@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c840b03fa013047f28af198518cdf6f4
+guid: e689527507f4c495fae84191e6956b15
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -75,7 +75,7 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 0
+    defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
@@ -88,7 +88,7 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 0
+    defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638678630755694020
+  platformSettingsDirtyTick: 638677928444038960
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,178 +121,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: birdingTrigger_Frame_0
+  - name: GREAT!_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 34
-      y: 76
-      width: 6
-      height: 12
-    spriteID: 866f21872840a41e1b958e35a4f1d944
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 34, y: 76}
-  - name: birdingTrigger_Frame_1
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 34
-      y: 54
-      width: 6
-      height: 14
-    spriteID: 3236cd0d9936a43eca0653b48f6154f0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 34, y: 54}
-  - name: birdingTrigger_Frame_2
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 34
-      y: 30
-      width: 6
-      height: 16
-    spriteID: 423df08fb556d49d6a3f2215c38b1fa0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 34, y: 30}
-  - name: birdingTrigger_Frame_3
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 34
-      y: 4
-      width: 7
-      height: 18
-    spriteID: 5bc2b4d77b3d242619b67bc53a249784
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 34, y: 4}
-  - name: birdingTrigger_Frame_4
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 19
-      y: 100
-      width: 7
-      height: 20
-    spriteID: 67ea83e66fc06441da9aecbf779c0e0d
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 19, y: 100}
-  - name: birdingTrigger_Frame_5
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 19
-      y: 70
-      width: 7
-      height: 22
-    spriteID: d768c0a328f544ecea20ad85e63ed57e
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 19, y: 70}
-  - name: birdingTrigger_Frame_6
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 19
-      y: 38
-      width: 7
-      height: 24
-    spriteID: fdfd166c7d7564992b804a993c8067b7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 19, y: 38}
-  - name: birdingTrigger_Frame_7
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 19
-      y: 4
-      width: 7
-      height: 26
-    spriteID: 8c6ff6c9735bf452cbe22c67820d981a
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 19, y: 4}
-  - name: birdingTrigger_Frame_8
-    originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
+    pivot: {x: 0, y: -0.33333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 82
-      width: 7
-      height: 28
-    spriteID: c1913971e3ef44424905481df124acbf
+      y: 94
+      width: 43
+      height: 9
+    spriteID: ab43d2db6f2004c1fa0a1a664d119194
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -300,19 +140,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 82}
-  - name: birdingTrigger_Frame_9
+    uvTransform: {x: 4, y: 94}
+  - name: GREAT!_Frame_1
     originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
+    pivot: {x: 0, y: -0.33333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 44
-      width: 7
-      height: 30
-    spriteID: 3efc1598e01d34d0f92100ea7233640b
+      y: 111
+      width: 43
+      height: 9
+    spriteID: 53d90c774b2834277b70dcbbb7141331
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -320,19 +160,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 44}
-  - name: birdingTrigger_Frame_10
+    uvTransform: {x: 4, y: 111}
+  - name: GREAT!_Frame_2
     originalName: 
-    pivot: {x: 0.5714286, y: 0.5}
+    pivot: {x: 0, y: -0.20000002}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 7
-      height: 32
-    spriteID: 8af9288594f9348a7baced7ed8f053a8
+      width: 43
+      height: 10
+    spriteID: e34f0b4d0ae7048888c6895795d3cbf4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -341,19 +181,18 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  spriteSheetImportData:
-  - name: birdingTrigger_0
+  - name: GREAT!_Frame_3
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0, y: -0.20000002}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 14
-      width: 1
-      height: 2
-    spriteID: 4ce191b1729f541cabc64519a21756d5
+      y: 22
+      width: 43
+      height: 10
+    spriteID: e5383d2b102aa422693de243b3caa80b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -361,19 +200,219 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: birdingTrigger_1
+    uvTransform: {x: 4, y: 22}
+  - name: GREAT!_Frame_4
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0, y: -0.20000002}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
+      y: 40
+      width: 43
+      height: 10
+    spriteID: 6abb67f6853de44fcb3f18f10fbee8e2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 40}
+  - name: GREAT!_Frame_5
+    originalName: 
+    pivot: {x: 0, y: -0.20000002}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 58
+      width: 43
+      height: 10
+    spriteID: c3f6d21514fdc49e888da6e784bee047
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 58}
+  - name: GREAT!_Frame_6
+    originalName: 
+    pivot: {x: 0, y: -0.22222224}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 128
+      width: 43
+      height: 9
+    spriteID: eba2656a363724129bf8b5ffa4b540c9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 128}
+  - name: GREAT!_Frame_7
+    originalName: 
+    pivot: {x: 0, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 180
+      width: 43
+      height: 8
+    spriteID: f0fce9e4e13014f2e8c28cbc6a3cf2ab
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 180}
+  - name: GREAT!_Frame_8
+    originalName: 
+    pivot: {x: 0, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 196
+      width: 43
+      height: 8
+    spriteID: 50d31b8fee8cb4073938affc875ce5e0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 196}
+  - name: GREAT!_Frame_9
+    originalName: 
+    pivot: {x: 0, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 212
+      width: 43
+      height: 8
+    spriteID: 64afd3511a2a4497592813e5d5a282fd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 212}
+  - name: GREAT!_Frame_10
+    originalName: 
+    pivot: {x: 0, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 228
+      width: 43
+      height: 8
+    spriteID: cdd083f27b8e548f7b7e0c2cfab4194c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 228}
+  - name: GREAT!_Frame_11
+    originalName: 
+    pivot: {x: 0, y: -0.11111112}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 145
+      width: 43
+      height: 9
+    spriteID: 23baaa3d9f09040898d03c3486a8b61e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 145}
+  - name: GREAT!_Frame_12
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 76
+      width: 43
+      height: 10
+    spriteID: e4cb84aa8a38249efa8a4fd4471f7acf
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 76}
+  - name: GREAT!_Frame_13
+    originalName: 
+    pivot: {x: -0.22857143, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 162
+      width: 35
+      height: 10
+    spriteID: 4c859c85b34b04cf4b7837cf84ff5a4d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 162}
+  - name: GREAT!_Frame_14
+    originalName: 
+    pivot: {x: -0.5925926, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 55
       y: 4
-      width: 1
-      height: 2
-    spriteID: 8ba63b364047144a69f9b41dfda827f8
+      width: 27
+      height: 10
+    spriteID: 4dba56ff7a6dc4a4697b737d52292253
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -381,103 +420,220 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+    uvTransform: {x: 55, y: 4}
+  - name: GREAT!_Frame_15
+    originalName: 
+    pivot: {x: -1.263158, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 55
+      y: 22
+      width: 19
+      height: 10
+    spriteID: cd0fb62a84260413388a42d47c6f8d58
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 55, y: 22}
+  - name: GREAT!_Frame_16
+    originalName: 
+    pivot: {x: -2.909091, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 55
+      y: 40
+      width: 11
+      height: 9
+    spriteID: d5579727e142f4a62bd53ba4aaa263a9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 55, y: 40}
+  - name: GREAT!_Frame_17
+    originalName: 
+    pivot: {x: -13.333333, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 244
+      width: 3
+      height: 8
+    spriteID: 23ae23dd6ae9d4ea7b1a87e115b0428e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 244}
+  spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1156144925
-    name: birdingTrigger
+    guid: 2122383182
+    name: GREAT!
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: birdingTrigger_Frame_0
+    - name: GREAT!_Frame_0
       frameIndex: 0
       cellRect:
-        x: 5
-        y: 10
-        width: 6
-        height: 12
-      spriteId: 866f21872840a41e1b958e35a4f1d944
-    - name: birdingTrigger_Frame_1
+        x: 0
+        y: 3
+        width: 43
+        height: 9
+      spriteId: ab43d2db6f2004c1fa0a1a664d119194
+    - name: GREAT!_Frame_1
       frameIndex: 1
       cellRect:
-        x: 5
-        y: 9
-        width: 6
-        height: 14
-      spriteId: 3236cd0d9936a43eca0653b48f6154f0
-    - name: birdingTrigger_Frame_2
+        x: 0
+        y: 3
+        width: 43
+        height: 9
+      spriteId: 53d90c774b2834277b70dcbbb7141331
+    - name: GREAT!_Frame_2
       frameIndex: 2
       cellRect:
-        x: 5
-        y: 8
-        width: 6
-        height: 16
-      spriteId: 423df08fb556d49d6a3f2215c38b1fa0
-    - name: birdingTrigger_Frame_3
+        x: 0
+        y: 2
+        width: 43
+        height: 10
+      spriteId: e34f0b4d0ae7048888c6895795d3cbf4
+    - name: GREAT!_Frame_3
       frameIndex: 3
       cellRect:
-        x: 4
-        y: 7
-        width: 7
-        height: 18
-      spriteId: 5bc2b4d77b3d242619b67bc53a249784
-    - name: birdingTrigger_Frame_4
+        x: 0
+        y: 2
+        width: 43
+        height: 10
+      spriteId: e5383d2b102aa422693de243b3caa80b
+    - name: GREAT!_Frame_4
       frameIndex: 4
       cellRect:
-        x: 4
-        y: 6
-        width: 7
-        height: 20
-      spriteId: 67ea83e66fc06441da9aecbf779c0e0d
-    - name: birdingTrigger_Frame_5
+        x: 0
+        y: 2
+        width: 43
+        height: 10
+      spriteId: 6abb67f6853de44fcb3f18f10fbee8e2
+    - name: GREAT!_Frame_5
       frameIndex: 5
       cellRect:
-        x: 4
-        y: 5
-        width: 7
-        height: 22
-      spriteId: d768c0a328f544ecea20ad85e63ed57e
-    - name: birdingTrigger_Frame_6
+        x: 0
+        y: 2
+        width: 43
+        height: 10
+      spriteId: c3f6d21514fdc49e888da6e784bee047
+    - name: GREAT!_Frame_6
       frameIndex: 6
       cellRect:
-        x: 4
-        y: 4
-        width: 7
-        height: 24
-      spriteId: fdfd166c7d7564992b804a993c8067b7
-    - name: birdingTrigger_Frame_7
+        x: 0
+        y: 2
+        width: 43
+        height: 9
+      spriteId: eba2656a363724129bf8b5ffa4b540c9
+    - name: GREAT!_Frame_7
       frameIndex: 7
       cellRect:
-        x: 4
-        y: 3
-        width: 7
-        height: 26
-      spriteId: 8c6ff6c9735bf452cbe22c67820d981a
-    - name: birdingTrigger_Frame_8
+        x: 0
+        y: 2
+        width: 43
+        height: 8
+      spriteId: f0fce9e4e13014f2e8c28cbc6a3cf2ab
+    - name: GREAT!_Frame_8
       frameIndex: 8
       cellRect:
-        x: 4
+        x: 0
         y: 2
-        width: 7
-        height: 28
-      spriteId: c1913971e3ef44424905481df124acbf
-    - name: birdingTrigger_Frame_9
+        width: 43
+        height: 8
+      spriteId: 50d31b8fee8cb4073938affc875ce5e0
+    - name: GREAT!_Frame_9
       frameIndex: 9
       cellRect:
-        x: 4
-        y: 1
-        width: 7
-        height: 30
-      spriteId: 3efc1598e01d34d0f92100ea7233640b
-    - name: birdingTrigger_Frame_10
+        x: 0
+        y: 2
+        width: 43
+        height: 8
+      spriteId: 64afd3511a2a4497592813e5d5a282fd
+    - name: GREAT!_Frame_10
       frameIndex: 10
       cellRect:
-        x: 4
+        x: 0
+        y: 2
+        width: 43
+        height: 8
+      spriteId: cdd083f27b8e548f7b7e0c2cfab4194c
+    - name: GREAT!_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 0
+        y: 1
+        width: 43
+        height: 9
+      spriteId: 23baaa3d9f09040898d03c3486a8b61e
+    - name: GREAT!_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 0
         y: 0
-        width: 7
-        height: 32
-      spriteId: 8af9288594f9348a7baced7ed8f053a8
+        width: 43
+        height: 10
+      spriteId: e4cb84aa8a38249efa8a4fd4471f7acf
+    - name: GREAT!_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 8
+        y: 0
+        width: 35
+        height: 10
+      spriteId: 4c859c85b34b04cf4b7837cf84ff5a4d
+    - name: GREAT!_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 16
+        y: 0
+        width: 27
+        height: 10
+      spriteId: 4dba56ff7a6dc4a4697b737d52292253
+    - name: GREAT!_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 24
+        y: 0
+        width: 19
+        height: 10
+      spriteId: cd0fb62a84260413388a42d47c6f8d58
+    - name: GREAT!_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 32
+        y: 0
+        width: 11
+        height: 9
+      spriteId: d5579727e142f4a62bd53ba4aaa263a9
+    - name: GREAT!_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 40
+        y: 0
+        width: 3
+        height: 8
+      spriteId: 23ae23dd6ae9d4ea7b1a87e115b0428e
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -532,4 +688,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 16, y: 32}
+  canvasSize: {x: 43, y: 12}

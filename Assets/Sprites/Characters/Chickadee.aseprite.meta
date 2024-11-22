@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
-    spritePadding: 0
+    spritePadding: 2
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
@@ -91,13 +91,13 @@ ScriptedImporter:
     defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
-    spritePadding: 0
+    spritePadding: 2
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638671327343773630
+  platformSettingsDirtyTick: 638677135532232070
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Chickadee_Frame_0
     originalName: 
-    pivot: {x: 0.36363637, y: 0}
+    pivot: {x: 0.3846154, y: 0.4166667}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 33
-      y: 75
-      width: 11
-      height: 10
+      x: 34
+      y: 88
+      width: 13
+      height: 12
     spriteID: 440d6a2d44e30440bb0ddb2989e79b11
     spriteBone: []
     spriteOutline: []
@@ -140,18 +140,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 33, y: 75}
+    uvTransform: {x: 34, y: 88}
   - name: Chickadee_Frame_1
     originalName: 
-    pivot: {x: 0.2857143, y: -0.1}
+    pivot: {x: 0.30769232, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 33
-      y: 23
-      width: 14
-      height: 10
+      x: 34
+      y: 108
+      width: 13
+      height: 12
     spriteID: 5d6caf06ff6ef4d3c81f53c91b0cc7ac
     spriteBone: []
     spriteOutline: []
@@ -160,18 +160,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 33, y: 23}
+    uvTransform: {x: 34, y: 108}
   - name: Chickadee_Frame_2
     originalName: 
-    pivot: {x: 0.2857143, y: -0.11111111}
+    pivot: {x: 0.25, y: -0.083333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 33
-      y: 41
-      width: 14
-      height: 9
+      x: 4
+      y: 101
+      width: 16
+      height: 12
     spriteID: a0d69ca72121440c8889be09a079bde2
     spriteBone: []
     spriteOutline: []
@@ -180,17 +180,17 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 33, y: 41}
+    uvTransform: {x: 4, y: 101}
   - name: Chickadee_Frame_3
     originalName: 
-    pivot: {x: 0.2857143, y: -0.09090909}
+    pivot: {x: 0.25, y: -0.09090909}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 33
-      y: 4
-      width: 14
+      x: 34
+      y: 50
+      width: 16
       height: 11
     spriteID: b99994948b5ff4f57985516dcf7bc3a8
     spriteBone: []
@@ -200,18 +200,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 33, y: 4}
+    uvTransform: {x: 34, y: 50}
   - name: Chickadee_Frame_4
     originalName: 
-    pivot: {x: 0.2857143, y: -0.22222222}
+    pivot: {x: 0.25, y: -0.07692308}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 33
-      y: 58
-      width: 14
-      height: 9
+      x: 4
+      y: 80
+      width: 16
+      height: 13
     spriteID: 1dfc0574deaec452f8acc08ed9b77595
     spriteBone: []
     spriteOutline: []
@@ -220,18 +220,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 33, y: 58}
+    uvTransform: {x: 4, y: 80}
   - name: Chickadee_Frame_5
     originalName: 
-    pivot: {x: 0.33333334, y: 0.15789473}
+    pivot: {x: 0.25, y: -0.18181819}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
-      width: 21
-      height: 19
+      x: 34
+      y: 69
+      width: 16
+      height: 11
     spriteID: 56c6fa9cf82d248df94f91dc9df44c1a
     spriteBone: []
     spriteOutline: []
@@ -240,18 +240,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 34, y: 69}
   - name: Chickadee_Frame_6
     originalName: 
-    pivot: {x: 0.35, y: 0.20000002}
+    pivot: {x: 0.3888889, y: 0.1875}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 56
-      width: 20
-      height: 15
+      width: 18
+      height: 16
     spriteID: 466a83418e1fc4af6a69277ee36369cc
     spriteBone: []
     spriteOutline: []
@@ -263,15 +263,15 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 56}
   - name: Chickadee_Frame_7
     originalName: 
-    pivot: {x: 0.33333334, y: 0.15384616}
+    pivot: {x: 0.3181818, y: 0.1764706}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 79
-      width: 21
-      height: 13
+      y: 31
+      width: 22
+      height: 17
     spriteID: feff65e9dfe4a4be1b586f772cef95dc
     spriteBone: []
     spriteOutline: []
@@ -280,18 +280,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 79}
+    uvTransform: {x: 4, y: 31}
   - name: Chickadee_Frame_8
     originalName: 
-    pivot: {x: 0.35, y: 0.11764706}
+    pivot: {x: 0.30434784, y: 0.13333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 31
-      width: 20
-      height: 17
+      x: 34
+      y: 4
+      width: 23
+      height: 15
     spriteID: 08da47e00749144349f61dfc7616cb82
     spriteBone: []
     spriteOutline: []
@@ -300,18 +300,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 31}
+    uvTransform: {x: 34, y: 4}
   - name: Chickadee_Frame_9
     originalName: 
-    pivot: {x: 0.33333334, y: 0.07692308}
+    pivot: {x: 0.3181818, y: 0.10526316}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 100
-      width: 21
-      height: 13
+      y: 4
+      width: 22
+      height: 19
     spriteID: ad02420ce95014081829907d10602393
     spriteBone: []
     spriteOutline: []
@@ -320,7 +320,27 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 100}
+    uvTransform: {x: 4, y: 4}
+  - name: Chickadee_Frame_10
+    originalName: 
+    pivot: {x: 0.30434784, y: 0.06666667}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 34
+      y: 27
+      width: 23
+      height: 15
+    spriteID: 248d7d6c69ba047ffb17acdc6e63b3d9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 34, y: 27}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -333,8 +353,8 @@ ScriptedImporter:
     - name: Chickadee_Frame_0
       frameIndex: 0
       cellRect:
-        x: 12
-        y: 16
+        x: 11
+        y: 11
         width: 11
         height: 10
       spriteId: 440d6a2d44e30440bb0ddb2989e79b11
@@ -342,8 +362,8 @@ ScriptedImporter:
       frameIndex: 1
       cellRect:
         x: 12
-        y: 17
-        width: 14
+        y: 16
+        width: 11
         height: 10
       spriteId: 5d6caf06ff6ef4d3c81f53c91b0cc7ac
     - name: Chickadee_Frame_2
@@ -352,7 +372,7 @@ ScriptedImporter:
         x: 12
         y: 17
         width: 14
-        height: 9
+        height: 10
       spriteId: a0d69ca72121440c8889be09a079bde2
     - name: Chickadee_Frame_3
       frameIndex: 3
@@ -360,56 +380,64 @@ ScriptedImporter:
         x: 12
         y: 17
         width: 14
-        height: 11
+        height: 9
       spriteId: b99994948b5ff4f57985516dcf7bc3a8
     - name: Chickadee_Frame_4
       frameIndex: 4
       cellRect:
         x: 12
-        y: 18
+        y: 17
         width: 14
-        height: 9
+        height: 11
       spriteId: 1dfc0574deaec452f8acc08ed9b77595
     - name: Chickadee_Frame_5
       frameIndex: 5
       cellRect:
-        x: 9
-        y: 13
-        width: 21
-        height: 19
+        x: 12
+        y: 18
+        width: 14
+        height: 9
       spriteId: 56c6fa9cf82d248df94f91dc9df44c1a
     - name: Chickadee_Frame_6
       frameIndex: 6
       cellRect:
         x: 9
         y: 13
-        width: 20
-        height: 15
+        width: 16
+        height: 14
       spriteId: 466a83418e1fc4af6a69277ee36369cc
     - name: Chickadee_Frame_7
       frameIndex: 7
       cellRect:
         x: 9
-        y: 14
-        width: 21
-        height: 13
+        y: 13
+        width: 20
+        height: 15
       spriteId: feff65e9dfe4a4be1b586f772cef95dc
     - name: Chickadee_Frame_8
       frameIndex: 8
       cellRect:
         x: 9
         y: 14
-        width: 20
-        height: 17
+        width: 21
+        height: 13
       spriteId: 08da47e00749144349f61dfc7616cb82
     - name: Chickadee_Frame_9
       frameIndex: 9
       cellRect:
         x: 9
+        y: 14
+        width: 20
+        height: 17
+      spriteId: ad02420ce95014081829907d10602393
+    - name: Chickadee_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 9
         y: 15
         width: 21
         height: 13
-      spriteId: ad02420ce95014081829907d10602393
+      spriteId: 248d7d6c69ba047ffb17acdc6e63b3d9
     linkedCells: []
     parentIndex: -1
   platformSettings:
