@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 8308902192013366318}
   - component: {fileID: 2985183667386420714}
   m_Layer: 0
-  m_Name: Chickadee
+  m_Name: House Sparrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,8 +117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46632a77365134d7395263a9570ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Chickadee
-  Icon: {fileID: 7690392852382276561, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
+  Name: House Sparrow
+  Icon: {fileID: -799246715541704166, guid: 31bf3f540b76e4449a2b5306ec72e650, type: 3}
   Caught: 0
 --- !u!114 &6724720882062252639
 MonoBehaviour:
@@ -134,21 +134,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewDistance: {fileID: 1798136891552204298}
   _frightDistance: {fileID: 350138464402429585}
-  _flightSpeedLimit: 2
+  _flightSpeedLimit: 2.5
   _steerForceLimit: 4
   _targetUpdateInterval: 0.5
   _wanderRingRadius: 2
-  _wanderRingDistance: 3
-  _flyingDurationRange: {x: 2, y: 20}
+  _wanderRingDistance: 5
+  _flyingDurationRange: {x: 5, y: 15}
   _defaultPreference: 4
   _perchPreference: 1
   _shelterPreference: 1
   _groundPreference: 1
-  _groundedDurationRange: {x: 5, y: 20}
-  _timeTillHopLimits: {x: 2, y: 5}
+  _groundedDurationRange: {x: 5, y: 15}
+  _timeTillHopLimits: {x: 1, y: 4}
   _twoHopForceLimits: {x: 1, y: 2}
-  _shelteredDurationRange: {x: 5, y: 20}
-  _perchedDurationRange: {x: 5, y: 20}
+  _shelteredDurationRange: {x: 5, y: 15}
+  _perchedDurationRange: {x: 5, y: 15}
   _targetPosition: {x: 0, y: 0}
   _birdState:
     _val: 0
@@ -291,7 +291,7 @@ SpriteRenderer:
   m_SortingLayerID: 2138312857
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 919966473809115317, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
+  m_Sprite: {fileID: -7041926336117940042, guid: 31bf3f540b76e4449a2b5306ec72e650, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -324,7 +324,7 @@ Animator:
   m_GameObject: {fileID: 4119929554772199349}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4cbb8fc310f8648728f0632e487dbf1c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3c3ccd911daa348b19585efd94a88bfa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

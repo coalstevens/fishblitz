@@ -4,6 +4,15 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
+// TODOS
+// Add shrub entry splash
+// Fleeing
+// Sprinting 
+// Water Landing
+// Flocking
+// High flying, low flying
+// default preference should be flight, as it's always an option
+
 public interface IBirdLandingSpot
 {
     public Vector2 GetPositionTarget();
@@ -47,6 +56,8 @@ public class BirdBrain : MonoBehaviour
 
     [Header("Perched Behavior")]
     [SerializeField] private Vector2 _perchedDurationRange = new Vector2(5f, 20f);
+
+    [Header("State Monitoring")]
 
     private float _behaviorDuration = 0;
     private float _behaviorElapsed = 0;
@@ -327,3 +338,44 @@ public class BirdBrain : MonoBehaviour
                     transform.localScale.z);
     }
 }
+
+/**********************************************************************
+BEHAVIOR NOTES
+
+Chickadee
+- Active, inquisitive
+- Approach humans and feeders boldly
+- Shrub forager
+- They form and lead mixed-species flocks in Winter
+
+Juncos
+- Ground Feeders
+- Active in winter
+- Shy of humans, but tolerant of feeders.
+- Often flocking in winter, sometimes mixed with sparrows or other species
+
+Bluebirds
+- Territorial cavity nester
+- Aggresively defend nesting sites
+- Aeriel foragers
+- Berry eaters
+- Found in small family groups or pairs
+
+Kinglets
+- Hyperactive, tiny and constantly moving
+- Terriortial singing, especially during breeding
+- Winter resilient
+- Mixed flocks with chickadees or titmice
+
+House Sparrows
+- Highly Social
+- Large flocks
+- Very urban
+- Aggresive
+
+White Crowned Sparrows
+- Ground foragers
+- Migratory
+- Shy to humans, regular feeders
+
+***********************************************************************/

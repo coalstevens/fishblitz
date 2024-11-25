@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 100
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -75,10 +75,10 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
-    spritePadding: 0
+    spritePadding: 2
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
@@ -88,16 +88,16 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 0
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
-    spritePadding: 0
+    spritePadding: 2
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638679821803919380
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,15 +123,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ChestnutChickadee_Frame_0
     originalName: 
-    pivot: {x: 0.4375, y: -0.6428572}
+    pivot: {x: 0.45454547, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 32
-      y: 46
-      width: 16
-      height: 14
+      x: 34
+      y: 88
+      width: 13
+      height: 12
     spriteID: ff4305eeef5f74d15b6ca62fef2ffe1b
     spriteBone: []
     spriteOutline: []
@@ -140,18 +140,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 32, y: 46}
+    uvTransform: {x: 34, y: 88}
   - name: ChestnutChickadee_Frame_1
     originalName: 
-    pivot: {x: 0.35, y: -0.6}
+    pivot: {x: 0.36363637, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 29
-      width: 20
-      height: 15
+      x: 34
+      y: 108
+      width: 13
+      height: 12
     spriteID: 0733284a977e14ac280ae0fe87ed7719
     spriteBone: []
     spriteOutline: []
@@ -160,18 +160,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 29}
+    uvTransform: {x: 34, y: 108}
   - name: ChestnutChickadee_Frame_2
     originalName: 
-    pivot: {x: 0.33333334, y: -0.7692308}
+    pivot: {x: 0.2857143, y: 0.3125}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 32
-      y: 4
-      width: 21
-      height: 13
+      x: 4
+      y: 56
+      width: 16
+      height: 18
     spriteID: 171d6e18391ff44ce8bf41d277202398
     spriteBone: []
     spriteOutline: []
@@ -180,18 +180,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 32, y: 4}
+    uvTransform: {x: 4, y: 56}
   - name: ChestnutChickadee_Frame_3
     originalName: 
-    pivot: {x: 0.35, y: -0.5882353}
+    pivot: {x: 0.2857143, y: -0.11111111}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
-      width: 20
-      height: 17
+      x: 34
+      y: 50
+      width: 16
+      height: 11
     spriteID: b3ef13ad69acf4b8b9993d99f1e410e6
     spriteBone: []
     spriteOutline: []
@@ -200,17 +200,17 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 34, y: 50}
   - name: ChestnutChickadee_Frame_4
     originalName: 
-    pivot: {x: 0.33333334, y: -0.84615386}
+    pivot: {x: 0.2857143, y: -0.09090909}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 32
-      y: 25
-      width: 21
+      x: 4
+      y: 106
+      width: 16
       height: 13
     spriteID: e6a80e98022e44bfc9f480d52092d8c7
     spriteBone: []
@@ -220,7 +220,127 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 32, y: 25}
+    uvTransform: {x: 4, y: 106}
+  - name: ChestnutChickadee_Frame_5
+    originalName: 
+    pivot: {x: 0.2857143, y: -0.22222222}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 34
+      y: 69
+      width: 16
+      height: 11
+    spriteID: d9c723463495e451286ca18038f6510d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 34, y: 69}
+  - name: ChestnutChickadee_Frame_6
+    originalName: 
+    pivot: {x: 0.4375, y: 0.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 82
+      width: 18
+      height: 16
+    spriteID: 8c89fd103c84d4228ab8de5292316a35
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 82}
+  - name: ChestnutChickadee_Frame_7
+    originalName: 
+    pivot: {x: 0.35, y: 0.4666667}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 31
+      width: 22
+      height: 17
+    spriteID: 2d058333f73c94c36aeb2bcfffdd5ad6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 31}
+  - name: ChestnutChickadee_Frame_8
+    originalName: 
+    pivot: {x: 0.33333334, y: 0.4615385}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 34
+      y: 4
+      width: 23
+      height: 15
+    spriteID: ea300095c32e14afe964273190122e9b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 34, y: 4}
+  - name: ChestnutChickadee_Frame_9
+    originalName: 
+    pivot: {x: 0.35, y: 0.3529412}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 22
+      height: 19
+    spriteID: b8ab896a264ae4045b66d2899430d972
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: ChestnutChickadee_Frame_10
+    originalName: 
+    pivot: {x: 0.33333334, y: 0.3846154}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 34
+      y: 27
+      width: 23
+      height: 15
+    spriteID: d8e4c8e60d96345cda986ca6a101e663
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 34, y: 27}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -233,46 +353,142 @@ ScriptedImporter:
     - name: ChestnutChickadee_Frame_0
       frameIndex: 0
       cellRect:
+        x: 11
+        y: 11
+        width: 11
+        height: 10
+      spriteId: ff4305eeef5f74d15b6ca62fef2ffe1b
+    - name: ChestnutChickadee_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 12
+        y: 16
+        width: 11
+        height: 10
+      spriteId: 0733284a977e14ac280ae0fe87ed7719
+    - name: ChestnutChickadee_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 12
+        y: 11
+        width: 14
+        height: 16
+      spriteId: 171d6e18391ff44ce8bf41d277202398
+    - name: ChestnutChickadee_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 12
+        y: 17
+        width: 14
+        height: 9
+      spriteId: b3ef13ad69acf4b8b9993d99f1e410e6
+    - name: ChestnutChickadee_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 12
+        y: 17
+        width: 14
+        height: 11
+      spriteId: e6a80e98022e44bfc9f480d52092d8c7
+    - name: ChestnutChickadee_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 12
+        y: 18
+        width: 14
+        height: 9
+      spriteId: d9c723463495e451286ca18038f6510d
+    - name: ChestnutChickadee_Frame_6
+      frameIndex: 6
+      cellRect:
         x: 9
         y: 9
         width: 16
         height: 14
-      spriteId: ff4305eeef5f74d15b6ca62fef2ffe1b
-    - name: ChestnutChickadee_Frame_1
-      frameIndex: 1
+      spriteId: 8c89fd103c84d4228ab8de5292316a35
+    - name: ChestnutChickadee_Frame_7
+      frameIndex: 7
       cellRect:
         x: 9
         y: 9
         width: 20
         height: 15
-      spriteId: 0733284a977e14ac280ae0fe87ed7719
-    - name: ChestnutChickadee_Frame_2
-      frameIndex: 2
+      spriteId: 2d058333f73c94c36aeb2bcfffdd5ad6
+    - name: ChestnutChickadee_Frame_8
+      frameIndex: 8
       cellRect:
         x: 9
         y: 10
         width: 21
         height: 13
-      spriteId: 171d6e18391ff44ce8bf41d277202398
-    - name: ChestnutChickadee_Frame_3
-      frameIndex: 3
+      spriteId: ea300095c32e14afe964273190122e9b
+    - name: ChestnutChickadee_Frame_9
+      frameIndex: 9
       cellRect:
         x: 9
         y: 10
         width: 20
         height: 17
-      spriteId: b3ef13ad69acf4b8b9993d99f1e410e6
-    - name: ChestnutChickadee_Frame_4
-      frameIndex: 4
+      spriteId: b8ab896a264ae4045b66d2899430d972
+    - name: ChestnutChickadee_Frame_10
+      frameIndex: 10
       cellRect:
         x: 9
         y: 11
         width: 21
         height: 13
-      spriteId: e6a80e98022e44bfc9f480d52092d8c7
+      spriteId: d8e4c8e60d96345cda986ca6a101e663
     linkedCells: []
     parentIndex: -1
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 

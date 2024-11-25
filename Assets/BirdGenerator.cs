@@ -68,7 +68,7 @@ public class BirdGenerator : MonoBehaviour
 
         Vector3 _boundsCenter = _cameraBounds.center;
         Vector3 _boundsSize = _cameraBounds.size;
-        Debug.Log($"Center: {_boundsCenter}, Size: {_boundsSize}");
+        //Debug.Log($"Center: {_boundsCenter}, Size: {_boundsSize}");
 
         return _cameraBounds;
     }
