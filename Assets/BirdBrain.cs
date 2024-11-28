@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using ReactiveUnity;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 // TODOS
@@ -46,6 +48,12 @@ public class BirdBrain : MonoBehaviour
     [Range(0f, 1f)][SerializeField] private float _shelterPreference = 0.33f;
     [Range(0f, 1f)][SerializeField] private float _groundPreference = 0.34f;
 
+    [Header("Flying - Boids Flocking")]
+    [SerializeField] private List<string> _flockableBirdsNames = new();
+    [SerializeField] private float _separationWeight = 1.0f;
+    [SerializeField] private float _alignmentWeight = 1.0f;
+    [SerializeField] private float _cohesionWeight = 1.0f;
+
     [Header("Grounded Behavior")]
     [SerializeField] private Vector2 _groundedDurationRange = new Vector2(5f, 20f);
     [SerializeField] private Vector2 _timeTillHopLimits = new Vector2(2f, 5f);
@@ -57,13 +65,11 @@ public class BirdBrain : MonoBehaviour
     [Header("Perched Behavior")]
     [SerializeField] private Vector2 _perchedDurationRange = new Vector2(5f, 20f);
 
-    [Header("State Monitoring")]
-
     private float _behaviorDuration = 0;
     private float _behaviorElapsed = 0;
     private float _timeUntilNextHop = 0;
     private float _timeSinceHop = 0;
-    private float _timeSinceTargetUpdate = 0;
+    private float _lastTargetUpdateTime = 0;
 
     private Animator _animator;
     private SpriteRenderer _renderer;
@@ -122,7 +128,7 @@ public class BirdBrain : MonoBehaviour
     {
         switch (_birdState.Value)
         {
-            case BirdStates.FLYING: Wander(); break;
+            case BirdStates.FLYING: Flying(); break;
             case BirdStates.FLEEING:
             case BirdStates.PERCHED: CheckIfFrightened(); break;
             case BirdStates.SHELTERED: CheckIfFrightened(); break;
@@ -266,15 +272,23 @@ public class BirdBrain : MonoBehaviour
         return true;
     }
 
-    private void Wander()
+    private void Flying()
     {
-        _rb.AddForce(Seek(_targetPosition));
+        Vector2 _flyingForce = Seek(_targetPosition); // Wandering behavior;
+        if (_flockableBirdsNames.Count > 0 )
+            _flyingForce += CalculateBoidForce();
+
+        _rb.AddForce(_flyingForce);
+        UpdateWanderTarget();
+    }
+
+    private void UpdateWanderTarget() {
         float _now = Time.time;
-        if (_now - _timeSinceTargetUpdate < _targetUpdateInterval) return;
+        if (_now - _lastTargetUpdateTime < _targetUpdateInterval) return;
 
         Vector2 _ringCenter = (Vector2)transform.position + _rb.velocity.normalized * _wanderRingDistance;
         _targetPosition = _ringCenter + _wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
-        _timeSinceTargetUpdate = _now;
+        _lastTargetUpdateTime = _now;
     }
 
     private void Ground()
@@ -337,6 +351,38 @@ public class BirdBrain : MonoBehaviour
                     transform.localScale.y,
                     transform.localScale.z);
     }
+
+    private Vector2 CalculateBoidForce()
+    {
+        Vector2 _separation = Vector2.zero; // Prevents birds getting too close
+        Vector2 _alignment = Vector2.zero; // Urge to match direction of others
+        Vector2 _cohesion = Vector2.zero; // Urge to move towards centroid of flock
+        int _count = 0;
+
+        foreach (var _bird in _viewDistance.GetComponent<NearbyBirdTracker>().NearbyBirds)
+        {
+            if (!_flockableBirdsNames.Contains(_bird.GetComponent<Bird>().Name)) continue;
+            float _distance = Vector2.Distance(transform.position, _bird.position);
+            _separation += (Vector2)(transform.position - _bird.position) / _distance;
+            _alignment += _bird.transform.GetComponent<Rigidbody2D>().velocity;
+            _cohesion += (Vector2)_bird.position;
+            _count++;
+        }
+
+        if (_count > 0)
+        {
+            _separation /= _count;
+            _alignment /= _count;
+            _cohesion /= _count;
+            _cohesion = (_cohesion - (Vector2)transform.position).normalized;
+        }
+
+        return 
+            _separation.normalized * _separationWeight +
+            _alignment.normalized * _alignmentWeight +
+            _cohesion * _cohesionWeight;
+    }
+
 }
 
 /**********************************************************************

@@ -144,6 +144,10 @@ MonoBehaviour:
   _perchPreference: 0.5
   _shelterPreference: 0.25
   _groundPreference: 1
+  _flockableBirdsNames: []
+  _separationWeight: 1
+  _alignmentWeight: 1
+  _cohesionWeight: 1
   _groundedDurationRange: {x: 5, y: 20}
   _timeTillHopLimits: {x: 1, y: 4}
   _twoHopForceLimits: {x: 1, y: 2}
@@ -345,6 +349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6485702762577411700}
   - component: {fileID: 1798136891552204298}
+  - component: {fileID: 7080370378688112936}
   m_Layer: 0
   m_Name: View Distance
   m_TagString: Untagged
@@ -402,3 +407,15 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.13}
   serializedVersion: 2
   m_Radius: 5
+--- !u!114 &7080370378688112936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8202577963310639871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a360cee652a943ed9b78388385b0d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

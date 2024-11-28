@@ -34,7 +34,7 @@ public class BirdGenerator : MonoBehaviour
         
         UnityEngine.Object.Instantiate
         (
-            _randomBird,
+            _birds[0],//_randomBird,
             GetPointWithinWorldAndOutsideCamera(),
             Quaternion.identity,
             transform

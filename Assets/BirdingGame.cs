@@ -118,6 +118,7 @@ public class BirdingGame : MonoBehaviour
             );
         }
 
+        // Assign the updated points array back to the PolygonCollider2D
         _triggerCollider.points = _updatedPoints;
     }
 

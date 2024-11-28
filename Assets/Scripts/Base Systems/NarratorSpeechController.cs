@@ -22,6 +22,14 @@ public class NarratorSpeechController : Singleton<NarratorSpeechController>
     private void Start() {
         _narratorMessageContainer = GameObject.FindGameObjectWithTag("NarratorMessageContainer").transform;
     }
+
+    private void OnEnable() {
+        SceneSaveLoadManager.FirstVisitToScene += PrintFirstVisitToSceneMessage;
+    }
+
+    private void OnDisable() {
+        SceneSaveLoadManager.FirstVisitToScene -= PrintFirstVisitToSceneMessage;
+    }
     
     void Update()
     {
@@ -79,6 +87,19 @@ public class NarratorSpeechController : Singleton<NarratorSpeechController>
                 _messageStartTimes.RemoveAt(i);
                 Destroy(temp.transform.gameObject);
             }
+        }
+    }
+    
+    private void PrintFirstVisitToSceneMessage(string sceneName) 
+    {
+        switch(sceneName) {
+            case "Outside": 
+                NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
+                break;
+            case "Abandoned Shed":
+                break;
+            default:
+                break;
         }
     }
 }

@@ -6,10 +6,13 @@ using System;
 
 // Note about instantiating objects here:
 // World objects instantiated by this Manager should use Awake() instead of Start()
-// Start() is called before first frame of scene, which has already passed.
 // Awake() is called when a prefab object is instantiated.
+// Start() is called before first frame of scene, which has occured before instantiation.
+
 public class SceneSaveLoadManager : MonoBehaviour {
     Transform _impermanentContainer;
+    public delegate void FirstVisitToSceneHandler(string sceneName);
+    public static event FirstVisitToSceneHandler FirstVisitToScene;
     private class SceneSaveData {
         public List<SaveData> SaveDatas = new();
         public GameClockCapture SceneExitGameTime;
@@ -22,10 +25,9 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
-        _sceneSaveData.SaveDatas = GatherSaveDataInParent(_impermanentContainer);
+        _sceneSaveData.SaveDatas = GatherChildSaveData(_impermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.GenerateCapture();
 
-        // Save
         JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
     }
 
@@ -34,40 +36,28 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
-            string sceneName = SceneManager.GetActiveScene().name;
+            string _sceneName = SceneManager.GetActiveScene().name;
             // Debug.Log("No save file exists yet for scene: " + sceneName);
-            PrintFirstTimeSceneVisitedMessage(sceneName);
+            FirstVisitToScene(_sceneName); 
             return;
         }
 
-        // destroy defaults
+        // destroy defaults 
         DestroyChildren(_impermanentContainer);
 
         // load from save
         var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
-        LoadSaveDataIntoParent(_loadedSaveData.SaveDatas, _impermanentContainer);
-        ProcessElapsedTimeInParent(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
+        InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, _impermanentContainer);
+        ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
     }
 
-    private void PrintFirstTimeSceneVisitedMessage(string sceneName) 
-    {
-        switch(sceneName) {
-            case "Outside": 
-                NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
-                break;
-            case "Abandoned Shed":
-                break;
-            default:
-                break;
-        }
-    }
-    
+    // dang
     private void DestroyChildren(Transform parent) {
         foreach (Transform _child in parent)
             Destroy(_child.gameObject);
     }
 
-    private List<SaveData> GatherSaveDataInParent(Transform parent) {
+    private List<SaveData> GatherChildSaveData(Transform parent) {
         List<SaveData> _saveDatas = new();
         foreach (Transform _child in parent)
             if (_child.TryGetComponent<ISaveable>(out var _saveable) ) {
@@ -77,14 +67,14 @@ public class SceneSaveLoadManager : MonoBehaviour {
         return _saveDatas; 
     }
 
-    private void LoadSaveDataIntoParent(List<SaveData> saveDatas, Transform parent) {
+    private void InstantiateAndLoadSavedObjects(List<SaveData> saveDatas, Transform container) {
         foreach (var _saveData in saveDatas) {
-            var newObject = _saveData.InstantiateGameObjectFromSaveData(parent).GetComponent<ISaveable>();
+            var newObject = _saveData.InstantiateGameObjectFromSaveData(container).GetComponent<ISaveable>();
             newObject.Load(_saveData);
         }
     }
 
-    private void ProcessElapsedTimeInParent(GameClockCapture pastTime, Transform parent) {  
+    private void ProcessElaspedTimeForChildren(GameClockCapture pastTime, Transform parent) {  
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
         // Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
         List<ITickable> _tickables = new();

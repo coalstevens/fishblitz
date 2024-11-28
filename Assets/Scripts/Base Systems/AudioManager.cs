@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
-
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] AudioSource _musicPlayer; // Dedicated audiosource for playing music
