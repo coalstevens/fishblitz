@@ -39,7 +39,7 @@ public class BirdBrain : MonoBehaviour
     [Header("Flying Behavior")]
     [SerializeField] private float _flightSpeedLimit = 2f;
     [SerializeField] private float _steerForceLimit = 4f;
-    [SerializeField] private float _targetUpdateInterval = 0.5f;
+    [SerializeField] private float _flyingForceUpdateInterval = 0.5f;
     [SerializeField] private float _wanderRingRadius = 2f;
     [SerializeField] private float _wanderRingDistance = 2f;
     [SerializeField] private Vector2 _flyingDurationRange = new Vector2(2f, 20f);
@@ -65,11 +65,14 @@ public class BirdBrain : MonoBehaviour
     [Header("Perched Behavior")]
     [SerializeField] private Vector2 _perchedDurationRange = new Vector2(5f, 20f);
 
+    public delegate void BirdDestroyedHandler(Transform bird);
+    public static event BirdDestroyedHandler BirdDestroyed;
+    
     private float _behaviorDuration = 0;
     private float _behaviorElapsed = 0;
     private float _timeUntilNextHop = 0;
     private float _timeSinceHop = 0;
-    private float _lastTargetUpdateTime = 0;
+    private float _lastFlyingForceUpdateTime = 0;
 
     private Animator _animator;
     private SpriteRenderer _renderer;
@@ -80,6 +83,7 @@ public class BirdBrain : MonoBehaviour
     private List<Action> _unsubscribeHooks = new();
     public Vector2 _targetPosition;
     private Collider2D _worldCollider;
+    private Vector2 _flyingForce = Vector2.zero;
 
     public enum BirdStates { FLYING, FLEEING, PERCHED, SHELTERED, GROUNDED, LANDING };
     public Reactive<BirdStates> _birdState = new Reactive<BirdStates>(BirdStates.FLYING);
@@ -104,6 +108,9 @@ public class BirdBrain : MonoBehaviour
     {
         foreach (var _hook in _unsubscribeHooks)
             _hook();
+
+        if (gameObject != null)   
+            BirdDestroyed(transform);
     }
 
     private void Update()
@@ -274,21 +281,19 @@ public class BirdBrain : MonoBehaviour
 
     private void Flying()
     {
-        Vector2 _flyingForce = Seek(_targetPosition); // Wandering behavior;
-        if (_flockableBirdsNames.Count > 0 )
-            _flyingForce += CalculateBoidForce();
-
         _rb.AddForce(_flyingForce);
-        UpdateWanderTarget();
+        if (Time.time - _lastFlyingForceUpdateTime >= _flyingForceUpdateInterval) 
+            UpdateFlyingForce();
     }
-
-    private void UpdateWanderTarget() {
-        float _now = Time.time;
-        if (_now - _lastTargetUpdateTime < _targetUpdateInterval) return;
-
+    private void UpdateFlyingForce() {
+        // update wander ring target
         Vector2 _ringCenter = (Vector2)transform.position + _rb.velocity.normalized * _wanderRingDistance;
         _targetPosition = _ringCenter + _wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
-        _lastTargetUpdateTime = _now;
+        _lastFlyingForceUpdateTime = Time.time;
+
+        _flyingForce = Seek(_targetPosition);
+        if (_flockableBirdsNames.Count > 0 )
+            _flyingForce += CalculateBoidForce();
     }
 
     private void Ground()
@@ -361,6 +366,7 @@ public class BirdBrain : MonoBehaviour
 
         foreach (var _bird in _viewDistance.GetComponent<NearbyBirdTracker>().NearbyBirds)
         {
+            if (_bird.gameObject == null) continue;
             if (!_flockableBirdsNames.Contains(_bird.GetComponent<Bird>().Name)) continue;
             float _distance = Vector2.Distance(transform.position, _bird.position);
             _separation += (Vector2)(transform.position - _bird.position) / _distance;

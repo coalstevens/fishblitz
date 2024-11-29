@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NearbyBirdTracker : MonoBehaviour
 {
-    private HashSet<Transform> _nearbyBirds = new HashSet<Transform>();
+    private List<Transform> _nearbyBirds = new List<Transform>();
     public IReadOnlyCollection<Transform> NearbyBirds => _nearbyBirds;
     private Collider2D _viewRange;
 
@@ -22,28 +22,42 @@ public class NearbyBirdTracker : MonoBehaviour
             _viewRange.isTrigger = true;
         }
 
-        var overlappingColliders = new List<Collider2D>();
-        _viewRange.OverlapCollider(new ContactFilter2D().NoFilter(), overlappingColliders);
+        var _overlappingColliders = new List<Collider2D>();
+        _viewRange.OverlapCollider(new ContactFilter2D().NoFilter(), _overlappingColliders);
 
-        foreach (var collider in overlappingColliders)
-            if (collider.TryGetComponent<Transform>(out var _bird) && !_nearbyBirds.Contains(_bird))
-                _nearbyBirds.Add(_bird);
+        foreach (var _collider in _overlappingColliders)
+            if (_collider.TryGetComponent<Bird>(out var _bird) && !_nearbyBirds.Contains(_bird.transform))
+                _nearbyBirds.Add(_bird.transform);
         
         if (_nearbyBirds.Contains(transform))
             _nearbyBirds.Remove(transform);
     }
 
+    private void OnEnable() {
+        BirdBrain.BirdDestroyed += OnBirdDestroyed;
+    }
+
+    private void OnDisable() {
+        BirdBrain.BirdDestroyed -= OnBirdDestroyed;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Transform>(out var _bird))
-            if (!_nearbyBirds.Contains(_bird))
-                _nearbyBirds.Add(_bird);
+        if (other.TryGetComponent<Bird>(out var _bird))
+            if (!_nearbyBirds.Contains(_bird.transform))
+                _nearbyBirds.Add(_bird.transform);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent<Transform>(out var _bird))
-            if (_nearbyBirds.Contains(_bird))
-                _nearbyBirds.Remove(_bird);
+        if (other.TryGetComponent<Bird>(out var _bird))
+            if (_nearbyBirds.Contains(_bird.transform))
+                _nearbyBirds.Remove(_bird.transform);
+    }
+
+    void OnBirdDestroyed(Transform bird) {
+        if (_nearbyBirds.Contains(bird.transform))
+            _nearbyBirds.Remove(bird);
+        //_nearbyBirds.RemoveAll(transform => transform == null);
     }
 }
