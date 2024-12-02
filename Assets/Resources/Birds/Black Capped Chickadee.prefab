@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7758245149523990386}
   - component: {fileID: 350138464402429585}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fright Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 6724720882062252639}
   - component: {fileID: 8308902192013366318}
   - component: {fileID: 2985183667386420714}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Black Capped Chickadee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,7 @@ Transform:
   - {fileID: 5690788670568978637}
   - {fileID: 6485702762577411700}
   - {fileID: 7758245149523990386}
+  - {fileID: 4597979381780895625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4604394623336481317
@@ -132,33 +133,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7a49b05c34d4e81b251963b924250f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _viewDistance: {fileID: 1798136891552204298}
+  ViewDistance: {fileID: 1798136891552204298}
   _frightDistance: {fileID: 350138464402429585}
+  FlockableBirdsNames:
+  - Black Capped Chickadee
   _flightSpeedLimit: 2
   _steerForceLimit: 4
-  _flyingForceUpdateInterval: 0.25
-  _wanderRingRadius: 2
-  _wanderRingDistance: 3
-  _flyingDurationRange: {x: 100, y: 200}
-  _defaultPreference: 4
-  _perchPreference: 0
-  _shelterPreference: 0
-  _groundPreference: 0
-  _flockableBirdsNames:
-  - Black Capped Chickadee
-  _separationWeight: 1
-  _alignmentWeight: 1
-  _cohesionWeight: 1
-  _groundedDurationRange: {x: 3, y: 10}
-  _timeTillHopLimits: {x: 1, y: 4}
-  _twoHopForceLimits: {x: 1, y: 2}
-  _shelteredDurationRange: {x: 3, y: 15}
-  _perchedDurationRange: {x: 2, y: 10}
-  _targetPosition: {x: 0, y: 0}
-  _birdState:
-    _val: 0
-  _facingDirection:
-    _val: 2
+  BehaviorDuration: 0
+  TargetPosition: {x: 0, y: 0}
+  FlyingState:
+    _flyingDurationRange: {x: 5, y: 20}
+    _forceApplicationIntervalSecs: 0.1
+    _forceUpdateIntervalSecs: 0.4
+    _wanderRingRadius: 2
+    _wanderRingDistance: 3
+    _boidsMaxFlockSize: 5
+    _separationWeight: 1
+    _alignmentWeight: 1
+    _cohesionWeight: 1
+  LandingState:
+    _perchPreference: 0.33
+    _shelterPreference: 0.33
+    _groundPreference: 0.33
+    _targetReachedDistanceThreshold: 0.05
+  ShelteredState:
+    _shelteredDurationRange: {x: 3, y: 15}
+  PerchedState:
+    _perchedDurationRange: {x: 2, y: 10}
+  GroundedState:
+    _groundedDurationRange: {x: 3, y: 10}
+    _timeTillHopLimits: {x: 1, y: 4}
+    _twoHopForceLimits: {x: 1, y: 2}
 --- !u!50 &8308902192013366318
 Rigidbody2D:
   serializedVersion: 4
@@ -215,7 +220,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.05, y: 0.16}
@@ -233,7 +238,7 @@ GameObject:
   - component: {fileID: 5698945564265183155}
   - component: {fileID: 7195614256522238732}
   - component: {fileID: 3356502993063818814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +356,7 @@ GameObject:
   - component: {fileID: 6485702762577411700}
   - component: {fileID: 1798136891552204298}
   - component: {fileID: 1555518214559205038}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: View Distance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,3 +425,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a360cee652a943ed9b78388385b0d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &7247251883077816801
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 208783697297014677}
+    m_Modifications:
+    - target: {fileID: 6043537933565687002, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_Name
+      value: LeafSplash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6043537933565687002, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.077
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.169
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893433994577811850, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+--- !u!4 &4597979381780895625 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6583177241268356712, guid: 2fbd5e1cb2e3d4b5fa7b11fbfd704f15, type: 3}
+  m_PrefabInstance: {fileID: 7247251883077816801}
+  m_PrefabAsset: {fileID: 0}
