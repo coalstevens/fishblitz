@@ -24,9 +24,9 @@ public class GroundedState : IBirdState
 
     public void Update(BirdBrain bird)
     {
-        if (bird.IsBehaviourDurationExpired())
+        if (bird.TickAndCheckBehaviorTimer())
         {
-            bird.TransitionToState(bird.FlyingState);
+            bird.TransitionToState(bird.Flying);
             return;
         }
 

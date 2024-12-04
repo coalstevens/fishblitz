@@ -9,7 +9,7 @@ public class ShelteredState : IBirdState
     public void Enter(BirdBrain bird)
     {
         bird.Renderer.enabled = false;
-        bird.TargetBirdSpot.OnBirdEntry(bird);
+        bird.LandingTargetSpot.OnBirdEntry(bird);
         bird.BehaviorDuration = UnityEngine.Random.Range(_shelteredDurationRange.x, _shelteredDurationRange.y);
         bird.LeafSplash.Play();
     }
@@ -17,14 +17,17 @@ public class ShelteredState : IBirdState
     public void Exit(BirdBrain bird)
     {
         bird.Renderer.enabled = true;
-        bird.TargetBirdSpot.OnBirdExit(bird);
+        bird.LeafSplash.Play();
+        bird.LandingTargetSpot.OnBirdExit(bird);
+        if (bird.BirdCollider.isTrigger)
+            bird.BirdCollider.isTrigger = false;
     }
 
     public void Update(BirdBrain bird)
     {
-        if (bird.IsBehaviourDurationExpired())
+        if (bird.TickAndCheckBehaviorTimer())
         {
-            bird.TransitionToState(bird.FlyingState);
+            bird.TransitionToState(bird.Flying);
             return;
         }
 

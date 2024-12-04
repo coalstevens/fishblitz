@@ -8,24 +8,26 @@ public class PerchedState : IBirdState
 
     public void Enter(BirdBrain bird)
     {
-        bird.TargetBirdSpot.OnBirdEntry(bird);
+        bird.LandingTargetSpot.OnBirdEntry(bird);
         bird.Animator.Play("Idle");
         bird.SpriteSorting.enabled = false;
-        bird.Renderer.sortingOrder = (bird.TargetBirdSpot as IPerchable).GetSortingOrder() + 1;
+        bird.Renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 1;
         bird.BehaviorDuration = UnityEngine.Random.Range(_perchedDurationRange.x, _perchedDurationRange.y);
     }
 
     public void Exit(BirdBrain bird)
     {
-        bird.TargetBirdSpot.OnBirdExit(bird);
+        bird.LandingTargetSpot.OnBirdExit(bird);
         bird.SpriteSorting.enabled = true;
+        if (bird.BirdCollider.isTrigger)
+            bird.BirdCollider.isTrigger = false;
     }
 
     public void Update(BirdBrain bird)
     {
-        if (bird.IsBehaviourDurationExpired())
+        if (bird.TickAndCheckBehaviorTimer())
         {
-            bird.TransitionToState(bird.FlyingState);
+            bird.TransitionToState(bird.Flying);
             return;
         }
         bird.CheckIfFrightened();

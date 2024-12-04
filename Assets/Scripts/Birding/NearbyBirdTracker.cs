@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class NearbyBirdTracker : MonoBehaviour
 {
-    private List<Bird> _nearbyBirds = new List<Bird>();
+    [SerializeField] private HashSet<Bird> _nearbyBirds = new();
+    [SerializeField] private Bird _thisBird;
+    [SerializeField] private int _nearbyBirdsCount = 0;
     public IReadOnlyCollection<Bird> NearbyBirds => _nearbyBirds;
     private Collider2D _viewRange;
 
@@ -22,15 +24,17 @@ public class NearbyBirdTracker : MonoBehaviour
             _viewRange.isTrigger = true;
         }
 
+        InitializeNearbyBirds();
+    }
+
+    private void InitializeNearbyBirds() {
         var _overlappingColliders = new List<Collider2D>();
         _viewRange.OverlapCollider(new ContactFilter2D().NoFilter(), _overlappingColliders);
 
         foreach (var _collider in _overlappingColliders)
-            if (_collider.TryGetComponent<Bird>(out var _nearbyBird) && !_nearbyBirds.Contains(_nearbyBird))
-                _nearbyBirds.Add(_nearbyBird);
-
-        if (TryGetComponent<Bird>(out var _thisBird) && _nearbyBirds.Contains(_thisBird))
-            _nearbyBirds.Remove(_thisBird);
+            if (_collider.TryGetComponent<Bird>(out var _bird) && _bird != _thisBird)
+                _nearbyBirds.Add(_bird);
+        _nearbyBirdsCount = _nearbyBirds.Count;
     }
 
     private void OnEnable()
@@ -45,22 +49,25 @@ public class NearbyBirdTracker : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Bird>(out var _bird))
-            if (!_nearbyBirds.Contains(_bird))
-                _nearbyBirds.Add(_bird);
+        if (other.TryGetComponent<Bird>(out var _bird) && _bird != _thisBird) {
+            _nearbyBirds.Add(_bird);
+            _nearbyBirdsCount = _nearbyBirds.Count;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent<Bird>(out var _bird))
-            if (_nearbyBirds.Contains(_bird))
-                _nearbyBirds.Remove(_bird);
+        if (other.TryGetComponent<Bird>(out var _bird)) {
+            _nearbyBirds.Remove(_bird);
+            _nearbyBirdsCount = _nearbyBirds.Count;
+        }
     }
 
     void OnBirdDestroyed(Bird bird)
     {
-        if (_nearbyBirds.Contains(bird))
-            _nearbyBirds.Remove(bird);
-        //_nearbyBirds.RemoveAll(transform => transform == null);
+        if (bird == null) return;
+        _nearbyBirds.Remove(bird);
+        _nearbyBirds.RemoveWhere(b => b == null); // Cleanup
+        _nearbyBirdsCount = _nearbyBirds.Count;
     }
 }

@@ -135,35 +135,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ViewDistance: {fileID: 1798136891552204298}
   _frightDistance: {fileID: 350138464402429585}
+  _birdCollider: {fileID: 0}
   FlockableBirdsNames:
   - Black Capped Chickadee
-  _flightSpeedLimit: 2
+  FlightSpeedLimit: 2
   _steerForceLimit: 4
   BehaviorDuration: 0
   TargetPosition: {x: 0, y: 0}
-  FlyingState:
-    _flyingDurationRange: {x: 5, y: 20}
+  Flying:
+    _flyingDurationRange: {x: 2, y: 20}
     _forceApplicationIntervalSecs: 0.1
-    _forceUpdateIntervalSecs: 0.4
+    _forceUpdateIntervalSecs: 0.5
     _wanderRingRadius: 2
     _wanderRingDistance: 3
     _boidsMaxFlockSize: 5
     _separationWeight: 1
     _alignmentWeight: 1
     _cohesionWeight: 1
-  LandingState:
+    _avoidanceWeight: 3
+    _circleCastRadius: 1
+    _circleCastRangeRadius: 3
+    _boidForce: {x: 0, y: 0}
+    _wanderForce: {x: 0, y: 0}
+    _avoidanceForce: {x: 0, y: 0}
+  Landing:
     _perchPreference: 0.33
     _shelterPreference: 0.33
-    _groundPreference: 0.33
+    _groundPreference: 0.34
     _targetReachedDistanceThreshold: 0.05
-  ShelteredState:
-    _shelteredDurationRange: {x: 3, y: 15}
-  PerchedState:
-    _perchedDurationRange: {x: 2, y: 10}
-  GroundedState:
-    _groundedDurationRange: {x: 3, y: 10}
-    _timeTillHopLimits: {x: 1, y: 4}
-    _twoHopForceLimits: {x: 1, y: 2}
+    _maxTimeTillLand: 5
+  Sheltered:
+    _shelteredDurationRange: {x: 5, y: 20}
+  Perched:
+    _perchedDurationRange: {x: 5, y: 20}
+  Grounded:
+    _groundedDurationRange: {x: 5, y: 20}
+    _timeTillHopLimits: {x: 2, y: 5}
+    _twoHopForceLimits: {x: 1, y: 1}
 --- !u!50 &8308902192013366318
 Rigidbody2D:
   serializedVersion: 4
@@ -425,6 +433,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a360cee652a943ed9b78388385b0d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nearbyBirds: []
+  _thisBird: {fileID: 4604394623336481317}
 --- !u!1001 &7247251883077816801
 PrefabInstance:
   m_ObjectHideFlags: 0

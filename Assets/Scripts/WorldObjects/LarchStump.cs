@@ -178,7 +178,7 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
 
     public void OnBirdEntry(BirdBrain bird)
     {
-        _isBirdPerched = true;
+        // do nothing
     }
 
     public void OnBirdExit(BirdBrain bird)
@@ -194,5 +194,10 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
     public int GetSortingOrder()
     {
         return GetComponent<SpriteRenderer>().sortingOrder;
+    }
+
+    public void ReserveSpace(BirdBrain bird)
+    {
+        _isBirdPerched = true;
     }
 }

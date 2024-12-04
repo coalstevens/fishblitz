@@ -57,7 +57,7 @@ public class BigRock : MonoBehaviour, IPerchable
 
     public void OnBirdEntry(BirdBrain bird)
     {
-        _perchOccupier[_targetPerchIndex] = bird;
+        // do nothing
     }
 
     public void OnBirdExit(BirdBrain bird)
@@ -76,5 +76,10 @@ public class BigRock : MonoBehaviour, IPerchable
     public int GetSortingOrder()
     {
         return GetComponent<SpriteRenderer>().sortingOrder;
+    }
+
+    public void ReserveSpace(BirdBrain bird)
+    {
+        _perchOccupier[_targetPerchIndex] = bird;
     }
 }

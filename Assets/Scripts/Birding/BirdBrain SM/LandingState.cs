@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,12 +10,23 @@ public class LandingState : IBirdState
     [Range(0f, 1f)][SerializeField] private float _perchPreference = 0.33f;
     [Range(0f, 1f)][SerializeField] private float _shelterPreference = 0.33f;
     [Range(0f, 1f)][SerializeField] private float _groundPreference = 0.34f;
-    [SerializeField] private float _targetReachedDistanceThreshold = 0.05f;
-    private IBirdState _landingSpotState;
+    [SerializeField] private float _targetProximityThreshold = 0.05f;
+    [SerializeField] private float _landingTimeoutTeleport = 5f;
+    [SerializeField] public float FlockLandingCircleRadius = 2f;
+    private float _landingStartTime;
+    private IBirdState _stateOnTargetReached;
+
+    // The area in which the bird searches for a landing spot
+    private Vector2 _landingCircleCenter;
+    private float _landingCircleRadius;
+    private bool _landingCirclePreset = false;
 
     public void Enter(BirdBrain bird)
     {
-        SelectPreferredLandingSpot(bird); // Fly to a shelter, perch, ground, etc
+        UpdateLandingCircle(bird);
+        SelectPreferredLandingSpotInLandingCircle(bird); // Fly to a shelter, perch, ground, etc
+        ToggleCollisionsForLandingSpot(bird);
+        _landingStartTime = Time.time;
     }
 
     public void Exit(BirdBrain bird)
@@ -24,30 +36,60 @@ public class LandingState : IBirdState
 
     public void Update(BirdBrain bird)
     {
-        if (Vector2.Distance(bird.TargetPosition, bird.transform.position) > _targetReachedDistanceThreshold)
+        // Teleport if landing is taking too long
+        if (Time.time - _landingStartTime >= _landingTimeoutTeleport)
+        {
+            bird.transform.position = bird.TargetPosition;
+        }
+
+        // Add force while far from target 
+        else if (Vector2.Distance(bird.TargetPosition, bird.transform.position) > _targetProximityThreshold)
         {
             bird.RigidBody.AddForce(bird.Seek(bird.TargetPosition));
             return;
         }
-        bird.TransitionToState(_landingSpotState);
+
+        bird.TransitionToState(_stateOnTargetReached);
     }
 
-    private void SelectPreferredLandingSpot(BirdBrain bird)
+    private void UpdateLandingCircle(BirdBrain bird)
+    {
+        // Landing circle set externally
+        if (_landingCirclePreset) { 
+            _landingCirclePreset = false;
+            return;
+        }
+        
+        // Default is to use ViewDistanceCollider
+        if (bird.ViewDistance is CircleCollider2D circle)
+            SetLandingCircle(circle.radius, (Vector2) circle.transform.position + circle.offset);
+        else
+            Debug.LogError("ViewDistance on bird must be a circle collider");
+    }
+
+    public void SetLandingCircle(float radius, Vector2 center)
+    {
+        _landingCirclePreset = true;
+        _landingCircleRadius = radius;
+        _landingCircleCenter = center;
+    }
+
+    private void SelectPreferredLandingSpotInLandingCircle(BirdBrain bird)
     {
         float _randomValue = UnityEngine.Random.Range(0f, _perchPreference + _shelterPreference + _groundPreference);
         if (_randomValue < _perchPreference)
         {
-            if (TrySelectLandingSpotWithACollider<IPerchable>(bird))
+            if (TryFindLandingSpotOfType<IPerchable>(bird))
             {
-                _landingSpotState = bird.PerchedState;
+                _stateOnTargetReached = bird.Perched;
                 return;
             }
         }
         else if (_randomValue < _perchPreference + _shelterPreference)
         {
-            if (TrySelectLandingSpotWithACollider<IShelterable>(bird))
+            if (TryFindLandingSpotOfType<IShelterable>(bird))
             {
-                _landingSpotState = bird.ShelteredState;
+                _stateOnTargetReached = bird.Sheltered;
                 return;
             }
         }
@@ -55,34 +97,35 @@ public class LandingState : IBirdState
         {
             for (int i = 0; i < 3; i++)
             {
-                if (!IsLandingSpotWater(bird.TargetPosition))
+                if (!IsTargetOverWater(bird.TargetPosition))
                 {
-                    _landingSpotState = bird.GroundedState;
+                    _stateOnTargetReached = bird.Grounded;
                     return;
                 }
-                bird.TargetPosition = GetRandomPointInView(bird);
+                bird.TargetPosition = GeneratePointInLandingCircle(bird);
             }
         }
 
-        bird.TransitionToState(bird.FlyingState); // default to flying
+        bird.TransitionToState(bird.Flying); // default to flying
     }
 
-    private Vector2 GetRandomPointInView(BirdBrain bird)
+    private void ToggleCollisionsForLandingSpot(BirdBrain bird)
     {
-        CircleCollider2D collider = (CircleCollider2D)bird.ViewDistance;
-        Vector2 center = collider.transform.position + (Vector3)collider.offset;
-        Vector2 randomPointInUnitCircle = UnityEngine.Random.insideUnitCircle;
-        float radius = collider.radius * Mathf.Max(collider.transform.lossyScale.x, collider.transform.lossyScale.y);
-
-        return center + randomPointInUnitCircle * radius;
+        if (_stateOnTargetReached == bird.Sheltered || _stateOnTargetReached == bird.Perched)
+            bird.BirdCollider.isTrigger = true;
     }
 
-    private bool IsLandingSpotWater(Vector2 position)
+    private Vector2 GeneratePointInLandingCircle(BirdBrain bird)
+    {
+        return _landingCircleCenter + UnityEngine.Random.insideUnitCircle * _landingCircleRadius;
+    }
+
+    private bool IsTargetOverWater(Vector2 birdPosition)
     {
         Tilemap[] _tilemaps = UnityEngine.Object.FindObjectsOfType<Tilemap>();
         foreach (Tilemap _tilemap in _tilemaps)
         {
-            if (IsWorldPositionInTilemap(_tilemap, position))
+            if (IsPositionWithinTilemap(_tilemap, birdPosition))
             {
                 string _layerName = LayerMask.LayerToName(_tilemap.gameObject.layer);
                 if (_layerName == "Water")
@@ -92,27 +135,28 @@ public class LandingState : IBirdState
         return false;
     }
 
-    private bool IsWorldPositionInTilemap(Tilemap tilemap, Vector3 worldPosition)
+    private bool IsPositionWithinTilemap(Tilemap tilemap, Vector2 worldPosition)
     {
         Vector3Int cellPosition = tilemap.WorldToCell(worldPosition);
         return tilemap.GetTile(cellPosition) != null;
     }
 
-    private bool TrySelectLandingSpotWithACollider<T>(BirdBrain bird) where T : IBirdLandingSpot
+    private bool TryFindLandingSpotOfType<T>(BirdBrain bird) where T : IBirdLandingSpot
     {
-        List<Collider2D> _collidersInViewRange = new();
+        List<Collider2D> _collidersInLandingCircle = Physics2D.OverlapCircleAll(_landingCircleCenter, _landingCircleRadius).ToList();
         List<T> _availableSpots = new();
-        bird.ViewDistance.OverlapCollider(new ContactFilter2D().NoFilter(), _collidersInViewRange);
-
-        foreach (var _collider in _collidersInViewRange)
-            if (_collider.TryGetComponent<T>(out var spot) && (spot is not IPerchable perchable || perchable.IsThereSpace()))
+        
+        foreach (var _collider in _collidersInLandingCircle)
+            if (_collider.TryGetComponent<T>(out var spot) && (spot is IShelterable || (spot is IPerchable perchable && perchable.IsThereSpace())))
                 _availableSpots.Add(spot);
 
         if (_availableSpots.Count == 0)
             return false;
 
-        bird.TargetBirdSpot = _availableSpots[UnityEngine.Random.Range(0, _availableSpots.Count)];
-        bird.TargetPosition = bird.TargetBirdSpot.GetPositionTarget();
+        bird.LandingTargetSpot = _availableSpots[UnityEngine.Random.Range(0, _availableSpots.Count)];
+        bird.TargetPosition = bird.LandingTargetSpot.GetPositionTarget();
+        if (bird.LandingTargetSpot is IPerchable perch)
+            perch.ReserveSpace(bird);
 
         return true;
     }

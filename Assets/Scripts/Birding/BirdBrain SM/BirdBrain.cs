@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // TODOS
-// Add shrub entry splash
 // Fleeing
-// Sprinting 
-// Water Landing
+// Water Landing? Ducks?
 // High flying, low flying
+// obstacle avoidance
 
 public interface IBirdLandingSpot
 {
@@ -29,6 +29,7 @@ public interface IShelterable : IBirdLandingSpot { };
 public interface IPerchable : IBirdLandingSpot
 {
     public bool IsThereSpace();
+    public void ReserveSpace(BirdBrain bird);
     public int GetSortingOrder();
 }
 
@@ -37,12 +38,15 @@ public class BirdBrain : MonoBehaviour
     [Header("General")]
     [SerializeField] public Collider2D ViewDistance;
     [SerializeField] private Collider2D _frightDistance;
+    [SerializeField] private Collider2D _birdCollider;
     [SerializeField] public List<string> FlockableBirdsNames = new();
-    [SerializeField] private float _flightSpeedLimit = 2f;
+    [SerializeField] public float FlightSpeedLimit = 2f;
     [SerializeField] private float _steerForceLimit = 4f;
 
     public delegate void BirdDestroyedHandler(Bird bird);
     public static event BirdDestroyedHandler BirdDestroyed;
+    public delegate void BirdStateChangeHandler(Bird bird, Vector2 targetPosition, IBirdState newState);
+    public static event BirdStateChangeHandler BirdStateChanged;
 
     // State
     public IBirdState BirdState;
@@ -50,13 +54,15 @@ public class BirdBrain : MonoBehaviour
     public float BehaviorDuration = 0;
     private float _behaviorElapsed = 0;
     public Vector2 TargetPosition;
-    public IBirdLandingSpot TargetBirdSpot;
-    public FlyingState FlyingState;
-    public LandingState LandingState;
-    public ShelteredState ShelteredState;
-    public PerchedState PerchedState;
-    public GroundedState GroundedState;
-    public FleeingState FleeingState;
+    public IBirdLandingSpot LandingTargetSpot;
+
+    // States
+    public FlyingState Flying;
+    public LandingState Landing;
+    public ShelteredState Sheltered;
+    public PerchedState Perched;
+    public GroundedState Grounded;
+    public FleeingState Fleeing;
 
     // Properties
     public Animator Animator { get => _animator; }
@@ -65,6 +71,7 @@ public class BirdBrain : MonoBehaviour
     public NearbyBirdTracker NearbyBirdTracker { get => _nearbyBirdsTracker; }
     public ParticleSystem LeafSplash { get => _leafSplash; }
     public Rigidbody2D RigidBody { get => _rb; }
+    public Collider2D BirdCollider { get => _birdCollider; }
 
     // References
     private Animator _animator;
@@ -73,6 +80,7 @@ public class BirdBrain : MonoBehaviour
     private NearbyBirdTracker _nearbyBirdsTracker;
     private ParticleSystem _leafSplash;
     private Rigidbody2D _rb;
+    private Bird _thisBird;
     private Collider2D _worldCollider;
     private Bounds _worldBounds;
     private List<Action> _unsubscribeHooks = new();
@@ -85,12 +93,14 @@ public class BirdBrain : MonoBehaviour
         _spriteSorting = _renderer.GetComponent<DynamicSpriteSorting>();
         _nearbyBirdsTracker = ViewDistance.GetComponent<NearbyBirdTracker>();
         _leafSplash = GetComponentInChildren<ParticleSystem>();
+        _thisBird = GetComponent<Bird>();
+        _birdCollider = GetComponent<Collider2D>();
 
         _worldCollider = GameObject.FindGameObjectWithTag("World").GetComponent<Collider2D>();
         _worldBounds = _worldCollider.bounds;
 
         TargetPosition = transform.position;
-        TransitionToState(FlyingState);
+        TransitionToState(Flying);
     }
 
     private void Update()
@@ -100,11 +110,58 @@ public class BirdBrain : MonoBehaviour
         BirdState?.Update(this);
     }
 
+    private void OnEnable() {
+        BirdStateChanged += ReactToNearbyBirdStateChange;       
+    }
+
+    private void OnDisable() {
+        BirdStateChanged -= ReactToNearbyBirdStateChange;       
+    }
+
+    private void ReactToNearbyBirdStateChange(Bird thatBird, Vector2 thatBirdTargetPosition, IBirdState thatBirdNewState)
+    {
+        if (thatBird == _thisBird) return; // that bird be this bird 
+        if (!FlockableBirdsNames.Contains(thatBird.Name)) return; // that bird don't flock wit this bird 
+        if (!_nearbyBirdsTracker.NearbyBirds.Contains(thatBird)) return; // that bird ain't nearby 
+
+        bool thatBirdJustLanded = 
+            thatBirdNewState is ShelteredState ||
+            thatBirdNewState is PerchedState ||
+            thatBirdNewState is GroundedState;
+
+        if (thatBirdJustLanded && BirdState is FlyingState) {
+            Landing.SetLandingCircle(Landing.FlockLandingCircleRadius, thatBirdTargetPosition); // React by landing near that bird
+            TransitionToState(Landing);
+            return;
+        }
+
+        bool thisBirdIsLanded = 
+            BirdState is ShelteredState ||
+            BirdState is PerchedState ||
+            BirdState is GroundedState;
+
+        if ((thatBirdNewState is FlyingState || thatBirdNewState is FleeingState) && thisBirdIsLanded) {
+            if (thatBirdNewState is FlyingState)
+                TransitionToState(Flying);
+            else if (thatBirdNewState is FleeingState)
+                TransitionToState(Fleeing);
+        }
+    }
+    
     public void TransitionToState(IBirdState newState)
     {
+        if (newState == null) 
+            Debug.LogError("Unexpected code path.");
         BirdState?.Exit(this);
         BirdState = newState;
         BirdState.Enter(this);
+        if (_thisBird == null)
+            Debug.LogError("thisbird");
+        if (TargetPosition == null)
+            Debug.LogError("targetpostion");
+        if (newState == null)
+            Debug.LogError("newstaet");
+        BirdStateChanged(_thisBird, TargetPosition, newState);
     }
 
     private void SelfDestructIfExitedWorld() {
@@ -114,7 +171,7 @@ public class BirdBrain : MonoBehaviour
         }
     }
 
-    public bool IsBehaviourDurationExpired()
+    public bool TickAndCheckBehaviorTimer()
     {
         _behaviorElapsed += Time.deltaTime;
         bool _behaviorExpired = _behaviorElapsed >= BehaviorDuration;
@@ -142,13 +199,14 @@ public class BirdBrain : MonoBehaviour
 
     public void CheckIfFrightened()
     {
-        if (TargetBirdSpot.AreBirdsFrightened())
-            TransitionToState(FleeingState);
+        return; // not implemented
+        // if (TargetBirdSpot.AreBirdsFrightened())
+        //     TransitionToState(Fleeing);
     }
 
     public Vector2 Seek(Vector2 target)
     {
-        Vector2 _desired = (target - (Vector2)transform.position).normalized * _flightSpeedLimit;
+        Vector2 _desired = (target - (Vector2)transform.position).normalized * FlightSpeedLimit;
         Vector2 _steer = _desired - _rb.velocity;
         if (_steer.magnitude >= _steerForceLimit)
             _steer = _steer.normalized * _steerForceLimit;
