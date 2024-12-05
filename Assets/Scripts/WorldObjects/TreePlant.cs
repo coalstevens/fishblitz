@@ -6,7 +6,7 @@ using ReactiveUnity;
 using Unity.Mathematics;
 using UnityEngine;
 
-public enum TreeStates { SummerAdult, FallAdult, DeadAdult};
+public enum TreeStates { SummerAdult, FallAdult, DeadAdult };
 public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe, IShelterable
 {
 
@@ -28,16 +28,15 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
     [SerializeField] protected float _chopShakeStrength = 0.05f;
     [SerializeField] protected int _chopShakeVibrato = 10;
     [SerializeField] protected float _chopShakeRandomness = 90f;
-    
+
     [Header("Gust Shake Material Properties")]
     [SerializeField] protected float _gustWindStrength = 1f;
     [SerializeField] protected float _gustSpeed = 30f;
     [SerializeField] protected float _bendScaler = 1f;
-    
+
     [Header("Birding")]
     [SerializeField] private Collider2D _birdShelterTarget;
-    protected List<BirdBrain> _birdsInTree = new List<BirdBrain>();
-    protected bool _areBirdsFrightened = false;
+    protected HashSet<BirdBrain> _birdsInTree = new HashSet<BirdBrain>();
 
     protected float _originalWindStrength = 0.5f;
     protected float _originalGustSpeed = 0.4f;
@@ -95,19 +94,20 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
         if (_hitCount < _HITS_TO_FALL - 1)
         {
             _hitCount++;
-            _areBirdsFrightened = true;
+            FrightenBirds();
             ShakeTree();
             return;
         }
         StartCoroutine(FallTree());
     }
 
-    protected void ShakeTree() {
+    protected void ShakeTree()
+    {
         transform.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
     }
 
     /// <summary>
-    /// Spawns a stump and a falling tree. Deletes the standing tree (this object instance).
+    /// Spawns a stump and a falling tree. Deletes the standing tree (this object).
     /// </summary>
     IEnumerator FallTree()
     {
@@ -137,9 +137,9 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
             Quaternion.identity,
             GameObject.FindGameObjectWithTag("Impermanent").transform
         );
-        
+
         _fallenTree.GetComponent<FallenTree>().PlayFallingAnimation();
-        
+
         // Want falling tree to appear infront of stump.
         // FallingTree.cs re-enables sprite sorting after falling
         _fallenTree.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
@@ -174,40 +174,38 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
 
     public void OnBirdEntry(BirdBrain bird)
     {
-        // transform.localScale = new Vector2
-        // (
-        //     transform.localScale.x,
-        //     -transform.localScale.y
-        // );
-
-        if (!_birdsInTree.Contains(bird)) {
+        if (!_birdsInTree.Contains(bird))
+        {
             _birdsInTree.Add(bird);
             ShakeTree();
         }
     }
 
-    public void OnBirdExit(BirdBrain bird) {
-        if (_birdsInTree.Contains(bird)) {
+    public void OnBirdExit(BirdBrain bird)
+    {
+        if (_birdsInTree.Contains(bird))
+        {
             _birdsInTree.Remove(bird);
-            if(_birdsInTree.Count == 0)
-                _areBirdsFrightened = false;
             ShakeTree();
         }
     }
 
     public Vector2 GetPositionTarget()
     {
-       Bounds _bounds = _birdShelterTarget.bounds;
-        
-        return new Vector2 
+        Bounds _bounds = _birdShelterTarget.bounds;
+
+        return new Vector2
         (
             UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
             UnityEngine.Random.Range(_bounds.min.y, _bounds.max.y)
         );
     }
 
-    public bool AreBirdsFrightened()
+    private void FrightenBirds()
     {
-        return _areBirdsFrightened;
+        if (_birdsInTree.Count == 0) return;
+
+        foreach (var _bird in _birdsInTree)
+            _bird.FrightenBird();
     }
 }

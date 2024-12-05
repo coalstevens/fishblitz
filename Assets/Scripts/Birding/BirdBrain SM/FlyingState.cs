@@ -7,11 +7,11 @@ using UnityEngine;
 public class FlyingState : IBirdState
 {
     [SerializeField] private Vector2 _flyingDurationRange = new Vector2(2f, 20f);
-    [SerializeField] private float _forceUpdateIntervalSecs = 0.5f;
     [SerializeField] private float _wanderRingRadius = 2f;
     [SerializeField] private float _wanderRingDistance = 2f;
 
     [Header("Flocking Behavior")]
+    [SerializeField] private float _boidForceUpdateIntervalSecs = 0.5f; // To improve performance
     [SerializeField] private int _boidsMaxFlockSize = 5;
     [SerializeField] private float _separationWeight = 1.0f;
     [SerializeField] private float _alignmentWeight = 1.0f;
@@ -47,7 +47,7 @@ public class FlyingState : IBirdState
             return;
         }
 
-        if (Time.time - _lastBoidForceUpdateTime >= _forceUpdateIntervalSecs)
+        if (Time.time - _lastBoidForceUpdateTime >= _boidForceUpdateIntervalSecs)
         {
             UpdateBoidForce(bird);
             _lastBoidForceUpdateTime = Time.time;
@@ -56,7 +56,7 @@ public class FlyingState : IBirdState
         UpdateWanderForce(bird);
         UpdateAvoidanceForce(bird);
         bird.RigidBody.AddForce(_wanderForce + _boidForce + _avoidanceForce);
-        bird.RigidBody.velocity = Vector2.ClampMagnitude(bird.RigidBody.velocity, bird.FlightSpeedLimit);
+        bird.RigidBody.velocity = Vector2.ClampMagnitude(bird.RigidBody.velocity, bird.FlyingSpeedLimit);
     }
 
     private void UpdateWanderForce(BirdBrain bird) {

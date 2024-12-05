@@ -26,11 +26,6 @@ public class ShelteredState : IBirdState
     public void Update(BirdBrain bird)
     {
         if (bird.TickAndCheckBehaviorTimer())
-        {
             bird.TransitionToState(bird.Flying);
-            return;
-        }
-
-        bird.CheckIfFrightened();
     }
 }

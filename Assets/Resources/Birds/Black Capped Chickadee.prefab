@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7758245149523990386}
   - component: {fileID: 350138464402429585}
+  - component: {fileID: 229622609075350988}
   m_Layer: 9
   m_Name: Fright Distance
   m_TagString: Untagged
@@ -67,6 +68,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.13}
   serializedVersion: 2
   m_Radius: 1
+--- !u!114 &229622609075350988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209953058803394694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02b25404486cf4a1090020c1f0ecc44b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3956817024216338719
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,27 +146,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7a49b05c34d4e81b251963b924250f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateName: 
   ViewDistance: {fileID: 1798136891552204298}
-  _frightDistance: {fileID: 350138464402429585}
   _birdCollider: {fileID: 0}
   FlockableBirdsNames:
   - Black Capped Chickadee
-  FlightSpeedLimit: 2
+  FlyingSpeedLimit: 2
   _steerForceLimit: 4
+  _reactionIntervalSecs: 0.5
   BehaviorDuration: 0
   TargetPosition: {x: 0, y: 0}
   Flying:
-    _flyingDurationRange: {x: 2, y: 20}
-    _forceApplicationIntervalSecs: 0.1
-    _forceUpdateIntervalSecs: 0.5
+    _flyingDurationRange: {x: 5, y: 20}
     _wanderRingRadius: 2
     _wanderRingDistance: 3
+    _boidForceUpdateIntervalSecs: 0.5
     _boidsMaxFlockSize: 5
-    _separationWeight: 1
-    _alignmentWeight: 1
-    _cohesionWeight: 1
-    _avoidanceWeight: 3
-    _circleCastRadius: 1
+    _separationWeight: 0.25
+    _alignmentWeight: 2
+    _cohesionWeight: 2
+    _avoidanceWeight: 2
+    _circleCastRadius: 0.4
     _circleCastRangeRadius: 3
     _boidForce: {x: 0, y: 0}
     _wanderForce: {x: 0, y: 0}
@@ -162,8 +175,9 @@ MonoBehaviour:
     _perchPreference: 0.33
     _shelterPreference: 0.33
     _groundPreference: 0.34
-    _targetReachedDistanceThreshold: 0.05
-    _maxTimeTillLand: 5
+    _targetProximityThreshold: 0.05
+    _landingTimeoutTeleport: 5
+    FlockLandingCircleRadius: 1
   Sheltered:
     _shelteredDurationRange: {x: 5, y: 20}
   Perched:
@@ -172,6 +186,10 @@ MonoBehaviour:
     _groundedDurationRange: {x: 5, y: 20}
     _timeTillHopLimits: {x: 2, y: 5}
     _twoHopForceLimits: {x: 1, y: 1}
+  Fleeing:
+    _fleeDurationRange: {x: 3, y: 5}
+    _fleeForceMagnitude: 8
+    _fleeMaxSpeed: 4
 --- !u!50 &8308902192013366318
 Rigidbody2D:
   serializedVersion: 4
@@ -420,7 +438,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.13}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 2
 --- !u!114 &1555518214559205038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,8 +451,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a360cee652a943ed9b78388385b0d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nearbyBirds: []
   _thisBird: {fileID: 4604394623336481317}
+  _nearbyBirdsCount: 0
 --- !u!1001 &7247251883077816801
 PrefabInstance:
   m_ObjectHideFlags: 0

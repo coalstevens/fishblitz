@@ -30,6 +30,5 @@ public class PerchedState : IBirdState
             bird.TransitionToState(bird.Flying);
             return;
         }
-        bird.CheckIfFrightened();
     }
 }
