@@ -11,6 +11,8 @@ public class BirdShadow : MonoBehaviour
 
     private float _targetYPosition;
     private bool _isTransitioning = false;
+    private Vector2 _landingBirdStartPosition;
+    private float _totalDisanceToLand;
     private SpriteRenderer _renderer;
     private BirdBrain _bird;
     private IBirdState _currentState = null;
@@ -28,7 +30,10 @@ public class BirdShadow : MonoBehaviour
 
         if (_isTransitioning)
         {
-            MoveShadowToTarget();
+            if (_currentState is LandingState) 
+                InterpolateShadowWithBirdTarget(); 
+            else
+                MoveShadowByDelta();
             InterpolateShadowOpacity();
         }
 
@@ -40,8 +45,25 @@ public class BirdShadow : MonoBehaviour
         }
     }
 
+    private void InterpolateShadowWithBirdTarget() {
+        float _distanceTravelled = Vector2.Distance(_bird.transform.position, _landingBirdStartPosition);
+        float _interpolateValue = _distanceTravelled / _totalDisanceToLand;
 
-    private void MoveShadowToTarget()
+        transform.localPosition = new Vector2
+        (
+            transform.localPosition.x,
+            Mathf.Lerp(_flyingYPosition, _idleYPosition, _interpolateValue)
+        );
+
+        if (Mathf.Approximately(_interpolateValue, 1f))
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, _idleYPosition);
+            _isTransitioning = false;
+            return;
+        } 
+    }
+
+    private void MoveShadowByDelta()
     {
         float _delta = _shadowTransitionSpeed * Time.deltaTime;
         float _currentY = transform.localPosition.y;
@@ -90,28 +112,36 @@ public class BirdShadow : MonoBehaviour
         // standing
         if (_currentState is PerchedState || _currentState is GroundedState)
         {
-            SetTarget(_idleYPosition);
+            SetMoveShadowTarget(_idleYPosition);
             return;
         }
 
         // flying
         if (_currentState is FlyingState || _currentState is LandingState || _currentState is FleeingState)
         {
-            SetTarget(_flyingYPosition);
+            SetMoveShadowTarget(_flyingYPosition);
+            return;
+        }
+
+        // landing
+        if (_currentState is LandingState) {
+            _landingBirdStartPosition = _bird.transform.position;
+            _totalDisanceToLand = Vector2.Distance(_bird.TargetPosition, _landingBirdStartPosition);
+            _isTransitioning = true;
             return;
         }
 
         // soaring
         if (_currentState is SoaringState || _currentState is SoaringLandingState)
         {
-            SetTarget(_soaringYPosition);
+            SetMoveShadowTarget(_soaringYPosition);
             return;
         }
 
         Debug.LogError("Unexpected state for bird shadow.");
     }
 
-    private void SetTarget(float targetY)
+    private void SetMoveShadowTarget(float targetY)
     {
         _targetYPosition = targetY;
         _isTransitioning = true;

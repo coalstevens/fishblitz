@@ -54,7 +54,7 @@ public class BirdBrain : MonoBehaviour
     private FacingDirection _facingDirection = FacingDirection.West;
     public float BehaviorDuration = 0;
     private float _behaviorElapsed = 0;
-    public Vector2 TargetPosition;
+    public Vector2 TargetPosition = Vector2.zero;
     public IBirdLandingSpot LandingTargetSpot;
     private float _lastFlockReactionTime = 0;
 

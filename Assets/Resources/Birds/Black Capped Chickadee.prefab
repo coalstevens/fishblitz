@@ -263,17 +263,17 @@ MonoBehaviour:
   Flying:
     _flyingDurationRange: {x: 5, y: 20}
     _speedLimit: 2
-    _landingPreference: 0.75
-    _soaringPreference: 0.25
+    _landingPreference: 0.9
+    _soaringPreference: 0.1
     _wanderRingRadius: 2
     _wanderRingDistance: 3
-    _steerForceLimit: 4
+    _steerForceLimit: 2
     _boidForceUpdateIntervalSecs: 0.5
     _maxFlockMates: 5
     _separationWeight: 0.5
-    _alignmentWeight: 1.5
+    _alignmentWeight: 1
     _cohesionWeight: 1
-    _avoidanceWeight: 2
+    _avoidanceWeight: 1
     _circleCastRadius: 0.4
     _circleCastRange: 3
     _boidForce: {x: 0, y: 0}
@@ -307,9 +307,9 @@ MonoBehaviour:
     _soaringDurationRange: {x: 10, y: 30}
     _flyingPreference: 0.5
     _landingPreference: 0.5
-    _speedLimit: 1.5
+    _speedLimit: 2
     _steerForceLimit: 4
-    _wanderRingDistance: 4
+    _wanderRingDistance: 5
     _wanderRingRadius: 3
   SoarLanding:
     _targetProximityThreshold: 0.05
