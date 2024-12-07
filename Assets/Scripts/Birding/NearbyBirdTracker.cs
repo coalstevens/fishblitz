@@ -27,7 +27,8 @@ public class NearbyBirdTracker : MonoBehaviour
         InitializeNearbyBirds();
     }
 
-    private void InitializeNearbyBirds() {
+    private void InitializeNearbyBirds()
+    {
         var _overlappingColliders = new List<Collider2D>();
         _viewRange.OverlapCollider(new ContactFilter2D().NoFilter(), _overlappingColliders);
 
@@ -49,7 +50,8 @@ public class NearbyBirdTracker : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<Bird>(out var _bird) && _bird != _thisBird) {
+        if (other.TryGetComponent<Bird>(out var _bird) && _bird != _thisBird)
+        {
             _nearbyBirds.Add(_bird);
             _nearbyBirdsCount = _nearbyBirds.Count;
         }
@@ -57,7 +59,8 @@ public class NearbyBirdTracker : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent<Bird>(out var _bird)) {
+        if (other.TryGetComponent<Bird>(out var _bird))
+        {
             _nearbyBirds.Remove(_bird);
             _nearbyBirdsCount = _nearbyBirds.Count;
         }

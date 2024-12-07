@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveable, IPerchable
+public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveable, IPerchableLowElevation
 {
     private const string IDENTIFIER = "LarchStump";
     private enum StumpStates { AxeIn, LogOn, Splitting, Idle };
@@ -170,10 +170,9 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
 
         return randomPoint;
     }
-
-    public bool AreBirdsFrightened()
+    public int GetSortingOrder()
     {
-        return false; 
+        return GetComponent<SpriteRenderer>().sortingOrder;
     }
 
     public void OnBirdEntry(BirdBrain bird)
@@ -189,11 +188,6 @@ public class LarchStump : MonoBehaviour, IInteractable, IUseableWithAxe, ISaveab
     public bool IsThereSpace()
     {
         return !_isBirdPerched;
-    }
-
-    public int GetSortingOrder()
-    {
-        return GetComponent<SpriteRenderer>().sortingOrder;
     }
 
     public void ReserveSpace(BirdBrain bird)

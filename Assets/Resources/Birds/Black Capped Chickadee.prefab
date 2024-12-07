@@ -147,27 +147,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateName: 
+  _previousStateName: 
   ViewDistance: {fileID: 1798136891552204298}
   _birdCollider: {fileID: 0}
   FlockableBirdsNames:
   - Black Capped Chickadee
-  FlyingSpeedLimit: 2
-  _steerForceLimit: 4
   _reactionIntervalSecs: 0.5
   BehaviorDuration: 0
   TargetPosition: {x: 0, y: 0}
   Flying:
     _flyingDurationRange: {x: 5, y: 20}
+    _speedLimit: 2
     _wanderRingRadius: 2
     _wanderRingDistance: 3
+    _steerForceLimit: 4
     _boidForceUpdateIntervalSecs: 0.5
-    _boidsMaxFlockSize: 5
-    _separationWeight: 0.25
-    _alignmentWeight: 2
-    _cohesionWeight: 2
+    _maxFlockMates: 5
+    _separationWeight: 0.5
+    _alignmentWeight: 1.5
+    _cohesionWeight: 1
     _avoidanceWeight: 2
     _circleCastRadius: 0.4
-    _circleCastRangeRadius: 3
+    _circleCastRange: 3
     _boidForce: {x: 0, y: 0}
     _wanderForce: {x: 0, y: 0}
     _avoidanceForce: {x: 0, y: 0}
@@ -178,6 +179,8 @@ MonoBehaviour:
     _targetProximityThreshold: 0.05
     _landingTimeoutTeleport: 5
     FlockLandingCircleRadius: 1
+    _speedLimit: 3
+    _steerForceLimit: 4
   Sheltered:
     _shelteredDurationRange: {x: 5, y: 20}
   Perched:
@@ -190,6 +193,15 @@ MonoBehaviour:
     _fleeDurationRange: {x: 3, y: 5}
     _fleeForceMagnitude: 8
     _fleeMaxSpeed: 4
+  SoarLanding:
+    _perchPreference: 0.33
+    _flyPreference: 0.33
+    _soarPreference: 0.34
+    _targetProximityThreshold: 0.05
+    _landingTimeoutTeleport: 5
+    FlockLandingCircleRadius: 2
+    _speedLimit: 2.5
+    _steerForceLimit: 3
 --- !u!50 &8308902192013366318
 Rigidbody2D:
   serializedVersion: 4

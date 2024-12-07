@@ -208,4 +208,9 @@ public abstract class TreePlant : MonoBehaviour, IInteractable, IUseableWithAxe,
         foreach (var _bird in _birdsInTree)
             _bird.FrightenBird();
     }
+
+    public int GetSortingOrder()
+    {
+        return _spriteRenderer.sortingOrder;
+    }
 }

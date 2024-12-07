@@ -14,6 +14,10 @@ public class GroundedState : IBirdState
     {
         bird.Animator.Play("Idle");
         bird.BehaviorDuration = UnityEngine.Random.Range(_groundedDurationRange.x, _groundedDurationRange.y);
+
+        bird.BirdCollider.isTrigger = false;
+        bird.SpriteSorting.enabled = true;
+        bird.Renderer.sortingLayerName = "Main";
         ResetHopTimer();
     }
 

@@ -1,37 +1,45 @@
 using System;
-using System.ComponentModel;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
 public class FlyingState : IBirdState
 {
     [SerializeField] private Vector2 _flyingDurationRange = new Vector2(2f, 20f);
+    [SerializeField] private float _speedLimit = 2;
+    [Range(0f, 1f)] [SerializeField] private float _landingPreference = 0.75f;
+    [Range(0f, 1f)] [SerializeField] private float _soaringPreference = 0.25f;
+
+    [Header("Wander Force")]
     [SerializeField] private float _wanderRingRadius = 2f;
     [SerializeField] private float _wanderRingDistance = 2f;
+    [SerializeField] private float _steerForceLimit = 4f;
 
-    [Header("Flocking Behavior")]
+    [Header("Flocking Force")]
     [SerializeField] private float _boidForceUpdateIntervalSecs = 0.5f; // To improve performance
-    [SerializeField] private int _boidsMaxFlockSize = 5;
+    [SerializeField] private int _maxFlockMates = 5;
     [SerializeField] private float _separationWeight = 1.0f;
     [SerializeField] private float _alignmentWeight = 1.0f;
     [SerializeField] private float _cohesionWeight = 1.0f;
 
-    [Header("Avoidance Behavior")]
+    [Header("Avoidance Force")]
     [SerializeField] private float _avoidanceWeight = 1.0f;
     [SerializeField] private float _circleCastRadius = 1.0f;
-    [SerializeField] private float _circleCastRangeRadius = 3.0f;
+    [SerializeField] private float _circleCastRange = 3.0f;
 
-    private float _lastBoidForceUpdateTime = 0;
+    [Header("State observation")]
     [SerializeField] private Vector2 _boidForce = Vector2.zero;
     [SerializeField] private Vector2 _wanderForce = Vector2.zero;
-    [SerializeField] private Vector2 _avoidanceForce = Vector2.zero;
-    
+    [SerializeField] private Vector2 _avoidanceForce = Vector2.zero; 
+    private float _lastBoidForceUpdateTime = 0;
 
     public void Enter(BirdBrain bird)
     {
         bird.Animator.Play("Flying");
         bird.BehaviorDuration = UnityEngine.Random.Range(_flyingDurationRange.x, _flyingDurationRange.y);
+
+        bird.BirdCollider.isTrigger = false;
+        bird.SpriteSorting.enabled = true;
+        bird.Renderer.sortingLayerName = "Main";
     }
 
     public void Exit(BirdBrain bird)
@@ -43,89 +51,24 @@ public class FlyingState : IBirdState
     {
         if (bird.TickAndCheckBehaviorTimer())
         {
-            bird.TransitionToState(bird.Landing);
+            float _randomValue = UnityEngine.Random.Range(0, _landingPreference + _soaringPreference);
+            if (_randomValue < _landingPreference)
+                bird.TransitionToState(bird.Landing);
+            else
+                bird.TransitionToState(bird.Soaring);
             return;
         }
 
         if (Time.time - _lastBoidForceUpdateTime >= _boidForceUpdateIntervalSecs)
         {
-            UpdateBoidForce(bird);
+            _boidForce = BirdForces.CalculateBoidForce(bird, _maxFlockMates, _separationWeight, _alignmentWeight, _cohesionWeight);
             _lastBoidForceUpdateTime = Time.time;
         }
 
-        UpdateWanderForce(bird);
-        UpdateAvoidanceForce(bird);
+        _wanderForce = BirdForces.CalculateWanderForce(bird, _speedLimit, _steerForceLimit, _wanderRingDistance, _wanderRingRadius);
+        _avoidanceForce = BirdForces.CalculateAvoidanceForce(bird, _circleCastRadius, _circleCastRange,_avoidanceWeight);
         bird.RigidBody.AddForce(_wanderForce + _boidForce + _avoidanceForce);
-        bird.RigidBody.velocity = Vector2.ClampMagnitude(bird.RigidBody.velocity, bird.FlyingSpeedLimit);
+        bird.RigidBody.velocity = Vector2.ClampMagnitude(bird.RigidBody.velocity, _speedLimit);
     }
 
-    private void UpdateWanderForce(BirdBrain bird) {
-        Vector2 _ringCenter = (Vector2)bird.transform.position + bird.RigidBody.velocity.normalized * _wanderRingDistance;
-        bird.TargetPosition = _ringCenter + _wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
-        _wanderForce = bird.Seek(bird.TargetPosition);
-    }
-
-    private void UpdateBoidForce(BirdBrain bird)
-    {
-        _lastBoidForceUpdateTime = Time.time;
-
-        if (bird.FlockableBirdsNames.Count > 0)
-            _boidForce = CalculateBoidForce(bird);
-        else 
-            _boidForce = Vector2.zero;
-    }
-
-    private Vector2 CalculateBoidForce(BirdBrain bird)
-    {
-        Vector2 _separation = Vector2.zero; // Prevents birds getting too close
-        Vector2 _alignment = Vector2.zero; // Urge to match direction of others
-        Vector2 _cohesion = Vector2.zero; // Urge to move towards centroid of flock
-        int _count = 0;
-        var _nearbyBirds = bird.NearbyBirdTracker.NearbyBirds
-            .Where(b => bird.FlockableBirdsNames.Contains(b.Name));
-        
-        foreach (var _nearbyBird in _nearbyBirds)
-        {
-            if (_nearbyBird.gameObject == null) continue;
-            float _distance = Vector2.Distance(bird.transform.position, _nearbyBird.transform.position);
-            _separation += (Vector2)(bird.transform.position - _nearbyBird.transform.position) / _distance;
-            _alignment += _nearbyBird.GetVelocity();
-            _cohesion += (Vector2)_nearbyBird.transform.position;
-            _count++;
-            if (_count >= _boidsMaxFlockSize)
-                break;
-        }
-
-        if (_count > 0)
-        {
-            _separation /= _count;
-            _alignment /= _count;
-            _cohesion /= _count;
-            _cohesion = (_cohesion - (Vector2)bird.transform.position).normalized;
-            return
-                (_separation.normalized * _separationWeight +
-                _alignment.normalized * _alignmentWeight +
-                _cohesion * _cohesionWeight).normalized;
-        }
-        return Vector2.zero;
-    }
-
-    private void UpdateAvoidanceForce(BirdBrain bird) {
-        RaycastHit2D hit = Physics2D.CircleCast(
-            bird.transform.position, 
-            _circleCastRadius, 
-            bird.RigidBody.velocity.normalized, 
-            _circleCastRangeRadius
-        );
-        
-        if (hit.collider != null)
-        {
-            Vector2 obstaclePosition = hit.point;
-            Vector2 avoidanceDirection = ((Vector2) bird.transform.position - obstaclePosition).normalized;
-            float proximityFactor = 1 - (hit.distance / _circleCastRangeRadius); // Closer -> stronger
-            _avoidanceForce = avoidanceDirection * proximityFactor * _avoidanceWeight;
-        }
-        else
-        _avoidanceForce = Vector2.zero;
-    }
 }

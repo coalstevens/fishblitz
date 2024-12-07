@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +11,8 @@ public class LandingState : IBirdState
     [SerializeField] private float _targetProximityThreshold = 0.05f;
     [SerializeField] private float _landingTimeoutTeleport = 5f;
     [SerializeField] public float FlockLandingCircleRadius = 2f;
+    [SerializeField] private float _speedLimit = 3f;
+    [SerializeField] private float _steerForceLimit = 4f;
     private float _landingStartTime;
     private IBirdState _stateOnTargetReached;
 
@@ -25,8 +25,12 @@ public class LandingState : IBirdState
     {
         UpdateLandingCircle(bird);
         SelectPreferredLandingSpotInLandingCircle(bird); // Fly to a shelter, perch, ground, etc
-        ToggleCollisionsForLandingSpot(bird);
         _landingStartTime = Time.time;
+
+        // need to disable collisions sometimes so that bird doesn't hit the object its trying to land on
+        bird.BirdCollider.isTrigger = (_stateOnTargetReached == bird.Sheltered || _stateOnTargetReached == bird.Perched);
+        bird.SpriteSorting.enabled = true;
+        bird.Renderer.sortingLayerName = "Main";
     }
 
     public void Exit(BirdBrain bird)
@@ -42,10 +46,10 @@ public class LandingState : IBirdState
             bird.transform.position = bird.TargetPosition;
         }
 
-        // Add force while far from target 
+        // Apply force to approach target 
         else if (Vector2.Distance(bird.TargetPosition, bird.transform.position) > _targetProximityThreshold)
         {
-            bird.RigidBody.AddForce(bird.Seek(bird.TargetPosition));
+            bird.RigidBody.AddForce(BirdForces.Seek(bird, _speedLimit, _steerForceLimit));
             return;
         }
 
@@ -79,7 +83,7 @@ public class LandingState : IBirdState
         float _randomValue = UnityEngine.Random.Range(0f, _perchPreference + _shelterPreference + _groundPreference);
         if (_randomValue < _perchPreference)
         {
-            if (TryFindLandingSpotOfType<IPerchable>(bird))
+            if (bird.TryFindLandingSpotOfType<IPerchableLowElevation>(_landingCircleCenter, _landingCircleRadius))
             {
                 _stateOnTargetReached = bird.Perched;
                 return;
@@ -87,7 +91,7 @@ public class LandingState : IBirdState
         }
         else if (_randomValue < _perchPreference + _shelterPreference)
         {
-            if (TryFindLandingSpotOfType<IShelterable>(bird))
+            if (bird.TryFindLandingSpotOfType<IShelterable>(_landingCircleCenter, _landingCircleRadius))
             {
                 _stateOnTargetReached = bird.Sheltered;
                 return;
@@ -107,12 +111,6 @@ public class LandingState : IBirdState
         }
 
         bird.TransitionToState(bird.Flying); // default to flying
-    }
-
-    private void ToggleCollisionsForLandingSpot(BirdBrain bird)
-    {
-        if (_stateOnTargetReached == bird.Sheltered || _stateOnTargetReached == bird.Perched)
-            bird.BirdCollider.isTrigger = true;
     }
 
     private Vector2 GeneratePointInLandingCircle(BirdBrain bird)
@@ -141,23 +139,4 @@ public class LandingState : IBirdState
         return tilemap.GetTile(cellPosition) != null;
     }
 
-    private bool TryFindLandingSpotOfType<T>(BirdBrain bird) where T : IBirdLandingSpot
-    {
-        List<Collider2D> _collidersInLandingCircle = Physics2D.OverlapCircleAll(_landingCircleCenter, _landingCircleRadius).ToList();
-        List<T> _availableSpots = new();
-        
-        foreach (var _collider in _collidersInLandingCircle)
-            if (_collider.TryGetComponent<T>(out var spot) && (spot is IShelterable || (spot is IPerchable perchable && perchable.IsThereSpace())))
-                _availableSpots.Add(spot);
-
-        if (_availableSpots.Count == 0)
-            return false;
-
-        bird.LandingTargetSpot = _availableSpots[UnityEngine.Random.Range(0, _availableSpots.Count)];
-        bird.TargetPosition = bird.LandingTargetSpot.GetPositionTarget();
-        if (bird.LandingTargetSpot is IPerchable perch)
-            perch.ReserveSpace(bird);
-
-        return true;
-    }
 }

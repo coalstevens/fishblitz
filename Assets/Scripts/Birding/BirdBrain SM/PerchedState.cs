@@ -8,26 +8,41 @@ public class PerchedState : IBirdState
 
     public void Enter(BirdBrain bird)
     {
+        if (bird.LandingTargetSpot == null)
+        {
+            Debug.LogError("LandingTargetSpot is null. Transitioning to Flying state.");
+            bird.TransitionToState(bird.Flying);
+            return;
+        }
+        
         bird.LandingTargetSpot.OnBirdEntry(bird);
         bird.Animator.Play("Idle");
-        bird.SpriteSorting.enabled = false;
-        bird.Renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 1;
         bird.BehaviorDuration = UnityEngine.Random.Range(_perchedDurationRange.x, _perchedDurationRange.y);
+
+        bird.BirdCollider.isTrigger = true;
+        bird.SpriteSorting.enabled = false;
+        bird.Renderer.sortingLayerName = "Main";
+        bird.Renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 1;
     }
 
     public void Exit(BirdBrain bird)
     {
         bird.LandingTargetSpot.OnBirdExit(bird);
-        bird.SpriteSorting.enabled = true;
-        if (bird.BirdCollider.isTrigger)
-            bird.BirdCollider.isTrigger = false;
     }
 
     public void Update(BirdBrain bird)
     {
         if (bird.TickAndCheckBehaviorTimer())
         {
-            bird.TransitionToState(bird.Flying);
+            if (bird.PreviousBirdState is LandingState)
+                bird.TransitionToState(bird.Flying);
+            else if (bird.PreviousBirdState is SoaringLandingState)
+                bird.TransitionToState(bird.Soaring);
+            else
+            {
+                bird.TransitionToState(bird.Flying);
+                Debug.LogError($"Unexpected code path. Previous state: {bird.PreviousBirdState}");
+            }
             return;
         }
     }

@@ -2,22 +2,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BigRock : MonoBehaviour, IPerchable
+public class BigRock : MonoBehaviour, IPerchableLowElevation
 {
     private List<Collider2D> _perches = new();
     private List<BirdBrain> _perchOccupier = new();
-    private int _targetPerchIndex = new();
+    private int _targetPerchIndex = 0;
 
     void Start()
     {
         _perches = GetComponentsInChildren<Collider2D>().ToList();
         foreach (var _perch in _perches)
             _perchOccupier.Add(null);
-    }
-
-    public bool AreBirdsFrightened()
-    {
-        return false;
     }
 
     public Vector2 GetPositionTarget()

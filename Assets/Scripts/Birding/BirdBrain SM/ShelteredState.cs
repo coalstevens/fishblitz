@@ -8,10 +8,15 @@ public class ShelteredState : IBirdState
 
     public void Enter(BirdBrain bird)
     {
-        bird.Renderer.enabled = false;
         bird.LandingTargetSpot.OnBirdEntry(bird);
         bird.BehaviorDuration = UnityEngine.Random.Range(_shelteredDurationRange.x, _shelteredDurationRange.y);
+        bird.LeafSplashRenderer.sortingOrder = bird.LandingTargetSpot.GetSortingOrder() + 1;
         bird.LeafSplash.Play();
+        
+        bird.Renderer.enabled = false;
+        bird.BirdCollider.isTrigger = true;
+        bird.SpriteSorting.enabled = false;
+        bird.Renderer.sortingLayerName = "Main";
     }
 
     public void Exit(BirdBrain bird)
@@ -19,8 +24,6 @@ public class ShelteredState : IBirdState
         bird.Renderer.enabled = true;
         bird.LeafSplash.Play();
         bird.LandingTargetSpot.OnBirdExit(bird);
-        if (bird.BirdCollider.isTrigger)
-            bird.BirdCollider.isTrigger = false;
     }
 
     public void Update(BirdBrain bird)
