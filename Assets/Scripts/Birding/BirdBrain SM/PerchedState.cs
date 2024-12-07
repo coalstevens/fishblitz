@@ -22,7 +22,7 @@ public class PerchedState : IBirdState
         bird.BirdCollider.isTrigger = true;
         bird.SpriteSorting.enabled = false;
         bird.Renderer.sortingLayerName = "Main";
-        bird.Renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 1;
+        bird.Renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 2; // +2 to make room for shadow as well, between the two
     }
 
     public void Exit(BirdBrain bird)

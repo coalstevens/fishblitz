@@ -6,9 +6,8 @@ using UnityEngine;
 
 // TODOS
 // Water Landing? Ducks?
-// High flying, low flying
 // Add shadows!
-
+// fright should not work when soaring
 
 public interface IBirdState
 {

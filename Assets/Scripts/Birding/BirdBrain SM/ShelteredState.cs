@@ -8,6 +8,12 @@ public class ShelteredState : IBirdState
 
     public void Enter(BirdBrain bird)
     {
+        if (bird.LandingTargetSpot == null)
+        {
+            Debug.LogError("LandingTargetSpot is null. Transitioning to Flying state.");
+            bird.TransitionToState(bird.Flying);
+            return;
+        }
         bird.LandingTargetSpot.OnBirdEntry(bird);
         bird.BehaviorDuration = UnityEngine.Random.Range(_shelteredDurationRange.x, _shelteredDurationRange.y);
         bird.LeafSplashRenderer.sortingOrder = bird.LandingTargetSpot.GetSortingOrder() + 1;
