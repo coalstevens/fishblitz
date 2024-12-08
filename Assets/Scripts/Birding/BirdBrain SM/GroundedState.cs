@@ -14,6 +14,7 @@ public class GroundedState : IBirdState
     {
         bird.Animator.Play("Idle");
         bird.BehaviorDuration = UnityEngine.Random.Range(_groundedDurationRange.x, _groundedDurationRange.y);
+        Physics2D.IgnoreLayerCollision(bird.WaterLayer, bird.BirdsLayer, false);
 
         bird.BirdCollider.isTrigger = false;
         bird.SpriteSorting.enabled = true;
@@ -23,7 +24,7 @@ public class GroundedState : IBirdState
 
     public void Exit(BirdBrain bird)
     {
-        // do nothing
+        Physics2D.IgnoreLayerCollision(bird.WaterLayer, bird.BirdsLayer, true);
     }
 
     public void Update(BirdBrain bird)

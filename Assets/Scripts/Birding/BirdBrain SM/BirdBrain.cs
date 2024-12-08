@@ -6,8 +6,7 @@ using UnityEngine;
 
 // TODOS
 // Water Landing? Ducks?
-// Add shadows!
-// fright should not work when soaring
+// might be a bug when the bird is hopping on the ground and the state changes during this process?
 
 public interface IBirdState
 {
@@ -91,6 +90,11 @@ public class BirdBrain : MonoBehaviour
     private Bounds _worldBounds;
     private Collider2D _playerCollider;
     private List<Action> _unsubscribeHooks = new();
+    
+    private const string WATER_LAYER = "Water";
+    private const string BIRDS_LAYER = "Birds";
+    public int WaterLayer;
+    public int BirdsLayer;
 
     void Start()
     {
@@ -103,6 +107,9 @@ public class BirdBrain : MonoBehaviour
         _leafSplashRenderer = _leafSplash.GetComponent<Renderer>();
         _thisBird = GetComponent<Bird>();
         _birdCollider = GetComponent<Collider2D>();
+
+        WaterLayer = LayerMask.NameToLayer(WATER_LAYER);
+        BirdsLayer = LayerMask.NameToLayer(BIRDS_LAYER);
 
         _worldCollider = GameObject.FindGameObjectWithTag("World").GetComponent<Collider2D>();
         _worldBounds = _worldCollider.bounds;
@@ -132,11 +139,11 @@ public class BirdBrain : MonoBehaviour
     private void ReactToNearbyBirdStateChange(Bird thatBird, Vector2 thatBirdTargetPosition, IBirdState thatBirdNewState)
     {
         // AKA GoBeWithYourFlockieBoys()
-
+        if (Time.time - _lastFlockReactionTime < _reactionIntervalSecs) return;
+        if (thatBird == null) return; // that bird don't be
         if (thatBird == _thisBird) return; // that bird be this bird 
         if (!FlockableBirdsNames.Contains(thatBird.Name)) return; // that bird don't flock wit this bird 
         if (!_nearbyBirdsTracker.NearbyBirds.Contains(thatBird)) return; // that bird ain't nearby 
-        if (Time.time - _lastFlockReactionTime < _reactionIntervalSecs) return;
 
         // Fleeing beats following the flock
         if (BirdState is FleeingState) 

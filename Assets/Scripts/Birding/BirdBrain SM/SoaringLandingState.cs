@@ -21,6 +21,7 @@ public class SoaringLandingState : IBirdState
 
     public void Enter(BirdBrain bird)
     {
+        bird.Animator.Play("Flying");
         UpdateLandingCircle(bird);
         SelectPreferredLandingSpotInLandingCircle(bird); // Fly to a shelter, perch, ground, etc
         _landingStartTime = Time.time;
