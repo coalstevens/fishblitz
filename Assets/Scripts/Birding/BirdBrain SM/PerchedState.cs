@@ -10,8 +10,7 @@ public class PerchedState : IBirdState
     {
         if (bird.LandingTargetSpot == null)
         {
-            Debug.LogError("LandingTargetSpot is null. Transitioning to Flying state.");
-            bird.TransitionToState(bird.Flying);
+            Debug.LogError("LandingTargetSpot is null.");
             return;
         }
         
@@ -40,8 +39,8 @@ public class PerchedState : IBirdState
                 bird.TransitionToState(bird.Soaring);
             else
             {
-                bird.TransitionToState(bird.Flying);
                 Debug.LogError($"Unexpected code path. Previous state: {bird.PreviousBirdState}");
+                bird.TransitionToState(bird.Flying);
             }
             return;
         }

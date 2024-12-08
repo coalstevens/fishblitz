@@ -41,6 +41,9 @@ public class LandingState : IBirdState
 
     public void Update(BirdBrain bird)
     {
+        if (_stateOnTargetReached == bird.Flying)
+            bird.TransitionToState(_stateOnTargetReached);
+            
         // Teleport if landing is taking too long
         if (Time.time - _landingStartTime >= _landingTimeoutTeleport)
         {
@@ -110,8 +113,7 @@ public class LandingState : IBirdState
                 bird.TargetPosition = GeneratePointInLandingCircle(bird);
             }
         }
-
-        bird.TransitionToState(bird.Flying); // default to flying
+        _stateOnTargetReached = bird.Flying;
     }
 
     private Vector2 GeneratePointInLandingCircle(BirdBrain bird)

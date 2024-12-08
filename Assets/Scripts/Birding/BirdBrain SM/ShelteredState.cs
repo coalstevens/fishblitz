@@ -10,8 +10,7 @@ public class ShelteredState : IBirdState
     {
         if (bird.LandingTargetSpot == null)
         {
-            Debug.LogError("LandingTargetSpot is null. Transitioning to Flying state.");
-            bird.TransitionToState(bird.Flying);
+            Debug.LogError("LandingTargetSpot is null.");
             return;
         }
         bird.LandingTargetSpot.OnBirdEntry(bird);

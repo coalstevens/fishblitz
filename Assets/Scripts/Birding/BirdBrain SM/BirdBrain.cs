@@ -7,6 +7,7 @@ using UnityEngine;
 // TODOS
 // Water Landing? Ducks?
 // might be a bug when the bird is hopping on the ground and the state changes during this process?
+// rocks can not be perches when they are underwater
 
 public interface IBirdState
 {
@@ -37,7 +38,6 @@ public class BirdBrain : MonoBehaviour
     [SerializeField] public string _stateName;
     [SerializeField] public string _previousStateName;
     [SerializeField] public Collider2D ViewDistance;
-    [SerializeField] private Collider2D _birdCollider;
     [SerializeField] public List<string> FlockableBirdsNames = new();
     [SerializeField] private float _reactionIntervalSecs = 2f;
     [SerializeField] private float _reactionTimeSecs = 0.5f;
@@ -56,6 +56,8 @@ public class BirdBrain : MonoBehaviour
     public Vector2 TargetPosition = Vector2.zero;
     public IBirdLandingSpot LandingTargetSpot;
     private float _lastFlockReactionTime = 0;
+    private bool _isReacting = false;
+    private bool _isFrightened = false;
 
     // States
     public FlyingState Flying;
@@ -78,6 +80,7 @@ public class BirdBrain : MonoBehaviour
     public Collider2D BirdCollider { get => _birdCollider; }
 
     // References
+    private Collider2D _birdCollider;
     private Animator _animator;
     private SpriteRenderer _renderer;
     private DynamicSpriteSorting _spriteSorting;
@@ -96,13 +99,13 @@ public class BirdBrain : MonoBehaviour
     public int WaterLayer;
     public int BirdsLayer;
 
-    void Start()
+    private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponentInChildren<Animator>();
         _renderer = GetComponentInChildren<SpriteRenderer>();
-        _spriteSorting = _renderer.GetComponent<DynamicSpriteSorting>();
-        _nearbyBirdsTracker = ViewDistance.GetComponent<NearbyBirdTracker>();
+        _spriteSorting = GetComponentInChildren<DynamicSpriteSorting>();
+        _nearbyBirdsTracker = GetComponentInChildren<NearbyBirdTracker>();
         _leafSplash = GetComponentInChildren<ParticleSystem>();
         _leafSplashRenderer = _leafSplash.GetComponent<Renderer>();
         _thisBird = GetComponent<Bird>();
@@ -120,6 +123,8 @@ public class BirdBrain : MonoBehaviour
 
     private void Update()
     {
+        if (_isFrightened && BirdState is not FleeingState) 
+            TransitionToState(Fleeing);
         UpdateStateText();
         SelfDestructIfWorldExited();
         UpdateFacingDirection();
@@ -141,6 +146,7 @@ public class BirdBrain : MonoBehaviour
         // AKA GoBeWithYourFlockieBoys()
         if (Time.time - _lastFlockReactionTime < _reactionIntervalSecs) return;
         if (thatBird == null) return; // that bird don't be
+        if (_nearbyBirdsTracker == null) return;
         if (thatBird == _thisBird) return; // that bird be this bird 
         if (!FlockableBirdsNames.Contains(thatBird.Name)) return; // that bird don't flock wit this bird 
         if (!_nearbyBirdsTracker.NearbyBirds.Contains(thatBird)) return; // that bird ain't nearby 
@@ -186,8 +192,10 @@ public class BirdBrain : MonoBehaviour
 
     private IEnumerator ReactiveTransitionToStateWithDelay(IBirdState newState) {
         _lastFlockReactionTime = Time.time;
+        _isReacting = true;
         float _delay = UnityEngine.Random.Range(0, _reactionTimeSecs);
         yield return new WaitForSeconds(_delay);
+        _isReacting = false;
         TransitionToState(newState);
     }
 
@@ -195,6 +203,10 @@ public class BirdBrain : MonoBehaviour
     {
         if (newState == null)
             Debug.LogError("Unexpected code path.");
+
+        // ignore any other transitions while bird is reacting
+        if (_isReacting)
+            return; 
         BirdState?.Exit(this);
         PreviousBirdState = BirdState;
         BirdState = newState;
@@ -237,8 +249,7 @@ public class BirdBrain : MonoBehaviour
 
     public void FrightenBird()
     {
-        if (BirdState is not FleeingState)
-            TransitionToState(Fleeing);
+        _isFrightened = true;
     }
 
     private void MatchAnimationToFacingDirection()

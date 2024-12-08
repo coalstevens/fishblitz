@@ -38,6 +38,9 @@ public class SoaringLandingState : IBirdState
 
     public void Update(BirdBrain bird)
     {
+        if (_stateOnTargetReached == bird.Soaring)
+            bird.TransitionToState(_stateOnTargetReached);
+            
         // Teleport if landing is taking too long
         if (Time.time - _landingStartTime >= _landingTimeoutTeleport)
         {
@@ -83,8 +86,7 @@ public class SoaringLandingState : IBirdState
             _stateOnTargetReached = bird.Perched;
             return;
         }
-
-        bird.TransitionToState(bird.Soaring); // default
+        _stateOnTargetReached = bird.Soaring;
     }
 
 }

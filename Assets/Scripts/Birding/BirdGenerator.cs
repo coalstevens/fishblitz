@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: spawned birds on awake, these can spawn in frame of camera
 public class BirdGenerator : MonoBehaviour
 {
     [SerializeField] int _birdsInScene = 15;

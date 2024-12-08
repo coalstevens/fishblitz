@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class NearbyBirdTracker : MonoBehaviour
 {
-    [SerializeField] private HashSet<Bird> _nearbyBirds = new();
     [SerializeField] private Bird _thisBird;
     [SerializeField] private int _nearbyBirdsCount = 0;
+    private HashSet<Bird> _nearbyBirds = new();
     public IReadOnlyCollection<Bird> NearbyBirds => _nearbyBirds;
     private Collider2D _viewRange;
 
-    private void Awake()
+    private void Start()
     {
         _viewRange = GetComponent<Collider2D>();
         if (_viewRange == null)
