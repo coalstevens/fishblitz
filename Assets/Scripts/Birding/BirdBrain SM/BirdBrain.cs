@@ -7,7 +7,6 @@ using UnityEngine;
 // TODOS
 // Water Landing? Ducks?
 // might be a bug when the bird is hopping on the ground and the state changes during this process?
-// rocks can not be perches when they are underwater
 
 public interface IBirdState
 {

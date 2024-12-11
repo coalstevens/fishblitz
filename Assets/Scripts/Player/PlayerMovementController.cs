@@ -59,12 +59,18 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.name == "GameMenu") return;
         transform.position = PlayerData.Instance.SceneSpawnPosition;
     }
 
     public void OnMove(InputValue value)
     {
         _currentMotion = value.Get<Vector2>();
+    }
+    
+    private void OnMoveCursor(InputValue value) {
+        Journal _journal = FindObjectOfType<Journal>();
+        _journal.OnMoveCursor(value);
     }
 
     private void Update()

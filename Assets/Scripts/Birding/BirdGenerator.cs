@@ -1,13 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: spawned birds on awake, these can spawn in frame of camera
 public class BirdGenerator : MonoBehaviour
 {
+
     [SerializeField] int _birdsInScene = 15;
     [SerializeField] Collider2D _world;
     [SerializeField] private string _birdDirectioryName = "Birds"; // Replace with your subfolder name
+    
     private Bounds _worldBounds;
     private GameObject[] _birds;
 

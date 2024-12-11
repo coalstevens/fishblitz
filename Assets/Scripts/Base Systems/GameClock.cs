@@ -7,6 +7,7 @@ public class GameClock : Singleton<GameClock>
     private float _timeBuffer = 0;
     private float _gameMinuteInRealSeconds; // Calculated in Start
     public enum Seasons { Spring, EndOfSpring, Summer, EndOfSummer, Fall, EndOfFall, Winter, EndOfWinter };
+    public enum DayPeriods {SUNRISE, DAY, SUNSET, NIGHT};
     public List<string> SeasonNames = new List<string> { "Spring", "EndOfSpring", "Summer", "EndOfSummer", "Fall", "EndOfFall", "Winter", "EndOfWinter" };
     [SerializeField] private float _gameDayInRealMinutes = 1f;
     [SerializeField] int _numRegularSeasonDays = 10;

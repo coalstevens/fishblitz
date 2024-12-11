@@ -253,7 +253,6 @@ MonoBehaviour:
   _stateName: 
   _previousStateName: 
   ViewDistance: {fileID: 1798136891552204298}
-  _birdCollider: {fileID: 0}
   FlockableBirdsNames:
   - Black Capped Chickadee
   _reactionIntervalSecs: 0.5
@@ -286,7 +285,7 @@ MonoBehaviour:
     _targetProximityThreshold: 0.05
     _landingTimeoutTeleport: 5
     FlockLandingCircleRadius: 1
-    _speedLimit: 3
+    _speedLimit: 2
     _steerForceLimit: 4
   Sheltered:
     _shelteredDurationRange: {x: 5, y: 20}
@@ -308,7 +307,7 @@ MonoBehaviour:
     _flyingPreference: 0.5
     _landingPreference: 0.5
     _speedLimit: 2
-    _steerForceLimit: 4
+    _steerForceLimit: 1
     _wanderRingDistance: 5
     _wanderRingRadius: 3
   SoarLanding:
@@ -317,6 +316,8 @@ MonoBehaviour:
     FlockLandingCircleRadius: 2
     _speedLimit: 2.5
     _steerForceLimit: 3
+  WaterLayer: 0
+  BirdsLayer: 0
 --- !u!50 &8308902192013366318
 Rigidbody2D:
   serializedVersion: 4
@@ -565,7 +566,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.13}
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 2
 --- !u!114 &1555518214559205038
 MonoBehaviour:
   m_ObjectHideFlags: 0
