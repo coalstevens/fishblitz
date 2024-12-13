@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// TODO change outline highlight color when the bird has been caught before
+// TODO mark a new capture, mark already captured, etc
+
 public class BirdingGame : MonoBehaviour
 {
     [Header("General")]
@@ -225,6 +228,10 @@ public class BirdingGame : MonoBehaviour
         _winFrame.transform.position = winner.transform.position;
         _beam.gameObject.SetActive(false);
         _winFrame.PlayWin(winner);
+        if (!winner.Caught) {
+            winner.Caught = true;
+            PlayerData.Instance.AddToBirdingLog(winner);
+        }
     }
 
     private void OnLose()

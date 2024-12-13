@@ -24,8 +24,8 @@ public class Journal : MonoBehaviour
     [SerializeField] private Image _denominator;
     [SerializeField] private List<Sprite> _numbersTo24RightJustified = new();
     [SerializeField] private List<Sprite> _numbersTo24LeftJustified = new();
-    private Dictionary<string, PlayerData.BirdingLogEntry> _playerBirdLogLookup;
     private Transform[][] _pagesLookup;
+    private PlayerData.BirdingLog _playerBirdLog;
     private (int i, int j) _pagePointer;
     private int _numRows = 4;
     private int _numColumns = 6;
@@ -37,11 +37,12 @@ public class Journal : MonoBehaviour
             Debug.LogError("Season icons are assigned incorrectly in the journal.");
         if (_dayPeriodIcons.Count != 4)
             Debug.LogError("Day period icons are assigned incorrectly in the journal.");
-        InitializePlayerBirdLogLookup();
+
+        _playerBirdLog = PlayerData.Instance.PlayerBirdingLog;
         var _allEntries = CollectActiveEntries();
         _totalEntries = _allEntries.Count;
         InitializePagesLookupTable(_allEntries);
-        RefreshPages(PlayerData.Instance.PlayerBirdingLog);
+        RefreshPages();
         UpdateNoteBook();
         StartCoroutine(UpdateCursorAfterDelay());
     }
@@ -53,11 +54,6 @@ public class Journal : MonoBehaviour
 
     private void UpdateCursorPosition() {
         _cursor.position = _pagesLookup[_pagePointer.i][_pagePointer.j].GetChild(1).transform.position;
-    }
-
-    private void InitializePlayerBirdLogLookup()
-    {
-        _playerBirdLogLookup = PlayerData.Instance.PlayerBirdingLog.CaughtBirds.ToDictionary(b => b.Name, b => b);
     }
 
     private List<Transform> CollectActiveEntries() {
@@ -118,7 +114,7 @@ public class Journal : MonoBehaviour
     {
         // get the entry for the selected bird from the player log if it exists
         string _birdName = _pagesLookup[_pagePointer.i][_pagePointer.j].gameObject.name;
-        RefreshNotebook(_playerBirdLogLookup.TryGetValue(_birdName, out var entry) ? entry : null);
+        RefreshNotebook(_playerBirdLog.CaughtBirds.ContainsKey(_birdName) ? _birdName : null);
     }
 
     private bool TryMoveJournalPointer(Vector2 inputDirection)
@@ -137,34 +133,29 @@ public class Journal : MonoBehaviour
         return true;
     }
 
-    private PlayerData.BirdingLogEntry GetBirdLogEntry(string birdname, PlayerData.BirdingLog birdingLog)
+    private void RefreshPages()
     {
-        return _playerBirdLogLookup.TryGetValue(birdname, out var entry) ? entry : null;
-    }
-
-    private void RefreshPages(PlayerData.BirdingLog birdingLog)
-    {
-        _numerator.sprite = _numbersTo24RightJustified[_playerBirdLogLookup.Count];
+        _numerator.sprite = _numbersTo24RightJustified[_playerBirdLog.CaughtBirds.Count];
         _denominator.sprite = _numbersTo24LeftJustified[_totalEntries];
 
         foreach (Transform _child in _leftPage)
         {
-            bool _isBirdInLog = _playerBirdLogLookup.ContainsKey(_child.gameObject.name);
+            bool _isBirdInLog = _playerBirdLog.CaughtBirds.ContainsKey(_child.gameObject.name);
             _child.GetChild(0).gameObject.SetActive(!_isBirdInLog); // Set ? Icon
             _child.GetChild(1).gameObject.SetActive(_isBirdInLog); // Set bird Icon
         }
 
         foreach (Transform _child in _rightPage)
         {
-            bool _isBirdInLog = _playerBirdLogLookup.ContainsKey(_child.gameObject.name);
+            bool _isBirdInLog = _playerBirdLog.CaughtBirds.ContainsKey(_child.gameObject.name);
             _child.GetChild(0).gameObject.SetActive(!_isBirdInLog); // Set ? Icon
             _child.GetChild(1).gameObject.SetActive(_isBirdInLog); // Set bird Icon
         }
     }
 
-    private void RefreshNotebook(PlayerData.BirdingLogEntry selectedEntry)
+    private void RefreshNotebook(string birdName)
     {
-        if (selectedEntry == null)
+        if (birdName == null)
         {
             _noteBookTitle.text = "???";
             // Dim all icons
@@ -175,17 +166,18 @@ public class Journal : MonoBehaviour
             }
             return;
         }
-        _noteBookTitle.text = selectedEntry.Name;
+        _noteBookTitle.text = birdName;
+        PlayerData.BirdCapturePeriod _capturePeriod = _playerBirdLog.CaughtBirds[birdName];
 
-        SetIconOpacity(_seasonIcons[0], selectedEntry.CaughtSeasons.Contains(GameClock.Seasons.Spring));
-        SetIconOpacity(_seasonIcons[1], selectedEntry.CaughtSeasons.Contains(GameClock.Seasons.Summer));
-        SetIconOpacity(_seasonIcons[2], selectedEntry.CaughtSeasons.Contains(GameClock.Seasons.Fall));
-        SetIconOpacity(_seasonIcons[3], selectedEntry.CaughtSeasons.Contains(GameClock.Seasons.Winter));
+        SetIconOpacity(_seasonIcons[0], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Spring));
+        SetIconOpacity(_seasonIcons[1], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Summer));
+        SetIconOpacity(_seasonIcons[2], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Fall));
+        SetIconOpacity(_seasonIcons[3], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Winter));
 
-        SetIconOpacity(_dayPeriodIcons[0], selectedEntry.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNRISE));
-        SetIconOpacity(_dayPeriodIcons[1], selectedEntry.CaughtDayPeriods.Contains(GameClock.DayPeriods.DAY));
-        SetIconOpacity(_dayPeriodIcons[2], selectedEntry.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNSET));
-        SetIconOpacity(_dayPeriodIcons[3], selectedEntry.CaughtDayPeriods.Contains(GameClock.DayPeriods.NIGHT));
+        SetIconOpacity(_dayPeriodIcons[0], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNRISE));
+        SetIconOpacity(_dayPeriodIcons[1], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.DAY));
+        SetIconOpacity(_dayPeriodIcons[2], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNSET));
+        SetIconOpacity(_dayPeriodIcons[3], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.NIGHT));
     }
 
     private void SetIconOpacity(Image icon, bool isDim)

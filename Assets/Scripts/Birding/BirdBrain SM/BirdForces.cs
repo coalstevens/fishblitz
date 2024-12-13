@@ -45,7 +45,7 @@ public static class BirdForces
         int _count = 0;
 
         var _nearbyBirds = bird.NearbyBirdTracker.NearbyBirds
-            .Where(b => bird.FlockableBirdsNames.Contains(b.Name))
+            .Where(b => bird.FlockableBirdsNames.Contains(b.BirdName))
             .OrderBy(b => Vector2.Distance(bird.transform.position, b.transform.position)); // Sorted so closer birds are selected first
 
         foreach (var _nearbyBird in _nearbyBirds)

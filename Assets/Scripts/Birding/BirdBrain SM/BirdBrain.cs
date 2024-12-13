@@ -37,9 +37,11 @@ public class BirdBrain : MonoBehaviour
     [SerializeField] public string _stateName;
     [SerializeField] public string _previousStateName;
     [SerializeField] public Collider2D ViewDistance;
+
+    [Header("Flocking")]
     [SerializeField] public List<string> FlockableBirdsNames = new();
     [SerializeField] private float _reactionIntervalSecs = 2f;
-    [SerializeField] private float _reactionTimeSecs = 0.5f;
+    [SerializeField] private float _slowestReactionTimeSecs = 0.5f;
     
     public delegate void BirdDestroyedHandler(Bird bird);
     public static event BirdDestroyedHandler BirdDestroyed;
@@ -147,7 +149,7 @@ public class BirdBrain : MonoBehaviour
         if (thatBird == null) return; // that bird don't be
         if (_nearbyBirdsTracker == null) return;
         if (thatBird == _thisBird) return; // that bird be this bird 
-        if (!FlockableBirdsNames.Contains(thatBird.Name)) return; // that bird don't flock wit this bird 
+        if (!FlockableBirdsNames.Contains(thatBird.BirdName)) return; // that bird don't flock wit this bird 
         if (!_nearbyBirdsTracker.NearbyBirds.Contains(thatBird)) return; // that bird ain't nearby 
 
         // Fleeing beats following the flock
@@ -192,7 +194,7 @@ public class BirdBrain : MonoBehaviour
     private IEnumerator ReactiveTransitionToStateWithDelay(IBirdState newState) {
         _lastFlockReactionTime = Time.time;
         _isReacting = true;
-        float _delay = UnityEngine.Random.Range(0, _reactionTimeSecs);
+        float _delay = UnityEngine.Random.Range(0, _slowestReactionTimeSecs);
         yield return new WaitForSeconds(_delay);
         _isReacting = false;
         TransitionToState(newState);

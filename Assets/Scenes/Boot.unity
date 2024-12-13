@@ -4626,6 +4626,19 @@ MonoBehaviour:
   _gameDayInRealMinutes: 8
   _numRegularSeasonDays: 10
   _numTransitionSeasonDays: 5
+  _dayPeriodRanges:
+  - Period: 0
+    StartHour: 6
+    EndHour: 8
+  - Period: 1
+    StartHour: 8
+    EndHour: 18
+  - Period: 2
+    StartHour: 18
+    EndHour: 20
+  - Period: 3
+    StartHour: 20
+    EndHour: 6
   GameclockPaused: 0
   GameYear:
     _val: 1

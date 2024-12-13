@@ -1,45 +1,93 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-// TODO: spawned birds on awake, these can spawn in frame of camera
 public class BirdGenerator : MonoBehaviour
 {
 
     [SerializeField] int _birdsInScene = 15;
     [SerializeField] Collider2D _world;
-    [SerializeField] private string _birdDirectioryName = "Birds"; // Replace with your subfolder name
-    
+    [SerializeField] private string _birdDirectioryName = "Birds"; 
+
     private Bounds _worldBounds;
-    private GameObject[] _birds;
+    private List<GameObject> _allBirds;
+    private List<GameObject> _spawnableBirds = new();
+    private GameClock.Seasons? _prevSeason = null;
+    private GameClock.DayPeriods? _prevPeriod = null;
+    private GameClock.Seasons _currSeason;
+    private GameClock.DayPeriods _currPeriod;
+    private Camera _mainCamera;
 
     void Start()
     {
-        _birds = Resources.LoadAll<GameObject>(_birdDirectioryName);
         _worldBounds = _world.bounds;
-    }
-
-    void Update()
-    {
-        if (transform.childCount < _birdsInScene)
-            SpawnBird();
-    }
-
-    void SpawnBird()
-    {
-        if (_birds.Length == 0)
+        _mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        _allBirds = Resources.LoadAll<GameObject>(_birdDirectioryName).ToList();
+        _allBirds = Resources.LoadAll<GameObject>(_birdDirectioryName)?.ToList();
+        if (_allBirds == null || _allBirds.Count == 0)
         {
             Debug.LogError("No birds found in the Resources/" + _birdDirectioryName + " folder.");
             return;
         }
 
-        GameObject _randomBird = _birds[Random.Range(0, _birds.Length)];
+        UpdateSpawnableBirdsList();
+        if(_spawnableBirds.Count != 0) {
+            for (int i = 0; i < _birdsInScene; i++)
+                SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorld()); // birds can spawn in camera view only at the start of the scene
+        }
+    }
 
-        UnityEngine.Object.Instantiate
+    void Update()
+    {
+        if (transform.childCount >= _birdsInScene) 
+            return;
+        
+        UpdateSpawnableBirdsList();
+        if (_spawnableBirds.Count == 0)
+                return;
+
+        SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorldAndOutsideCamera());
+    }
+
+    private void SpawnBird(GameObject bird, Vector2 spawnPoint)
+    {
+        GameObject _birdInstance = Instantiate
         (
-            _birds[0],//_randomBird,
-            GetPointWithinWorldAndOutsideCamera(),
+            bird,
+            spawnPoint,
             Quaternion.identity,
             transform
         );
+
+        Bird _birdBird = _birdInstance.GetComponent<Bird>();
+        if (_birdBird == null)
+        {
+            Debug.LogError("Spawned object does not have a Bird component.");
+            return;
+        }
+        _birdBird.SeasonSpawned = _currSeason;
+        _birdBird.PeriodSpawned = _currPeriod;
+    }
+
+    private void UpdateSpawnableBirdsList()
+    {
+        _currSeason = GameClock.Instance.GameSeason.Value;
+        _currPeriod = GameClock.Instance.GetDayPeriod();
+
+        if (_prevSeason == _currSeason && _prevPeriod == _currPeriod)
+            return;
+
+        _prevSeason = _currSeason;
+        _prevPeriod = _currPeriod;
+
+        _spawnableBirds = _allBirds.Where(b =>
+            {
+                var birdComponent = b.GetComponent<Bird>();
+                return 
+                    birdComponent != null &&
+                    birdComponent.SpawnableSeasons.Contains(_currSeason) &&
+                    birdComponent.SpawnablePeriods.Contains(_currPeriod);
+            }).ToList();
     }
 
     private Vector2 GetPointWithinWorldAndOutsideCamera()
@@ -47,19 +95,24 @@ public class BirdGenerator : MonoBehaviour
         Bounds _cameraBounds = GetCameraFrameBounds();
         Vector2 _randomPoint;
 
-        do
+        while (true)
         {
-            float _x = Random.Range(_worldBounds.min.x, _worldBounds.max.x);
-            float _y = Random.Range(_worldBounds.min.y, _worldBounds.max.y);
-            _randomPoint = new Vector2(_x, _y);
-        } while (_cameraBounds.Contains(_randomPoint));
+            _randomPoint = GetPointWithinWorld();
+            if (!_cameraBounds.Contains(_randomPoint)) break;
+        }
 
         return _randomPoint;
     }
 
+    private Vector2 GetPointWithinWorld() {
+        return new Vector2 (
+            Random.Range(_worldBounds.min.x, _worldBounds.max.x),
+            Random.Range(_worldBounds.min.y, _worldBounds.max.y)
+        );    
+    }
+
     private Bounds GetCameraFrameBounds()
     {
-        Camera _mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         float _cameraZPosition = Mathf.Abs(_mainCamera.transform.position.z);
 
         Vector3 _bottomLeft = _mainCamera.ViewportToWorldPoint(new Vector3(0, 0, _cameraZPosition));
@@ -67,10 +120,6 @@ public class BirdGenerator : MonoBehaviour
 
         Bounds _cameraBounds = new Bounds();
         _cameraBounds.SetMinMax(_bottomLeft, _topRight);
-
-        Vector3 _boundsCenter = _cameraBounds.center;
-        Vector3 _boundsSize = _cameraBounds.size;
-        //Debug.Log($"Center: {_boundsCenter}, Size: {_boundsSize}");
 
         return _cameraBounds;
     }

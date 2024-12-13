@@ -235,8 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46632a77365134d7395263a9570ed2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Black Capped Chickadee
+  BirdName: Black Capped Chickadee
   Icon: {fileID: 919966473809115317, guid: 2ca416f5d0a4d4bf29f97f82ac6c183f, type: 3}
+  SpawnableSeasons: 00000000020000000400000006000000
+  SpawnablePeriods: 000000000100000002000000
+  PeriodSpawned: 0
+  SeasonSpawned: 0
   Caught: 0
 --- !u!114 &6724720882062252639
 MonoBehaviour:
@@ -255,8 +259,10 @@ MonoBehaviour:
   ViewDistance: {fileID: 1798136891552204298}
   FlockableBirdsNames:
   - Black Capped Chickadee
+  - Chestnut Backed Chickadee
+  - Golden Crowned Kinglet
   _reactionIntervalSecs: 0.5
-  _reactionTimeSecs: 0.5
+  _slowestReactionTimeSecs: 0.5
   BehaviorDuration: 0
   TargetPosition: {x: 0, y: 0}
   Flying:
@@ -288,7 +294,7 @@ MonoBehaviour:
     _speedLimit: 2
     _steerForceLimit: 4
   Sheltered:
-    _shelteredDurationRange: {x: 5, y: 20}
+    _shelteredDurationRange: {x: 5, y: 10}
   Perched:
     _perchedDurationRange: {x: 5, y: 20}
   Grounded:
@@ -298,7 +304,7 @@ MonoBehaviour:
   Fleeing:
     _fleeDurationRange: {x: 3, y: 5}
     _fleeForceMagnitude: 8
-    _fleeMaxSpeed: 4
+    _fleeMaxSpeed: 3.5
     _avoidanceWeight: 1
     _circleCastRadius: 1
     _circleCastRange: 3
