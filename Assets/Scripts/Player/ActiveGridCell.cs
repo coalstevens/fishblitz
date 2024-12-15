@@ -4,8 +4,43 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
-public class ActiveGridCell : MonoBehaviour
+public class PlayerInteractionManager : MonoBehaviour
 {
+    public interface ITool {
+        /// <summary>
+        /// Uses tool on the world object under player object. Returns false if ignored.
+        /// </summary>
+        public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
+        
+        /// <summary>
+        /// Uses tool on the interactive tilemap under cursor. Returns false if ignored.
+        /// </summary>
+        public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
+
+        /// <summary>
+        /// Uses tool on no object in particular (empty swing, binoculars trigger birding game, etc)
+        /// </summary>
+        public void SwingTool();
+
+        /// <summary>
+        /// Plays a sound when the tool interacts with the target
+        /// </summary>
+        public void PlayToolHitSound();
+    }
+
+    public interface IInteractable 
+    {
+        /// <summary>
+        /// Returns false if the object ignores the command.
+        /// </summary>
+        public bool CursorInteract(Vector3 cursorLocation);
+    }
+
+    public interface IPlayerCursorUsingItem {
+        public bool UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
+        public bool UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
+    }
+
     [SerializeField] private Cursor _cursorN;
     [SerializeField] private Cursor _cursorE;
     [SerializeField] private Cursor _cursorS;
@@ -75,7 +110,7 @@ public class ActiveGridCell : MonoBehaviour
         }
 
         // check active inventory slot for tool
-        IInventoryItem _activeItem = _inventory.GetActiveItem();
+        Inventory.IItem _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) return;
         if (_activeItem is not ITool) return;
 
@@ -116,7 +151,7 @@ public class ActiveGridCell : MonoBehaviour
             return;
 
         // check active inventory slot for interactable item
-        IInventoryItem _activeItem = _inventory.GetActiveItem();
+        Inventory.IItem _activeItem = _inventory.GetActiveItem();
         if (_activeItem == null) return;
         if (_activeItem is not IPlayerCursorUsingItem) return;
 

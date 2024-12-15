@@ -5,7 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 
 
-public class WoodRack : MonoBehaviour, IInteractable, ITickable, ISaveable
+public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
     // SaveData
     private class WoodRackSaveData {

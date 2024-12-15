@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Binoculars : MonoBehaviour, IInventoryItem, ITool
+public class Binoculars : MonoBehaviour, Inventory.IItem, PlayerInteractionManager.ITool
 {
     private const string ITEM_NAME = "Binoculars";
     private int _quantity = 0;
@@ -27,7 +27,7 @@ public class Binoculars : MonoBehaviour, IInventoryItem, ITool
         set => _quantity = value;
     }
 
-    public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         return false;
     }

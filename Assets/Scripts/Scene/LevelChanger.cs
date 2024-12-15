@@ -1,7 +1,7 @@
 using OysterUtils;
 using UnityEngine;
 
-public class LevelChanger : MonoBehaviour, IInteractable
+public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractable
 {
     [SerializeField] bool OnInteract = false; 
     [SerializeField] private string _toScene;

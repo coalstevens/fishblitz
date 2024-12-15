@@ -7,7 +7,7 @@ using System;
 
 // Used for 4 different prefabs (different rod facing directions)
 // Hence there is lots of serialized members
-public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable
+public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
 {
     private class PlacedMountedRodSaveData {
         public bool fishOnState;
@@ -35,7 +35,7 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable
     private Reactive<bool> _selected = new Reactive<bool>(false);
     private FishBar _fishBar;
     private Coroutine _changeStateRoutine;
-    private ActiveGridCell _activeGridCell;
+    private PlayerInteractionManager _activeGridCell;
     private List<Action> _unsubscribeHooks = new();
 
     public Collider2D ObjCollider {
@@ -68,7 +68,7 @@ public class PlacedMountedRod : MonoBehaviour, IInteractable, ISaveable
     private void Awake()
     {
         // References
-        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<ActiveGridCell>();
+        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<PlayerInteractionManager>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());

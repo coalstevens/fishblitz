@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
+public class MountedRod : MonoBehaviour, PlayerInteractionManager.IPlayerCursorUsingItem, Inventory.IItem
 {
     private Inventory _inventory;
     private const string ITEM_NAME = "MountedRod";
@@ -39,7 +39,7 @@ public class MountedRod : MonoBehaviour, IPlayerCursorUsingItem, IInventoryItem
         // _inventory.TryRemoveItem("MountedRod", 1);
     }
 
-    bool IPlayerCursorUsingItem.UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool PlayerInteractionManager.IPlayerCursorUsingItem.UseItemOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         return false; // do nothing
     }

@@ -4,7 +4,7 @@ using ReactiveUnity;
 using System;
 using UnityEngine.SceneManagement;
 
-public class PlayerDryingManager : MonoBehaviour, ITickable
+public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 {
     // Drying
     // The drying points system is just math to enforce

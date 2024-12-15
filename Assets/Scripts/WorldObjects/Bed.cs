@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bed : MonoBehaviour, IInteractable
+public class Bed : MonoBehaviour, PlayerInteractionManager.IInteractable
 {
     Transform _player;
  

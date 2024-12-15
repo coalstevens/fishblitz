@@ -4,7 +4,7 @@ using DG.Tweening;
 using ReactiveUnity;
 using UnityEngine;
 
-public abstract class FallenTree : MonoBehaviour, IInteractable, IUseableWithAxe
+public abstract class FallenTree : MonoBehaviour, PlayerInteractionManager.IInteractable, Axe.IUseableWithAxe
 {
     [SerializeField] protected bool _fallsEast;
 

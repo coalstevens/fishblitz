@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Kokanee : MonoBehaviour, IInventoryItem
+public class Kokanee : MonoBehaviour, Inventory.IItem
 {
     private const string ITEM_HAME = "Kokanee";
     private int _quantity = 0;

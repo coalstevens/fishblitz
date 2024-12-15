@@ -5,6 +5,10 @@ using System;
 
 public class GameClock : Singleton<GameClock>
 {
+    public interface ITickable {
+        public void OnGameMinuteTick();
+    }
+    
     private float _timeBuffer = 0;
     private float _gameMinuteInRealSeconds; // Calculated in Start
 

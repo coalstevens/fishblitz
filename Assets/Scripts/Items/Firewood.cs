@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
-public class Firewood : MonoBehaviour, IInventoryItem //IPlayerCursorUsingItem
+public class Firewood : MonoBehaviour, Inventory.IItem //IPlayerCursorUsingItem
 {
     private const string ITEM_HAME = "Firewood";
     private int _quantity = 0;

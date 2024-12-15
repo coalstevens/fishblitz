@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Axe : MonoBehaviour, ITool, IInventoryItem
+public class Axe : MonoBehaviour, PlayerInteractionManager.ITool, Inventory.IItem
 {
+    public interface IUseableWithAxe {
+        void OnUseAxe();
+    }
     private PlayerMovementController _playerMovementController;
     private const string ITEM_HAME = "Axe";
     private int _quantity = 0;
@@ -25,7 +28,7 @@ public class Axe : MonoBehaviour, ITool, IInventoryItem
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
     }
 
-    bool ITool.UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool PlayerInteractionManager.ITool.UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IUseableWithAxe _worldObject)
         {
@@ -36,11 +39,11 @@ public class Axe : MonoBehaviour, ITool, IInventoryItem
         return false;
     }
 
-    void ITool.SwingTool() {
+    void PlayerInteractionManager.ITool.SwingTool() {
         _playerMovementController.PlayerState.Value = PlayerStates.Axing;
     }
 
-    bool ITool.UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
+    bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
     {
         return false; // does nothing
     }

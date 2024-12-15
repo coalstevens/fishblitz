@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RainbowTrout : MonoBehaviour, IInventoryItem
+public class RainbowTrout : MonoBehaviour, Inventory.IItem
 {
     private const string ITEM_HAME = "RainbowTrout";
     private int _quantity = 0;

@@ -10,6 +10,12 @@ using System;
 // Start() is called before first frame of scene, which has occured before instantiation.
 
 public class SceneSaveLoadManager : MonoBehaviour {
+    public interface ISaveable 
+    {
+        SaveData Save();
+        void Load(SaveData saveData);
+    }
+
     Transform _impermanentContainer;
     public delegate void FirstVisitToSceneHandler(string sceneName);
     public static event FirstVisitToSceneHandler FirstVisitToScene;
@@ -77,11 +83,11 @@ public class SceneSaveLoadManager : MonoBehaviour {
     private void ProcessElaspedTimeForChildren(GameClockCapture pastTime, Transform parent) {  
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
         // Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
-        List<ITickable> _tickables = new();
+        List<GameClock.ITickable> _tickables = new();
 
         // get tickables
         foreach (Transform _child in parent)
-            if (_child.TryGetComponent<ITickable>(out var _tickable))
+            if (_child.TryGetComponent<GameClock.ITickable>(out var _tickable))
                 _tickables.Add(_tickable);
         
         // tick tickables

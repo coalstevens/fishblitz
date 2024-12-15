@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Rod : MonoBehaviour, ITool, IInventoryItem
+public class Rod : MonoBehaviour, PlayerInteractionManager.ITool, Inventory.IItem
 {
     [SerializeField] private float _minChangeInterval = 3;
     [SerializeField] private float _maxChangeInterval = 10;
@@ -38,7 +38,7 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         }
     }
 
-    bool ITool.UseToolOnInteractableTileMap(string tilemapLayerName, UnityEngine.Vector3Int cursorLocation)
+    bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, UnityEngine.Vector3Int cursorLocation)
     {
         // Debug.Log("Used rod on tilemap");
         // if fishing stop fishing
@@ -58,7 +58,7 @@ public class Rod : MonoBehaviour, ITool, IInventoryItem
         return false;
     }
 
-    public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         Debug.Log("Used rod on world object");
         return false; // does nothing

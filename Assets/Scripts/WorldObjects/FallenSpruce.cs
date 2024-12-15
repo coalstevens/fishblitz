@@ -1,6 +1,7 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 
-public class FallenSpruce : FallenTree, ISaveable
+public class FallenSpruce : FallenTree, SceneSaveLoadManager.ISaveable
 {
     [SerializeField] private string _identifier;
     private class FallenSpruceSaveData

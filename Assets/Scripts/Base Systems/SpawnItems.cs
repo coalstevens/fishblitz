@@ -30,7 +30,7 @@ public static class SpawnItems
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, Random.Range(_item.minQuantity, _item.maxQuantity)))
             {
-                GameObject _spawnedItem = InstantiateLooseItem(new ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
+                GameObject _spawnedItem = InstantiateLooseItem(new Inventory.ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
                 SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
             }
         }
@@ -48,14 +48,14 @@ public static class SpawnItems
 
         foreach (var _spawnPosition in spawnPositions)
         {
-            GameObject _spawnedItem = InstantiateLooseItem(new ItemData(itemName, 1), _itemImage, _spawnPosition);
+            GameObject _spawnedItem = InstantiateLooseItem(new Inventory.ItemData(itemName, 1), _itemImage, _spawnPosition);
             if (!playBounceAnimation)
                 _spawnedItem.GetComponent<Animator>().Play("Idle"); // skips bounce animation
             SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
         }
     }
 
-    private static GameObject InstantiateLooseItem(ItemData item, Sprite itemSprite, Vector3 spawnPosition)
+    private static GameObject InstantiateLooseItem(Inventory.ItemData item, Sprite itemSprite, Vector3 spawnPosition)
     {
         // Spawn a generic loose item
         GameObject _spawnedItem = Object.Instantiate(Resources.Load<GameObject>("Items/LooseItem"),

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WetLog : MonoBehaviour, IInventoryItem
+public class WetLog : MonoBehaviour, Inventory.IItem
 {
     private const string ITEM_NAME = "WetLog";
     private int _quantity = 0;

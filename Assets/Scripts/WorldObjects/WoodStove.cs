@@ -4,7 +4,7 @@ using ReactiveUnity;
 using UnityEngine;
 
 public enum StoveStates {Dead, Ready, Hot, Embers};
-public class WoodStove : MonoBehaviour, IInteractable, ITickable, ISaveable
+public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
     private const string IDENTIFIER = "WoodStove";
     private class WoodStoveSaveData {

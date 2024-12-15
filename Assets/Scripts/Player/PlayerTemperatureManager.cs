@@ -9,7 +9,7 @@ using UnityEngine;
 /// if the player is dry, actualTemperature == dryTemperature
 /// else actualTemperature == dryTemperature - 1 temp step
 /// </summary>
-public class PlayerTemperatureManager : HeatSensitive, ITickable
+public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 {
     private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string> {
         [Temperature.Freezing] = "You are freezing.",

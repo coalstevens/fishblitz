@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DryLog : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
+public class DryLog : MonoBehaviour, Inventory.IItem, PlayerInteractionManager.IPlayerCursorUsingItem
 {
     private const string ITEM_HAME = "DryLog";
     private int _quantity = 0;
@@ -17,7 +17,7 @@ public class DryLog : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
         set => _quantity = value;
     }
 
-    bool IPlayerCursorUsingItem.UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    bool PlayerInteractionManager.IPlayerCursorUsingItem.UseItemOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is LarchStump _larchStump) {
             _larchStump.LoadLog();
@@ -26,7 +26,7 @@ public class DryLog : MonoBehaviour, IInventoryItem, IPlayerCursorUsingItem
         return false;
     }
 
-    bool IPlayerCursorUsingItem.UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
+    bool PlayerInteractionManager.IPlayerCursorUsingItem.UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
     {
         return false; // does nothing
     }
