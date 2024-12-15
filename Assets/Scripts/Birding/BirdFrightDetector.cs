@@ -18,10 +18,10 @@ public class BirdFrightDetector : MonoBehaviour
         Debug.Log("Player collider detected.");
         if
         (
-            _bird.BirdState is not ShelteredState &&
-            _bird.BirdState is not FleeingState &&
-            _bird.BirdState is not SoaringState &&
-            _bird.BirdState is not SoaringLandingState
+            _bird.BirdState is not BirdBrain.ShelteredState &&
+            _bird.BirdState is not BirdBrain.FleeingState &&
+            _bird.BirdState is not BirdBrain.SoaringState &&
+            _bird.BirdState is not BirdBrain.SoaringLandingState
         )
         {
             Debug.Log("Bird was frightened");

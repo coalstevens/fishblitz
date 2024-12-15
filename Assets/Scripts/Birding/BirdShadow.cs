@@ -15,8 +15,8 @@ public class BirdShadow : MonoBehaviour
     private float _totalDisanceToLand;
     private SpriteRenderer _renderer;
     private BirdBrain _bird;
-    private IBirdState _currentState = null;
-    private IBirdState _previousState = null;
+    private BirdBrain.IBirdState _currentState = null;
+    private BirdBrain.IBirdState _previousState = null;
 
     private void Start()
     {
@@ -30,7 +30,7 @@ public class BirdShadow : MonoBehaviour
 
         if (_isTransitioning)
         {
-            if (_currentState is LandingState) 
+            if (_currentState is BirdBrain.LandingState) 
                 InterpolateShadowWithBirdTarget(); 
             else
                 MoveShadowByDelta();
@@ -100,7 +100,7 @@ public class BirdShadow : MonoBehaviour
     private void UpdateShadowTarget()
     {
         // hidden
-        if (_currentState is ShelteredState)
+        if (_currentState is BirdBrain.ShelteredState)
         {
             _isTransitioning = false;
             _renderer.enabled = false;
@@ -110,21 +110,21 @@ public class BirdShadow : MonoBehaviour
         _renderer.enabled = true;
 
         // standing
-        if (_currentState is PerchedState || _currentState is GroundedState)
+        if (_currentState is BirdBrain.PerchedState || _currentState is BirdBrain.GroundedState)
         {
             SetMoveShadowTarget(_idleYPosition);
             return;
         }
 
         // flying
-        if (_currentState is FlyingState || _currentState is LandingState || _currentState is FleeingState)
+        if (_currentState is BirdBrain.FlyingState || _currentState is BirdBrain.LandingState || _currentState is BirdBrain.FleeingState)
         {
             SetMoveShadowTarget(_flyingYPosition);
             return;
         }
 
         // landing
-        if (_currentState is LandingState) {
+        if (_currentState is BirdBrain.LandingState) {
             _landingBirdStartPosition = _bird.transform.position;
             _totalDisanceToLand = Vector2.Distance(_bird.TargetPosition, _landingBirdStartPosition);
             _isTransitioning = true;
@@ -132,7 +132,7 @@ public class BirdShadow : MonoBehaviour
         }
 
         // soaring
-        if (_currentState is SoaringState || _currentState is SoaringLandingState)
+        if (_currentState is BirdBrain.SoaringState || _currentState is BirdBrain.SoaringLandingState)
         {
             SetMoveShadowTarget(_soaringYPosition);
             return;

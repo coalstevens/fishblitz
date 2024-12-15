@@ -2,7 +2,7 @@ using UnityEngine;
 
 // the roof is huge so gonna let infinite birds land on it.
 // hopefully thats not an issue
-public class AbandonedShed : MonoBehaviour, IPerchableHighElevation
+public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation
 {
     [SerializeField] Collider2D _perch;
     Bounds _perchBounds;

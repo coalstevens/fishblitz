@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BigRock : MonoBehaviour, IPerchableLowElevation
+public class BigRock : MonoBehaviour, BirdBrain.IPerchableLowElevation
 {
     private List<Collider2D> _perches = new();
     private List<BirdBrain> _perchOccupier = new();
