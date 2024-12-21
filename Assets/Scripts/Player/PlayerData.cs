@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : Singleton<PlayerData>
+public static class PlayerData 
 {
-    public Vector3 SceneSpawnPosition = new Vector3(0,0);
+    public static Vector3 SceneSpawnPosition = new Vector3(0,0);
     public class BirdCapturePeriod {
         public List<GameClock.Seasons> CaughtSeasons = new();
         public List<GameClock.DayPeriods> CaughtDayPeriods = new();
@@ -19,12 +19,12 @@ public class PlayerData : Singleton<PlayerData>
         public Dictionary<string, BirdCapturePeriod> CaughtBirds = new(); 
     }
 
-    public BirdingLog PlayerBirdingLog = new();
+    public static BirdingLog PlayerBirdingLog = new();
 
     /// <summary>
     /// Adds a bird to the log and returns true for first-time captures.
     /// </summary>
-    public bool AddToBirdingLog(Bird caughtBird)
+    public static bool AddToBirdingLog(Bird caughtBird)
     {
         PlayerBirdingLog.NumberOfCaughtBirds++;
 

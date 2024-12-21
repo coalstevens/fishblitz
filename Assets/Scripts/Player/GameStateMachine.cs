@@ -1,29 +1,54 @@
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameStateMachine : MonoBehaviour
-{
+public static class GameStateManager {
     private interface IGameState
     {
-        void Enter(GameStateMachine sm);
-        void Exit(GameStateMachine sm);
+        void Enter();
+        void Exit();
     }
 
-    private IGameState _currentState;
-    private PlayerInput _playerInput;
-    private PlayingState _playingState = new();
-    private MenuState _menuState = new();
+    private static IGameState _currentState;
+    private static PlayerInput _playerInput;
+    private static Playing _playingState = new();
+    private static MenuOpen _menuState = new();
+    private static NarratorOnBlack _narratorOnBlack = new();
+    private static Scene _rootScene;
 
-    private void Start()
-    {
-        _playerInput = PlayerCondition.Instance.GetComponent<PlayerInput>();
-        TransitionToState(_playingState);
+    public static void Initialize() {
+        Debug.Log("Gamestate manager actived");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
-    private void OnToggleMenu()
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (_currentState is PlayingState)
+        Debug.Log("Gamestatemanager sceneloaded");
+        if (mode == LoadSceneMode.Additive) return;
+        _rootScene = scene;
+
+        IGameState newState = scene.name switch {
+            "Boot" => _narratorOnBlack,
+            "Outside" => _playingState,
+            "Abandonded Shed" => _playingState,
+            _ => null,
+        };
+        if (newState == null)
+            Debug.LogError("Unhandled scene in GameStateManager");
+        TransitionToState(newState);
+    }
+
+    private static void OnSceneUnloaded(Scene scene)
+    {
+        if (scene == _rootScene)
+            _currentState?.Exit();
+    }
+
+    public static void OnToggleMenu()
+    {
+        if (_currentState is Playing)
         {
             TransitionToState(_menuState);
         }
@@ -33,7 +58,7 @@ public class GameStateMachine : MonoBehaviour
         }
     }
 
-    private void TransitionToState(IGameState newState)
+    private static void TransitionToState(IGameState newState)
     {
         if (newState == null)
         {
@@ -41,35 +66,52 @@ public class GameStateMachine : MonoBehaviour
             return;
         }
 
-        _currentState?.Exit(this); 
-        _currentState = newState;  
-        _currentState.Enter(this); 
+        _currentState = newState;
+        _currentState.Enter();
     }
 
-    private class MenuState : IGameState
+    private class MenuOpen : IGameState
     {
-        public void Enter(GameStateMachine sm)
+        public void Enter()
         {
             SceneManager.LoadScene("GameMenu", LoadSceneMode.Additive);
-            sm._playerInput.SwitchCurrentActionMap("Menu");
+            if (PlayerCondition.Instance != null)
+                PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
         }
 
-        public void Exit(GameStateMachine sm)
+        public void Exit()
         {
             SceneManager.UnloadSceneAsync("GameMenu");
         }
     }
 
-    private class PlayingState : IGameState
+    private class Playing : IGameState
     {
-        public void Enter(GameStateMachine sm)
+        public void Enter()
         {
-            sm._playerInput.SwitchCurrentActionMap("Player");
+            if (PlayerCondition.Instance != null)
+                PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+            SceneManager.LoadScene("Narrator", LoadSceneMode.Additive);
+            SceneManager.LoadScene("HUD", LoadSceneMode.Additive);
         }
 
-        public void Exit(GameStateMachine sm)
+        public void Exit()
         {
-            // do nothing
+            SceneManager.UnloadSceneAsync("Narrator");
+            SceneManager.UnloadSceneAsync("HUD");
+        }
+    }
+
+    private class NarratorOnBlack : IGameState
+    {
+        public void Enter()
+        {
+            SceneManager.LoadScene("Narrator", LoadSceneMode.Additive);
+        }
+
+        public void Exit()
+        {
+            SceneManager.UnloadSceneAsync("Narrator");
         }
     }
 }

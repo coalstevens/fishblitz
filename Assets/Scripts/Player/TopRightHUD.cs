@@ -13,18 +13,15 @@ public class TopRightHUD : MonoBehaviour
     [SerializeField] private Sprite _summerFrame;
     [SerializeField] private Sprite _fallFrame;
     [SerializeField] private Sprite _winterFrame;
-    private Inventory _inventory;
     private Image _frame;
 
     void Start()
     {
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _frame = GetComponent<Image>();
-        
-        GameClock.Instance.GameMinute.When((curr, prev) => prev % 5 == 0, (curr, prev) => UpdateClockText());
-        GameClock.Instance.GameHour.OnChange((curr, prev) => UpdateClockText());
-        GameClock.Instance.GameDay.OnChange((curr, prev) => UpdateDateText());
-        GameClock.Instance.GameSeason.OnChange((curr, prev) => UpdateSeasonFrame());
+        GameClock.Instance.GameMinute.OnChange(curr => UpdateClockTextEveryFiveMinutes(curr));
+        GameClock.Instance.GameHour.OnChange(_ => UpdateClockText());
+        GameClock.Instance.GameDay.OnChange(_ => UpdateDateText());
+        GameClock.Instance.GameSeason.OnChange(_ => UpdateSeasonFrame());
 
         UpdateClockText();
         UpdateDateText();
@@ -33,7 +30,8 @@ public class TopRightHUD : MonoBehaviour
 
     void UpdateSeasonFrame()
     {
-        _frame.sprite = GameClock.Instance.GameSeason.Value switch {
+        _frame.sprite = GameClock.Instance.GameSeason.Value switch
+        {
             GameClock.Seasons.Spring => _springFrame,
             GameClock.Seasons.EndOfSpring => _springFrame,
             GameClock.Seasons.Summer => _summerFrame,
@@ -46,6 +44,12 @@ public class TopRightHUD : MonoBehaviour
         };
     }
 
+    void UpdateClockTextEveryFiveMinutes(int minute)
+    {
+        if (minute % 5 == 0) 
+            UpdateClockText();
+    }
+
     void UpdateClockText()
     {
         // 24h clock
@@ -56,20 +60,7 @@ public class TopRightHUD : MonoBehaviour
 
     void UpdateDateText()
     {
-        // i guess i was indecisive about whether the side seasons have their own date numbers
-        // hence this workaround
         int _gameDay = GameClock.Instance.GameDay.Value;
-        // _gameDay += GameClock.Instance.GameSeason.Value switch {
-        //     GameClock.Seasons.Spring => 0,
-        //     GameClock.Seasons.Summer => 0,
-        //     GameClock.Seasons.Fall => 0,
-        //     GameClock.Seasons.Winter => 0,
-        //     GameClock.Seasons.EndOfSpring => 10,
-        //     GameClock.Seasons.EndOfSummer => 10,
-        //     GameClock.Seasons.EndOfFall => 10,
-        //     GameClock.Seasons.EndOfWinter => 10,  
-        //     _ => 0,
-        // };
 
         // "1st" thru "15th" 
         _dateText.text = $"The {_gameDay}";

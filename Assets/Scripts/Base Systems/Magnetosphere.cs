@@ -6,15 +6,14 @@ public class Magnetosphere : MonoBehaviour
 {
     [SerializeField] private Collider2D _collectCollider;
     [SerializeField] private float _strength = 1;
+    [SerializeField] private Inventory _inventory;
     private Collider2D _playerMagnetosphere;
     private List<LooseItem> _looseItemsInRange = new();
     private List<LooseItem> _itemsToDestroy = new();
-    private Inventory _inventory;
 
     void Start()
     {
         _playerMagnetosphere = GetComponent<Collider2D>();
-        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
     }
 
     private void FixedUpdate()
@@ -24,7 +23,7 @@ public class Magnetosphere : MonoBehaviour
         foreach (LooseItem _looseItem in _looseItemsInRange)
         {
             if (_looseItem.IsMagnetic && 
-                _inventory.HasEnoughInventorySpace(_looseItem.Item.identifier, _looseItem.Item.quantity))
+                _inventory.HasEnoughInventorySpace(_looseItem.Item.ItemName, _looseItem.Item.Quantity))
             {
                 ApplyMagneticForce(_looseItem);
                 if (CollectItem(_looseItem))
@@ -46,7 +45,7 @@ public class Magnetosphere : MonoBehaviour
             return false;
 
         // Try to add item to inventory. This should never fail as HasEnoughInventorySpace was already checked
-        if (!_inventory.TryAddItem(looseItem.Item.identifier, looseItem.Item.quantity))
+        if (!_inventory.TryAddItem(looseItem.Item.ItemName, looseItem.Item.Quantity))
             return false;
         
         return true;

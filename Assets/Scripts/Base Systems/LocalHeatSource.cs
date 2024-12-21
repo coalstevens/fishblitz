@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalHeatSource : HeatSource {
+public class LocalHeatSource : MonoBehaviour, IHeatSource {
     [SerializeField] private Collider2D _heatCollider;
-    public override Temperature Temperature {
+    private Temperature _temperature;
+    public Temperature Temperature {
         get => _temperature;
         set {
             if (value == _temperature) 

@@ -38,7 +38,7 @@ public class Journal : MonoBehaviour
         if (_dayPeriodIcons.Count != 4)
             Debug.LogError("Day period icons are assigned incorrectly in the journal.");
 
-        _playerBirdLog = PlayerData.Instance.PlayerBirdingLog;
+        _playerBirdLog = PlayerData.PlayerBirdingLog;
         var _allEntries = CollectActiveEntries();
         _totalEntries = _allEntries.Count;
         InitializePagesLookupTable(_allEntries);

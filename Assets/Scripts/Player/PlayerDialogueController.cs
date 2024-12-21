@@ -3,26 +3,7 @@ using UnityEngine;
 
 public class PlayerDialogueController : MonoBehaviour
 {
-    private static PlayerDialogueController _instance;
-    public static PlayerDialogueController Instance
-    {
-        get
-        {
-            // If the instance doesn't exist, try to find it in the scene
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<PlayerDialogueController>();
-
-                // If it still doesn't exist, create a new GameObject with the singleton script attached
-                if (_instance == null)
-                {
-                    Debug.Log("PlayerDialogueController does not exists.");
-                }
-            }
-
-            return _instance;
-        }
-    }
+    public static PlayerDialogueController Instance;
     private TextMeshProUGUI _textBox;
     private Transform _player;
     private float _postedTime;
@@ -32,16 +13,9 @@ public class PlayerDialogueController : MonoBehaviour
     
     private void Awake()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // Ensures that only one instance of the singleton exists
-        }
+        Instance = this;
     }
+
     void Start()
     {
         _textBox = GetComponentInChildren<TextMeshProUGUI>();

@@ -24,7 +24,7 @@ public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractabl
     }
 
     public static void ChangeLevel(string sceneName, Vector3 spawnLocation) {
-        PlayerData.Instance.SceneSpawnPosition = spawnLocation;
+        PlayerData.SceneSpawnPosition = spawnLocation;
         SmoothSceneManager.LoadScene(sceneName);
     }
 }

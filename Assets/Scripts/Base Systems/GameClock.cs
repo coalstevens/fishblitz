@@ -18,6 +18,7 @@ public class GameClock : Singleton<GameClock>
         public int StartHour;
         public int EndHour;
     }
+    
     public enum Seasons { Spring, EndOfSpring, Summer, EndOfSummer, Fall, EndOfFall, Winter, EndOfWinter };
     public enum DayPeriods {SUNRISE, DAY, SUNSET, NIGHT};
     public List<string> SeasonNames = new List<string> { "Spring", "EndOfSpring", "Summer", "EndOfSummer", "Fall", "EndOfFall", "Winter", "EndOfWinter" };

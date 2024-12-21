@@ -61,7 +61,7 @@ public class PlayerCondition : Singleton<PlayerCondition>
         _playerHungerManager = GetComponent<PlayerHungerManager>();
         _playerSleepManager = GetComponent<PlayerSleepQualityManager>();
         _playerTemperatureManager = GetComponent<PlayerTemperatureManager>();
-        _unsubscribeHooks.Add(GameClock.Instance.GameHour.When((_, currentHour) => currentHour == 0, (_,_) => EndDay()));
+        _unsubscribeHooks.Add(GameClock.Instance.GameHour.OnChange(curr => EndDay(curr)));
     }
 
     void OnDisable() {
@@ -69,8 +69,9 @@ public class PlayerCondition : Singleton<PlayerCondition>
             hook();
     }
 
-    private void EndDay() {
-        _playerHungerManager.LogTodaysCalories();
+    private void EndDay(int currentHour) {
+        if (currentHour == 0)
+            _playerHungerManager.LogTodaysCalories();
     }
 
     public void Sleep() {

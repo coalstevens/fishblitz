@@ -1,88 +1,88 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ReactiveUnity;
+using System.Collections.Generic;
 
-public enum RainStates { Raining, NotRaining };
-
-public class RainManager : Singleton<RainManager>
+[CreateAssetMenu(fileName = "Rain", menuName = "Weather/Rain")]
+public class Rain : ScriptableObject
 {
-    public RainStates RainState = RainStates.Raining;
-    public event Action<RainStates> RainStateChange; // Subscribe with events
-    [SerializeField] private AudioClip _indoorRainSFX;
-    [SerializeField] private AudioClip _outdoorRainSFX;
-    private Action _stopRainAudioHook;
+    [SerializeField] private AudioClip _muffledRainSFX;
+    [SerializeField] private AudioClip _RainSFX;
+    public enum States { HeavyRain, NoRain };
+    public Reactive<States> State = new Reactive<States>(States.NoRain);
+    private Reactive<bool> _isRainMuffled = new Reactive<bool>(false);
+    private Action _stopAudio;
+    private List<Action> _unsubscribe = new();
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        _unsubscribe.Add(State.OnChange((prev, curr) => OnStateChange(prev, curr)));
+        _unsubscribe.Add(_isRainMuffled.OnChange((_, curr) => OnMuffleChange(curr)));
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        foreach (var hook in _unsubscribe)
+            hook();
     }
 
-    public void StartRain()
+    private void OnStateChange(States prev, States curr)
     {
-        if (RainState == RainStates.Raining)
-            return;
-        GameObject.FindGameObjectWithTag("Rain")?.SetActive(true);
-        RainState = RainStates.Raining;
-        RainStateChange.Invoke(RainState);
-    }
-
-    public void StopRain()
-    {
-        if (RainState == RainStates.NotRaining)
-            return;
-        GameObject.FindGameObjectWithTag("Rain")?.SetActive(false);
-        StopRainAudio();
-        RainState = RainStates.NotRaining;
-        RainStateChange.Invoke(RainState);
-        RainStateChange = null;
-    }
-    
-    private void StopRainAudio()
-    {
-        if (_stopRainAudioHook != null)
+        switch (curr)
         {
-            _stopRainAudioHook();
-            _stopRainAudioHook = null;
-        }
-    }
-
-    private void StartRainAudio()
-    {
-        switch (SceneManager.GetActiveScene().name)
-        {
-            case "Abandoned Shed":
-                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_indoorRainSFX, 1, true);
+            case States.HeavyRain:
+                PlayRainAudio(_isRainMuffled.Value);
                 break;
-            case "Outside":
-                _stopRainAudioHook = AudioManager.Instance.PlayLoopingSFX(_outdoorRainSFX, 0.5f, true);
-                break;
-            default:
+            case States.NoRain:
                 StopRainAudio();
                 break;
+            default:
+                Debug.LogError("Rain state does not exist.");
+                break;
         }
     }
 
-    // TODO If the rainsounds are the same between scenes, it should be a seamless transition
+    private void OnMuffleChange(bool isMuffled)
+    {
+        if (State.Value == States.NoRain) return;
+        StopRainAudio();
+        PlayRainAudio(isMuffled);
+    }
+
+    private void PlayRainAudio(bool isMuffled)
+    {
+        if (isMuffled)
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, 1, true);
+        else
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, 0.5f, true);
+    }
+
+    private void StopRainAudio()
+    {
+        if (_stopAudio != null)
+        {
+            _stopAudio();
+            _stopAudio = null;
+        }
+    }
+
+    private bool IsRainMuffled()
+    {
+        return SceneManager.GetActiveScene().name switch
+        {
+            "Abandoned Shed" => true,
+            "Outside" => false,
+            _ => false
+        };
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Boot")
             return;
-
-        if (RainState == RainStates.Raining) {
-            GameObject.FindGameObjectWithTag("Rain")?.SetActive(true);
-            StopRainAudio();
-            StartRainAudio();
-            return;
-        }
-
-        if (RainState == RainStates.NotRaining) {
-            GameObject.FindGameObjectWithTag("Rain")?.SetActive(false);
-            return;
-        }
+        _isRainMuffled.Value = IsRainMuffled();
     }
 }

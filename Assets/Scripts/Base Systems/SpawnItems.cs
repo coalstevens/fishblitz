@@ -20,17 +20,16 @@ public static class SpawnItems
     {
         foreach (var _item in itemsToSpawn)
         {
-            GameObject _spawnItem = Resources.Load<GameObject>("Items/" + _item.identifier);
-            if (_spawnItem == null)
-            {
-                Debug.LogError("The spawn item doesn't exist.");
-                continue;
-            }
-            Sprite _itemImage = _spawnItem.GetComponent<Image>().sprite;
+            Inventory.Item _spawnItem = FetchItem(_item.identifier);
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, Random.Range(_item.minQuantity, _item.maxQuantity)))
             {
-                GameObject _spawnedItem = InstantiateLooseItem(new Inventory.ItemData(_item.identifier, 1), _itemImage, _spawnPosition);
+                GameObject _spawnedItem = InstantiateLooseItem
+                (
+                    new Inventory.ItemData(_item.identifier, 1, _spawnItem), 
+                    _spawnItem.ItemSprite, 
+                    _spawnPosition
+                );
                 SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
             }
         }
@@ -38,21 +37,27 @@ public static class SpawnItems
 
     public static void SpawnLooseItems(string itemName, Vector3[] spawnPositions, bool playBounceAnimation = true, float launchSpeed = 1, float launchDrag = 1)
     {
-        GameObject _spawnItem = Resources.Load<GameObject>("Items/" + itemName);
-        if (_spawnItem == null)
-        {
-            Debug.LogError("The spawn item doesn't exist.");
-            return;
-        }
-        Sprite _itemImage = _spawnItem.GetComponent<Image>().sprite;
+        Inventory.Item _spawnItem = FetchItem(itemName);
 
         foreach (var _spawnPosition in spawnPositions)
         {
-            GameObject _spawnedItem = InstantiateLooseItem(new Inventory.ItemData(itemName, 1), _itemImage, _spawnPosition);
+            GameObject _spawnedItem = InstantiateLooseItem
+            (
+                new Inventory.ItemData(itemName, 1, _spawnItem),
+                _spawnItem.ItemSprite, 
+                _spawnPosition
+            );
             if (!playBounceAnimation)
                 _spawnedItem.GetComponent<Animator>().Play("Idle"); // skips bounce animation
             SetLaunchSpeed(_spawnedItem, launchSpeed, launchDrag);
         }
+    }
+
+    private static Inventory.Item FetchItem(string itemName) {
+        Inventory.Item _spawnItem = Resources.Load<Inventory.Item>($"Items/{itemName}");
+        if (_spawnItem == null)
+            Debug.LogError("The spawn item doesn't exist.");
+        return _spawnItem;
     }
 
     private static GameObject InstantiateLooseItem(Inventory.ItemData item, Sprite itemSprite, Vector3 spawnPosition)

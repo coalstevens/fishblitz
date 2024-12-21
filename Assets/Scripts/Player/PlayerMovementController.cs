@@ -47,7 +47,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        transform.position = PlayerData.Instance.SceneSpawnPosition;
+        transform.position = PlayerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);
         _moveSpeedsMultiplier = new CardinalVector(1);
     }
@@ -60,7 +60,7 @@ public class PlayerMovementController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "GameMenu") return;
-        transform.position = PlayerData.Instance.SceneSpawnPosition;
+        transform.position = PlayerData.SceneSpawnPosition;
     }
 
     public void OnMove(InputValue value)

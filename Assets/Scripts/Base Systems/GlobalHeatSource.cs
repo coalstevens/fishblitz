@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GlobalHeatSource : HeatSource {
+[CreateAssetMenu(fileName = "NewGlobalHeatSource", menuName = "Base Systems/Global Heat Source")]
+public class GlobalHeatSource : ScriptableObject, IHeatSource {
     private Grid _sceneGrid;
     private PlayerTemperatureManager _playerTemperatureManager;
-    public override Temperature Temperature {
+    private Temperature _temperature;
+    public Temperature Temperature {
         get => _temperature;
         set {
             if (value == _temperature)  
@@ -33,10 +35,12 @@ public class GlobalHeatSource : HeatSource {
 
     private void AddToAllHeatSensitives(Transform worldGrid) {
         // Add to player
-        _playerTemperatureManager.AddHeatSource(this);
+        if (_playerTemperatureManager != null)
+            _playerTemperatureManager.AddHeatSource(this);
         
         // Add to world objects
-        AddToAllChildHeatSensitives(worldGrid);
+        if (worldGrid != null)
+            AddToAllChildHeatSensitives(worldGrid);
     }
 
     private void AddToAllChildHeatSensitives(Transform worldGrid) {

@@ -5,13 +5,12 @@ public class PlayerAnimatorController : MonoBehaviour
 {
     private Animator _animator;
     private PlayerMovementController _playerMovementController;
-    private Inventory _inventory;
+    [SerializeField] private Inventory _inventory;
 
     private void Start()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
         _animator = GetComponent<Animator>();
-        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         
         _playerMovementController.PlayerState.OnChange((prev, curr) => OnStateChange(curr));
         _playerMovementController.FacingDirection.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));

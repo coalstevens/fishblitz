@@ -157,7 +157,7 @@ public class FishBar : MonoBehaviour
     private void OnGameWin() {
         _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
-        _inventory.TryAddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
+        _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
         _stopReelingSFXCB();
         _stopReelingSFXCB = null;
         EndGame();

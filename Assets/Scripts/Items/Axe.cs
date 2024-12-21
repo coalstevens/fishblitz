@@ -1,30 +1,17 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Axe : MonoBehaviour, PlayerInteractionManager.ITool, Inventory.IItem
+[CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
+public class Axe : Inventory.Item, PlayerInteractionManager.ITool
 {
-    public interface IUseableWithAxe {
+    public interface IUseableWithAxe
+    {
         void OnUseAxe();
     }
-    private PlayerMovementController _playerMovementController;
-    private const string ITEM_HAME = "Axe";
-    private int _quantity = 0;
-    private const int STACK_CAPACITY = 1;
     [SerializeField] protected AudioClip _chopSFX;
-    public string ItemName { get { return ITEM_HAME; } }
-    public int StackCapacity { get { return STACK_CAPACITY; } }
-    public Sprite ItemSprite
+    private PlayerMovementController _playerMovementController;
+
+    private void Start()
     {
-        get => GetComponent<Image>().sprite;
-        set => GetComponent<Image>().sprite = value;
-    }
-    public int Quantity
-    {
-        get => _quantity;
-        set => _quantity = value;
-    }
-    
-    private void Start() {
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
     }
 
@@ -39,7 +26,8 @@ public class Axe : MonoBehaviour, PlayerInteractionManager.ITool, Inventory.IIte
         return false;
     }
 
-    void PlayerInteractionManager.ITool.SwingTool() {
+    void PlayerInteractionManager.ITool.SwingTool()
+    {
         _playerMovementController.PlayerState.Value = PlayerStates.Axing;
     }
 
@@ -49,7 +37,7 @@ public class Axe : MonoBehaviour, PlayerInteractionManager.ITool, Inventory.IIte
     }
 
     public void PlayToolHitSound()
-    {   
+    {
         AudioManager.Instance.PlaySFX(_chopSFX, 0.4f);
     }
 }

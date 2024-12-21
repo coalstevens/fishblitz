@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using OysterUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,29 +8,10 @@ public class BootManager : MonoBehaviour
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
-    private SpriteRenderer _player;
-    private Transform _activeGridCell;
-    private Transform _itemCursor;
-    private Transform _inventoryContainer;
-    private Transform _topRightHUD;
-    void Start()
+    void Awake()
     {
-        // Events
+        GameStateManager.Initialize();
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-
-        // References
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>();
-        _activeGridCell = GameObject.FindGameObjectWithTag("ActiveGridCell").transform;
-        _itemCursor = GameObject.FindGameObjectWithTag("ItemCursor").transform;
-        _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer").transform;
-        _topRightHUD = GameObject.FindGameObjectWithTag("TopRightHUD").transform;
-
-        // Disable visual elements
-        _player.enabled = false;
-        _activeGridCell.gameObject.SetActive(false);
-        _itemCursor.gameObject.SetActive(false);
-        _inventoryContainer.gameObject.SetActive(false);
-        _topRightHUD.gameObject.SetActive(false);
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
@@ -53,12 +32,6 @@ public class BootManager : MonoBehaviour
     }
 
     void OnSceneUnloaded(Scene current) {
-        // Turn on visual elements
-        _player.enabled = true;
-        _activeGridCell.gameObject.SetActive(true);
-        _itemCursor.gameObject.SetActive(true);
-        _inventoryContainer.gameObject.SetActive(true);
-        _topRightHUD.gameObject.SetActive(true);
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
@@ -67,8 +40,6 @@ public class BootManager : MonoBehaviour
         string[] files = Directory.GetFiles(Application.persistentDataPath);
 
         foreach (string file in files)
-        {
             File.Delete(file);
-        }
     }
 }

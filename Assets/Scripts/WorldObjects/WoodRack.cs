@@ -59,7 +59,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     private void OnEnable() {
         _unsubscribeCBs.Add(_numWetLogs.OnChange((prev,curr) => UpdateRackSprite()));
         _unsubscribeCBs.Add(_numDryLogs.OnChange((prev,curr) => UpdateRackSprite()));
-        _unsubscribeCBs.Add(_numWetLogs.When((prev, curr) => prev > 0 && curr == 0, (prev, curr) => AllLogsDry()));
+        _unsubscribeCBs.Add(_numWetLogs.OnChange((prev, curr) => AllLogsDry(prev, curr)));
         _unsubscribeCBs.Add(GameClock.Instance.GameMinute.OnChange((prev,curr) => OnGameMinuteTick()));
     }
 
@@ -68,8 +68,8 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
             _cb();
     }
 
-    private void AllLogsDry() {
-        if (_numDryLogs.Value > 0) 
+    private void AllLogsDry(int previousCount, int currentCount) {
+        if (previousCount > 0 && currentCount == 0 && _numDryLogs.Value > 0) 
             NarratorSpeechController.Instance.PostMessage("All logs on the woodrack have dried out.");
     }
 

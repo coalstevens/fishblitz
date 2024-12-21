@@ -230,7 +230,7 @@ public class BirdingGame : MonoBehaviour
         _winFrame.PlayWin(winner);
         if (!winner.Caught) {
             winner.Caught = true;
-            PlayerData.Instance.AddToBirdingLog(winner);
+            PlayerData.AddToBirdingLog(winner);
         }
     }
 

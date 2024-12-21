@@ -2,130 +2,102 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ReactiveUnity;
-using TMPro;
 using System.IO;
-using UnityEngine.UI;
 
-
-
-public class Inventory : MonoBehaviour
+[CreateAssetMenu(fileName = "NewInventory", menuName = "Inventory/Inventory")]
+public class Inventory : ScriptableObject
 {
     [System.Serializable]
-    public class ItemData {
-        public ItemData(string identifier, int quantity) {
-            this.identifier = identifier;
-            this.quantity = quantity;
+    public class ItemData
+    {
+        public string ItemName;
+        public int Quantity;
+        public readonly Item ItemType;
+        public ItemData(string itemName, int quantity, Item itemType)
+        {
+            ItemName = itemName;
+            Quantity = quantity;
+            ItemType = itemType;
         }
-        public string identifier;
-        public int quantity;
+    }
+    
+    [System.Serializable]
+    public class Item : ScriptableObject
+    {
+        public Sprite ItemSprite;
+        public string ItemName;
+        public int StackCapacity;
     }
 
-    public interface IItem
-    {
-        public Sprite ItemSprite { get; set; }
-        public string ItemName { get; }
-        public int Quantity { get; set; }
-        public int StackCapacity { get; }
-    }
+    [SerializeField] private List<ItemData> _startingItems = new();
+    public delegate void SlotUpdateHandler(Inventory inventory, int slotNumber);
+    public event SlotUpdateHandler SlotUpdated;
     private string _saveFilePath;
-    private GameObject _itemCursorController;
-    private GameObject _inventoryContainer;
     private int _totalSlots = 10;
-    private Dictionary<int, IItem> _slotAssignments;
-    [SerializeField] private Sprite _emptySlotSprite;
-    [SerializeField] private Sprite _filledSlotSprite;
-    [SerializeField] private ItemData[] _startingItems;
-    public Reactive<int> _gold = new Reactive<int>(0);
+    public Dictionary<int, ItemData> SlotItems = new();
     public Reactive<int> ActiveItemSlot = new Reactive<int>(0);
-
-    public int Gold 
-    {
-        get {
-            return _gold.Value;
-        }
-        set {
-            _gold.Value = value;
-        }
-    }
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        _itemCursorController = GameObject.FindGameObjectWithTag("ItemCursorController");
-        _inventoryContainer = GameObject.FindGameObjectWithTag("InventoryContainer");
         _saveFilePath = Path.Combine(Application.persistentDataPath, "InventoryData.json");
-        _slotAssignments = LoadInventory();
-        UpdateUIAllSlots();
-
-        foreach (ItemData _item in _startingItems) {
-            TryAddItem(_item.identifier, _item.quantity);
-        }
+        SlotItems = LoadInventory();
+        foreach (ItemData _item in _startingItems)
+            TryAddItem(_item.ItemName, _item.Quantity);
     }
 
     /// <summary>
-    /// Returns the IInventoryItem of the active slot if slot is not empty.
+    /// Returns the item of the active slot if slot is not empty.
     /// </summary>
-    public IItem GetActiveItem() {
-        if (_slotAssignments.ContainsKey(ActiveItemSlot.Value)) {
-            return _slotAssignments[ActiveItemSlot.Value];
-        }
-        return null;
+    public ItemData GetActiveItem()
+    {
+        return SlotItems.ContainsKey(ActiveItemSlot.Value) ? SlotItems[ActiveItemSlot.Value] : null;
     }
 
-    public bool TryGetActiveItem(out IItem _activeItem) {
-        if (_slotAssignments.ContainsKey(ActiveItemSlot.Value)) {
-            _activeItem = _slotAssignments[ActiveItemSlot.Value];
-            return true;
-        }
-        _activeItem = null;
-        return false;
+    public bool TryGetActiveItem(out ItemData _activeItem)
+    {
+        _activeItem = GetActiveItem();
+        return _activeItem != null;
     }
-    
+
     /// <summary>
     /// Adds quantity to existing stacks and creates more stacks if necessary
     /// </summary>
     /// <returns>False if inventory space isn't sufficient, with no change to inventory.</returns>
-    public bool TryAddItem(string itemName, int quantity) {
-        if (quantity == 0) {
-            return true;
-        }
-
-        if (!HasEnoughInventorySpace(itemName, quantity)) {
-            return false;
-        }
+    public bool TryAddItem(string itemName, int quantity)
+    {
+        if (quantity == 0) return true;
+        if (!HasEnoughInventorySpace(itemName, quantity)) return false;
 
         int _residual = quantity;
-        foreach (KeyValuePair<int, IItem> _entry in _slotAssignments) {
-            IItem _currentItem = _entry.Value;
-            // not the item
-            if (_currentItem.ItemName != itemName) {
-                continue;
-            }
-            // current item has enough capacity to add residual
-            if (_residual + _currentItem.Quantity <= _currentItem.StackCapacity) {
-                _currentItem.Quantity += _residual;
-                UpdateUIAtSlot(_entry.Key);
+        foreach (var _slot in SlotItems.Where(slot => slot.Value.ItemName == itemName))
+        {
+            ItemData _slotItem = _slot.Value;
+            int _availableSpace = _slot.Value.ItemType.StackCapacity - _slotItem.Quantity;
+            if (_availableSpace >= _residual)
+            {
+                _slotItem.Quantity += _residual;
+                SlotUpdated?.Invoke(this, _slot.Key);
                 SaveInventory();
                 return true;
             }
-            // increases item quantity to max and calculates residual
-            if (_residual + _currentItem.Quantity > _currentItem.StackCapacity) {
-                _currentItem.Quantity = _currentItem.StackCapacity;
-                _residual = _residual + _currentItem.Quantity - _currentItem.StackCapacity;  
-                UpdateUIAtSlot(_entry.Key);
-            }
+            _residual -= _availableSpace;
+            _slotItem.Quantity = _slotItem.ItemType.StackCapacity;
+            SlotUpdated?.Invoke(this, _slot.Key);
         }
 
-        // All existing stacks of itemName are full
-        // create new stack(s)
         AddItemIntoEmptySlots(itemName, _residual);
         SaveInventory();
         return true;
     }
 
-    public void TryAddItemOrDrop(string itemName, int quantity, Collider2D spawnCollider, float dropDrag = 1, float dropSpeed = 1) {
-        if (!TryAddItem(itemName, quantity)) {
-            SpawnItems.ItemSpawnData[] _itemToSpawn = {new SpawnItems.ItemSpawnData (itemName, quantity, quantity)};
+    /// <summary>
+    /// Adds item to inventory, or if space is insufficient it is dropped on the ground.
+    /// </summary>
+    public void AddItemOrDrop(string itemName, int quantity, Collider2D spawnCollider, float dropDrag = 1, float dropSpeed = 1)
+    {
+        if (!TryAddItem(itemName, quantity))
+        {
+            SpawnItems.ItemSpawnData[] _itemToSpawn = { new SpawnItems.ItemSpawnData(itemName, quantity, quantity) };
             SpawnItems.SpawnItemsFromCollider(spawnCollider, _itemToSpawn, dropSpeed, dropDrag);
         }
     }
@@ -134,168 +106,124 @@ public class Inventory : MonoBehaviour
     /// Removes a quantity of an item from inventory, starting from smallest stacks
     /// </summary>
     /// <returns>False if inventory doesn't have quantity of item, no change to inventory</returns>
-    public bool TryRemoveItem(string itemName, int quantity) {
-        List<int> _slotsWithTheItem = new();
-        int _playerQuantityOfTheItem = 0;
-        int _residual;
+    public bool TryRemoveItem(string itemName, int quantity)
+    {
+        var _slotsWithTheItem = SlotItems.Where(slot => slot.Value.ItemName == itemName).OrderBy(slot => slot.Value.Quantity).ToList();
+        int _totalQuantity = _slotsWithTheItem.Sum(slot => slot.Value.Quantity);
 
-        foreach (KeyValuePair<int, IItem> _entry in _slotAssignments) {
-            if (_entry.Value.ItemName == itemName) {
-                _slotsWithTheItem.Add(_entry.Key);
-                _playerQuantityOfTheItem += _entry.Value.Quantity;
-            }
-        }
-        
-        if (_playerQuantityOfTheItem < quantity) {
-            return false;
-        }
+        if (_totalQuantity < quantity) return false;
 
-        // remove items from smallest stacks until removal quantity fulfilled
-        _slotsWithTheItem = _slotsWithTheItem.OrderBy(slotNum => _slotAssignments[slotNum].Quantity).ToList();
-        _residual = quantity;
-        foreach (int slot in _slotsWithTheItem) {
-
-            if (_slotAssignments[slot].Quantity > _residual) {
-                _slotAssignments[slot].Quantity -= _residual;
-                UpdateUIAtSlot(slot); 
+        int _residual = quantity;
+        foreach (var _slot in _slotsWithTheItem)
+        {
+            if (_slot.Value.Quantity > _residual)
+            {
+                _slot.Value.Quantity -= _residual;
+                SlotUpdated?.Invoke(this, _slot.Key);
                 break;
             }
-            
-            _residual -= _slotAssignments[slot].Quantity;
-            
-            // Find and destroy the item gameobject in the slot
-            foreach (Transform child in _inventoryContainer.transform.GetChild(slot)) {
-                if (child.GetComponent<IItem>() != null) {
-                    Destroy(child.gameObject);
-                    break;
-                }
-            }
-            _slotAssignments.Remove(slot);
-            UpdateUIAtSlot(slot);
+
+            _residual -= _slot.Value.Quantity;
+            SlotItems.Remove(_slot.Key);
+            SlotUpdated?.Invoke(this, _slot.Key);
         }
+
         SaveInventory();
         return true;
     }
 
-    // Creates a new object in an empty inventory slot(s)
-    private void AddItemIntoEmptySlots(string itemName, int quantity) {
-        int _itemStackCapacity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<IItem>().StackCapacity;
-        List<Transform> _emptySlots = new List<Transform>();
-        
-        // fill empty slots with quantity of item, respecting item stack capacity
+    /// <summary>
+    /// Creates a new object in an empty inventory slot(s)
+    /// </summary>
+    private void AddItemIntoEmptySlots(string itemName, int quantity)
+    {
+        Item _itemType = Resources.Load<Item>($"Items/{itemName}");
         int _residual = quantity;
 
-        for (int i = 0; i < _totalSlots; i++) {
-            // if slot isn't empty skip
-            if (_slotAssignments.ContainsKey(i)){
-                continue;
-            }
+        for (int i = 0; i < _totalSlots && _residual > 0; i++)
+        {
+            if (SlotItems.ContainsKey(i)) continue; // not empty
 
-            // Instantiate new itemName game object as child of slot
-            Transform _slot = _inventoryContainer.transform.GetChild(i).transform;
-            GameObject _newItemObject = Instantiate(Resources.Load<GameObject>("Items/" + itemName), _slot.position + new Vector3(0, 0, 0), Quaternion.identity, _slot);
-            _newItemObject.transform.SetAsFirstSibling(); // So quantity text is on top of item sprite
-            IItem _newItem = _newItemObject.GetComponent<IItem>();
-
-            // Set quantity of newItem and add to _slotAssignments 
-            _slotAssignments.Add(i, _newItem);
-            if (_residual <= _newItem.StackCapacity) {
-                _newItem.Quantity = _residual;
-                UpdateUIAtSlot(i); 
-                break;
-            }
-            else {
-                _newItem.Quantity = _newItem.StackCapacity;
-                _residual -= _newItem.StackCapacity;  
-                UpdateUIAtSlot(i); 
-            }      
+            var itemData = new ItemData(itemName, Mathf.Min(_residual, _itemType.StackCapacity), _itemType);
+            SlotItems[i] = itemData;
+            _residual -= itemData.Quantity;
+            SlotUpdated?.Invoke(this, i);
         }
-        return;
-    }   
+    }
 
     // Returns true if player has enough inventory space to add quantity of itemName
-    public bool HasEnoughInventorySpace(string itemName, int quantity) {
-        IItem _currentItem;
-        int _availableSpace = 0;
-
-        // Sum remaining stack space on existing slots with itemName
-        foreach (KeyValuePair<int, IItem> _entry in _slotAssignments) {
-            _currentItem = _entry.Value;
-            if (_currentItem.ItemName != itemName) {
-                continue;
-            }
-
-            _availableSpace += _currentItem.StackCapacity - _currentItem.Quantity;
-            if (_availableSpace >= quantity) {
-                return true;
-            }
-        }
-
-        // Add to sum the space in empty slots
-        int _itemStackCapacity = Resources.Load<GameObject>("Items/" + itemName).GetComponent<IItem>().StackCapacity;
-        int emptySlots = _totalSlots - _slotAssignments.Count;
-        _availableSpace += emptySlots * _itemStackCapacity;
-
-        if (_availableSpace >= quantity) {
-            return true;
-        }
-        return false;
-    }
-
-    // Updates slot sprite and quantity tag
-    private void UpdateUIAtSlot(int slotNum)
+    public bool HasEnoughInventorySpace(string itemName, int quantity)
     {
-        Transform _slot = _inventoryContainer.transform.GetChild(slotNum);
-        TextMeshProUGUI _slotQuantityText = _slot.GetComponentInChildren<TextMeshProUGUI>();
-        Image _slotImageRenderer = _slot.GetComponent<Image>();
-        if (!_slotAssignments.ContainsKey(slotNum)) {
-            _slotImageRenderer.sprite = _emptySlotSprite;
-            _slotQuantityText.text = "";
-            return;
-        }
+        int availableSpace = SlotItems.Values.Where(x => x.ItemName == itemName)
+            .Sum(x => x.ItemType.StackCapacity - x.Quantity);
 
-        _slotImageRenderer.sprite = _filledSlotSprite;
-        int _itemQuantity = _slotAssignments[slotNum].Quantity;
-        if (_itemQuantity == 1)
+        int emptySlots = _totalSlots - SlotItems.Count;
+        int itemStackCapacity = Resources.Load<Item>($"Items/{itemName}").StackCapacity;
+        availableSpace += emptySlots * itemStackCapacity;
+
+        return availableSpace >= quantity;
+    }
+
+    public bool IsPlayerHoldingItem(string itemName)
+    {
+        ItemData _activeItem = GetActiveItem();
+        if (_activeItem == null || _activeItem.ItemName != itemName)
+            return false;
+        return true;
+    }
+
+    [System.Serializable]
+    public class InventorySaveData
+    {
+        public List<InventorySlotData> items;
+    }
+
+    [System.Serializable]
+    public class InventorySlotData
+    {
+        public int slotKey;
+        public string itemName;
+        public int quantity;
+
+        public InventorySlotData(int key, string name, int qty)
         {
-            _slotQuantityText.text = "";
-            return;
-        }
-        _slotQuantityText.text = _itemQuantity.ToString();
-    }
-
-    private void UpdateUIAllSlots() {
-        for (int i = 0; i < _totalSlots; i++) {
-            UpdateUIAtSlot(i);
+            slotKey = key;
+            itemName = name;
+            quantity = qty;
         }
     }
 
-    private void SaveInventory() {
-        string json = JsonUtility.ToJson(_slotAssignments);
+    private void SaveInventory()
+    {
+        InventorySaveData saveData = new InventorySaveData();
+        saveData.items = new List<InventorySlotData>();
+
+        foreach (var item in SlotItems)
+            saveData.items.Add(new InventorySlotData(item.Key, item.Value.ItemName, item.Value.Quantity));
+
+        string json = JsonUtility.ToJson(saveData);
         File.WriteAllText(_saveFilePath, json);
     }
-    
-    private Dictionary<int, IItem> LoadInventory() {
+
+    private Dictionary<int, ItemData> LoadInventory()
+    {
         if (File.Exists(_saveFilePath))
         {
             string json = File.ReadAllText(_saveFilePath);
-            return JsonUtility.FromJson<Dictionary<int, IItem>>(json);
+            InventorySaveData saveData = JsonUtility.FromJson<InventorySaveData>(json);
+
+            Dictionary<int, ItemData> result = new Dictionary<int, ItemData>();
+            foreach (var item in saveData.items)
+            {
+                var itemScript = Resources.Load<Item>($"Items/{item.itemName}");
+                if (itemScript == null)
+                    Debug.LogError($"Cannot find object of type {item.itemName}.");
+                else
+                    result.Add(item.slotKey, new ItemData(item.itemName, item.quantity, itemScript));
+            }
+            return result;
         }
-        else
-        {
-            return new Dictionary<int, IItem>();
-        }
-    }
-    public bool IsPlayerHolding(string itemName) {
-        IItem _activeItem = GetActiveItem();
-        if (_activeItem == null)
-        {
-            return false;
-        }
-        if (_activeItem.ItemName != itemName)
-        {
-            return false;
-        }
-        return true;
+
+        return new Dictionary<int, ItemData>();
     }
 }

@@ -9,14 +9,14 @@ using UnityEngine;
 /// </summary>
 
 public class HeatSensitive : MonoBehaviour {
-    [SerializeField] protected List<HeatSource> _ambientHeatSources = new();
+    [SerializeField] protected List<IHeatSource> _ambientHeatSources = new();
     protected Reactive<Temperature> _ambientTemperature = new Reactive<Temperature>((Temperature) 0);
     public virtual Temperature Temperature {
         get => _ambientTemperature.Value;
     }
 
     // called by HeatSources
-    public void AddHeatSource(HeatSource heatSource) {
+    public void AddHeatSource(IHeatSource heatSource) {
         if (!_ambientHeatSources.Contains(heatSource)) {
             _ambientHeatSources.Add(heatSource);
         }
@@ -24,7 +24,7 @@ public class HeatSensitive : MonoBehaviour {
     }
 
     // called by HeatSources
-    public void RemoveHeatSource(HeatSource heatSource) {
+    public void RemoveHeatSource(IHeatSource heatSource) {
         if (_ambientHeatSources.Contains(heatSource))
             _ambientHeatSources.Remove(heatSource);
         SetAmbientTemperature();
@@ -36,7 +36,7 @@ public class HeatSensitive : MonoBehaviour {
     
     protected Temperature GetTemperatureOfHottestSource() {
         Temperature _hottestTemperature = (Temperature) 0;
-        List<HeatSource> _toBeRemoved = new();
+        List<IHeatSource> _toBeRemoved = new();
         foreach (var _source in _ambientHeatSources) {
             if (_source == null) {
                 _toBeRemoved.Add(_source);

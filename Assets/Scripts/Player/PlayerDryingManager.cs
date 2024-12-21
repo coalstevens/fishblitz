@@ -32,14 +32,15 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
     [SerializeField] private Reactive<WetnessStates> _wetnessState = new Reactive<WetnessStates>(WetnessStates.Wet);
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
     private string _sceneName;
-    private RainStates _rainState;
+    private Rain.States _rainState;
+    [SerializeField] private Rain _rainManager;
 
     // Reactive
     private List<Action> _unsubscribeHooks = new List<Action>();
 
     private void OnEnable()
     {
-        RainManager.Instance.RainStateChange += OnRainStateChange;
+        _unsubscribeHooks.Add(_rainManager.State.OnChange((_, curr) => OnRainStateChange(curr)));
         SceneManager.sceneLoaded += OnSceneLoaded;
         _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_, _) => OnGameMinuteTick()));
         _unsubscribeHooks.Add(_wetnessState.OnChange((_, _) => OnWetnessStateChange()));
@@ -47,8 +48,6 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void OnDisable()
     {
-        if (RainManager.Instance != null)
-            RainManager.Instance.RainStateChange -= OnRainStateChange;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (var hook in _unsubscribeHooks)
             hook();
@@ -92,7 +91,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         }
     }
 
-    private void OnRainStateChange(RainStates newState)
+    private void OnRainStateChange(Rain.States newState)
     {
         _rainState = newState;
         HandleRain();
@@ -105,7 +104,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
         switch (_rainState)
         {
-            case RainStates.Raining:
+            case Rain.States.HeavyRain:
                 // if wet stay wet
                 // if wetting stay wetting
                 if (_wetnessState.Value == WetnessStates.Dry)
@@ -113,7 +112,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
                 if (_wetnessState.Value == WetnessStates.Drying)
                     EnterWet();
                 break;
-            case RainStates.NotRaining:
+            case Rain.States.NoRain:
                 // if dry stay dry
                 // if drying stay drying
                 if (_wetnessState.Value == WetnessStates.Wet)

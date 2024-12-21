@@ -19,8 +19,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
     [SerializeField] private Reactive<StumpStates> _state = new Reactive<StumpStates>(StumpStates.Idle);
     [SerializeField] private AudioClip _fallingSplitWoodSFX;
     [SerializeField] private Collider2D _birdPerchTarget;
-
-    private Inventory _inventory;
+    [SerializeField] private Inventory _inventory;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
     private List<Action> _unsubscribeHooks = new();
@@ -30,7 +29,6 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
-        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _animator.enabled = false;
         OnStateChange();
     }

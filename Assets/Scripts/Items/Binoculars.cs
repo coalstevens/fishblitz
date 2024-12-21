@@ -1,30 +1,14 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Binoculars : MonoBehaviour, Inventory.IItem, PlayerInteractionManager.ITool
+[CreateAssetMenu(fileName = "NewBinoculars", menuName = "Items/Binoculars")]
+public class Binoculars : Inventory.Item, PlayerInteractionManager.ITool
 {
-    private const string ITEM_NAME = "Binoculars";
-    private int _quantity = 0;
-    private const int STACK_CAPACITY = 99;
-    public int StackCapacity {get {return STACK_CAPACITY;}}
-    public string ItemName { get {return ITEM_NAME;} }
-
     private BirdingGame _birdingGame;
     private PlayerMovementController _playerMovementController;
 
     private void Start() {
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _birdingGame = GameObject.FindWithTag("Player").GetComponentInChildren<BirdingGame>(true);
-    }
-
-    public Sprite ItemSprite { 
-        get => GetComponent<Image>().sprite;
-        set => GetComponent<Image>().sprite = value;
-    }
-
-    public int Quantity { 
-        get => _quantity;
-        set => _quantity = value;
     }
 
     public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)

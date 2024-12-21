@@ -12,6 +12,7 @@ public class OutsideSceneStateCalendar : MonoBehaviour
     [SerializeField] private GameObject _banksDirt;
     [SerializeField] private Transform _shallowRocksSubmerged;
     [SerializeField] private Transform _allRocks;
+    [SerializeField] private Rain _rainManager;
 
     private Dictionary<(int gameYear, GameClock.Seasons season, int gameDay), RiverStates> _riverCalendar;
 
@@ -49,10 +50,10 @@ public class OutsideSceneStateCalendar : MonoBehaviour
     private void HandleRain() {
         switch(GameClock.Instance.GameSeason.Value) {
             case GameClock.Seasons.EndOfSpring:
-                RainManager.Instance.StartRain();
+                _rainManager.State.Value = Rain.States.HeavyRain;
                 break;
             case GameClock.Seasons.Summer:
-                RainManager.Instance.StopRain();
+                _rainManager.State.Value = Rain.States.NoRain;
                 break;
         }
     }

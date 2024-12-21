@@ -119,7 +119,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         switch (_stoveState.Value) {
             case StoveStates.Dead:
                 // Add wood to ashes
-                if (_inventory.IsPlayerHolding("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
                     _stoveState.Value = StoveStates.Ready;
                     return true;
@@ -132,7 +132,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return true;
             case StoveStates.Hot:
                 // state internal transition, stoke fire
-                if (_inventory.IsPlayerHolding("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
                     return true;
@@ -140,7 +140,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return false;   
             case StoveStates.Embers:
                 // Stoke fire
-                if (_inventory.IsPlayerHolding("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
                     _stoveState.Value = StoveStates.Hot;
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");

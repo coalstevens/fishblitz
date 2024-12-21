@@ -18,7 +18,9 @@ public class VirtualCameraManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         if (scene.name == "GameMenu") return;
-        Transform _player = GameObject.FindGameObjectWithTag("Player").transform;
-        _virtualCamera.OnTargetObjectWarped(_player, PlayerData.Instance.SceneSpawnPosition - transform.position);
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+        if (_player == null) return;
+
+        _virtualCamera.OnTargetObjectWarped(_player.transform, PlayerData.SceneSpawnPosition - transform.position);
     }
 }
