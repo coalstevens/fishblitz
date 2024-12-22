@@ -1,3 +1,4 @@
+using Cinemachine;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,9 +14,9 @@ public static class GameStateManager {
     private static IGameState _currentState;
     private static PlayerInput _playerInput;
     private static Playing _playingState = new();
-    private static MenuOpen _menuState = new();
     private static NarratorOnBlack _narratorOnBlack = new();
     private static Scene _rootScene;
+    private static bool _isMenuOpen = false;
 
     public static void Initialize() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -46,14 +47,11 @@ public static class GameStateManager {
 
     public static void OnToggleMenu()
     {
-        if (_currentState is Playing)
-        {
-            TransitionToState(_menuState);
-        }
+        if (_currentState is not Playing) return;
+        if (!_isMenuOpen)
+            OpenMenu();
         else
-        {
-            TransitionToState(_playingState);
-        }
+            CloseMenu();
     }
 
     private static void TransitionToState(IGameState newState)
@@ -63,24 +61,23 @@ public static class GameStateManager {
             Debug.LogError("Attempting to transition to a null state!");
             return;
         }
-
         _currentState = newState;
         _currentState.Enter();
     }
 
-    private class MenuOpen : IGameState
+    private static void OpenMenu() 
     {
-        public void Enter()
-        {
-            SceneManager.LoadScene("GameMenu", LoadSceneMode.Additive);
-            if (PlayerCondition.Instance != null)
-                PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
-        }
+        _isMenuOpen = true;
+        SceneManager.LoadScene("GameMenu", LoadSceneMode.Additive);
+        if (PlayerCondition.Instance != null)
+            PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
+    }
 
-        public void Exit()
-        {
-            SceneManager.UnloadSceneAsync("GameMenu");
-        }
+    private static void CloseMenu() {
+        SceneManager.UnloadSceneAsync("GameMenu");
+        _isMenuOpen = false;
+        if (PlayerCondition.Instance != null)
+            PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
     }
 
     private class Playing : IGameState

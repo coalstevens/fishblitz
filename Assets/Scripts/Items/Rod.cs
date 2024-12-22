@@ -1,21 +1,17 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 [CreateAssetMenu(fileName = "NewRod", menuName = "Items/Rod")]
 public class Rod : Inventory.ItemType, PlayerInteractionManager.ITool
 {
     [SerializeField] private float _minChangeInterval = 3;
     [SerializeField] private float _maxChangeInterval = 10;
-    private PlayerMovementController _playerMovementController;
     private Coroutine _changeStateRoutine;
     private FishBar _fishBar;
 
     void Awake()
     {
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
-        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
     }
     private IEnumerator WaitForFishToBite()
     {
@@ -31,15 +27,15 @@ public class Rod : Inventory.ItemType, PlayerInteractionManager.ITool
     {
         // Debug.Log("Used rod on tilemap");
         // if fishing stop fishing
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Fishing) {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Fishing) {
+            PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
             //StopCoroutine(_changeStateRoutine);
             return true;
         }
 
         // if cursor is on water, start fishing
         if (tilemapLayerName == "Water") {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Fishing;
+            PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Fishing;
             //_changeStateRoutine = StartCoroutine(WaitForFishToBite());
             return true;
         }

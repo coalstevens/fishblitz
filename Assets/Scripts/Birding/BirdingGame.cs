@@ -17,6 +17,14 @@ public class BirdingGame : MonoBehaviour
     [SerializeField] private PolygonCollider2D _minTriggerCollider;
     [SerializeField] private PolygonCollider2D _maxTriggerCollider;
 
+    private static BirdingGame _instance;
+    public static BirdingGame Instance {
+        get {
+            if (_instance == null)
+                Debug.LogError("Birding game object does not exist");
+            return _instance;
+        }
+    }
     private float _gameTimeElapsed;
     private int _currentTriggerFrameIndex;
     private Vector2[] _minColliderVertices;
@@ -29,7 +37,6 @@ public class BirdingGame : MonoBehaviour
     private Vector2 _triggerStartPoint = new Vector2(0.53125f, 0f);
     private Vector2 _triggerEndPoint = new Vector2(5.257f, 0f);
 
-    private PlayerMovementController _playerMovementController;
     private Vector2 _motionInput = Vector2.zero;
     private Transform _beam;
     private BirdingWinFrame _winFrame;
@@ -39,7 +46,7 @@ public class BirdingGame : MonoBehaviour
 
     void Awake()
     {
-        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _instance = this;
         _winFrame = transform.GetChild(0).GetComponent<BirdingWinFrame>();
         _beam = transform.GetChild(1);
         _trigger = _beam.GetChild(0);
@@ -183,7 +190,7 @@ public class BirdingGame : MonoBehaviour
         (
             _beam.localEulerAngles.x,
             _beam.localEulerAngles.y,
-            _playerMovementController.FacingDirection.Value switch
+            PlayerMovementController.Instance.FacingDirection.Value switch
             {
                 FacingDirection.East => 0f,
                 FacingDirection.North => 90f,
@@ -245,6 +252,6 @@ public class BirdingGame : MonoBehaviour
         Debug.Log("Birding Game Ended");
         yield return null;
         gameObject.SetActive(false);
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
     }
 }
