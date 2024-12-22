@@ -134,7 +134,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        if (_inventory.TryGetActiveItem(out var _activeItem)) {
+        if (_inventory.TryGetActiveItemType(out var _activeItem)) {
             switch (_activeItem.ItemName) {
                 case "DryLog":
                     if (!IsRackFull()) {

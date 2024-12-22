@@ -1,25 +1,19 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
-public class Axe : Inventory.Item, PlayerInteractionManager.ITool
+public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
 {
     public interface IUseableWithAxe
     {
         void OnUseAxe();
     }
     [SerializeField] protected AudioClip _chopSFX;
-    private PlayerMovementController _playerMovementController;
-
-    private void Start()
-    {
-        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
-    }
 
     bool PlayerInteractionManager.ITool.UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IUseableWithAxe _worldObject)
         {
-            _playerMovementController.PlayerState.Value = PlayerStates.Axing;
+            PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
             _worldObject.OnUseAxe();
             return true;
         }
@@ -28,7 +22,7 @@ public class Axe : Inventory.Item, PlayerInteractionManager.ITool
 
     void PlayerInteractionManager.ITool.SwingTool()
     {
-        _playerMovementController.PlayerState.Value = PlayerStates.Axing;
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
     }
 
     bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)

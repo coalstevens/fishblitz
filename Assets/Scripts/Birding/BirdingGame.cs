@@ -245,6 +245,6 @@ public class BirdingGame : MonoBehaviour
         Debug.Log("Birding Game Ended");
         yield return null;
         gameObject.SetActive(false);
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
     }
 }

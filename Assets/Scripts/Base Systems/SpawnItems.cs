@@ -20,7 +20,7 @@ public static class SpawnItems
     {
         foreach (var _item in itemsToSpawn)
         {
-            Inventory.Item _spawnItem = FetchItem(_item.identifier);
+            Inventory.ItemType _spawnItem = FetchItem(_item.identifier);
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, Random.Range(_item.minQuantity, _item.maxQuantity)))
             {
@@ -37,7 +37,7 @@ public static class SpawnItems
 
     public static void SpawnLooseItems(string itemName, Vector3[] spawnPositions, bool playBounceAnimation = true, float launchSpeed = 1, float launchDrag = 1)
     {
-        Inventory.Item _spawnItem = FetchItem(itemName);
+        Inventory.ItemType _spawnItem = FetchItem(itemName);
 
         foreach (var _spawnPosition in spawnPositions)
         {
@@ -53,8 +53,8 @@ public static class SpawnItems
         }
     }
 
-    private static Inventory.Item FetchItem(string itemName) {
-        Inventory.Item _spawnItem = Resources.Load<Inventory.Item>($"Items/{itemName}");
+    private static Inventory.ItemType FetchItem(string itemName) {
+        Inventory.ItemType _spawnItem = Resources.Load<Inventory.ItemType>($"Items/{itemName}");
         if (_spawnItem == null)
             Debug.LogError("The spawn item doesn't exist.");
         return _spawnItem;

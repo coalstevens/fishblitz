@@ -78,7 +78,7 @@ public class FishBar : MonoBehaviour
     {
         _logger.Info("New game started.");
         _stopReelingSFXCB = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
-        _playerMovementController.PlayerState.Value = PlayerStates.Catching;
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
         gameObject.SetActive(true); 
         _fishType = GetRandomValidFishType();
         _overlaySpriteRenderer.sprite = null;
@@ -155,7 +155,7 @@ public class FishBar : MonoBehaviour
     }
 
     private void OnGameWin() {
-        _playerMovementController.PlayerState.Value = PlayerStates.Celebrating; // controller will auto leave state after some itme
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
         _stopReelingSFXCB();
@@ -183,7 +183,7 @@ public class FishBar : MonoBehaviour
         LaunchFishCursor();
         _stopReelingSFXCB();
         yield return new WaitForSeconds(1.5f);
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
         EndGame();
     }
 

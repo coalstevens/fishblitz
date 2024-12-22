@@ -18,7 +18,7 @@ public class PlayerSoundManager : MonoBehaviour
         _unsubscribeCB();
     }
 
-    private void OnPlayerStateChange(PlayerStates previous, PlayerStates current)
+    private void OnPlayerStateChange(PlayerMovementController.PlayerStates previous, PlayerMovementController.PlayerStates current)
     {
         if (_stopSoundCB != null) {
             _stopSoundCB();
@@ -26,7 +26,7 @@ public class PlayerSoundManager : MonoBehaviour
         }
 
         switch (current) {
-            case PlayerStates.Walking:
+            case PlayerMovementController.PlayerStates.Walking:
                 _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, 0.5f);
                 break;
         }

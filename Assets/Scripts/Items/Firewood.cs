@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "NewFirewood", menuName = "Items/Firewood")]
-public class Firewood : Inventory.Item //IPlayerCursorUsingItem
+public class Firewood : Inventory.ItemType //IPlayerCursorUsingItem
 {
     public void CursorAction(TileData tileData, Vector3 cursorLocation)
     {

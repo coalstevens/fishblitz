@@ -1,12 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBinoculars", menuName = "Items/Binoculars")]
-public class Binoculars : Inventory.Item, PlayerInteractionManager.ITool
+public class Binoculars : Inventory.ItemType, PlayerInteractionManager.ITool
 {
     private BirdingGame _birdingGame;
     private PlayerMovementController _playerMovementController;
 
-    private void Start() {
+    private void Awake() {
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
         _birdingGame = GameObject.FindWithTag("Player").GetComponentInChildren<BirdingGame>(true);
     }
@@ -24,12 +24,12 @@ public class Binoculars : Inventory.Item, PlayerInteractionManager.ITool
     public void SwingTool()
     {
         Debug.Log("Binoculars swung");
-        if (_playerMovementController.PlayerState.Value == PlayerStates.Birding) {
+        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Birding) {
             Debug.Log("Binoculars returned");
             return;
         }
 
-        _playerMovementController.PlayerState.Value = PlayerStates.Birding;
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Birding;
         _birdingGame.Play();
     }
 

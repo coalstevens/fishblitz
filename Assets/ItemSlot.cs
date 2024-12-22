@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,8 +30,6 @@ public class ItemSlot : MonoBehaviour
     private void OnSlotUpdated(Inventory inventory, int slotIndex)
     {
         if (_slotIndex != slotIndex) return;
-        if (inventory.SlotItems == null)
-            Debug.Log("Slotitems is null");
         var _slotItem = inventory.SlotItems.ContainsKey(slotIndex) ? inventory.SlotItems[slotIndex] : null;
 
         _slotSprite.sprite = _slotItem != null ? _filledSlotSprite : _emptySlotSprite;
@@ -38,8 +37,18 @@ public class ItemSlot : MonoBehaviour
 
         SetQuantityText(_slotItem?.Quantity ?? 0);
 
-        if (_slotItem != null) _itemSprite.sprite = _slotItem.ItemType.ItemSprite;
+        if (_slotItem != null) {
+            _itemSprite.sprite = _slotItem.ItemType.ItemSprite;
+            StartCoroutine(SetItemSpriteToNativeSize());
+        }
     }
+
+    private IEnumerator SetItemSpriteToNativeSize() {
+        // I think this delay is required so that the items are scaled after the canvas.
+        yield return null;
+        _itemSprite.SetNativeSize(); 
+    }
+
 
     private void SetQuantityText(int quantity)
     {

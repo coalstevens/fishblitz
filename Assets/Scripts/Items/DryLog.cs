@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDryLog", menuName = "Items/DryLog")]
-public class DryLog : Inventory.Item, PlayerInteractionManager.IPlayerCursorUsingItem
+public class DryLog : Inventory.ItemType, PlayerInteractionManager.IPlayerCursorUsingItem
 {
     bool PlayerInteractionManager.IPlayerCursorUsingItem.UseItemOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {

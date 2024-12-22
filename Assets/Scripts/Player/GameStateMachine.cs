@@ -18,14 +18,12 @@ public static class GameStateManager {
     private static Scene _rootScene;
 
     public static void Initialize() {
-        Debug.Log("Gamestate manager actived");
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Gamestatemanager sceneloaded");
         if (mode == LoadSceneMode.Additive) return;
         _rootScene = scene;
 

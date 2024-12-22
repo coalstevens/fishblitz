@@ -48,10 +48,10 @@ public class Cursor : MonoBehaviour
         _grid = GameObject.FindObjectOfType<Grid>();
     }
 
-    private void TryHideCursor(PlayerStates playerState)
+    private void TryHideCursor(PlayerMovementController.PlayerStates playerState)
     {
         // If player is in an Acting State, hide the cursor
-        if (playerState != PlayerStates.Idle && playerState != PlayerStates.Walking) {
+        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Walking) {
             _spriteRenderer.enabled = false;
             return;
         }

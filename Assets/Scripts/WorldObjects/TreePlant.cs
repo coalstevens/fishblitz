@@ -112,7 +112,7 @@ public abstract class TreePlant : MonoBehaviour, PlayerInteractionManager.IInter
     IEnumerator FallTree()
     {
         // Wait for axing animation to finish
-        yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerStates.Axing);
+        yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Axing);
 
         // Determine which tree prefab to select
         bool _fallsEast = WillTreeFallEast();

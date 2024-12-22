@@ -1,6 +1,6 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewKokanee", menuName = "Items/Kokanee")]
-public class Kokanee : Inventory.Item
+public class Kokanee : Inventory.ItemType
 {
 }

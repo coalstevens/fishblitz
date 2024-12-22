@@ -16,7 +16,7 @@ public class GlobalHeatSource : ScriptableObject, IHeatSource {
         }
     }
 
-    private void Start() {
+    private void Awake() {
         _playerTemperatureManager = PlayerCondition.Instance.GetComponent<PlayerTemperatureManager>();
     }
 

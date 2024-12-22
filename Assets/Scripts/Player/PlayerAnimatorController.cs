@@ -17,28 +17,28 @@ public class PlayerAnimatorController : MonoBehaviour
         _inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));
     }
 
-    private void OnStateChange(PlayerStates curr)
+    private void OnStateChange(PlayerMovementController.PlayerStates curr)
     {
         FacingDirection _facingDir = _playerMovementController.FacingDirection.Value;
 
         switch (curr)
         {
-            case PlayerStates.Idle:
+            case PlayerMovementController.PlayerStates.Idle:
                 HandleIdle(_facingDir);
                 break;
-            case PlayerStates.Walking:  
+            case PlayerMovementController.PlayerStates.Walking:  
                 HandleWalking(_facingDir);
                 break;
-            case PlayerStates.Fishing:
+            case PlayerMovementController.PlayerStates.Fishing:
                 HandleFishing(_facingDir);
                 break;
-            case PlayerStates.Catching:
+            case PlayerMovementController.PlayerStates.Catching:
                 HandleCatching(_facingDir);
                 break;
-            case PlayerStates.Axing:
+            case PlayerMovementController.PlayerStates.Axing:
                 HandleChopping(_facingDir);
                 break;
-            case PlayerStates.Celebrating:
+            case PlayerMovementController.PlayerStates.Celebrating:
                 HandleCelebrating();
                 break;
             default:
@@ -112,7 +112,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private void HandleWalking(FacingDirection facingDir)
     {
         // Active item null
-        if (!_inventory.TryGetActiveItem(out var _activeItem)) {
+        if (!_inventory.TryGetActiveItemType(out var _activeItem)) {
             HandleNoToolWalking(facingDir);
             return;
         }
@@ -170,7 +170,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private void HandleIdle(FacingDirection facingDir)
     {
         // Active item null
-        if (!_inventory.TryGetActiveItem(out var _activeItem)) {
+        if (!_inventory.TryGetActiveItemType(out var _activeItem)) {
             HandleNoToolIdle(facingDir);
             return;
         }
@@ -225,6 +225,6 @@ public class PlayerAnimatorController : MonoBehaviour
     }
 
     private void SetPlayerIdle() {
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
 using UnityEngine.SceneManagement;
+using System.ComponentModel;
 public enum FacingDirection
 {
     North,
@@ -10,16 +11,6 @@ public enum FacingDirection
     East,
 }
 
-public enum PlayerStates
-{
-    Walking,
-    Idle,
-    Fishing,
-    Axing,
-    Catching,
-    Celebrating,
-    Birding,
-}
 public struct CardinalVector
 {
     public float north;
@@ -34,18 +25,39 @@ public struct CardinalVector
         west = defaultValue;
     }
 }
+
 public class PlayerMovementController : MonoBehaviour
 {
+    public enum PlayerStates
+    {
+        Walking,
+        Idle,
+        Fishing,
+        Axing,
+        Catching,
+        Celebrating,
+        Birding,
+    }
+    private static PlayerMovementController _instance;
+    public static PlayerMovementController Instance {
+        get {
+            if (_instance == null)
+                Debug.LogError("This object does not exist");
+            return _instance; 
+        }
+    }
+
     private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currentMotion = Vector2.zero;
     private Rigidbody2D _rb;
     public Reactive<FacingDirection> FacingDirection = new Reactive<FacingDirection>(global::FacingDirection.North);
-    public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(global::PlayerStates.Idle);
+    public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(PlayerStates.Idle);
     private CardinalVector _maxMoveSpeeds; // Upper limit of player velocity
     private CardinalVector _moveSpeedsMultiplier; // Can be publicly adjusted to impact player movespeed
 
     private void Awake()
     {
+        _instance = this;
         _rb = GetComponent<Rigidbody2D>();
         transform.position = PlayerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);

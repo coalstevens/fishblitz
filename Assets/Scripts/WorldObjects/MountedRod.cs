@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MountedRod : Inventory.Item, PlayerInteractionManager.IPlayerCursorUsingItem
+public class MountedRod : Inventory.ItemType, PlayerInteractionManager.IPlayerCursorUsingItem
 {
     private Inventory _inventory;
 
-    private void Start()
+    private void Awake()
     {
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
     }

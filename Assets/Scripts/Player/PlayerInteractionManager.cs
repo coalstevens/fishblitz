@@ -99,19 +99,25 @@ public class PlayerInteractionManager : MonoBehaviour
     private void OnUseTool()
     {
         // can't interrupt these
-        if (_playerMovementController.PlayerState.Value == PlayerStates.Celebrating ||
-            _playerMovementController.PlayerState.Value == PlayerStates.Catching ||
-            _playerMovementController.PlayerState.Value == PlayerStates.Axing ||
-            _playerMovementController.PlayerState.Value == PlayerStates.Birding)
+        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Axing ||
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Birding)
         {
             Debug.Log("Activegridcell returned");
             return;
         }
 
         // check active inventory slot for tool
-        Inventory.ItemData _activeItem = _inventory.GetActiveItem();
-        if (_activeItem == null) return;
-        if (_activeItem is not ITool) return;
+        Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
+        if (_activeItem == null) {
+            Debug.Log("Active item is null");
+            return;
+        }
+        if (_activeItem is not ITool) {
+            Debug.Log("Active item is not ITool");
+            return;
+        }
 
         // try to use tool on worldobject
         Vector3Int _cursorLocation = GetActiveCursorLocation();
@@ -139,8 +145,8 @@ public class PlayerInteractionManager : MonoBehaviour
     private void OnPlayerCursorAction()
     {
         // returns if player is not idle or walking
-        if (_playerMovementController.PlayerState.Value != PlayerStates.Idle &&
-            _playerMovementController.PlayerState.Value != PlayerStates.Walking)
+        if (_playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Idle &&
+            _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Walking)
             return;
 
         // Check for an interactable object
@@ -150,7 +156,7 @@ public class PlayerInteractionManager : MonoBehaviour
             return;
 
         // check active inventory slot for interactable item
-        Inventory.ItemData _activeItem = _inventory.GetActiveItem();
+        Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
         if (_activeItem == null) return;
         if (_activeItem is not IPlayerCursorUsingItem) return;
 
