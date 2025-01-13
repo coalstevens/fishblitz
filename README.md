@@ -9,3 +9,12 @@ Things to do:
 - Light a fire in the house. Dry wood. Sleep.
 - Fish in the river.
 - Go birding.
+
+# What I’ve Learned
+- Gained hands-on experience in Unity and C#.
+- Practically implemented advanced design patterns for system architecture.
+- Enhanced skills in scalability, flexibility, and efficient system design.
+- Applied mechanical engineering principles to Unity’s physics engine.
+- Created custom graphical shaders.
+- Designed and implemented character AI.
+- Gained pixel art skils.
