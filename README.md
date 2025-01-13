@@ -3,8 +3,9 @@ Fishblitz is top-down pixel art game first started as a fishing game for a game 
 
 https://coalstevens.itch.io/rpg-early-demo
 
-Perform exciting tasks, such as:
-- Chop down trees
-- Chop dry wood into firewood
-- Find the house. Light a fire. Dry wood. Sleep.
-- Fish in the river (any day after The 11th)
+Things to do:
+- Fall trees.
+- Split dry wood into firewood.
+- Light a fire in the house. Dry wood. Sleep.
+- Fish in the river.
+- Go birding.
