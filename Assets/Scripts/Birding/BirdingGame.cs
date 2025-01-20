@@ -208,6 +208,9 @@ public class BirdingGame : MonoBehaviour
 
     private void OnUseTool()
     {
+        if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Birding)
+            return;
+            
         if (_gameOver) return;
 
         List<Collider2D> _results = new List<Collider2D>();

@@ -1,62 +1,82 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ReactiveUnity;
 using UnityEngine;
 
 // Player condition serves as a simple mediator to all its component scripts
 public class PlayerCondition : Singleton<PlayerCondition>
 {
+    [SerializeField] private int _maxEnergy = 100;
+    [SerializeField] private int _startingEnergy = 100;
     // Low energy reduces player movement 
     // Clothing keeps you warm
     // Clothing prevents you from getting wet
-    public Temperature PlayerTemperature {
-        get {
+    public Temperature PlayerTemperature
+    {
+        get
+        {
             return _playerTemperatureManager.Temperature;
         }
     }
-    
-    public Temperature AmbientTemperature {
-        get {
+
+    public Temperature AmbientTemperature
+    {
+        get
+        {
             return _playerTemperatureManager.AmbientTemperature;
         }
     }
-    
-    public bool PlayerIsWet {
-        get {
+
+    public bool PlayerIsWet
+    {
+        get
+        {
             return _playerDryingManager.PlayerIsWet.Value;
         }
     }
-    
-    public float PlayerFullnessPercentage {
-        get {
+
+    public float PlayerFullnessPercentage
+    {
+        get
+        {
             return _playerHungerManager.GetFullnessPercent();
         }
     }
 
-    public float LatestSleepScore {
-        get {
+    public float LatestSleepScore
+    {
+        get
+        {
             return _playerSleepManager.GetLastestSleepScore();
         }
     }
 
-    private int _maxEnergy = 100;
-    private int _currentEnergy = 20;
+    public Reactive<int> CurrentEnergy = new Reactive<int>(0);
+    public int MaxEnergy => _maxEnergy;
 
     // Ratios, sum to 1
     private float _sleepRecoveryPercentageOfMax = 0.5f;
     private float _hungerRecoveryPercentageOfMax = 0.5f;
 
-    private const int NAP_DURATION_GAMEHOURS = 3; 
+    private const int NAP_DURATION_GAMEHOURS = 3;
+    private Logger _logger = new();
 
     private List<Action> _unsubscribeHooks = new List<Action>();
-    private PlayerDryingManager _playerDryingManager;   
+    private PlayerDryingManager _playerDryingManager;
     private PlayerHungerManager _playerHungerManager;
     private PlayerSleepQualityManager _playerSleepManager;
     private PlayerTemperatureManager _playerTemperatureManager;
     public bool PlayerIsAsleep = false;
     [SerializeField] private SleepMenu _sleepMenu;
 
-    void OnEnable() {
+    private void Start()
+    {
+        CurrentEnergy.Value = _startingEnergy;
+    }
+
+    void OnEnable()
+    {
         _playerDryingManager = GetComponent<PlayerDryingManager>();
         _playerHungerManager = GetComponent<PlayerHungerManager>();
         _playerSleepManager = GetComponent<PlayerSleepQualityManager>();
@@ -64,21 +84,25 @@ public class PlayerCondition : Singleton<PlayerCondition>
         _unsubscribeHooks.Add(GameClock.Instance.GameHour.OnChange(curr => EndDay(curr)));
     }
 
-    void OnDisable() {
+    void OnDisable()
+    {
         foreach (var hook in _unsubscribeHooks)
             hook();
     }
 
-    private void EndDay(int currentHour) {
+    private void EndDay(int currentHour)
+    {
         if (currentHour == 0)
             _playerHungerManager.LogTodaysCalories();
     }
 
-    public void Sleep() {
+    public void Sleep()
+    {
         StartCoroutine(SleepRoutine());
     }
 
-    private IEnumerator SleepRoutine() {
+    private IEnumerator SleepRoutine()
+    {
         // Transition to sleep menu
         PlayerIsAsleep = true;
         _sleepMenu.gameObject.SetActive(true);
@@ -109,12 +133,52 @@ public class PlayerCondition : Singleton<PlayerCondition>
         _sleepMenu.gameObject.SetActive(false);
 
         // Recover energy
-        _currentEnergy = _playerSleepManager.GetEnergyFromSleep(_maxEnergy, _hungerRecoveryPercentageOfMax, _hungerRecoveryPercentageOfMax);
+        CurrentEnergy.Value = _playerSleepManager.GetEnergyFromSleep(_maxEnergy, _hungerRecoveryPercentageOfMax, _hungerRecoveryPercentageOfMax);
     }
 
-    public void Nap() {
+    public void Nap()
+    {
         GameClock.Instance.SkipTime(NAP_DURATION_GAMEHOURS * 60);
-        _currentEnergy += _playerSleepManager.GetEnergyGainedFromNap(_maxEnergy, _hungerRecoveryPercentageOfMax, _sleepRecoveryPercentageOfMax);
+        CurrentEnergy.Value += _playerSleepManager.GetEnergyGainedFromNap(_maxEnergy, _hungerRecoveryPercentageOfMax, _sleepRecoveryPercentageOfMax);
         throw new NotImplementedException();
+    }
+
+    public void DepleteEnergy(int energy)
+    {
+        if (CurrentEnergy.Value >= energy)
+        {
+            CurrentEnergy.Value -= energy;
+            _logger.Info("Energy depleted by " + energy + ". Current energy: " + CurrentEnergy.Value);
+        }
+        else if (CurrentEnergy.Value < energy && CurrentEnergy.Value > 0)
+        {
+            CurrentEnergy.Value = 0;
+            _logger.Info("Energy insuffucient, this is the last player action");
+            _logger.Info("Energy depleted by " + energy + ". Current energy: " + CurrentEnergy.Value);
+        }
+        else
+        {
+            _logger.Info("No energy left, player cannot perform this action");
+        }
+    }
+
+    public void RecoverEnergy(int energy)
+    {
+        if (CurrentEnergy.Value + energy <= _maxEnergy)
+        {
+            CurrentEnergy.Value += energy;
+            _logger.Info("Energy recovered by " + energy + ". Current energy: " + CurrentEnergy.Value);
+        }
+        else
+        {
+            CurrentEnergy.Value = _maxEnergy;
+            _logger.Info("Energy recovered by " + energy + ". Current energy: " + CurrentEnergy.Value);
+            _logger.Info("More than energy energy recovered, energy is now at max");
+        }
+    }
+
+    public bool IsEnergyAvailable()
+    {
+        return CurrentEnergy.Value > 0;
     }
 }

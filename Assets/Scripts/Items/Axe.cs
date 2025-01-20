@@ -3,11 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
 public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
 {
+    [SerializeField] private int _energyCost = 2;
     public interface IUseableWithAxe
     {
         void OnUseAxe();
     }
     [SerializeField] protected AudioClip _chopSFX;
+
+    public int EnergyCost => _energyCost;
 
     bool PlayerInteractionManager.ITool.UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
@@ -20,9 +23,10 @@ public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
         return false;
     }
 
-    void PlayerInteractionManager.ITool.SwingTool()
+    bool PlayerInteractionManager.ITool.UseToolWithoutTarget()
     {
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
+        return false;
     }
 
     bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)

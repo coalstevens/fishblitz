@@ -1,34 +1,42 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class PlayerInteractionManager : MonoBehaviour
 {
-    public interface ITool {
+    public interface ITool
+    {
         /// <summary>
         /// Uses tool on the world object under player object. Returns false if ignored.
         /// </summary>
         public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
-        
+
         /// <summary>
         /// Uses tool on the interactive tilemap under cursor. Returns false if ignored.
         /// </summary>
         public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
 
         /// <summary>
-        /// Uses tool on no object in particular (empty swing, binoculars trigger birding game, etc)
+        /// Uses tool on no object in particular 
         /// </summary>
-        public void SwingTool();
+        /// <returns> True if energy is used </returns>
+        public bool UseToolWithoutTarget();
 
         /// <summary>
         /// Plays a sound when the tool interacts with the target
         /// </summary>
         public void PlayToolHitSound();
+
+        /// <summary>
+        /// Returns the energy cost of using the tool
+        /// </summary>
+        public int EnergyCost { get; }
     }
 
-    public interface IInteractable 
+    public interface IInteractable
     {
         /// <summary>
         /// Returns false if the object ignores the command.
@@ -36,7 +44,8 @@ public class PlayerInteractionManager : MonoBehaviour
         public bool CursorInteract(Vector3 cursorLocation);
     }
 
-    public interface IPlayerCursorUsingItem {
+    public interface IPlayerCursorUsingItem
+    {
         public bool UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
         public bool UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
     }
@@ -110,12 +119,21 @@ public class PlayerInteractionManager : MonoBehaviour
 
         // check active inventory slot for tool
         Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
-        if (_activeItem == null) {
+        if (_activeItem == null)
+        {
             Debug.Log("Active item is null");
             return;
         }
-        if (_activeItem is not ITool) {
+        ITool _activeTool = _activeItem as ITool;
+        if (_activeTool == null)
+        {
             Debug.Log("Active item is not ITool");
+            return;
+        }
+
+        if (!PlayerCondition.Instance.IsEnergyAvailable())
+        {
+            Debug.Log("No energy remaining.");
             return;
         }
 
@@ -123,23 +141,31 @@ public class PlayerInteractionManager : MonoBehaviour
         Vector3Int _cursorLocation = GetActiveCursorLocation();
         IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(_cursorLocation);
         if (_interactableWorldObject != null)
-            if (((ITool)_activeItem).UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
+        {
+            if (_activeTool.UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
             {
-                ((ITool)_activeItem).PlayToolHitSound();
+                PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+                _activeTool.PlayToolHitSound();
                 return;
             }
+        }
 
         // try to use tool on tilemap
         string _interactableTilemapName = FindPlayerCursorInteractableTileMap(_cursorLocation);
         if (_interactableTilemapName != null)
-            if (((ITool)_activeItem).UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
+        {
+            if (_activeTool.UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
             {
-                ((ITool)_activeItem).PlayToolHitSound();
+                PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+                _activeTool.PlayToolHitSound();
                 return;
             }
-
+        }
         // swing at nothing
-        ((ITool)_activeItem).SwingTool();
+        if (_activeTool.UseToolWithoutTarget())
+        {
+            PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+        }
     }
 
     private void OnPlayerCursorAction()
