@@ -16,6 +16,7 @@ public class BirdingGame : MonoBehaviour
     [SerializeField] private List<Sprite> _triggerAnimationFrames = new();
     [SerializeField] private PolygonCollider2D _minTriggerCollider;
     [SerializeField] private PolygonCollider2D _maxTriggerCollider;
+    [SerializeField] private Logger _logger = new();
 
     private static BirdingGame _instance;
     public static BirdingGame Instance {
@@ -87,7 +88,7 @@ public class BirdingGame : MonoBehaviour
 
     public void Play()
     {
-        Debug.Log("Birding Game begun");
+        _logger.Info("Birding Game begun");
         _gameOver = false;
         gameObject.SetActive(true);
         _beam.gameObject.SetActive(true);
@@ -208,6 +209,9 @@ public class BirdingGame : MonoBehaviour
 
     private void OnUseTool()
     {
+        if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Birding)
+            return;
+            
         if (_gameOver) return;
 
         List<Collider2D> _results = new List<Collider2D>();
@@ -222,7 +226,7 @@ public class BirdingGame : MonoBehaviour
             }
         }
 
-        Debug.Log($"Number of overlapping birds: {_overlappedBirds.Count}");
+        _logger.Info($"Number of overlapping birds: {_overlappedBirds.Count}");
         if (_overlappedBirds.Count == 0)
             OnLose();
         else
@@ -249,7 +253,7 @@ public class BirdingGame : MonoBehaviour
 
     private IEnumerator EndGame()
     {
-        Debug.Log("Birding Game Ended");
+        _logger.Info("Birding Game Ended");
         yield return null;
         gameObject.SetActive(false);
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FishType : MonoBehaviour
 {
     public List<string> CatchableSceneNames;
-    public string CaughtItem;
+    public Inventory.ItemType CaughtItem;
     // Start is called before the first frame update
     [Header("Minigame Round Settings")]
     public List<FishingRound> Rounds = new();

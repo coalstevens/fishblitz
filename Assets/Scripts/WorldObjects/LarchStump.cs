@@ -20,6 +20,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
     [SerializeField] private AudioClip _fallingSplitWoodSFX;
     [SerializeField] private Collider2D _birdPerchTarget;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private Inventory.ItemType _firewood;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
     private List<Action> _unsubscribeHooks = new();
@@ -101,7 +102,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
 
         // spawn firewood
         Vector3[] _spawnPositions = GetFirewoodSpawnPositions();
-        SpawnItems.SpawnLooseItems("Firewood", _spawnPositions, false, 0, 0);
+        SpawnItems.SpawnLooseItems(_firewood, _spawnPositions, false, 0, 0);
 
         // stop animator
         _animator.StopPlayback();
