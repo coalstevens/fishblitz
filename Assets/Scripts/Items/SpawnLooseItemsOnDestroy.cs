@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpawnLooseItemsOnDestroy : MonoBehaviour
 {
     [SerializeField] bool _spawnOnDestroy = true;
-    [SerializeField] private SpawnItems.ItemSpawnData[] _itemsToSpawn;
+    [SerializeField] private SpawnItems.SpawnItemData[] _itemsToSpawn;
     [SerializeField] private Collider2D _spawnArea;
 
     [Header("Object Spawn Velocity Settings")]
@@ -18,6 +18,6 @@ public class SpawnLooseItemsOnDestroy : MonoBehaviour
         if (!_spawnOnDestroy)
             return;
         if (gameObject.scene.isLoaded)
-            SpawnItems.SpawnItemsFromCollider(_spawnArea, _itemsToSpawn, _speed, _drag);
+            SpawnItems.SpawnItemsFromCollider(_spawnArea, _itemsToSpawn, SpawnItems.LaunchDirection.ANY, _speed, _drag);
     }
 }

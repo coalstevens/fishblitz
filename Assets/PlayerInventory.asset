@@ -13,16 +13,19 @@ MonoBehaviour:
   m_Name: PlayerInventory
   m_EditorClassIdentifier: 
   _startingItems:
-  - ItemName: Binoculars
-    Quantity: 1
-  - ItemName: Rod
-    Quantity: 1
-  - ItemName: DryLog
-    Quantity: 5
+  - Quantity: 1
+    ItemType: {fileID: 11400000, guid: 5e97eecbb8c39494bb26f1ba4d1143a5, type: 2}
+  - Quantity: 1
+    ItemType: {fileID: 11400000, guid: b88725d024eaf4cb48d96bdfffb53f87, type: 2}
+  - Quantity: 5
+    ItemType: {fileID: 11400000, guid: 0469918a5730a48679387fe460199c62, type: 2}
+  - Quantity: 1
+    ItemType: {fileID: 11400000, guid: 3aeda5fd12fd6437b91fda0893c26e7c, type: 2}
   _logger:
-    _info: 1
+    _info: 0
     _verbose: 0
-    _prefix: 
+    _prefix: 'Inventory: '
     _color: green
+  _newInventoryOnLoad: 1
   ActiveItemSlot:
-    _val: 0
+    _val: 3

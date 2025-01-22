@@ -5,16 +5,21 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FishBar : MonoBehaviour
+public class FishingGame : MonoBehaviour
 {
+    private static FishingGame _instance;
+    public static FishingGame Instance {
+        get => _instance;
+    }
     [SerializeField] private float _startHeight;
     [SerializeField] private float _endHeight;
-
+    [SerializeField] private Vector2 _biteTimeRange = new Vector2(3f, 10f);
     [SerializeField] private SpriteRenderer _barSprite;
     [SerializeField] private GameObject _fishCursor;
     [SerializeField] private GameObject _triggersContainer;
     [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private GameObject _fishTypeContainer;
+    [SerializeField] private Inventory _inventory;
     
     [Header("Sound Effects")]
     [SerializeField] private AudioClip _missedSFX;
@@ -43,43 +48,61 @@ public class FishBar : MonoBehaviour
 
     [SerializeField] Logger _logger = new();
 
-    private PlayerMovementController _playerMovementController;
     private Collider2D _playerCollider;
-    private Inventory _inventory;
     private Collider2D _gameCursorCollider;
     private Rigidbody2D _gameCursorRB;
     private List<FishBarTrigger> _triggers;
+    private SpriteRenderer _bar;
     private bool _failed;
     private int _roundNumber;
     private Vector2 _gameCursorStartPosition = new Vector2(0f, 3.68658f); // Start position of cursor
     private FishType _fishType;
+    private Coroutine _waitForFish;
     
     // Fields below map the normalized trigger positions to the 
     // actual length of the fishbar play area, uses y = mx + b
     public static readonly float TRIGGER_MAPPING_SLOPE = 3.35f;
     public static readonly float TRIGGER_MAPPING_INTERCEPT = 0.35f;
 
+    private void Awake() {
+        _instance = this;
+        _bar = GetComponent<SpriteRenderer>();
+    }
+
     // Play the fishing mini game
     public void Play()
     {
-        // Get references
-        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
-        _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
+        _fishTypeContainer.SetActive(true);
+        _triggersContainer.SetActive(true);
+        _barSprite.gameObject.SetActive(true);
+        _bar.enabled = true;
+        _overlaySpriteRenderer.gameObject.SetActive(true);
         _playerCollider = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
         _gameCursorCollider = _fishCursor.GetComponent<Collider2D>();
         _gameCursorRB = _fishCursor.GetComponent<Rigidbody2D>();
-
         InitializeNewGame();
         InitializeNewRound(_fishType.Rounds[_roundNumber]);
         StartCoroutine(PlayRound(_fishType.Rounds[_roundNumber].GameSpeed));
+    }
+    private IEnumerator WaitForFishToBite()
+    {
+        yield return new WaitForSeconds(UnityEngine.Random.Range(_biteTimeRange.x, _biteTimeRange.y));
+        Play();
+    }
+
+    public void CastForFish() {
+        _waitForFish = StartCoroutine(WaitForFishToBite());
+    }
+    
+    public void ReelInLine() {
+        StopCoroutine(_waitForFish);
     }
 
     private void InitializeNewGame()
     {
         _logger.Info("New game started.");
         _stopReelingSFXCB = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
-        gameObject.SetActive(true); 
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
         _fishType = GetRandomValidFishType();
         _overlaySpriteRenderer.sprite = null;
         _failed = false;
@@ -125,14 +148,14 @@ public class FishBar : MonoBehaviour
         
         // Check if failed
         if (_failed || _triggers.Any(trigger => trigger.Fulfilled == false)) {
-            OnFail();
+            HandleGameFail();
             yield break;
         }
 
         // Round won! Check if it was the last round
         _roundNumber++;
         if (_roundNumber >= _fishType.Rounds.Count) {
-            OnGameWin();
+            HandleGameWin();
             yield break;
         }
 
@@ -147,15 +170,12 @@ public class FishBar : MonoBehaviour
         float _currHeight = Mathf.Lerp(_startHeight, _endHeight, percent);
         _barSprite.size = new Vector2(_barSprite.size.x, _currHeight);
 
-        // TODO: it is supposedly bad to move the transform of a kinematic rigidbody like this.
-        // - Using a RB is giving control of the position to Unity so it can handle collisions
-        //   It's hopefully fine in this case since everything is a trigger and only overlap each other
         if (!_failed)
             _fishCursor.transform.localPosition = new Vector2(_fishCursor.transform.localPosition.x, _currHeight);
     }
 
-    private void OnGameWin() {
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
+    private void HandleGameWin() {
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
         _stopReelingSFXCB();
@@ -163,7 +183,7 @@ public class FishBar : MonoBehaviour
         EndGame();
     }
 
-    private void OnFail()
+    private void HandleGameFail()
     {
         transform.DOShakePosition(_shakeDuration, _shakeStrength, _shakeVibrato, _shakeRandomness);
         StartCoroutine(FailRoutine());
@@ -183,12 +203,16 @@ public class FishBar : MonoBehaviour
         LaunchFishCursor();
         _stopReelingSFXCB();
         yield return new WaitForSeconds(1.5f);
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
         EndGame();
     }
 
     private void EndGame() {
-        gameObject.SetActive(false);
+        _fishTypeContainer.SetActive(false);
+        _triggersContainer.SetActive(false);
+        _barSprite.gameObject.SetActive(false);
+        _overlaySpriteRenderer.gameObject.SetActive(false);
+        _bar.enabled = false;
     }
 
     /// <summary>
@@ -196,6 +220,10 @@ public class FishBar : MonoBehaviour
     /// </summary>
     private void OnUseTool()
     {
+        if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Fishing &&
+            PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Catching)
+            return;
+
         // ignore if lost already
         if (_failed)
             return;

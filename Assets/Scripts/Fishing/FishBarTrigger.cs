@@ -74,11 +74,11 @@ public class FishBarTrigger : MonoBehaviour
     }
 
     private void ConfigureOscillationBounds() {
-        float _oscillationLength = _round.OscillationLengthNormalized * FishBar.TRIGGER_MAPPING_SLOPE;
+        float _oscillationLength = _round.OscillationLengthNormalized * FishingGame.TRIGGER_MAPPING_SLOPE;
 
         // trigger can not oscillate outside of game play area bounds
-        float _playerAreaUpperBound = FishBar.TRIGGER_MAPPING_SLOPE + FishBar.TRIGGER_MAPPING_INTERCEPT;
-        float _playAreaLowerBound = FishBar.TRIGGER_MAPPING_INTERCEPT;
+        float _playerAreaUpperBound = FishingGame.TRIGGER_MAPPING_SLOPE + FishingGame.TRIGGER_MAPPING_INTERCEPT;
+        float _playAreaLowerBound = FishingGame.TRIGGER_MAPPING_INTERCEPT;
 
         // by default the trigger spawn position is the center of oscillation range
         float _localUpperBound = transform.localPosition.y + _oscillationLength / 2;

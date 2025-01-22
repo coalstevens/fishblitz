@@ -33,7 +33,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
     private SpriteRenderer _spriteRenderer;
     private Reactive<bool> _fishOn = new Reactive<bool>(false);
     private Reactive<bool> _selected = new Reactive<bool>(false);
-    private FishBar _fishBar;
+    private FishingGame _fishBar;
     private Coroutine _changeStateRoutine;
     private PlayerInteractionManager _activeGridCell;
     private List<Action> _unsubscribeHooks = new();
@@ -70,7 +70,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
         // References
         _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<PlayerInteractionManager>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
-        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishBar>(true);
+        _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishingGame>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
