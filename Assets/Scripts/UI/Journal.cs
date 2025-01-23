@@ -1,21 +1,35 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using ReactiveUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Journal : MonoBehaviour
+public class GameMenu : MonoBehaviour
 {
+    [Header("General")]
     [Range(0f, 1f)][SerializeField] private float solidOpacity = 1.0f;
     [Range(0f, 1f)][SerializeField] private float fadedOpacity = 0.3f;
+
+    [Header("Menu Tabs")]
+    [SerializeField] private Image _menuTabCursor;
+    [SerializeField] private Sprite _playerTabHighlight;
+    [SerializeField] private Sprite _journalTabHighlight;
+
+    [Header("Journal Tabs")]
+    [SerializeField] private Transform _journalTabCursor;
+    [SerializeField] private float _fishTabCursorXPosition;
+    [SerializeField] private float _birdsTabCursorXPosition;
+
     [Header("Pages")]
-    [SerializeField] private Transform _leftPage;
-    [SerializeField] private Transform _cursor;
-    [SerializeField] private Transform _rightPage;
+    [SerializeField] private Transform _entryCursor;
+    [SerializeField] private Transform _birdsLeftPage;
+    [SerializeField] private Transform _birdsRightPage;
+    [SerializeField] private Transform _fishLeftPage;
+    [SerializeField] private Transform _fishRightPage;
+
     [Header("NoteBook")]
     [SerializeField] private TextMeshProUGUI _noteBookTitle;
     [SerializeField] private List<Image> _seasonIcons = new();
@@ -24,89 +38,129 @@ public class Journal : MonoBehaviour
     [SerializeField] private Image _denominator;
     [SerializeField] private List<Sprite> _numbersTo24RightJustified = new();
     [SerializeField] private List<Sprite> _numbersTo24LeftJustified = new();
+    enum Cursors { MENU_TABS, JOURNAL_TABS, ENTRIES }
+    enum MenuTabs { PLAYER, JOURNAL };
+    enum JournalTabs { BIRDS, FISH };
+    private Reactive<Cursors> _activeCursor = new Reactive<Cursors>(Cursors.MENU_TABS);
+    private Reactive<MenuTabs> _activeMenuTab = new Reactive<MenuTabs>(MenuTabs.JOURNAL);
+    private Reactive<MenuTabs> _menuTabCursorState = new Reactive<MenuTabs>(MenuTabs.JOURNAL);
+    private Reactive<JournalTabs> _activeJournalTab = new Reactive<JournalTabs>(JournalTabs.BIRDS);
+    private Reactive<JournalTabs> _journalTabCursorState = new Reactive<JournalTabs>(JournalTabs.BIRDS);
     private Transform[][] _pagesLookup;
     private PlayerData.BirdingLog _playerBirdLog;
     private (int i, int j) _pagePointer;
-    private int _numRows = 4;
-    private int _numColumns = 6;
-    private int _totalEntries;
+    private int _rowsPerPage = 4;
+    private int _columnsPerPage = 6;
+    private int _numBirdEntries;
+    private int _numFishEntries;
 
-    void Start()
+    private List<Action> _unsubscribeHooks = new();
+
+    private void OnEnable()
     {
         if (_seasonIcons.Count != 4)
             Debug.LogError("Season icons are assigned incorrectly in the journal.");
         if (_dayPeriodIcons.Count != 4)
             Debug.LogError("Day period icons are assigned incorrectly in the journal.");
 
+        _unsubscribeHooks.Add(_menuTabCursorState.OnChange(_ => RefreshMenuTabCursor()));
+        _unsubscribeHooks.Add(_journalTabCursorState.OnChange(_ => RefreshJournalTabCursor()));
+        _unsubscribeHooks.Add(_activeCursor.OnChange(curr => OnActiveCursorChange(curr)));
+
         _playerBirdLog = PlayerData.PlayerBirdingLog;
-        var _allEntries = CollectActiveEntries();
-        _totalEntries = _allEntries.Count;
-        InitializePagesLookupTable(_allEntries);
+        var _birdsTabEntries = CollectTabEntries(_birdsLeftPage, _birdsRightPage);
+        var _fishTabEntries = CollectTabEntries(_fishLeftPage, _fishRightPage);
+        _numBirdEntries = _birdsTabEntries.Count;
+        _numFishEntries = _fishTabEntries.Count;
+
+        InitializeEntryCursor(_birdsTabEntries);
         RefreshPages();
         UpdateNoteBook();
         StartCoroutine(UpdateCursorAfterDelay());
     }
 
-    private IEnumerator UpdateCursorAfterDelay() {
+    private void OnDisable()
+    {
+        foreach (var _hook in _unsubscribeHooks)
+            _hook();
+        _unsubscribeHooks.Clear();
+    }
+
+    private IEnumerator UpdateCursorAfterDelay()
+    {
         yield return null;
-        UpdateCursorPosition();
+        MoveEntryCursor();
     }
 
-    private void UpdateCursorPosition() {
-        _cursor.position = _pagesLookup[_pagePointer.i][_pagePointer.j].GetChild(1).transform.position;
+    private void MoveEntryCursor()
+    {
+        _entryCursor.position = _pagesLookup[_pagePointer.i][_pagePointer.j].GetChild(1).transform.position;
     }
 
-    private List<Transform> CollectActiveEntries() {
+    private List<Transform> CollectTabEntries(Transform leftPage, Transform rightPage)
+    {
         List<Transform> _allEntries = new();
-        foreach (Transform child in _leftPage)
-            if(child.gameObject.activeSelf)
+        foreach (Transform child in leftPage)
+            if (child.gameObject.activeSelf)
                 _allEntries.Add(child);
-        foreach (Transform child in _rightPage)
-            if(child.gameObject.activeSelf)
+        foreach (Transform child in rightPage)
+            if (child.gameObject.activeSelf)
                 _allEntries.Add(child);
         return _allEntries;
     }
 
-    private void InitializePagesLookupTable(List<Transform> allEntries)
+    private void InitializeEntryCursor(List<Transform> tabEntries)
     {
-        _pagePointer = (0,0);
-        _pagesLookup = new Transform[_numRows][];
-        for (int i = 0; i < _numRows; i++)
-            _pagesLookup[i] = new Transform[_numColumns];
-        
-        if (_totalEntries > _numColumns * _numRows)
+        // Initialize 2D array to navigate
+        _pagePointer = (0, 0);
+        _pagesLookup = new Transform[_rowsPerPage][];
+        for (int i = 0; i < _rowsPerPage; i++)
+            _pagesLookup[i] = new Transform[_columnsPerPage];
+
+        if (_numBirdEntries > _columnsPerPage * _rowsPerPage)
             Debug.LogError("Too many entries in journal.");
 
-        int k = 0;
         // Map entries to left page
-        for (int i = 0; i < _numRows; i++)
+        int k = 0;
+        for (int i = 0; i < _rowsPerPage; i++)
         {
-            for (int j = 0; j < _numColumns / 2; j++)
+            for (int j = 0; j < _columnsPerPage / 2; j++)
             {
-                if (k >= _totalEntries)
+                if (k >= _numBirdEntries)
                     return;
-                _pagesLookup[i][j] = allEntries[k];
+                _pagesLookup[i][j] = tabEntries[k];
                 k++;
             }
         }
+
         // right page
-        for (int i = 0; i < _numRows; i++)
+        for (int i = 0; i < _rowsPerPage; i++)
         {
-            for (int j = _numColumns / 2; j < _numColumns; j++)
+            for (int j = _columnsPerPage / 2; j < _columnsPerPage; j++)
             {
-                if (k >= _totalEntries)
+                if (k >= _numBirdEntries)
                     return;
-                _pagesLookup[i][j] = allEntries[k];
+                _pagesLookup[i][j] = tabEntries[k];
                 k++;
             }
         }
     }
 
+    // Player input method
     public void OnMoveCursor(InputValue value)
     {
-        if (TryMoveJournalPointer(value.Get<Vector2>())) {
-            UpdateCursorPosition();
-            UpdateNoteBook();
+        switch (_activeCursor.Value)
+        {
+            case Cursors.MENU_TABS:
+                MoveMenuTabCursor(value.Get<Vector2>());
+                break;
+            case Cursors.JOURNAL_TABS:
+                MoveJournalTabCursor(value.Get<Vector2>());
+                break;
+            case Cursors.ENTRIES:
+                if (TryMoveEntryCursor(value.Get<Vector2>()))
+                    UpdateNoteBook();
+                break;
         }
     }
 
@@ -117,12 +171,97 @@ public class Journal : MonoBehaviour
         RefreshNotebook(_playerBirdLog.CaughtBirds.ContainsKey(_birdName) ? _birdName : null);
     }
 
-    private bool TryMoveJournalPointer(Vector2 inputDirection)
+    private void OnActiveCursorChange(Cursors newCursor)
+    {
+        _menuTabCursor.gameObject.SetActive(newCursor == Cursors.MENU_TABS);
+        _journalTabCursor.gameObject.SetActive(newCursor == Cursors.JOURNAL_TABS);
+        _entryCursor.gameObject.SetActive(newCursor == Cursors.ENTRIES);
+
+        if (newCursor == Cursors.MENU_TABS)
+            _menuTabCursorState.Value = _activeMenuTab.Value;
+        else if (newCursor == Cursors.JOURNAL_TABS)
+            _journalTabCursorState.Value = _activeJournalTab.Value;
+    }
+
+    private void OnActiveMenuTabChange(MenuTabs newTab)
+    {
+        return;
+        // throw new NotImplementedException();
+        // _activeMenuTab.Value = newTab;
+        // RefreshMenuTabCursor();
+    }
+
+    private void RefreshMenuTabCursor()
+    {
+        if (_activeCursor.Value != Cursors.MENU_TABS)
+            return;
+
+        _menuTabCursor.sprite = _menuTabCursorState.Value switch
+        {
+            MenuTabs.PLAYER => _playerTabHighlight,
+            MenuTabs.JOURNAL => _journalTabHighlight,
+            _ => throw new ArgumentOutOfRangeException(nameof(_menuTabCursorState), "State not handled in UpdateMenuTabCursor.")
+        };
+    }
+
+    private void RefreshJournalTabCursor()
+    {
+        if (_activeCursor.Value != Cursors.JOURNAL_TABS)
+            return;
+
+        if (_journalTabCursorState.Value == JournalTabs.BIRDS)
+        {
+            _journalTabCursor.localPosition = new Vector2
+            (
+                _birdsTabCursorXPosition,
+                _journalTabCursor.localPosition.y
+            );
+        }
+        else if (_journalTabCursorState.Value == JournalTabs.FISH)
+        {
+            _journalTabCursor.localPosition = new Vector2
+            (
+                _fishTabCursorXPosition,
+                _journalTabCursor.localPosition.y
+            );
+        }
+    }
+
+    private void MoveJournalTabCursor(Vector2 inputDirection)
+    {
+        if ((int)inputDirection.x == 1 && Enum.IsDefined(typeof(JournalTabs), _journalTabCursorState.Value + 1))
+            _journalTabCursorState.Value++;
+        else if ((int)inputDirection.x == -1 && Enum.IsDefined(typeof(JournalTabs), _journalTabCursorState.Value - 1))
+            _journalTabCursorState.Value--;
+        else if ((int)inputDirection.y == -1)
+            _activeCursor.Value = Cursors.ENTRIES;
+        else if ((int)inputDirection.y == 1)
+            _activeCursor.Value = Cursors.MENU_TABS;
+    }
+
+    private void MoveMenuTabCursor(Vector2 inputDirection)
+    {
+        if ((int)inputDirection.x == 1 && Enum.IsDefined(typeof(MenuTabs), _menuTabCursorState.Value + 1))
+            _menuTabCursorState.Value++;
+        else if ((int)inputDirection.x == -1 && Enum.IsDefined(typeof(MenuTabs), _menuTabCursorState.Value - 1))
+            _menuTabCursorState.Value--;
+        else if ((int)inputDirection.y == -1)
+            _activeCursor.Value = Cursors.JOURNAL_TABS;
+    }
+
+    private bool TryMoveEntryCursor(Vector2 inputDirection)
     {
         int newRow = _pagePointer.i + (int)inputDirection.y * -1;
         int newCol = _pagePointer.j + (int)inputDirection.x;
 
-        if (newRow < 0 || newRow >= _numRows || newCol < 0 || newCol >= _numColumns)
+        // moving off the top moves you to the tabs
+        if (newRow < 0)
+        {
+            _activeCursor.Value = Cursors.JOURNAL_TABS;
+            return false;
+        }
+
+        if (newRow >= _rowsPerPage || newCol < 0 || newCol >= _columnsPerPage)
             return false;
 
         if (_pagesLookup[newRow][newCol] == null)
@@ -130,22 +269,23 @@ public class Journal : MonoBehaviour
 
         _pagePointer.i = newRow;
         _pagePointer.j = newCol;
+        MoveEntryCursor();
         return true;
     }
 
     private void RefreshPages()
     {
         _numerator.sprite = _numbersTo24RightJustified[_playerBirdLog.CaughtBirds.Count];
-        _denominator.sprite = _numbersTo24LeftJustified[_totalEntries];
+        _denominator.sprite = _numbersTo24LeftJustified[_numBirdEntries];
 
-        foreach (Transform _child in _leftPage)
+        foreach (Transform _child in _birdsLeftPage)
         {
             bool _isBirdInLog = _playerBirdLog.CaughtBirds.ContainsKey(_child.gameObject.name);
             _child.GetChild(0).gameObject.SetActive(!_isBirdInLog); // Set ? Icon
             _child.GetChild(1).gameObject.SetActive(_isBirdInLog); // Set bird Icon
         }
 
-        foreach (Transform _child in _rightPage)
+        foreach (Transform _child in _birdsRightPage)
         {
             bool _isBirdInLog = _playerBirdLog.CaughtBirds.ContainsKey(_child.gameObject.name);
             _child.GetChild(0).gameObject.SetActive(!_isBirdInLog); // Set ? Icon

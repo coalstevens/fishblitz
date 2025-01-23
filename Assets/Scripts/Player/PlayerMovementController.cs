@@ -81,8 +81,8 @@ public class PlayerMovementController : MonoBehaviour
     }
     
     private void OnMoveCursor(InputValue value) {
-        Journal _journal = FindObjectOfType<Journal>();
-        _journal.OnMoveCursor(value);
+        GameMenu _gameMenu = FindObjectOfType<GameMenu>();
+        _gameMenu.OnMoveCursor(value);
     }
 
     private void Update()
