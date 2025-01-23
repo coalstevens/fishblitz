@@ -112,7 +112,6 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
             return true;
         }
 
-        Debug.Log("Fixing the thing"); 
         // Fix the thing
         _renderer.sprite = _repairStates[_repairProgress].Sprite;
         _repairProgress++;
