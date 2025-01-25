@@ -1,8 +1,13 @@
 fileFormatVersion: 2
-guid: 337ecebbe6e5c45fa80c0f5f8aa62613
+guid: 5916fa36ffd754a8cbbc18c2c874e345
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: MenuTabCursor_Player_Clip
+    second: {fileID: 7400000, guid: 5a375f41bc58a46459beac98b574aa09, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -35,7 +40,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 100
+    spritePixelsToUnits: 32
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -75,12 +80,12 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
@@ -88,16 +93,16 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 7
+    defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638734043726304500
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,58 +126,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: JournalTabCursor_Frame_0
+  - name: MenuTabCursor_Player_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: -3}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 41
-      width: 20
-      height: 3
-    spriteID: 5361cf91e85664d219f6cfebdbc33e1d
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 41}
-  - name: JournalTabCursor_Frame_1
-    originalName: 
-    pivot: {x: 0.5, y: -2}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 17
-      width: 20
-      height: 4
-    spriteID: 64575377eeaf94942a50812461af7f5c
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 17}
-  - name: JournalTabCursor_Frame_2
-    originalName: 
-    pivot: {x: 0.5, y: -1.4}
+    pivot: {x: 0, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 20
-      height: 5
-    spriteID: 78ecd22e0a0c14f749e4028193dcb09d
+      width: 54
+      height: 16
+    spriteID: 67f8e6363155a4fb1bd40207f3c149a4
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -181,18 +146,18 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: JournalTabCursor_Frame_3
+  - name: MenuTabCursor_Player_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: -2}
+    pivot: {x: 0, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 29
-      width: 20
-      height: 4
-    spriteID: 1472a05b594b7436cb5a5733f8912202
+      y: 28
+      width: 54
+      height: 16
+    spriteID: e17c8422a01f149ea880c936f633e3b1
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -200,52 +165,140 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 29}
+    uvTransform: {x: 4, y: 28}
+  - name: MenuTabCursor_Player_Frame_2
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 52
+      width: 54
+      height: 16
+    spriteID: 94efc2e8a74294c15a748db11c566509
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 52}
+  - name: MenuTabCursor_Player_Frame_3
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 76
+      width: 54
+      height: 16
+    spriteID: b0438423a6800465caf21d9848b182ee
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 76}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1141200182
-    name: JournalTabCursor
+    guid: -1954762846
+    name: MenuTabCursor_Player
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: JournalTabCursor_Frame_0
+    - name: MenuTabCursor_Player_Frame_0
       frameIndex: 0
       cellRect:
         x: 0
-        y: 9
-        width: 20
-        height: 3
-      spriteId: 5361cf91e85664d219f6cfebdbc33e1d
-    - name: JournalTabCursor_Frame_1
+        y: 0
+        width: 54
+        height: 16
+      spriteId: 67f8e6363155a4fb1bd40207f3c149a4
+    - name: MenuTabCursor_Player_Frame_1
       frameIndex: 1
       cellRect:
         x: 0
-        y: 8
-        width: 20
-        height: 4
-      spriteId: 64575377eeaf94942a50812461af7f5c
-    - name: JournalTabCursor_Frame_2
+        y: 0
+        width: 54
+        height: 16
+      spriteId: e17c8422a01f149ea880c936f633e3b1
+    - name: MenuTabCursor_Player_Frame_2
       frameIndex: 2
       cellRect:
         x: 0
-        y: 7
-        width: 20
-        height: 5
-      spriteId: 78ecd22e0a0c14f749e4028193dcb09d
-    - name: JournalTabCursor_Frame_3
+        y: 0
+        width: 54
+        height: 16
+      spriteId: 94efc2e8a74294c15a748db11c566509
+    - name: MenuTabCursor_Player_Frame_3
       frameIndex: 3
       cellRect:
         x: 0
-        y: 8
-        width: 20
-        height: 4
-      spriteId: 1472a05b594b7436cb5a5733f8912202
+        y: 0
+        width: 54
+        height: 16
+      spriteId: b0438423a6800465caf21d9848b182ee
     linkedCells: []
     parentIndex: -1
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 20, y: 12}
+  canvasSize: {x: 54, y: 16}

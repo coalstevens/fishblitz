@@ -93,7 +93,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnSelect()
     {
-        Debug.Log("OnSelect");
         GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
         _gameMenu.OnSelect();
     }

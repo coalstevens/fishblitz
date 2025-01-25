@@ -83,7 +83,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         _logger.Info("Journal cursor enabled");
         _journalTabCursor.gameObject.SetActive(true);
         _journalEntryCursor.gameObject.SetActive(false);
-        _journalTabCursorIndex.Value = 0;
+        _journalTabCursorIndex.Value = _currentJournalPageIndex.Value;
     }
 
     public void DisableCursor()
