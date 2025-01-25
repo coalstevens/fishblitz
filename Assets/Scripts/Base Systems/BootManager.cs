@@ -8,7 +8,8 @@ public class BootManager : MonoBehaviour
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
-    void Awake()
+    [SerializeField] private PlayerData _playerData;
+    private void Awake()
     {
         GameStateManager.Initialize();
         SceneManager.sceneUnloaded += OnSceneUnloaded;
@@ -16,7 +17,7 @@ public class BootManager : MonoBehaviour
         StartCoroutine(OpeningDialogue());
     }
 
-    IEnumerator OpeningDialogue() {
+    private IEnumerator OpeningDialogue() {
         if (_skipIntro != true) {
             yield return new WaitForSeconds(1f);
             NarratorSpeechController.Instance.PostMessage("You are wet.");
@@ -27,15 +28,16 @@ public class BootManager : MonoBehaviour
         LoadInitialScene();
     }
 
-    void LoadInitialScene() {
-        LevelChanger.ChangeLevel(_toScene, _sceneSpawnLocation);
+    private void LoadInitialScene() {
+        _playerData.SceneSpawnPosition = _sceneSpawnLocation;
+        LevelChanger.ChangeLevel(_toScene);
     }
 
-    void OnSceneUnloaded(Scene current) {
+    private void OnSceneUnloaded(Scene current) {
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
-    void ClearAllFilesInPersistentDataPath()
+    private void ClearAllFilesInPersistentDataPath()
     {
         string[] files = Directory.GetFiles(Application.persistentDataPath);
 

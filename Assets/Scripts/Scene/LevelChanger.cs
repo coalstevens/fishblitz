@@ -3,28 +3,32 @@ using UnityEngine;
 
 public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractable
 {
-    [SerializeField] bool OnInteract = false; 
+    [SerializeField] bool OnInteract = false;
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
-
+    [SerializeField] private PlayerData _playerData;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!OnInteract && other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>()) {
-            ChangeLevel (_toScene, _spawnLocation);
+        if (!OnInteract && other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>())
+        {
+            _playerData.SceneSpawnPosition = _spawnLocation;
+            ChangeLevel(_toScene);
         }
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        if (OnInteract) {
-            ChangeLevel (_toScene, _spawnLocation);
+        if (OnInteract)
+        {
+            _playerData.SceneSpawnPosition = _spawnLocation;
+            ChangeLevel(_toScene);
             return true;
         }
         return false;
     }
 
-    public static void ChangeLevel(string sceneName, Vector3 spawnLocation) {
-        PlayerData.SceneSpawnPosition = spawnLocation;
+    public static void ChangeLevel(string sceneName)
+    {
         SmoothSceneManager.LoadScene(sceneName);
     }
 }

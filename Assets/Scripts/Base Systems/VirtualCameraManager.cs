@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class VirtualCameraManager : MonoBehaviour
 {
+    [SerializeField] private PlayerData _playerData;
     CinemachineVirtualCamera _virtualCamera;
     private void Awake() {
         _virtualCamera = GetComponent<CinemachineVirtualCamera>();
@@ -21,6 +22,6 @@ public class VirtualCameraManager : MonoBehaviour
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
         if (_player == null) return;
 
-        _virtualCamera.OnTargetObjectWarped(_player.transform, PlayerData.SceneSpawnPosition - transform.position);
+        _virtualCamera.OnTargetObjectWarped(_player.transform, _playerData.SceneSpawnPosition - transform.position);
     }
 }

@@ -850,6 +850,7 @@ MonoBehaviour:
   _skipIntro: 0
   _toScene: Outside
   _sceneSpawnLocation: {x: 37, y: 37, z: 0}
+  _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
 --- !u!4 &1138146526
 Transform:
   m_ObjectHideFlags: 0
@@ -2149,6 +2150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c77db177f236545c685a76c841c549ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerData: {fileID: 0}
 --- !u!1 &8285739776297725642
 GameObject:
   m_ObjectHideFlags: 0
