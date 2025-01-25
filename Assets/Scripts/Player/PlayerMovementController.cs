@@ -39,14 +39,16 @@ public class PlayerMovementController : MonoBehaviour
         Birding,
     }
     private static PlayerMovementController _instance;
-    public static PlayerMovementController Instance {
-        get {
+    public static PlayerMovementController Instance
+    {
+        get
+        {
             if (_instance == null)
                 Debug.LogError("This object does not exist");
-            return _instance; 
+            return _instance;
         }
     }
-
+    [SerializeField] private PlayerData _playerData;
     private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currentMotion = Vector2.zero;
     private Rigidbody2D _rb;
@@ -59,7 +61,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _instance = this;
         _rb = GetComponent<Rigidbody2D>();
-        transform.position = PlayerData.SceneSpawnPosition;
+        transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);
         _moveSpeedsMultiplier = new CardinalVector(1);
     }
@@ -72,17 +74,24 @@ public class PlayerMovementController : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "GameMenu") return;
-        transform.position = PlayerData.SceneSpawnPosition;
+        transform.position = _playerData.SceneSpawnPosition;
     }
 
     public void OnMove(InputValue value)
     {
         _currentMotion = value.Get<Vector2>();
     }
-    
-    private void OnMoveCursor(InputValue value) {
-        GameMenu _gameMenu = FindObjectOfType<GameMenu>();
+
+    private void OnMoveCursor(InputValue value)
+    {
+        GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
         _gameMenu.OnMoveCursor(value);
+    }
+
+    private void OnSelect()
+    {
+        GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
+        _gameMenu.OnSelect();
     }
 
     private void Update()

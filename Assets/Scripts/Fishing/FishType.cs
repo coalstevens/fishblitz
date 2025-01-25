@@ -6,7 +6,9 @@ public class FishType : MonoBehaviour
 {
     public List<string> CatchableSceneNames;
     public Inventory.ItemType CaughtItem;
-    // Start is called before the first frame update
+    [SerializeField] public List<GameClock.Seasons> SpawnableSeasons = new();
+    [SerializeField] public List<GameClock.DayPeriods> SpawnablePeriods = new();
+    
     [Header("Minigame Round Settings")]
     public List<FishingRound> Rounds = new();
 }

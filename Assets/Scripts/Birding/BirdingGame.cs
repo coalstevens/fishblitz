@@ -11,6 +11,7 @@ public class BirdingGame : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _gameDuration = 5f;
     [SerializeField] private float _beamRotationSpeedDegreesPerSecond = 150f;
+    [SerializeField] private PlayerData _playerData;
 
     [Header("Trigger")]
     [SerializeField] private List<Sprite> _triggerAnimationFrames = new();
@@ -241,7 +242,7 @@ public class BirdingGame : MonoBehaviour
         _winFrame.PlayWin(winner);
         if (!winner.Caught) {
             winner.Caught = true;
-            PlayerData.AddToBirdingLog(winner);
+            _playerData.BirdingLog.AddToLog(winner.BirdName, winner.SeasonSpawned, winner.PeriodSpawned);
         }
     }
 
