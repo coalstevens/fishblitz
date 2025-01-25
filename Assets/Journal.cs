@@ -115,6 +115,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     {
         _logger.Info("Switching to entry cursor");
         InitializeEntryCursor(_journalPages[_currentJournalPageIndex.Value]);
+        MoveEntryCursor();
         _journalTabCursor.gameObject.SetActive(false);
         _journalEntryCursor.gameObject.SetActive(true);
     }
@@ -146,6 +147,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         }
 
         InitializeEntryCursor(_journalPages[_currentJournalPageIndex.Value]);
+        MoveEntryCursor();
         UpdateNotebookDisplay(_journalPages[_currentJournalPageIndex.Value]);
         _logger.Info($"Journal page loaded: {_currentJournalPageIndex.Value}");
     }
