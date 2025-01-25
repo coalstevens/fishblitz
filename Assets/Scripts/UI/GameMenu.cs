@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
@@ -21,7 +22,7 @@ public class GameMenuManager : MonoBehaviour
     [Serializable]
     private class MenuPage
     {
-        public Sprite TabHighlight;
+        public Transform TabCursor;
         public Transform PageTransform;
         private IGameMenuPage _page;
         public IGameMenuPage Page
@@ -36,7 +37,6 @@ public class GameMenuManager : MonoBehaviour
     }
 
     [Header("Menu Pages")]
-    [SerializeField] private Image _tabCursorRenderer;
     [SerializeField] private List<MenuPage> _pages = new();
     private Reactive<bool> _areMenuTabsActive = new Reactive<bool>(true);
     private Reactive<int> _currentPageIndex = new Reactive<int>(1);
@@ -45,15 +45,14 @@ public class GameMenuManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _unsubscribeHooks.Add(_cursorTabIndex.OnChange(_ => UpdateTabCursorSprite()));
+        _unsubscribeHooks.Add(_cursorTabIndex.OnChange((prev, curr) => UpdateTabCursor(prev, curr)));
         _unsubscribeHooks.Add(_currentPageIndex.OnChange((prev, curr) => HandlePageChange(prev, curr)));
         _unsubscribeHooks.Add(_areMenuTabsActive.OnChange(curr => SetTabCursorActive(curr)));
 
-        _tabCursorRenderer.gameObject.SetActive(true);
         _pages[_currentPageIndex.Value].Page.LoadPage();
-        UpdateTabCursorSprite();
+        UpdateTabCursor(0, _currentPageIndex.Value);
     }
-    
+
     private void OnDisable()
     {
         foreach (var _hook in _unsubscribeHooks)
@@ -76,17 +75,23 @@ public class GameMenuManager : MonoBehaviour
         if (_areMenuTabsActive.Value)
             MoveTabCursor(value.Get<Vector2>());
         else
-            if(!_pages[_currentPageIndex.Value].Page.MoveCursor(value.Get<Vector2>()))
-                _areMenuTabsActive.Value = true;
+            if (!_pages[_currentPageIndex.Value].Page.MoveCursor(value.Get<Vector2>()))
+            _areMenuTabsActive.Value = true;
     }
 
     private void SetTabCursorActive(bool curr)
     {
-        _tabCursorRenderer.gameObject.SetActive(curr);
+
+        _pages[_cursorTabIndex.Value].TabCursor.gameObject.SetActive(curr);
         if (curr)
+        {
             _pages[_currentPageIndex.Value].Page.DisableCursor();
+            _cursorTabIndex.Value = _currentPageIndex.Value;
+        }
         else
+        {
             _pages[_currentPageIndex.Value].Page.EnableCursor();
+        }
     }
 
     private void HandlePageChange(int previousPage, int currentPage)
@@ -95,10 +100,11 @@ public class GameMenuManager : MonoBehaviour
         _pages[currentPage].Page.LoadPage();
     }
 
-    private void UpdateTabCursorSprite()
+    private void UpdateTabCursor(int previousTabIndex, int currentTabIndex)
     {
-        if (_areMenuTabsActive.Value)
-            _tabCursorRenderer.sprite = _pages[_cursorTabIndex.Value].TabHighlight;
+        if (!_areMenuTabsActive.Value) return;
+        _pages[previousTabIndex].TabCursor.gameObject.SetActive(false); 
+        _pages[currentTabIndex].TabCursor.gameObject.SetActive(true);
     }
 
     private void MoveTabCursor(Vector2 inputDirection)

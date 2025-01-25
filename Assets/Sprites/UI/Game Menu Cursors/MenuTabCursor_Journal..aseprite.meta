@@ -1,8 +1,13 @@
 fileFormatVersion: 2
-guid: cfde99ee600da4c06a27346f91082fd9
+guid: 4461e05a28b854824a7478560a0a2a5b
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:AnimationClip
+      assembly: UnityEngine.AnimationModule
+      name: Loop
+    second: {fileID: 7400000, guid: 528eaff9e8e814c1b886b0be6eb1cb6c, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -71,33 +76,33 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
-    defaultPivotSpace: 1
+    defaultPivotSpace: 0
     defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 100
+    mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
-    defaultPivotSpace: 1
+    defaultPivotSpace: 0
     defaultPivotAlignment: 6
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 100
+    mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638732267552918570
+  platformSettingsDirtyTick: 638734039721404820
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,58 +126,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: MenuTabCursor_Frame_0
+  - name: MenuTabCursor_Journal._Frame_0
     originalName: 
     pivot: {x: 0, y: 0}
-    alignment: 6
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 100
-      y: 100
-      width: 119
-      height: 14
-    spriteID: 0eaf45b4e9581479eaa9ff74c994eb55
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 100, y: 100}
-  - name: MenuTabCursor_Frame_1
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 100
-      y: 528
-      width: 54
-      height: 14
-    spriteID: c164911be6ea74468af78957c2b10e63
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 100, y: 528}
-  - name: MenuTabCursor_Frame_2
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 100
-      y: 314
+      x: 4
+      y: 4
       width: 63
-      height: 14
-    spriteID: f8fc331664cf3482ca04a8ee67e8b6af
+      height: 16
+    spriteID: b1d07a3f765c24abb83489a2c788b2ce
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -180,80 +145,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 100, y: 314}
-  spriteSheetImportData:
-  - name: MenuTabCursor_0
+    uvTransform: {x: 4, y: 4}
+  - name: MenuTabCursor_Journal._Frame_1
     originalName: 
     pivot: {x: 0, y: 0}
-    alignment: 6
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 100
-      y: 528
-      width: 119
-      height: 14
-    spriteID: 475fb1543f8664934bec0a300085a90e
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: MenuTabCursor_1
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 44
-      y: 314
-      width: 119
-      height: 14
-    spriteID: e3006ffe9f9c94ea698223e3ed28553a
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: MenuTabCursor_2
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 6
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 100
-      y: 100
-      width: 119
-      height: 14
-    spriteID: 995004ca416c440f6aa3cd7bd60a30c5
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: MenuTabCursor_3
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 213
-      y: 136
+      x: 4
+      y: 28
       width: 63
-      height: 14
-    spriteID: 2df28e7dc92a74f3ca61fe6a80492ad7
+      height: 16
+    spriteID: c003e13b464da486f8911cbfdd47ad6d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -261,39 +165,88 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+    uvTransform: {x: 4, y: 28}
+  - name: MenuTabCursor_Journal._Frame_2
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 52
+      width: 63
+      height: 16
+    spriteID: 874f58ac3f7564c7d8a9cc3199229242
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 52}
+  - name: MenuTabCursor_Journal._Frame_3
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 76
+      width: 63
+      height: 16
+    spriteID: 5e6bac63271814f72af428463cdfdcc8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 76}
+  spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1267715134
-    name: MenuTabCursor
+    guid: -641042484
+    name: MenuTabCursor_Journal.
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: MenuTabCursor_Frame_0
+    - name: MenuTabCursor_Journal._Frame_0
       frameIndex: 0
       cellRect:
-        x: 4
-        y: 0
-        width: 119
-        height: 14
-      spriteId: 0eaf45b4e9581479eaa9ff74c994eb55
-    - name: MenuTabCursor_Frame_1
-      frameIndex: 1
-      cellRect:
-        x: 4
-        y: 0
-        width: 54
-        height: 14
-      spriteId: c164911be6ea74468af78957c2b10e63
-    - name: MenuTabCursor_Frame_2
-      frameIndex: 2
-      cellRect:
-        x: 60
+        x: 0
         y: 0
         width: 63
-        height: 14
-      spriteId: f8fc331664cf3482ca04a8ee67e8b6af
+        height: 16
+      spriteId: b1d07a3f765c24abb83489a2c788b2ce
+    - name: MenuTabCursor_Journal._Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 0
+        y: 0
+        width: 63
+        height: 16
+      spriteId: c003e13b464da486f8911cbfdd47ad6d
+    - name: MenuTabCursor_Journal._Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 0
+        y: 0
+        width: 63
+        height: 16
+      spriteId: 874f58ac3f7564c7d8a9cc3199229242
+    - name: MenuTabCursor_Journal._Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 0
+        y: 0
+        width: 63
+        height: 16
+      spriteId: 5e6bac63271814f72af428463cdfdcc8
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -348,4 +301,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 331, y: 18}
+  canvasSize: {x: 63, y: 16}
