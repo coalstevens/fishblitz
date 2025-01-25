@@ -60,7 +60,6 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        Debug.Log("PlayerMovementController Awake");
         _rb = GetComponent<Rigidbody2D>();
         transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);

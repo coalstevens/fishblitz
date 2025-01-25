@@ -44,7 +44,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         if (!JsonPersistence.JsonExists(_fileName)) {
             string _sceneName = SceneManager.GetActiveScene().name;
             // Debug.Log("No save file exists yet for scene: " + sceneName);
-            Debug.Log($"The scene is {_sceneName}");
+            Debug.Log($"Scene loaded: {_sceneName}");
             FirstVisitToScene?.Invoke(_sceneName); 
             return;
         }
