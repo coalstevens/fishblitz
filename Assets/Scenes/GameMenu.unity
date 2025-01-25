@@ -11588,18 +11588,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _frame: {fileID: 1906208460}
   _journalPages:
-  - frameSprite: {fileID: -490181209756887882, guid: 874f110d5407a4ae5bde8cd55c17b63b, type: 3}
+  - FrameSprite: {fileID: -490181209756887882, guid: 874f110d5407a4ae5bde8cd55c17b63b, type: 3}
     Log: {fileID: 11400000, guid: 86882a3afa8cf4c44ab57b780ed10cf1, type: 2}
     LeftPage: {fileID: 290199917}
     RightPage: {fileID: 1271043860}
     PageTabCursorXPosition: -59
-  - frameSprite: {fileID: -1049236226640663653, guid: 874f110d5407a4ae5bde8cd55c17b63b, type: 3}
+  - FrameSprite: {fileID: -1049236226640663653, guid: 874f110d5407a4ae5bde8cd55c17b63b, type: 3}
     Log: {fileID: 11400000, guid: b66954a92efca48f5b470994ca96ed9a, type: 2}
     LeftPage: {fileID: 204839403}
     RightPage: {fileID: 2032238518}
     PageTabCursorXPosition: -39
+  _logger:
+    _info: 1
+    _verbose: 0
+    _prefix: 'Journal: '
+    _color: green
   _journalTabCursor: {fileID: 53998834}
-  _entryCursor: {fileID: 1585156986}
+  _journalEntryCursor: {fileID: 1585156986}
   _noteBookTitle: {fileID: 1315016632}
   _seasonIcons:
   - {fileID: 1710864933}
@@ -11665,13 +11670,8 @@ MonoBehaviour:
   - {fileID: 2129430491017229800, guid: 03b1558ec39f343b2ac80cb2f25cc950, type: 3}
   - {fileID: -5689808305460600224, guid: 03b1558ec39f343b2ac80cb2f25cc950, type: 3}
   - {fileID: -5391960343466531227, guid: 03b1558ec39f343b2ac80cb2f25cc950, type: 3}
-  solidOpacity: 1
-  fadedOpacity: 0.3
-  _logger:
-    _info: 1
-    _verbose: 0
-    _prefix: 'Journal: '
-    _color: green
+  _solidOpacity: 1
+  _fadedOpacity: 0.3
 --- !u!1 &1918628633
 GameObject:
   m_ObjectHideFlags: 0

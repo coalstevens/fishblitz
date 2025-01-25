@@ -7,13 +7,12 @@ using UnityEngine.UI;
 
 public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
 {
-    public enum JournalTabs { BIRDS, FISH };
-    private enum Cursors { JOURNAL_TABS, ENTRIES };
+    private enum JournalCursors { TABS, ENTRIES };
 
     [Serializable]
     private class JournalPage
     {
-        public Sprite frameSprite;
+        public Sprite FrameSprite;
         public CaptureLog Log;
         public Transform LeftPage;
         public Transform RightPage;
@@ -25,10 +24,11 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     [Header("General")]
     [SerializeField] private Image _frame;
     [SerializeField] private List<JournalPage> _journalPages = new();
+    [SerializeField] private Logger _logger = new();
 
     [Header("Cursors")]
     [SerializeField] private Transform _journalTabCursor;
-    [SerializeField] private Transform _entryCursor;
+    [SerializeField] private Transform _journalEntryCursor;
 
     [Header("Notebook")]
     [SerializeField] private TextMeshProUGUI _noteBookTitle;
@@ -38,28 +38,22 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     [SerializeField] private Image _denominator;
     [SerializeField] private List<Sprite> _numbersTo24RightJustified = new();
     [SerializeField] private List<Sprite> _numbersTo24LeftJustified = new();
-    [Range(0f, 1f)][SerializeField] private float solidOpacity = 1.0f;
-    [Range(0f, 1f)][SerializeField] private float fadedOpacity = 0.3f;
+    [Range(0f, 1f)][SerializeField] private float _solidOpacity = 1.0f;
+    [Range(0f, 1f)][SerializeField] private float _fadedOpacity = 0.3f;
 
-    private Reactive<Cursors> _activeCursor = new Reactive<Cursors>(Cursors.JOURNAL_TABS);
-    private Reactive<int> _tabCursorTab = new Reactive<int>(0);
-    private Reactive<int> _currentJournalPage = new Reactive<int>(0);
-    private List<Action> _unsubscribeHooks = new();
+    private Reactive<JournalCursors> _activeJournalCursor = new Reactive<JournalCursors>(JournalCursors.TABS);
+    private Reactive<int> _journalTabCursorIndex = new Reactive<int>(0);
+    private Reactive<int> _currentJournalPageIndex = new Reactive<int>(0);
     private Transform[][] _entryLookupTable;
     private (int i, int j) _entryPointer;
-    private int _rowsPerPage = 4;
-    private int _columnsPerPage = 6;
-    [SerializeField] private Logger _logger = new();
+    private const int _ROWS_PER_PAGE = 4;
+    private const int _COLUMNS_PER_PAGE = 6;
+    private List<Action> _unsubscribeHooks = new();
 
     public void LoadPage()
     {
         gameObject.SetActive(true);
         DisableCursor();
-
-        if (_seasonIcons.Count != 4)
-            Debug.LogError("Season icons are assigned incorrectly in the journal.");
-        if (_dayPeriodIcons.Count != 4)
-            Debug.LogError("Day period icons are assigned incorrectly in the journal.");
 
         foreach (var _journalPage in _journalPages)
         {
@@ -67,12 +61,12 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
             _journalPage.NumberOfEntries = _journalPage.Entries.Count;
         }
 
-        _unsubscribeHooks.Add(_tabCursorTab.OnChange(_ => UpdateJournalTabCursorPosition()));
-        _unsubscribeHooks.Add(_currentJournalPage.OnChange((prev, curr) => LoadJournalPage(_journalPages[prev], _journalPages[curr])));
-        _unsubscribeHooks.Add(_activeCursor.OnChange(curr => OnActiveCursorChange(curr)));
+        _unsubscribeHooks.Add(_journalTabCursorIndex.OnChange(_ => UpdateJournalTabCursorPosition()));
+        _unsubscribeHooks.Add(_currentJournalPageIndex.OnChange((prev, curr) => LoadJournalPage(_journalPages[prev], _journalPages[curr])));
+        _unsubscribeHooks.Add(_activeJournalCursor.OnChange(curr => OnActiveCursorChange(curr)));
 
-        LoadJournalPage(null, _journalPages[_currentJournalPage.Value]);
-        _logger.Info($"Journal loaded, page set to {_currentJournalPage.Value}");
+        LoadJournalPage(null, _journalPages[_currentJournalPageIndex.Value]);
+        _logger.Info($"Journal loaded, page set to {_currentJournalPageIndex.Value}");
     }
 
     public void UnloadPage()
@@ -88,47 +82,52 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     {
         _logger.Info("Journal cursor enabled");
         _journalTabCursor.gameObject.SetActive(true);
-        _entryCursor.gameObject.SetActive(false);
-        _tabCursorTab.Value = 0;
+        _journalEntryCursor.gameObject.SetActive(false);
+        _journalTabCursorIndex.Value = 0;
     }
 
     public void DisableCursor()
     {
         _logger.Info("Journal cursor disabled");
         _journalTabCursor.gameObject.SetActive(false);
-        _entryCursor.gameObject.SetActive(false);
+        _journalEntryCursor.gameObject.SetActive(false);
     }
 
-    private void OnActiveCursorChange(Cursors curr)
+    private void OnActiveCursorChange(JournalCursors curr)
     {
-        switch (curr)
-        {
-            case Cursors.JOURNAL_TABS:
-                _logger.Info("Journal cursor set to tabs");
-                _entryCursor.gameObject.SetActive(false);
-                _journalTabCursor.gameObject.SetActive(true);
-                _tabCursorTab.Value = _currentJournalPage.Value;
-                break;
-            case Cursors.ENTRIES:
-                _logger.Info("Journal cursor set to entries");
-                _journalTabCursor.gameObject.SetActive(false);
-                _entryCursor.gameObject.SetActive(true);
-                InitializeEntryCursor(_journalPages[_currentJournalPage.Value]);
-                break;
-        }
+        if (curr == JournalCursors.TABS)
+            ActivateTabCursor();
+        else if (curr == JournalCursors.ENTRIES)
+            ActivateEntryCursor();
+        else
+            Debug.LogError("Unexpected code path");
     }
+
+    private void ActivateTabCursor()
+    {
+        _logger.Info("Switching to tab cursor");
+        _journalTabCursorIndex.Value = _currentJournalPageIndex.Value;
+        _journalEntryCursor.gameObject.SetActive(false);
+        _journalTabCursor.gameObject.SetActive(true);
+    }
+
+    private void ActivateEntryCursor()
+    {
+        _logger.Info("Switching to entry cursor");
+        InitializeEntryCursor(_journalPages[_currentJournalPageIndex.Value]);
+        _journalTabCursor.gameObject.SetActive(false);
+        _journalEntryCursor.gameObject.SetActive(true);
+    }
+
     private void LoadJournalPage(JournalPage previousPage, JournalPage currentPage)
     {
-        if (previousPage != null)
-        {
-            previousPage.LeftPage.gameObject.SetActive(false);
-            previousPage.RightPage.gameObject.SetActive(false);
-        }
+        previousPage?.LeftPage.gameObject.SetActive(false);
+        previousPage?.RightPage.gameObject.SetActive(false);
 
         currentPage.LeftPage.gameObject.SetActive(true);
         currentPage.RightPage.gameObject.SetActive(true);
-        
-        _frame.sprite = currentPage.frameSprite;
+
+        _frame.sprite = currentPage.FrameSprite;
         _numerator.sprite = _numbersTo24RightJustified[currentPage.Log.CaughtCreatures.Count];
         _denominator.sprite = _numbersTo24LeftJustified[currentPage.NumberOfEntries];
 
@@ -145,21 +144,22 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
             _child.GetChild(0).gameObject.SetActive(!isNameInLog); // Set ? Icon
             _child.GetChild(1).gameObject.SetActive(isNameInLog); // Set bird Icon
         }
-        InitializeEntryCursor(_journalPages[_currentJournalPage.Value]);
-        UpdateNotebookDisplay(_journalPages[_currentJournalPage.Value]);
-        _logger.Info($"Journal page loaded: {_currentJournalPage.Value}");
+
+        InitializeEntryCursor(_journalPages[_currentJournalPageIndex.Value]);
+        UpdateNotebookDisplay(_journalPages[_currentJournalPageIndex.Value]);
+        _logger.Info($"Journal page loaded: {_currentJournalPageIndex.Value}");
     }
 
     public void Select()
     {
-        switch (_activeCursor.Value)
+        switch (_activeJournalCursor.Value)
         {
-            case Cursors.JOURNAL_TABS:
+            case JournalCursors.TABS:
                 _logger.Info("Journal tab selected");
-                if (_tabCursorTab.Value != _currentJournalPage.Value)
-                    _currentJournalPage.Value = _tabCursorTab.Value;
+                if (_journalTabCursorIndex.Value != _currentJournalPageIndex.Value)
+                    _currentJournalPageIndex.Value = _journalTabCursorIndex.Value;
                 break;
-            case Cursors.ENTRIES:
+            case JournalCursors.ENTRIES:
                 _logger.Info("Journal entry selected");
                 // do nothing
                 break;
@@ -168,14 +168,14 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
 
     public bool MoveCursor(Vector2 inputDirection)
     {
-        if (_activeCursor.Value == Cursors.JOURNAL_TABS)
+        if (_activeJournalCursor.Value == JournalCursors.TABS)
         {
             return MoveJournalTabCursor(inputDirection);
         }
-        else if (_activeCursor.Value == Cursors.ENTRIES)
+        else if (_activeJournalCursor.Value == JournalCursors.ENTRIES)
         {
             if (TryMoveEntryCursor(inputDirection))
-                UpdateNotebookDisplay(_journalPages[_currentJournalPage.Value]);
+                UpdateNotebookDisplay(_journalPages[_currentJournalPageIndex.Value]);
         }
         return true;
     }
@@ -187,18 +187,18 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         if ((int)inputDirection.y == 1)
             return false;
 
-        if ((int)inputDirection.x == 1 && _tabCursorTab.Value + 1 < _journalPages.Count)
+        if ((int)inputDirection.x == 1 && _journalTabCursorIndex.Value + 1 < _journalPages.Count)
         {
-            _tabCursorTab.Value++;
-            _logger.Info($"Tab cursor moved to {_tabCursorTab.Value}");
+            _journalTabCursorIndex.Value++;
+            _logger.Info($"Tab cursor moved to {_journalTabCursorIndex.Value}");
         }
-        else if ((int)inputDirection.x == -1 && _tabCursorTab.Value - 1 >= 0)
+        else if ((int)inputDirection.x == -1 && _journalTabCursorIndex.Value - 1 >= 0)
         {
-            _tabCursorTab.Value--;
-            _logger.Info($"Tab cursor moved to {_tabCursorTab.Value}");
+            _journalTabCursorIndex.Value--;
+            _logger.Info($"Tab cursor moved to {_journalTabCursorIndex.Value}");
         }
         else if ((int)inputDirection.y == -1)
-            _activeCursor.Value = Cursors.ENTRIES;
+            _activeJournalCursor.Value = JournalCursors.ENTRIES;
         return true;
     }
 
@@ -208,43 +208,63 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         int newRow = _entryPointer.i + (int)inputDirection.y * -1;
         int newCol = _entryPointer.j + (int)inputDirection.x;
 
-        // moving off the top moves you to the tabs
+        // If moving up from the top row, switch to tabs
         if (newRow < 0)
         {
-            _activeCursor.Value = Cursors.JOURNAL_TABS;
+            _activeJournalCursor.Value = JournalCursors.TABS;
             return false;
         }
 
-        if (newRow >= _rowsPerPage || newCol < 0 || newCol >= _columnsPerPage)
+        // If moving right from the right column, switch page if possible
+        if (newCol >= _COLUMNS_PER_PAGE || (inputDirection.x > 0 && _entryLookupTable[newRow][newCol] == null))
+        {
+            _logger.Info("Moving right off the page");
+            if (_currentJournalPageIndex.Value + 1 < _journalPages.Count)
+                _currentJournalPageIndex.Value++;
+            return false;
+        }
+
+        // If moving left from the left column, switch page if possible
+        if (newCol < 0)
+        {
+            _logger.Info("Moving left off the page");
+            if (_currentJournalPageIndex.Value - 1 >= 0)
+                _currentJournalPageIndex.Value--;
+            return false;
+        }
+
+        if (newRow >= _ROWS_PER_PAGE || _entryLookupTable[newRow][newCol] == null)
             return false;
 
-        if (_entryLookupTable[newRow][newCol] == null)
-            return false;
-
-        _entryPointer.i = newRow;
-        _entryPointer.j = newCol;
-        _entryCursor.position = _entryLookupTable[_entryPointer.i][_entryPointer.j].GetChild(1).transform.position;
+        _entryPointer = (newRow, newCol);
+        MoveEntryCursor();
         return true;
     }
 
+    private void MoveEntryCursor() 
+    {
+        _journalEntryCursor.position = _entryLookupTable[_entryPointer.i][_entryPointer.j].GetChild(1).position;
+    }
+
+
     private void InitializeEntryCursor(JournalPage page)
     {
-        _logger.Info($"Entry cursor initializing for page {_currentJournalPage.Value}");
+        _logger.Info($"Entry cursor initializing for page {_currentJournalPageIndex.Value}");
 
         // Initialize 2D array to navigate
         _entryPointer = (0, 0);
-        _entryLookupTable = new Transform[_rowsPerPage][];
-        for (int i = 0; i < _rowsPerPage; i++)
-            _entryLookupTable[i] = new Transform[_columnsPerPage];
+        _entryLookupTable = new Transform[_ROWS_PER_PAGE][];
+        for (int i = 0; i < _ROWS_PER_PAGE; i++)
+            _entryLookupTable[i] = new Transform[_COLUMNS_PER_PAGE];
 
-        if (page.NumberOfEntries > _columnsPerPage * _rowsPerPage)
+        if (page.NumberOfEntries > _COLUMNS_PER_PAGE * _ROWS_PER_PAGE)
             Debug.LogError("Too many entries in journal.");
 
         // Map entries to left page
         int k = 0;
-        for (int i = 0; i < _rowsPerPage; i++)
+        for (int i = 0; i < _ROWS_PER_PAGE; i++)
         {
-            for (int j = 0; j < _columnsPerPage / 2; j++)
+            for (int j = 0; j < _COLUMNS_PER_PAGE / 2; j++)
             {
                 if (k >= page.NumberOfEntries)
                     return;
@@ -254,9 +274,9 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         }
 
         // right page
-        for (int i = 0; i < _rowsPerPage; i++)
+        for (int i = 0; i < _ROWS_PER_PAGE; i++)
         {
-            for (int j = _columnsPerPage / 2; j < _columnsPerPage; j++)
+            for (int j = _COLUMNS_PER_PAGE / 2; j < _COLUMNS_PER_PAGE; j++)
             {
                 if (k >= page.NumberOfEntries)
                     return;
@@ -281,12 +301,12 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     private void UpdateJournalTabCursorPosition()
     {
         _logger.Info("Updating journal tab cursor position");
-        if (_activeCursor.Value != Cursors.JOURNAL_TABS)
+        if (_activeJournalCursor.Value != JournalCursors.TABS)
             return;
 
         _journalTabCursor.localPosition = new Vector2
         (
-            _journalPages[_tabCursorTab.Value].PageTabCursorXPosition,
+            _journalPages[_journalTabCursorIndex.Value].PageTabCursorXPosition,
             _journalTabCursor.localPosition.y
         );
     }
@@ -329,7 +349,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
             icon.color.r,
             icon.color.g,
             icon.color.b,
-            isDim ? fadedOpacity : solidOpacity
+            isDim ? _fadedOpacity : _solidOpacity
         );
     }
 }

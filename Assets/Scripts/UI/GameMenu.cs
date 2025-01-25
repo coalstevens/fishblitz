@@ -38,24 +38,22 @@ public class GameMenuManager : MonoBehaviour
     [Header("Menu Pages")]
     [SerializeField] private Image _tabCursorRenderer;
     [SerializeField] private List<MenuPage> _pages = new();
-
     private Reactive<bool> _areMenuTabsActive = new Reactive<bool>(true);
-    private Reactive<int> _currentPage = new Reactive<int>(1);
-    private Reactive<int> _cursorTab = new Reactive<int>(1);
+    private Reactive<int> _currentPageIndex = new Reactive<int>(1);
+    private Reactive<int> _cursorTabIndex = new Reactive<int>(1);
     private List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()
     {
-        _unsubscribeHooks.Add(_cursorTab.OnChange(_ => RefreshTabCursorSprite()));
-        _unsubscribeHooks.Add(_currentPage.OnChange((prev, curr) => OnPageChange(prev, curr)));
-        _unsubscribeHooks.Add(_areMenuTabsActive.OnChange(curr => TogglePageCursor(curr)));
+        _unsubscribeHooks.Add(_cursorTabIndex.OnChange(_ => UpdateTabCursorSprite()));
+        _unsubscribeHooks.Add(_currentPageIndex.OnChange((prev, curr) => HandlePageChange(prev, curr)));
+        _unsubscribeHooks.Add(_areMenuTabsActive.OnChange(curr => SetTabCursorActive(curr)));
 
         _tabCursorRenderer.gameObject.SetActive(true);
-        _pages[_currentPage.Value].Page.LoadPage();
-        RefreshTabCursorSprite();
-
-        //StartCoroutine(UpdateCursorAfterDelay());
+        _pages[_currentPageIndex.Value].Page.LoadPage();
+        UpdateTabCursorSprite();
     }
+    
     private void OnDisable()
     {
         foreach (var _hook in _unsubscribeHooks)
@@ -63,64 +61,52 @@ public class GameMenuManager : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void TogglePageCursor(bool curr)
+    // Player input method
+    public void OnSelect()
     {
-        if (curr)
-        {
-            _tabCursorRenderer.gameObject.SetActive(true);
-            _pages[_currentPage.Value].Page.DisableCursor();
-        }
+        if (_areMenuTabsActive.Value && _cursorTabIndex.Value != _currentPageIndex.Value)
+            _currentPageIndex.Value = _cursorTabIndex.Value;
         else
-        {
-            _tabCursorRenderer.gameObject.SetActive(false);
-            _pages[_currentPage.Value].Page.EnableCursor();
-        }
+            _pages[_currentPageIndex.Value].Page.Select();
     }
-
-
-    // private IEnumerator UpdateCursorAfterDelay()
-    // {
-    //     yield return null;
-    //     MoveEntryCursor();
-    // }
 
     // Player input method
     public void OnMoveCursor(InputValue value)
     {
         if (_areMenuTabsActive.Value)
-            MoveMenuTabCursor(value.Get<Vector2>());
+            MoveTabCursor(value.Get<Vector2>());
         else
-            if(!_pages[_currentPage.Value].Page.MoveCursor(value.Get<Vector2>()))
+            if(!_pages[_currentPageIndex.Value].Page.MoveCursor(value.Get<Vector2>()))
                 _areMenuTabsActive.Value = true;
     }
 
-    // Player input method
-    public void OnSelect()
+    private void SetTabCursorActive(bool curr)
     {
-        if (_areMenuTabsActive.Value && _cursorTab.Value != _currentPage.Value)
-            _currentPage.Value = _cursorTab.Value;
+        _tabCursorRenderer.gameObject.SetActive(curr);
+        if (curr)
+            _pages[_currentPageIndex.Value].Page.DisableCursor();
         else
-            _pages[_currentPage.Value].Page.Select();
+            _pages[_currentPageIndex.Value].Page.EnableCursor();
     }
 
-    private void OnPageChange(int previousPage, int currentPage)
+    private void HandlePageChange(int previousPage, int currentPage)
     {
         _pages[previousPage].Page.UnloadPage();
         _pages[currentPage].Page.LoadPage();
     }
 
-    private void RefreshTabCursorSprite()
+    private void UpdateTabCursorSprite()
     {
         if (_areMenuTabsActive.Value)
-            _tabCursorRenderer.sprite = _pages[_cursorTab.Value].TabHighlight;
+            _tabCursorRenderer.sprite = _pages[_cursorTabIndex.Value].TabHighlight;
     }
 
-    private void MoveMenuTabCursor(Vector2 inputDirection)
+    private void MoveTabCursor(Vector2 inputDirection)
     {
-        if ((int)inputDirection.x == 1 && _currentPage.Value + 1 < _pages.Count)
-            _cursorTab.Value++;
-        else if ((int)inputDirection.x == -1 && _currentPage.Value - 1 >= 0)
-            _cursorTab.Value--;
+        if ((int)inputDirection.x == 1 && _cursorTabIndex.Value + 1 < _pages.Count)
+            _cursorTabIndex.Value++;
+        else if ((int)inputDirection.x == -1 && _cursorTabIndex.Value - 1 >= 0)
+            _cursorTabIndex.Value--;
         else if ((int)inputDirection.y == -1)
             _areMenuTabsActive.Value = false;
     }
