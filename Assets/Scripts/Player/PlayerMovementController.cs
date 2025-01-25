@@ -60,6 +60,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        Debug.Log("PlayerMovementController Awake");
         _rb = GetComponent<Rigidbody2D>();
         transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);
@@ -84,12 +85,15 @@ public class PlayerMovementController : MonoBehaviour
 
     private void OnMoveCursor(InputValue value)
     {
+        if (value.Get<Vector2>() == Vector2.zero)
+            return;
         GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
         _gameMenu.OnMoveCursor(value);
     }
 
     private void OnSelect()
     {
+        Debug.Log("OnSelect");
         GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
         _gameMenu.OnSelect();
     }

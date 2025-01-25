@@ -107,6 +107,7 @@ public class PlayerInteractionManager : MonoBehaviour
 
     private void OnUseTool()
     {
+        Debug.Log("OnUseTool");
         // can't interrupt these
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||
