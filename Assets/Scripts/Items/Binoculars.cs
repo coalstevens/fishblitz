@@ -18,11 +18,8 @@ public class Binoculars : Inventory.ItemType, PlayerInteractionManager.ITool
 
     public bool UseToolWithoutTarget()
     {
-        Debug.Log("Binoculars swung");
-        if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Birding) {
-            Debug.Log("Binoculars returned");
+        if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Birding)
             return false;
-        }
 
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Birding;
         BirdingGame.Instance.Play();
