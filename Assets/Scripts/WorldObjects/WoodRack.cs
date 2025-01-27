@@ -16,7 +16,6 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
 
     // References
     private SpriteRenderer _spriteRenderer;
-    private Inventory _inventory;
     private HeatSensitive _heatSensitive;
 
     // Reactive
@@ -32,6 +31,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     private float _temperatureMultiplier = 1.5f;
 
     // Inspector    
+    [SerializeField] private Inventory _inventory;
     [SerializeField] private Sprite[] _rackSprites; 
 
     public Collider2D ObjCollider {
@@ -52,7 +52,6 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         // References
         _heatSensitive = GetComponent<HeatSensitive>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         UpdateRackSprite();
     }
 

@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 {
-    // Drying
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Rain _rainManager;
+    
     // The drying points system is just math to enforce
     // the drying times amongst possible temperature changes
     private Dictionary<Temperature, int> _dryingTimesGameMins = new Dictionary<Temperature, int>
@@ -18,32 +20,19 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         [Temperature.Freezing] = 12 * 60 // 720
     };
 
-    public int _dryingPointsCounter;
     private const int DRYING_COMPLETE_POINTS = 720; // == freezing drying time 
-
-    // Wetting
     private const int DURATION_TO_GET_WET_GAMEMINS = 30;
-    private int _wettingGameMinCounter;
 
-    public bool Paused = false;
-
-    // State
-    private enum WetnessStates { Wet, Dry, Drying, Wetting };
-    [SerializeField] private Reactive<WetnessStates> _wetnessState = new Reactive<WetnessStates>(WetnessStates.Wet);
-    public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
     private string _sceneName;
     private Rain.States _rainState;
-    [SerializeField] private Rain _rainManager;
-
-    // Reactive
     private List<Action> _unsubscribeHooks = new List<Action>();
 
     private void OnEnable()
     {
-        _unsubscribeHooks.Add(_rainManager.State.OnChange((_, curr) => OnRainStateChange(curr)));
         SceneManager.sceneLoaded += OnSceneLoaded;
+        _unsubscribeHooks.Add(_rainManager.State.OnChange((_, curr) => OnRainStateChange(curr)));
         _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_, _) => OnGameMinuteTick()));
-        _unsubscribeHooks.Add(_wetnessState.OnChange((_, _) => OnWetnessStateChange()));
+        _unsubscribeHooks.Add(_playerData.WetnessState.OnChange((_, _) => OnWetnessStateChange()));
     }
 
     private void OnDisable()
@@ -51,6 +40,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (var hook in _unsubscribeHooks)
             hook();
+        _unsubscribeHooks.Clear();
     }
     public void OnGameMinuteTick()
     {
@@ -59,30 +49,27 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void OnWetnessStateChange()
     {
-        _wettingGameMinCounter = 0;
-        _dryingPointsCounter = 0;
+        _playerData.WettingGameMinCounter = 0;
+        _playerData.DryingPointsCounter = 0;
 
-        if (_wetnessState.Value == WetnessStates.Wet || _wetnessState.Value == WetnessStates.Drying)
+        if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wet || _playerData.WetnessState.Value == PlayerData.WetnessStates.Drying)
         {
-            PlayerIsWet.Value = true;
+            _playerData.PlayerIsWet.Value = true;
             return;
         }
-        PlayerIsWet.Value = false;
+        _playerData.PlayerIsWet.Value = false;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _sceneName = scene.name;
-        // Keep defaults on boot
-        if (_sceneName == "Boot")
-            return;
 
         // Player can't be in the rain if not outside
         if (_sceneName != "Outside")
         {
-            if (_wetnessState.Value == WetnessStates.Wet)
+            if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wet)
                 EnterDrying();
-            if (_wetnessState.Value == WetnessStates.Wetting)
+            if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wetting)
                 EnterDry();
         }
         else
@@ -107,45 +94,44 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
             case Rain.States.HeavyRain:
                 // if wet stay wet
                 // if wetting stay wetting
-                if (_wetnessState.Value == WetnessStates.Dry)
+                if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Dry)
                     EnterWetting();
-                if (_wetnessState.Value == WetnessStates.Drying)
+                if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Drying)
                     EnterWet();
                 break;
             case Rain.States.NoRain:
                 // if dry stay dry
                 // if drying stay drying
-                if (_wetnessState.Value == WetnessStates.Wet)
+                if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wet)
                     EnterDrying();
-                if (_wetnessState.Value == WetnessStates.Wetting)
+                if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wetting)
                     EnterDry();
                 break;
         }
     }
 
-
     private void HandleState()
     {
         // can't dry/wet during sleep
-        if (PlayerCondition.Instance.PlayerIsAsleep)
+        if (_playerData.IsPlayerSleeping)
             return;
 
-        switch (_wetnessState.Value)
+        switch (_playerData.WetnessState.Value)
         {
-            case WetnessStates.Wet:
+            case PlayerData.WetnessStates.Wet:
                 break;
-            case WetnessStates.Dry:
+            case PlayerData.WetnessStates.Dry:
                 break;
-            case WetnessStates.Drying:
-                _dryingPointsCounter += GetDryingPoints(PlayerCondition.Instance.PlayerTemperature);
-                if (_dryingPointsCounter >= DRYING_COMPLETE_POINTS)
+            case PlayerData.WetnessStates.Drying:
+                _playerData.DryingPointsCounter += GetDryingPoints(_playerData.ActualPlayerTemperature.Value);
+                if (_playerData.DryingPointsCounter >= DRYING_COMPLETE_POINTS)
                 {
                     EnterDry();
                 }
                 break;
-            case WetnessStates.Wetting:
-                _wettingGameMinCounter++;
-                if (_wettingGameMinCounter >= DURATION_TO_GET_WET_GAMEMINS)
+            case PlayerData.WetnessStates.Wetting:
+                _playerData.WettingGameMinCounter++;
+                if (_playerData.WettingGameMinCounter >= DURATION_TO_GET_WET_GAMEMINS)
                 {
                     EnterWet();
                 }
@@ -155,28 +141,28 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void EnterDrying()
     {
-        _wetnessState.Value = WetnessStates.Drying;
+        _playerData.WetnessState.Value = PlayerData.WetnessStates.Drying;
     }
 
     private void EnterWetting()
     {
-        _wetnessState.Value = WetnessStates.Wetting;
+        _playerData.WetnessState.Value = PlayerData.WetnessStates.Wetting;
     }
 
     private void EnterWet()
     {
         // ff you are drying, you are wet 
-        if (!(_wetnessState.Value == WetnessStates.Drying))
+        if (!(_playerData.WetnessState.Value == PlayerData.WetnessStates.Drying))
             NarratorSpeechController.Instance.PostMessage("You are wet.");
-        _wetnessState.Value = WetnessStates.Wet;
+        _playerData.WetnessState.Value = PlayerData.WetnessStates.Wet;
     }
 
     private void EnterDry()
     {
         // if you are wetting, you are dry
-        if (!(_wetnessState.Value == WetnessStates.Wetting))
+        if (!(_playerData.WetnessState.Value == PlayerData.WetnessStates.Wetting))
             NarratorSpeechController.Instance.PostMessage("You have dried off.");
-        _wetnessState.Value = WetnessStates.Dry;
+        _playerData.WetnessState.Value = PlayerData.WetnessStates.Dry;
     }
 
     private int GetDryingPoints(Temperature currentTemperature)

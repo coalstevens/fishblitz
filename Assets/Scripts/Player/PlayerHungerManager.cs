@@ -1,28 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-class PlayerHungerManager : MonoBehaviour {
-    // Food Stuffs
-    private const int DAY_REQUIRED_CALORIES = 500;
-    private const int HISTORIC_CALORIES_DAYS_COUNTED = 5;
-    private int _todaysCalories = 0;
-    private int[] _historicCalories = new int[HISTORIC_CALORIES_DAYS_COUNTED];
-
-    public void LogTodaysCalories() {
-        // get todays calories to a ceiling of DAY_REQUIRED_CALORIES
-        int _logEntry = (_todaysCalories >= DAY_REQUIRED_CALORIES) ? DAY_REQUIRED_CALORIES : _todaysCalories;
-        
-        // delete oldest entry, shuffle array, and add new
-        for (int i = HISTORIC_CALORIES_DAYS_COUNTED; i < 1; i--)
-            _historicCalories[i] = _historicCalories [i-1];
-        _historicCalories[0] = _logEntry;
+static class Diet
+{
+    public interface IFood
+    {
+        public int Protein { get; }
+        public int Carbs { get; }
+        public int Nutrients { get; }
     }
 
-    public float GetFullnessPercent() {
-        int _calorieSum = 0;
-        foreach (var daysCalories in _historicCalories)
-            _calorieSum += daysCalories;
-        return (float) _calorieSum / (HISTORIC_CALORIES_DAYS_COUNTED * DAY_REQUIRED_CALORIES);
+    public static void EatFood(PlayerData playerData, IFood food)
+    {
+        playerData.TodaysProtein = playerData.TodaysProtein + food.Protein > PlayerData.PROTEIN_REQUIRED_DAILY ? PlayerData.PROTEIN_REQUIRED_DAILY : playerData.TodaysProtein + food.Protein;
+        playerData.TodaysCarbs = playerData.TodaysCarbs + food.Carbs > PlayerData.CARBS_REQUIRED_DAILY ? PlayerData.CARBS_REQUIRED_DAILY : playerData.TodaysCarbs + food.Carbs;
+        playerData.TodaysNutrients = playerData.TodaysNutrients + food.Nutrients > PlayerData.NURTRIENTS_REQUIRD_DAILY ? PlayerData.NURTRIENTS_REQUIRD_DAILY : playerData.TodaysNutrients + food.Nutrients;
+    }
+
+    public static void ResetDailyIntake(PlayerData playerData)
+    {
+        playerData.TodaysProtein = 0;
+        playerData.TodaysCarbs = 0;
+        playerData.TodaysNutrients = 0;
+    }
+
+    public static float GetRecoveryRatio(PlayerData playerData)
+    {
+        return 
+        (
+            playerData.TodaysProtein / PlayerData.PROTEIN_REQUIRED_DAILY + 
+            playerData.TodaysCarbs / PlayerData.CARBS_REQUIRED_DAILY + 
+            playerData.TodaysNutrients / PlayerData.NURTRIENTS_REQUIRD_DAILY
+        ) / 3;
     }
 }

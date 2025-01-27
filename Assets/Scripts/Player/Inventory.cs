@@ -18,7 +18,7 @@ public class Inventory : ScriptableObject
             ItemType = itemType;
         }
     }
-    
+
     [System.Serializable]
     public class ItemType : ScriptableObject
     {
@@ -27,7 +27,7 @@ public class Inventory : ScriptableObject
         public int StackCapacity;
     }
 
-    [SerializeField] private List<ItemData> _startingItems = new(); 
+    [SerializeField] private List<ItemData> _startingItems = new();
     [SerializeField] private Logger _logger = new();
     [SerializeField] private bool _newInventoryOnLoad = true;
     public delegate void SlotUpdateHandler(Inventory inventory, int slotNumber);
@@ -73,7 +73,7 @@ public class Inventory : ScriptableObject
         if (!HasEnoughInventorySpace(itemName, quantity)) return false;
 
         _logger.Info($"Adding {quantity} of {itemName} to inventory");
-        int _residual = quantity; 
+        int _residual = quantity;
         foreach (var _slot in SlotItems.Where(slot => slot.Value.ItemType.ItemName == itemName))
         {
             ItemData _slotItem = _slot.Value;
@@ -139,6 +139,23 @@ public class Inventory : ScriptableObject
         return true;
     }
 
+    public bool TryRemoveActiveItem(int quantity)
+    {
+        if (SlotItems[ActiveItemSlot.Value].Quantity < quantity)
+            return false;
+
+        if (SlotItems[ActiveItemSlot.Value].Quantity == quantity)
+        {
+            SlotItems.Remove(ActiveItemSlot.Value);
+            SlotUpdated?.Invoke(this, ActiveItemSlot.Value);
+        }    
+        else
+        {
+            SlotItems[ActiveItemSlot.Value].Quantity -= quantity;   
+        }
+        return true;
+    }
+
     /// <summary>
     /// Creates a new object in an empty inventory slot(s)
     /// </summary>
@@ -168,7 +185,7 @@ public class Inventory : ScriptableObject
         int emptySlots = _totalSlots - SlotItems.Count;
         int itemStackCapacity = Resources.Load<ItemType>($"Items/{itemName}").StackCapacity;
         availableSpace += emptySlots * itemStackCapacity;
-        
+
         _logger.Info($"Trying to add {quantity} of {itemName} to Inventory. Available space: {availableSpace}.");
         return availableSpace >= quantity;
     }

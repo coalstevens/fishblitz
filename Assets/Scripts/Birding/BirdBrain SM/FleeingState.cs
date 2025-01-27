@@ -20,7 +20,7 @@ public partial class BirdBrain : MonoBehaviour {
         public void Enter(BirdBrain bird)
         {
             bird._animator.Play("Flying");
-            _playerCollider = PlayerCondition.Instance.GetComponent<Collider2D>();
+            _playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
             _fleeForce = GetFleeDirection(bird) * _fleeForceMagnitude;
             bird.BehaviorDuration = UnityEngine.Random.Range(_fleeDurationRange.x, _fleeDurationRange.y);
             

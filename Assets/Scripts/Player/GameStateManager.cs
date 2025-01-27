@@ -1,10 +1,9 @@
-using Cinemachine;
-using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public static class GameStateManager {
+public static class GameStateManager
+{
     private interface IGameState
     {
         void Enter();
@@ -18,9 +17,11 @@ public static class GameStateManager {
     private static Scene _rootScene;
     private static bool _isMenuOpen = false;
 
-    public static void Initialize() {
+    public static void Initialize()
+    {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
+        Application.quitting += CleanUp;
     }
 
     private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -28,15 +29,23 @@ public static class GameStateManager {
         if (mode == LoadSceneMode.Additive) return;
         _rootScene = scene;
 
-        IGameState newState = scene.name switch {
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+            _playerInput = player.GetComponent<PlayerInput>();
+
+        TransitionToState(GetStateForScene(scene.name));
+    }
+
+    private static IGameState GetStateForScene(string sceneName)
+    {
+        return sceneName switch
+        {
             "Boot" => _narratorOnBlack,
+            "SleepMenu" => _narratorOnBlack,
             "Outside" => _playingState,
-            "Abandonded Shed" => _playingState,
-            _ => null,
+            "Abandoned Shed" => _playingState,
+            _ => throw new System.IndexOutOfRangeException("Scene not recognized")
         };
-        if (newState == null)
-            Debug.LogError("Unhandled scene in GameStateManager");
-        TransitionToState(newState);
     }
 
     private static void OnSceneUnloaded(Scene scene)
@@ -65,27 +74,25 @@ public static class GameStateManager {
         _currentState.Enter();
     }
 
-    private static void OpenMenu() 
+    private static void OpenMenu()
     {
         _isMenuOpen = true;
         SceneManager.LoadScene("GameMenu", LoadSceneMode.Additive);
-        if (PlayerCondition.Instance != null)
-            PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Menu");
+        _playerInput?.SwitchCurrentActionMap("Menu");
     }
 
-    private static void CloseMenu() {
+    private static void CloseMenu()
+    {
         SceneManager.UnloadSceneAsync("GameMenu");
         _isMenuOpen = false;
-        if (PlayerCondition.Instance != null)
-            PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+        _playerInput?.SwitchCurrentActionMap("Player");
     }
 
     private class Playing : IGameState
     {
         public void Enter()
         {
-            if (PlayerCondition.Instance != null)
-                PlayerCondition.Instance.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+            _playerInput?.SwitchCurrentActionMap("Player");
             SceneManager.LoadScene("Narrator", LoadSceneMode.Additive);
             SceneManager.LoadScene("HUD", LoadSceneMode.Additive);
         }
@@ -108,5 +115,11 @@ public static class GameStateManager {
         {
             SceneManager.UnloadSceneAsync("Narrator");
         }
+    }
+    private static void CleanUp()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        Application.quitting -= CleanUp;
     }
 }

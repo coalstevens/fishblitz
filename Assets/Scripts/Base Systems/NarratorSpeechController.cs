@@ -5,7 +5,7 @@ using UnityEngine;
 
 // Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
-public class NarratorSpeechController : MonoBehaviour 
+public class NarratorSpeechController : MonoBehaviour
 {
     private List<TextMeshProUGUI> _postedMessages = new();
     private Queue<string> _messageQueue = new();
@@ -20,9 +20,12 @@ public class NarratorSpeechController : MonoBehaviour
     private float _postMessageBuffer = 0f;
     private Transform _narratorMessageContainer;
     private static NarratorSpeechController _instance;
-    public static NarratorSpeechController Instance {
-        get {
-            if (_instance == null) {
+    public static NarratorSpeechController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
                 Debug.LogError("The Narrator is not loaded into this scene");
                 return null;
             }
@@ -30,41 +33,49 @@ public class NarratorSpeechController : MonoBehaviour
         }
     }
 
-    private void Start() {
+    private void Start()
+    {
         _instance = this;
         _narratorMessageContainer = GameObject.FindGameObjectWithTag("NarratorMessageContainer").transform;
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         SceneSaveLoadManager.FirstVisitToScene += PrintFirstVisitToSceneMessage;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         SceneSaveLoadManager.FirstVisitToScene -= PrintFirstVisitToSceneMessage;
     }
-    
+
     void Update()
     {
         CheckMessageLifeSpans();
 
         // Print next message if the post message delay is expired
-        if(_postMessageBuffer > _postMessageDelaySeconds) {
-            if(_messageQueue.TryDequeue(out var _message)) {
+        if (_postMessageBuffer > _postMessageDelaySeconds)
+        {
+            if (_messageQueue.TryDequeue(out var _message))
+            {
                 _postMessageBuffer = 0;
                 PrintMessage(_message);
             }
             return;
         }
-        _postMessageBuffer += Time.deltaTime;
+        _postMessageBuffer += Time.unscaledDeltaTime;
     }
 
-    public void PostMessage(string message) {
+    public void PostMessage(string message)
+    {
         _messageQueue.Enqueue(message);
     }
 
-    private void PrintMessage(string message) {
+    private void PrintMessage(string message)
+    {
         // move existing messages up, if any
-        for (int i = 0; i < _postedMessages.Count; i++) {
+        for (int i = 0; i < _postedMessages.Count; i++)
+        {
             var _pos = _postedMessages[i].rectTransform.position;
             _pos.y += _lineSpacing;
             _postedMessages[i].rectTransform.position = _pos;
@@ -82,18 +93,23 @@ public class NarratorSpeechController : MonoBehaviour
         _messageStartTimes.Add(Time.unscaledTime);
     }
 
-    private void CheckMessageLifeSpans() {
-        for (int i = 0; i < _postedMessages.Count; i++) {
-            if (Time.unscaledTime - _messageStartTimes[i] < _messageDurationSecs) {
+    private void CheckMessageLifeSpans()
+    {
+        for (int i = 0; i < _postedMessages.Count; i++)
+        {
+            if (Time.unscaledTime - _messageStartTimes[i] < _messageDurationSecs)
+            {
                 continue;
             }
             //fade message
-            if (_postedMessages[i].alpha > _fadeRateAlphaPerFrame) {
-                _postedMessages[i].alpha -=  _fadeRateAlphaPerFrame;  
+            if (_postedMessages[i].alpha > _fadeRateAlphaPerFrame)
+            {
+                _postedMessages[i].alpha -= _fadeRateAlphaPerFrame;
                 continue;
             }
             //destroy message once faded
-            else {
+            else
+            {
                 var temp = _postedMessages[i];
                 _postedMessages.RemoveAt(i);
                 _messageStartTimes.RemoveAt(i);
@@ -101,14 +117,18 @@ public class NarratorSpeechController : MonoBehaviour
             }
         }
     }
-    
-    private void PrintFirstVisitToSceneMessage(string sceneName) 
+
+    public bool AreMessagesClear()
     {
-        switch(sceneName) {
-            case "Outside": 
-                NarratorSpeechController.Instance.PostMessage("Press 'v' to interact. Press space to use a tool.");
-                break;
-            case "Abandoned Shed":
+        return _postedMessages.Count == 0 && _messageQueue.Count == 0;
+    }
+
+    private void PrintFirstVisitToSceneMessage(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "Outside":
+                NarratorSpeechController.Instance.PostMessage("press 'v' to interact. press space to use a tool.");
                 break;
             default:
                 break;

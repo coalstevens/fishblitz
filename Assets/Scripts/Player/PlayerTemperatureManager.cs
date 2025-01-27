@@ -11,117 +11,104 @@ using UnityEngine;
 /// </summary>
 public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 {
-    private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string> {
-        [Temperature.Freezing] = "You are freezing.",
-        [Temperature.Cold] = "You are cold.",
-        [Temperature.Neutral] = "You are comfortable.",
-        [Temperature.Warm] = "You are warm.",
-        [Temperature.Hot] = "You are hot."
-    }; 
+    [SerializeField] private PlayerData _playerData;
     private const int DURATION_TO_MATCH_AMBIENT_GAMEMINS = 30;
+    private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string>
+    {
+        [Temperature.Freezing] = "you are freezing.",
+        [Temperature.Cold] = "you are cold.",
+        [Temperature.Neutral] = "you are comfortable.",
+        [Temperature.Warm] = "you are warm.",
+        [Temperature.Hot] = "you are hot."
+    };
 
-    // State
-    // private Temperature _ambientTemperature = Temperature.Cold;
-    public Reactive<Temperature> _dryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
-    public Reactive<Temperature> _actualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
+    private bool _skipNarratorMessage;
     private List<Action> _unsubscribeHooks = new List<Action>();
-    public int _counterToMatchAmbientGamemins = 0;
-    private bool _playerIsWet = true;
-    private bool _skipMessage = false;
 
-    // References
-    private PlayerDryingManager _playerDryingManager;
-    public override Temperature Temperature {
-        get {
-            return _actualPlayerTemperature.Value;
-        }
+    public override Temperature Temperature
+    {
+        get => _playerData.ActualPlayerTemperature.Value;
     }
 
-    public Temperature AmbientTemperature {
-        get {
-            return _ambientTemperature.Value;
-        }
-    }
-
-    private void OnEnable() {
-        _playerDryingManager = GetComponent<PlayerDryingManager>();
-        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_,_) => OnGameMinuteTick()));
-        _unsubscribeHooks.Add(_playerDryingManager.PlayerIsWet.OnChange((_,curr) => OnWetnessChange(curr)));
-        _unsubscribeHooks.Add(_dryPlayerTemperature.OnChange((_,_) => OnDryTemperatureChange()));
-        _unsubscribeHooks.Add(_actualPlayerTemperature.OnChange((_,_) => OnActualTemperatureChange()));
+    private void OnEnable()
+    {
+        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange(_ => OnGameMinuteTick()));
+        _unsubscribeHooks.Add(_playerData.PlayerIsWet.OnChange(_ => UpdateActualTemperature()));
+        _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => UpdateActualTemperature()));
+        _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => ResetCounterToMatchAmbient()));
+        _unsubscribeHooks.Add(_playerData.ActualPlayerTemperature.OnChange(_ => NarrateTemperatureChange()));
         _unsubscribeHooks.Add(_ambientTemperature.OnChange((prev, curr) => OnAmbientTemperatureChange(prev, curr)));
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         foreach (var hook in _unsubscribeHooks)
             hook();
+        _unsubscribeHooks.Clear();
     }
 
-    private void UpdateActualTemperature() {
+    private void UpdateActualTemperature()
+    {
         // Player is dry
-        if (!_playerIsWet) {  
-            _actualPlayerTemperature.Value = _dryPlayerTemperature.Value;
+        if (!_playerData.PlayerIsWet.Value)
+        {
+            _playerData.ActualPlayerTemperature.Value = _playerData.DryPlayerTemperature.Value;
             return;
         }
-        
+
         // Player is cold as can be already
-        if (_dryPlayerTemperature.Value == Temperature.Freezing) {
-            _actualPlayerTemperature = _dryPlayerTemperature;
+        if (_playerData.DryPlayerTemperature.Value == Temperature.Freezing)
+        {
+            _playerData.ActualPlayerTemperature = _playerData.DryPlayerTemperature;
             return;
         }
 
         // Player is wet, 1 step colder
-        _actualPlayerTemperature.Value = _dryPlayerTemperature.Value - 1;
+        _playerData.ActualPlayerTemperature.Value = _playerData.DryPlayerTemperature.Value - 1;
     }
 
-    public void OnGameMinuteTick() {
-        // boot case
-        if (_ambientHeatSources.Count == 0)
+    public void OnGameMinuteTick()
+    {
+        if
+        (
+            _ambientHeatSources.Count == 0 ||
+            _playerData.IsPlayerSleeping || // no temp changes allowed during sleep
+            _playerData.DryPlayerTemperature.Value == _ambientTemperature.Value
+        )
             return;
 
-        // no temp changes during sleep
-        if (PlayerCondition.Instance.PlayerIsAsleep)
-            return;
-        
-        // temp matches ambient already
-        if (_dryPlayerTemperature.Value == _ambientTemperature.Value)
-            return;
-
-        // counter till switch to match ambient
-        _counterToMatchAmbientGamemins++;
-        if (_counterToMatchAmbientGamemins >= DURATION_TO_MATCH_AMBIENT_GAMEMINS) {
-            _dryPlayerTemperature.Value = _ambientTemperature.Value;
-        }
+        _playerData.CounterToMatchAmbientGamemins++;
+        if (_playerData.CounterToMatchAmbientGamemins >= DURATION_TO_MATCH_AMBIENT_GAMEMINS)
+            _playerData.DryPlayerTemperature.Value = _ambientTemperature.Value;
     }
 
-    private void OnWetnessChange(bool playerIsWet) {
-        _playerIsWet = playerIsWet;
-        UpdateActualTemperature();
-    }
-
-    private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature) {
+    private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature)
+    {
         // Player gets cold fast, and warm slow
         if (previousTemperature < currentTemperature)
-            _counterToMatchAmbientGamemins = 0;
+            _playerData.CounterToMatchAmbientGamemins = 0;
     }
 
-    private void OnActualTemperatureChange() {
-        if (_skipMessage) {
-            _skipMessage = false;
-            Debug.Log("Player temperature narrator message skipped");
+    private void NarrateTemperatureChange()
+    {
+        if (_skipNarratorMessage)
+        {
+            _skipNarratorMessage = false;
+            Debug.Log("Player temperature narrator message skipped.");
             return;
         }
+
         // Post temperature change message
-        if (!_temperatureChangeMessages.TryGetValue(_actualPlayerTemperature.Value, out var _message)) 
+        if (!_temperatureChangeMessages.TryGetValue(_playerData.ActualPlayerTemperature.Value, out var _message))
             Debug.LogError("There is no temp change message associated with the adjusted temp.");
         NarratorSpeechController.Instance.PostMessage(_message);
     }
 
-    private void OnDryTemperatureChange() {
-        _counterToMatchAmbientGamemins = 0;
-        UpdateActualTemperature();
+    private void ResetCounterToMatchAmbient()
+    {
+        _playerData.CounterToMatchAmbientGamemins = 0;
     }
-    
+
     /// <summary>
     /// Attempts to set the player's dry temperature to match the ambient temperature instantly.
     /// </summary>
@@ -130,10 +117,12 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
     /// Returns true if the player's dry temperature was updated to match the ambient temperature; 
     /// returns false if the temperatures were already equal.
     /// </returns>
-    public bool TryUpdatePlayerTempInstantly(bool _skipMessage) {
-        if (_dryPlayerTemperature.Value != _ambientTemperature.Value) {
+    public bool TryUpdatePlayerTempInstantly(bool _skipMessage)
+    {
+        if (_playerData.DryPlayerTemperature.Value != _ambientTemperature.Value)
+        {
             _skipMessage = true;
-            _dryPlayerTemperature.Value = _ambientTemperature.Value;
+            _playerData.DryPlayerTemperature.Value = _ambientTemperature.Value;
             return true;
         }
         return false;

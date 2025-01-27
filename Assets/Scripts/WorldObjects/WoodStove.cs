@@ -12,13 +12,12 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         public int FireDurationCounterGameMinutes;
     }
     private Animator _animator;
-    private Inventory _inventory;
     private GameClock _gameClock;
     private LocalHeatSource _localHeatSource;
     private Reactive<StoveStates> _stoveState = new Reactive<StoveStates>(StoveStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
-
+    [SerializeField] private Inventory _inventory;
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
     [SerializeField] float _embersMaxIntensity = 1.0f;
@@ -35,7 +34,6 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         // References
         _animator = GetComponent<Animator>();
         _localHeatSource = GetComponent<LocalHeatSource>();
-        _inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
         _gameClock = GameObject.FindGameObjectWithTag("GameClock").GetComponent<GameClock>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
         
