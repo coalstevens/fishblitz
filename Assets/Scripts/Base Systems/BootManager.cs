@@ -12,18 +12,18 @@ public class BootManager : MonoBehaviour
     private void Awake()
     {
         GameStateManager.Initialize();
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
 
     private IEnumerator OpeningDialogue() {
-        if (_skipIntro != true) {
+        if (!_skipIntro) {
             yield return new WaitForSeconds(1f);
-            NarratorSpeechController.Instance.PostMessage("You are wet.");
-            NarratorSpeechController.Instance.PostMessage("You are freezing.");
-            NarratorSpeechController.Instance.PostMessage("You are exhausted.");
-            yield return new WaitForSeconds(11f); 
+            NarratorSpeechController.Instance.PostMessage("you are wet.");
+            NarratorSpeechController.Instance.PostMessage("you are freezing.");
+            NarratorSpeechController.Instance.PostMessage("you are exhausted.");
+            yield return new WaitUntil(() => NarratorSpeechController.Instance.AreMessagesClear());
+            yield return new WaitForSeconds(1f); 
         }
         LoadInitialScene();
     }
@@ -31,10 +31,6 @@ public class BootManager : MonoBehaviour
     private void LoadInitialScene() {
         _playerData.SceneSpawnPosition = _sceneSpawnLocation;
         LevelChanger.ChangeLevel(_toScene);
-    }
-
-    private void OnSceneUnloaded(Scene current) {
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
     private void ClearAllFilesInPersistentDataPath()

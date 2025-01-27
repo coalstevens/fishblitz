@@ -57,6 +57,7 @@ public class PlayerInteractionManager : MonoBehaviour
     [SerializeField] private Inventory _inventory;
     private Grid _grid;
     private PlayerMovementController _playerMovementController;
+    private PlayerEnergyManager _playerEnergyManager;
     public Cursor _activeCursor;
     private List<Action> _unsubscribeHooks = new();
     private static readonly List<string> INTERACTABLE_TILEMAP_LAYERS = new List<string> { "Water" };
@@ -65,6 +66,7 @@ public class PlayerInteractionManager : MonoBehaviour
     {
         _activeCursor = _cursorE;
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _playerEnergyManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerEnergyManager>();
         _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -130,7 +132,7 @@ public class PlayerInteractionManager : MonoBehaviour
             return;
         }
 
-        if (!PlayerCondition.Instance.IsEnergyAvailable())
+        if (!_playerEnergyManager.IsEnergyAvailable())
         {
             Debug.Log("No energy remaining.");
             return;
@@ -143,7 +145,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             if (_activeTool.UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
             {
-                PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+                _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
                 _activeTool.PlayToolHitSound();
                 return;
             }
@@ -155,7 +157,7 @@ public class PlayerInteractionManager : MonoBehaviour
         {
             if (_activeTool.UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
             {
-                PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+                _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
                 _activeTool.PlayToolHitSound();
                 return;
             }
@@ -163,7 +165,7 @@ public class PlayerInteractionManager : MonoBehaviour
         // swing at nothing
         if (_activeTool.UseToolWithoutTarget())
         {
-            PlayerCondition.Instance.DepleteEnergy(_activeTool.EnergyCost);
+            _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
         }
     }
 

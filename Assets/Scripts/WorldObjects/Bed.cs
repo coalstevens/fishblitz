@@ -1,16 +1,31 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Bed : MonoBehaviour, PlayerInteractionManager.IInteractable
+public class SleepingPad : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
 {
-    Transform _player;
- 
-    private void Awake() {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+    PlayerEnergyManager _playerEnergyManager;
+    private const string IDENTIFIER = "Sleeping Pad";
+
+    private void Awake()
+    {
+        _playerEnergyManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerEnergyManager>();
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        PlayerCondition.Instance.Sleep();
+        _playerEnergyManager.Sleep();
         return true;
+    }
+
+    public SaveData Save() {
+        var _saveData = new SaveData();
+        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddTransformPosition(transform.position);
+        return _saveData;
+    }
+
+    public void Load(SaveData saveData)
+    {
+        // no extended data to load
     }
 }

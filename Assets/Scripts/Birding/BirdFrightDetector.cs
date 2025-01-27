@@ -7,7 +7,7 @@ public class BirdFrightDetector : MonoBehaviour
 
     private void Awake()
     {
-        _playerCollider = PlayerCondition.Instance.GetComponent<Collider2D>();
+        _playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
         _bird = transform.parent.GetComponent<BirdBrain>();
     }
 

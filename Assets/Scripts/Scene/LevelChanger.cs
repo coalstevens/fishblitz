@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using OysterUtils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractable
 {
@@ -7,6 +9,7 @@ public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractabl
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
     [SerializeField] private PlayerData _playerData;
+    private Scene test;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!OnInteract && other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>())
