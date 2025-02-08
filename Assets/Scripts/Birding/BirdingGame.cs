@@ -11,6 +11,7 @@ public class BirdingGame : MonoBehaviour
     [Header("General")]
     [SerializeField] private float _gameDuration = 5f;
     [SerializeField] private float _beamRotationSpeedDegreesPerSecond = 150f;
+    [SerializeField] private float _beamAcceleration = 200f;       
     [SerializeField] private PlayerData _playerData;
 
     [Header("Trigger")]
@@ -18,6 +19,7 @@ public class BirdingGame : MonoBehaviour
     [SerializeField] private PolygonCollider2D _minTriggerCollider;
     [SerializeField] private PolygonCollider2D _maxTriggerCollider;
     [SerializeField] private Logger _logger = new();
+    private float _currentBeamAngularVelocity = 0f; 
 
     private static BirdingGame _instance;
     public static BirdingGame Instance {
@@ -137,21 +139,23 @@ public class BirdingGame : MonoBehaviour
     private void RotateBeam()
     {
         if (_motionInput == Vector2.zero)
+        {
+            // Apply deceleration when no input is given
+            _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, 0, _beamAcceleration  * Time.fixedDeltaTime);
+            _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
             return;
+        }
 
-        float _maxDelta = Time.fixedDeltaTime * _beamRotationSpeedDegreesPerSecond;
         float _targetAngle = Mathf.Atan2(_motionInput.y, _motionInput.x) * Mathf.Rad2Deg;
         float _delta = Mathf.DeltaAngle(_beam.localEulerAngles.z, _targetAngle);
-        _delta = Mathf.Clamp(_delta, -_maxDelta, _maxDelta);
 
-        _beam.localEulerAngles = new Vector3
-        (
-            _beam.localEulerAngles.x,
-            _beam.localEulerAngles.y,
-            _beam.localEulerAngles.z + _delta
-        );
+        // Increase rotation speed gradually towards _maxDelta
+        float _maxDelta = _beamRotationSpeedDegreesPerSecond;
+        _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, Mathf.Sign(_delta) * _maxDelta, _beamAcceleration * Time.fixedDeltaTime);
+
+        // Apply the calculated velocity
+        _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
     }
-
 
     private void ResetTrigger()
     {
@@ -255,6 +259,7 @@ public class BirdingGame : MonoBehaviour
     private IEnumerator EndGame()
     {
         _logger.Info("Birding Game Ended");
+        _currentBeamAngularVelocity = 0;
         yield return null;
         gameObject.SetActive(false);
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
