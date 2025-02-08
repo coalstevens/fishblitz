@@ -15,7 +15,7 @@ public partial class BirdBrain : MonoBehaviour {
             RaycastHit2D hit = Physics2D.CircleCast(
                 bird.transform.position,
                 circleCastRadius,
-                bird._rb.velocity.normalized,
+                bird._rb.linearVelocity.normalized,
                 circleCastRange
             );
 
@@ -33,7 +33,7 @@ public partial class BirdBrain : MonoBehaviour {
 
         public static Vector2 CalculateWanderForce(BirdBrain bird, float speedLimit, float steerForceLimit, float wanderRingDistance, float wanderRingRadius)
         {
-            Vector2 _ringCenter = (Vector2)bird.transform.position + bird._rb.velocity.normalized * wanderRingDistance;
+            Vector2 _ringCenter = (Vector2)bird.transform.position + bird._rb.linearVelocity.normalized * wanderRingDistance;
             bird.TargetPosition = _ringCenter + wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
             return Seek(bird, speedLimit, steerForceLimit);
         }
@@ -78,7 +78,7 @@ public partial class BirdBrain : MonoBehaviour {
         public static Vector2 Seek(BirdBrain bird, float speedLimit, float steerForceLimit)
         {
             Vector2 _desired = (bird.TargetPosition - (Vector2)bird.transform.position).normalized * speedLimit;
-            Vector2 _steer = _desired - bird._rb.velocity;
+            Vector2 _steer = _desired - bird._rb.linearVelocity;
             if (_steer.magnitude >= steerForceLimit)
                 _steer = _steer.normalized * steerForceLimit;
 

@@ -236,9 +236,9 @@ public partial class BirdBrain : MonoBehaviour
     {
         FacingDirection previousDirection = _facingDirection;
 
-        if (_rb.velocity.x > 0)
+        if (_rb.linearVelocity.x > 0)
             _facingDirection = FacingDirection.East;
-        else if (_rb.velocity.x < 0)
+        else if (_rb.linearVelocity.x < 0)
             _facingDirection = FacingDirection.West;
 
         if (previousDirection != _facingDirection)
@@ -272,7 +272,7 @@ public partial class BirdBrain : MonoBehaviour
         _animator.Play(animationName);
         yield return null; // wait 1 frame for animation to begin
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        _rb.velocity = Vector2.zero;
+        _rb.linearVelocity = Vector2.zero;
     }
 
     private void UpdateStateText()

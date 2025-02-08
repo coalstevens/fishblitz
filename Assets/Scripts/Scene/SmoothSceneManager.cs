@@ -14,7 +14,7 @@ namespace OysterUtils
 
         public static void LoadScene(string toSceneName)
         {
-            SceneSaveLoadManager _saveLoadManager = GameObject.FindObjectOfType<SceneSaveLoadManager>();
+            SceneSaveLoadManager _saveLoadManager = GameObject.FindFirstObjectByType<SceneSaveLoadManager>();
             if (_saveLoadManager != null) {
                 _saveLoadManager.SaveScene();
             }

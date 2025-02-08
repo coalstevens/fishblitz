@@ -237,7 +237,7 @@ public class FishingGame : MonoBehaviour
         // Check for hit or miss
         // Checks for unfulfilled triggers under game cursor
         List<Collider2D> _results = new List<Collider2D>();
-        _gameCursorCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _results);
+        _gameCursorCollider.Overlap(new ContactFilter2D().NoFilter(), _results);
         List<FishBarTrigger> _overlappedTriggers = _results
             .Select(collider => collider.GetComponent<FishBarTrigger>())
             .Where(trigger => trigger != null)

@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -97,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638734113564889460
+  platformSettingsDirtyTick: 638746203317284230
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -105,6 +106,7 @@ ScriptedImporter:
     pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 0
@@ -126,6 +128,7 @@ ScriptedImporter:
     pivot: {x: 0.48809528, y: 0.05405401}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 98
@@ -146,6 +149,7 @@ ScriptedImporter:
     pivot: {x: 0.5555555, y: 0.09523773}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 98
@@ -166,6 +170,7 @@ ScriptedImporter:
     pivot: {x: 0.48837212, y: 0.0537634}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -187,6 +192,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0}
     alignment: 7
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -207,6 +213,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.06}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -224,30 +231,33 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -1952773120
+    guid: 1974877184
     name: Spruce
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Spruce_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 7
         y: 22
         width: 84
         height: 185
       spriteId: 4e018e441d7274bfb9b5ef6bd00af448
-    - name: Spruce_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 38
         y: 30
         width: 18
         height: 21
       spriteId: 539620c02613643cb8ccda0304e03772
-    - name: Spruce_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 6
         y: 22
@@ -309,3 +319,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 96, y: 224}
+  previousTextureSize: {x: 256, y: 256}

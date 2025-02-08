@@ -32,7 +32,7 @@ public class LocalHeatSource : MonoBehaviour, IHeatSource {
 
     private void AddSourceToOverlappedHeatSensitives() {
         List<Collider2D> _colliders = new List<Collider2D>();
-        _heatCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _colliders);
+        _heatCollider.Overlap(new ContactFilter2D().NoFilter(), _colliders);
         foreach(var _collider in _colliders) {
             if (_collider.gameObject.TryGetComponent<HeatSensitive>(out var _heatSensitive))
                 _heatSensitive.AddHeatSource(this);
@@ -41,7 +41,7 @@ public class LocalHeatSource : MonoBehaviour, IHeatSource {
 
     private void RemoveSourceFromOverlappedHeatSensitives() {
         List<Collider2D> _colliders = new List<Collider2D>();
-        _heatCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _colliders);
+        _heatCollider.Overlap(new ContactFilter2D().NoFilter(), _colliders);
         foreach(var _collider in _colliders)
             if (_collider.gameObject.TryGetComponent<HeatSensitive>(out var _heatSensitive))
                 _heatSensitive.RemoveHeatSource(this);

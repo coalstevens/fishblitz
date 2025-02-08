@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimatorController : MonoBehaviour
@@ -6,15 +7,22 @@ public class PlayerAnimatorController : MonoBehaviour
     private Animator _animator;
     private PlayerMovementController _playerMovementController;
     [SerializeField] private Inventory _inventory;
-
-    private void Start()
+    private List<Action> _unsubscribeHooks = new();
+    private void OnEnable()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
         _animator = GetComponent<Animator>();
-        
-        _playerMovementController.PlayerState.OnChange((prev, curr) => OnStateChange(curr));
-        _playerMovementController.FacingDirection.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));
-        _inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value));
+
+        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev, curr) => OnStateChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value)));
+    }
+
+    private void OnDisable()
+    {
+        foreach (var hook in _unsubscribeHooks)
+            hook(); 
+        _unsubscribeHooks.Clear();
     }
 
     private void OnStateChange(PlayerMovementController.PlayerStates curr)
@@ -26,7 +34,7 @@ public class PlayerAnimatorController : MonoBehaviour
             case PlayerMovementController.PlayerStates.Idle:
                 HandleIdle(_facingDir);
                 break;
-            case PlayerMovementController.PlayerStates.Walking:  
+            case PlayerMovementController.PlayerStates.Walking:
                 HandleWalking(_facingDir);
                 break;
             case PlayerMovementController.PlayerStates.Fishing:
@@ -90,7 +98,7 @@ public class PlayerAnimatorController : MonoBehaviour
         Invoke(nameof(SetPlayerIdle), 0.610f);
     }
 
-    private void HandleCatching(FacingDirection facingDir) 
+    private void HandleCatching(FacingDirection facingDir)
     {
         switch (facingDir)
         {
@@ -112,7 +120,8 @@ public class PlayerAnimatorController : MonoBehaviour
     private void HandleWalking(FacingDirection facingDir)
     {
         // Active item null
-        if (!_inventory.TryGetActiveItemType(out var _activeItem)) {
+        if (!_inventory.TryGetActiveItemType(out var _activeItem))
+        {
             HandleNoToolWalking(facingDir);
             return;
         }
@@ -128,7 +137,7 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
-    
+
     private void HandleNoToolWalking(FacingDirection facingDir)
     {
         switch (facingDir)
@@ -166,15 +175,16 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
-    
+
     private void HandleIdle(FacingDirection facingDir)
     {
         // Active item null
-        if (!_inventory.TryGetActiveItemType(out var _activeItem)) {
+        if (!_inventory.TryGetActiveItemType(out var _activeItem))
+        {
             HandleNoToolIdle(facingDir);
             return;
         }
-        
+
         // Active item switch
         switch (_activeItem.ItemName)
         {
@@ -185,7 +195,7 @@ public class PlayerAnimatorController : MonoBehaviour
                 HandleNoToolIdle(facingDir);
                 break;
         }
-    }    
+    }
 
     private void HandleNoToolIdle(FacingDirection facingDir)
     {
@@ -224,7 +234,8 @@ public class PlayerAnimatorController : MonoBehaviour
         }
     }
 
-    private void SetPlayerIdle() {
+    private void SetPlayerIdle()
+    {
         _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
     }
 }

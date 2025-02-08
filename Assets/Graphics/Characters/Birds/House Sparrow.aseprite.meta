@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -105,6 +106,7 @@ ScriptedImporter:
     pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 0
@@ -123,9 +125,10 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: House Sparrow_Frame_0
     originalName: 
-    pivot: {x: 0.45454547, y: 0.5}
+    pivot: {x: 0.4615385, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -143,9 +146,10 @@ ScriptedImporter:
     uvTransform: {x: 28, y: 23}
   - name: House Sparrow_Frame_1
     originalName: 
-    pivot: {x: 0.36363637, y: 0}
+    pivot: {x: 0.3846154, y: 0.083333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -163,9 +167,10 @@ ScriptedImporter:
     uvTransform: {x: 28, y: 43}
   - name: House Sparrow_Frame_2
     originalName: 
-    pivot: {x: 0.2857143, y: 0}
+    pivot: {x: 0.3125, y: 0.07692308}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -183,9 +188,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: House Sparrow_Frame_3
     originalName: 
-    pivot: {x: 0.2857143, y: -0.11111111}
+    pivot: {x: 0.3125, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -203,9 +209,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 46}
   - name: House Sparrow_Frame_4
     originalName: 
-    pivot: {x: 0.2857143, y: -0.09090909}
+    pivot: {x: 0.3125, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -223,9 +230,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 25}
   - name: House Sparrow_Frame_5
     originalName: 
-    pivot: {x: 0.2857143, y: -0.22222222}
+    pivot: {x: 0.3125, y: -0.09090909}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -244,54 +252,60 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -548474378
+    guid: -2121818802
     name: House Sparrow
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: House Sparrow_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 11
         y: 11
         width: 11
         height: 10
       spriteId: 247b401b51df64ab4b9626d5b456ac1f
-    - name: House Sparrow_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 16
         width: 11
         height: 10
       spriteId: 5ba6da7a5434547b0b1a4476dbe8fcc4
-    - name: House Sparrow_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 16
         width: 14
         height: 11
       spriteId: 1885b71de1219407e8064baaf35dc790
-    - name: House Sparrow_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 17
         width: 14
         height: 9
       spriteId: 74148a0b577fd4dbba5976c108d02463
-    - name: House Sparrow_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 17
         width: 14
         height: 11
       spriteId: 69c2a9b4868f747c1ab519ab626cdb1a
-    - name: House Sparrow_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 18
@@ -353,3 +367,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 32, y: 32}
+  previousTextureSize: {x: 64, y: 64}

@@ -17,6 +17,7 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
     }
 
     [Header("General")]
+    [SerializeField] private AbandonedShedData _shedData;
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] Collider2D _perch;
     [SerializeField] private Transform _vines;
@@ -24,13 +25,12 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
     [SerializeField] private int _vineChopsToDestroy = 5;
     [SerializeField] private Inventory.ItemType _vineDestroySpawnItem;
     [SerializeField] private int _spawnItemQuantity = 3;
-    
+
     [Header("Vine Chop Shake Properties")]
     [SerializeField] protected float _chopShakeDuration = 0.5f;
     [SerializeField] protected float _chopShakeStrength = 0.05f;
     [SerializeField] protected int _chopShakeVibrato = 10;
     [SerializeField] protected float _chopShakeRandomness = 90f;
-    private int _repairProgress = 0;
     Bounds _perchBounds;
     private Collider2D _repairCollider; // also the vines collider
     private SpriteRenderer _renderer;
@@ -42,6 +42,9 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
         _renderer = GetComponent<SpriteRenderer>();
         _repairCollider = GetComponent<Collider2D>();
         _perchBounds = _perch.bounds;
+        _renderer.sprite = _repairStates[_shedData.RepairProgress].Sprite;
+        if (_areVinesDestroyed)
+            _vines.gameObject.SetActive(false);
     }
 
     public Vector2 GetPositionTarget()
@@ -85,43 +88,36 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        // Check if vines gone
-        if (!_areVinesDestroyed) {
-            return true;
-        }
 
-        // All repairs done
-        if (_repairProgress >= _repairStates.Count)
-        {
-            return false;
-        } 
+        if (!_areVinesDestroyed) return true;
+        bool _repairsComplete = _shedData.RepairProgress >= _repairStates.Count;
+        if (_repairsComplete) return false;
 
-        // Check for hammer
-        RepairState _nextState = _repairStates[_repairProgress];
-
+        // check for hammer
+        RepairState _nextState = _repairStates[_shedData.RepairProgress];
         if (!_playerInventory.IsPlayerHoldingItem("Hammer"))
         {
             PlayerDialogueController.Instance.PostMessage($"I could fix the {_nextState.RepairName} if I had a hammer");
             return true;
         }
 
-        // Player doesn't have enough material
+        // check for material
         if (!_playerInventory.TryRemoveItem(_nextState.ItemType.ItemName, _nextState.Quantity))
         {
-            PlayerDialogueController.Instance.PostMessage($"I need {_repairStates[_repairProgress].Quantity} {_repairStates[_repairProgress].ItemType.ItemName} to fix the {_repairStates[_repairProgress].RepairName}");
+            PlayerDialogueController.Instance.PostMessage($"I need {_repairStates[_shedData.RepairProgress].Quantity} {_repairStates[_shedData.RepairProgress].ItemType.ItemName} to fix the {_repairStates[_shedData.RepairProgress].RepairName}");
             return true;
         }
 
-        // Fix the thing
-        _renderer.sprite = _repairStates[_repairProgress].Sprite;
-        _repairProgress++;
+        // fix the thing
+        _renderer.sprite = _repairStates[_shedData.RepairProgress].Sprite;
+        _shedData.NamesOfRepaired.Add(_repairStates[_shedData.RepairProgress].RepairName);
+        _shedData.RepairProgress++;
         return true;
     }
 
     public void OnUseAxe()
     {
-        if (_areVinesDestroyed)
-            return;
+        if (_areVinesDestroyed) return;
 
         _vineChopCount++;
         ShakeVines();
@@ -131,7 +127,7 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
             _areVinesDestroyed = true;
             SpawnItems.SpawnItemsFromCollider(_repairCollider, _vineDestroySpawnItem, _spawnItemQuantity, SpawnItems.LaunchDirection.DOWN);
             _vines.gameObject.SetActive(false);
-        } 
+        }
     }
 
     protected void ShakeVines()

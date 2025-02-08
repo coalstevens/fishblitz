@@ -216,7 +216,7 @@ public class BirdingGame : MonoBehaviour
         if (_gameOver) return;
 
         List<Collider2D> _results = new List<Collider2D>();
-        _triggerCollider.OverlapCollider(new ContactFilter2D().NoFilter(), _results);
+        _triggerCollider.Overlap(new ContactFilter2D().NoFilter(), _results);
         List<Bird> _overlappedBirds = new();
         foreach (var _collider in _results)
         {

@@ -78,7 +78,7 @@ public class PlayerInteractionManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _grid = GameObject.FindObjectOfType<Grid>();
+        _grid = GameObject.FindFirstObjectByType<Grid>();
     }
 
     private void OnDirectionChange(FacingDirection curr)
@@ -234,7 +234,7 @@ public class PlayerInteractionManager : MonoBehaviour
     private string FindPlayerCursorInteractableTileMap(Vector3Int cursorLocation)
     {
         List<string> _foundInteractableLayers = new();
-        Tilemap[] _tilemaps = FindObjectsOfType<Tilemap>();
+        Tilemap[] _tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
 
         // get list of interactable tilemaps at cursorLocation
         foreach (Tilemap _tilemap in _tilemaps)
