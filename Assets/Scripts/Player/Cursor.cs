@@ -45,7 +45,7 @@ public class Cursor : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _grid = GameObject.FindObjectOfType<Grid>();
+        _grid = GameObject.FindFirstObjectByType<Grid>();
     }
 
     private void TryHideCursor(PlayerMovementController.PlayerStates playerState)

@@ -53,7 +53,7 @@ public class GlobalHeatSource : ScriptableObject, IHeatSource {
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        _sceneGrid = GameObject.FindObjectOfType<Grid>();
+        _sceneGrid = GameObject.FindFirstObjectByType<Grid>();
         if (_sceneGrid != null)
             AddToAllHeatSensitives(_sceneGrid.transform);
     }

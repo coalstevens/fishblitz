@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -105,6 +106,7 @@ ScriptedImporter:
     pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 0
@@ -123,9 +125,10 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Junco_Frame_0
     originalName: 
-    pivot: {x: 0.3846154, y: 0.4166667}
+    pivot: {x: 0.4615385, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -143,9 +146,10 @@ ScriptedImporter:
     uvTransform: {x: 28, y: 23}
   - name: Junco_Frame_1
     originalName: 
-    pivot: {x: 0.30769232, y: 0}
+    pivot: {x: 0.3846154, y: 0.083333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -163,9 +167,10 @@ ScriptedImporter:
     uvTransform: {x: 28, y: 43}
   - name: Junco_Frame_2
     originalName: 
-    pivot: {x: 0.25, y: -0.083333336}
+    pivot: {x: 0.3125, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -183,9 +188,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 25}
   - name: Junco_Frame_3
     originalName: 
-    pivot: {x: 0.25, y: -0.09090909}
+    pivot: {x: 0.3125, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -203,9 +209,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 45}
   - name: Junco_Frame_4
     originalName: 
-    pivot: {x: 0.25, y: -0.07692308}
+    pivot: {x: 0.3125, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -223,9 +230,10 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Junco_Frame_5
     originalName: 
-    pivot: {x: 0.25, y: -0.18181819}
+    pivot: {x: 0.3125, y: -0.09090909}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 28
@@ -244,54 +252,60 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1380673175
+    guid: 721365581
     name: Junco
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Junco_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 11
         y: 11
         width: 11
         height: 10
       spriteId: f97fdb5951422439c8c99ec901dea2aa
-    - name: Junco_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 16
         width: 11
         height: 10
       spriteId: 64cbb8a9a1dc44bb5a13788ea04fe2a6
-    - name: Junco_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 17
         width: 14
         height: 10
       spriteId: 985262b44c4f8443ea513c7ea886a926
-    - name: Junco_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 17
         width: 14
         height: 9
       spriteId: 62177d38f324f4ca68c2b0657806de17
-    - name: Junco_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 17
         width: 14
         height: 11
       spriteId: ade0499e584924683badcb2c7438135a
-    - name: Junco_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 18
@@ -353,3 +367,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 32, y: 32}
+  previousTextureSize: {x: 64, y: 64}

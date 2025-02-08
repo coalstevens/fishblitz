@@ -40,7 +40,7 @@ public partial class BirdBrain : MonoBehaviour {
 
             _wanderForce = BirdForces.CalculateWanderForce(bird, _speedLimit, _steerForceLimit, _wanderRingDistance, _wanderRingRadius);
             bird._rb.AddForce(_wanderForce);
-            bird._rb.velocity = Vector2.ClampMagnitude(bird._rb.velocity, _speedLimit);
+            bird._rb.linearVelocity = Vector2.ClampMagnitude(bird._rb.linearVelocity, _speedLimit);
         }
 
         private void TransitionToPreferredState(BirdBrain bird)

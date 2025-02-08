@@ -116,8 +116,8 @@ public static class SpawnItems
     private static void SetLaunchSpeed(GameObject _launchedObject, LaunchDirection launchDirection, float launchSpeed, float launchDrag)
     {
         Rigidbody2D _rb = _launchedObject.GetComponent<Rigidbody2D>();
-        _rb.drag = launchDrag;
-        _rb.velocity = GenerateLaunchDirection(launchDirection) * launchSpeed;
+        _rb.linearDamping = launchDrag;
+        _rb.linearVelocity = GenerateLaunchDirection(launchDirection) * launchSpeed;
     }
 
     private static Vector3 GenerateLaunchDirection(LaunchDirection direction)

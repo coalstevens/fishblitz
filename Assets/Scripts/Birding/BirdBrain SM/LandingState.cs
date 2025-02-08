@@ -37,7 +37,7 @@ public partial class BirdBrain : MonoBehaviour {
 
         public void Exit(BirdBrain bird)
         {
-            bird._rb.velocity = Vector2.zero;
+            bird._rb.linearVelocity = Vector2.zero;
         }
 
         public void Update(BirdBrain bird)
@@ -124,7 +124,7 @@ public partial class BirdBrain : MonoBehaviour {
 
         private bool IsTargetOverWater(Vector2 birdPosition)
         {
-            Tilemap[] _tilemaps = UnityEngine.Object.FindObjectsOfType<Tilemap>();
+            Tilemap[] _tilemaps = UnityEngine.Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
             foreach (Tilemap _tilemap in _tilemaps)
             {
                 if (IsPositionWithinTilemap(_tilemap, birdPosition))

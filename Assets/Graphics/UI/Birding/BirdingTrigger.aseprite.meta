@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -105,6 +106,7 @@ ScriptedImporter:
     pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 0
@@ -126,6 +128,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 34
@@ -146,6 +149,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 34
@@ -166,6 +170,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 34
@@ -186,6 +191,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 34
@@ -206,6 +212,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 19
@@ -226,6 +233,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 19
@@ -246,6 +254,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 19
@@ -266,6 +275,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 19
@@ -286,6 +296,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -306,6 +317,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -326,6 +338,7 @@ ScriptedImporter:
     pivot: {x: 0.5714286, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -347,6 +360,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -367,6 +381,7 @@ ScriptedImporter:
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -384,94 +399,105 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   asepriteLayers:
   - layerIndex: 0
-    guid: -1843588931
+    guid: 222545905
     name: BirdingTrigger
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: BirdingTrigger_Frame_0
+    - name: Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 5
         y: 10
         width: 6
         height: 12
       spriteId: 149c15caaf95448cd9646a2e3a34b6f1
-    - name: BirdingTrigger_Frame_1
+    - name: Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 5
         y: 9
         width: 6
         height: 14
       spriteId: 1d7f79e7c5d304c1a9f3420e9386e8d4
-    - name: BirdingTrigger_Frame_2
+    - name: Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 5
         y: 8
         width: 6
         height: 16
       spriteId: cf0a5af8b07134142bfa12c3d45227d6
-    - name: BirdingTrigger_Frame_3
+    - name: Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 7
         width: 7
         height: 18
       spriteId: b7732ddcb8b52418b8070b6816e831f9
-    - name: BirdingTrigger_Frame_4
+    - name: Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 6
         width: 7
         height: 20
       spriteId: 51adac967b4df49618a87934d7f10e4f
-    - name: BirdingTrigger_Frame_5
+    - name: Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 5
         width: 7
         height: 22
       spriteId: 898e9882cb3df45ac94496ff7f5e8ab9
-    - name: BirdingTrigger_Frame_6
+    - name: Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 4
         width: 7
         height: 24
       spriteId: 2fd2e86f63a8e48679b53e1a49151b75
-    - name: BirdingTrigger_Frame_7
+    - name: Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 3
         width: 7
         height: 26
       spriteId: 7c193b88af4e3404182a342b9241d769
-    - name: BirdingTrigger_Frame_8
+    - name: Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 2
         width: 7
         height: 28
       spriteId: aefb9eb49436d4f1f875734f30a6f447
-    - name: BirdingTrigger_Frame_9
+    - name: Frame_9
       frameIndex: 9
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 1
         width: 7
         height: 30
       spriteId: 7464df84fb19e41e699f74fd8a58f661
-    - name: BirdingTrigger_Frame_10
+    - name: Frame_10
       frameIndex: 10
+      additiveSortOrder: 0
       cellRect:
         x: 4
         y: 0
@@ -533,3 +559,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 16, y: 32}
+  previousTextureSize: {x: 64, y: 128}

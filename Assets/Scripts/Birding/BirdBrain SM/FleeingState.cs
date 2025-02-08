@@ -44,7 +44,7 @@ public partial class BirdBrain : MonoBehaviour {
             
             _avoidanceForce = BirdForces.CalculateAvoidanceForce(bird, _circleCastRadius, _circleCastRange, _avoidanceWeight);
             bird._rb.AddForce(_fleeForce + _avoidanceForce);
-            bird._rb.velocity = Vector2.ClampMagnitude(bird._rb.velocity, _fleeMaxSpeed);
+            bird._rb.linearVelocity = Vector2.ClampMagnitude(bird._rb.linearVelocity, _fleeMaxSpeed);
         }
 
         private Vector2 GetFleeDirection(BirdBrain bird) {

@@ -90,13 +90,13 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (value.Get<Vector2>() == Vector2.zero)
             return;
-        GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
+        GameMenuManager _gameMenu = FindFirstObjectByType<GameMenuManager>();
         _gameMenu.OnMoveCursor(value);
     }
 
     private void OnSelect()
     {
-        GameMenuManager _gameMenu = FindObjectOfType<GameMenuManager>();
+        GameMenuManager _gameMenu = FindFirstObjectByType<GameMenuManager>();
         _gameMenu.OnSelect();
     }
 

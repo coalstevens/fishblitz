@@ -34,7 +34,7 @@ public partial class BirdBrain : MonoBehaviour {
 
         public void Exit(BirdBrain bird)
         {
-            bird._rb.velocity = Vector2.zero;
+            bird._rb.linearVelocity = Vector2.zero;
         }
 
         public void Update(BirdBrain bird)

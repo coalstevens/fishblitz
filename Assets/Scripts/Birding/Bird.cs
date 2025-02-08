@@ -20,7 +20,7 @@ public class Bird : MonoBehaviour
     }
 
     public Vector2 GetVelocity() {
-        return _rb.velocity;
+        return _rb.linearVelocity;
     }
 }
 
