@@ -140,7 +140,6 @@ public class BirdingGame : MonoBehaviour
     {
         if (_motionInput == Vector2.zero)
         {
-            // Apply deceleration when no input is given
             _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, 0, _beamAcceleration  * Time.fixedDeltaTime);
             _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
             return;
@@ -148,12 +147,9 @@ public class BirdingGame : MonoBehaviour
 
         float _targetAngle = Mathf.Atan2(_motionInput.y, _motionInput.x) * Mathf.Rad2Deg;
         float _delta = Mathf.DeltaAngle(_beam.localEulerAngles.z, _targetAngle);
-
-        // Increase rotation speed gradually towards _maxDelta
         float _maxDelta = _beamRotationSpeedDegreesPerSecond;
+        
         _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, Mathf.Sign(_delta) * _maxDelta, _beamAcceleration * Time.fixedDeltaTime);
-
-        // Apply the calculated velocity
         _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
     }
 

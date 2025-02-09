@@ -34,7 +34,6 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
     Bounds _perchBounds;
     private Collider2D _repairCollider; // also the vines collider
     private SpriteRenderer _renderer;
-    private bool _areVinesDestroyed = false;
     private int _vineChopCount = 0;
 
     void Start()
@@ -43,8 +42,11 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
         _repairCollider = GetComponent<Collider2D>();
         _perchBounds = _perch.bounds;
         _renderer.sprite = _repairStates[_shedData.RepairProgress].Sprite;
-        if (_areVinesDestroyed)
+        
+        if (_shedData.AreVinesDestroyed)
             _vines.gameObject.SetActive(false);
+        else
+            _vines.GetComponent<SpriteRenderer>().sortingOrder = _renderer.sortingOrder + 1;
     }
 
     public Vector2 GetPositionTarget()
@@ -89,12 +91,12 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
     public bool CursorInteract(Vector3 cursorLocation)
     {
 
-        if (!_areVinesDestroyed) return true;
+        if (!_shedData.AreVinesDestroyed) return true;
         bool _repairsComplete = _shedData.RepairProgress >= _repairStates.Count;
         if (_repairsComplete) return false;
 
         // check for hammer
-        RepairState _nextState = _repairStates[_shedData.RepairProgress];
+        RepairState _nextState = _repairStates[_shedData.RepairProgress + 1];
         if (!_playerInventory.IsPlayerHoldingItem("Hammer"))
         {
             PlayerDialogueController.Instance.PostMessage($"I could fix the {_nextState.RepairName} if I had a hammer");
@@ -104,34 +106,36 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
         // check for material
         if (!_playerInventory.TryRemoveItem(_nextState.ItemType.ItemName, _nextState.Quantity))
         {
-            PlayerDialogueController.Instance.PostMessage($"I need {_repairStates[_shedData.RepairProgress].Quantity} {_repairStates[_shedData.RepairProgress].ItemType.ItemName} to fix the {_repairStates[_shedData.RepairProgress].RepairName}");
+            PlayerDialogueController.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemName} to fix the {_nextState.RepairName}");
             return true;
         }
 
         // fix the thing
+        _shedData.RepairProgress++;
+        NarratorSpeechController.Instance.PostMessage($"The {_repairStates[_shedData.RepairProgress].RepairName} has been repaired.");
         _renderer.sprite = _repairStates[_shedData.RepairProgress].Sprite;
         _shedData.NamesOfRepaired.Add(_repairStates[_shedData.RepairProgress].RepairName);
-        _shedData.RepairProgress++;
         return true;
     }
 
     public void OnUseAxe()
     {
-        if (_areVinesDestroyed) return;
+        if (_shedData.AreVinesDestroyed) return;
 
         _vineChopCount++;
         ShakeVines();
 
         if (_vineChopCount >= _vineChopsToDestroy)
         {
-            _areVinesDestroyed = true;
+            _shedData.AreVinesDestroyed = true;
             SpawnItems.SpawnItemsFromCollider(_repairCollider, _vineDestroySpawnItem, _spawnItemQuantity, SpawnItems.LaunchDirection.DOWN);
             _vines.gameObject.SetActive(false);
         }
     }
 
-    protected void ShakeVines()
+    private void ShakeVines()
     {
-        _vines.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
+        if (_vines.gameObject.activeInHierarchy)
+            _vines.DOShakePosition(_chopShakeDuration, new Vector3(_chopShakeStrength, 0, 0), _chopShakeVibrato, _chopShakeRandomness);
     }
 }
