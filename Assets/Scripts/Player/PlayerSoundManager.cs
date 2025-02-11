@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] AudioClip _walkingSFX;
+    [SerializeField] float _walkingSFXVolume = 0.25f;
     private PlayerMovementController _playerMovementController;
     private Action _stopSoundCB;
     private Action _unsubscribeCB;
@@ -27,7 +28,7 @@ public class PlayerSoundManager : MonoBehaviour
 
         switch (current) {
             case PlayerMovementController.PlayerStates.Walking:
-                _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, 0.5f);
+                _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, _walkingSFXVolume);
                 break;
         }
     }

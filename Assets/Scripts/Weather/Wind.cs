@@ -5,8 +5,8 @@ using ReactiveUnity;
 public class Wind : MonoBehaviour
 {
     [Header("Sound Effects")]
-    [SerializeField] private AudioClip _gustSFX;
-    [SerializeField] private float _notGustingVolume = 0.2f;
+    [SerializeField] private AudioClip _windSFX;
+    [SerializeField] private float _normalVolume = 0.2f;
     [SerializeField] private float _gustingVolume = 1.0f;
 
     // There is a forcefield for particle systems
@@ -55,10 +55,10 @@ public class Wind : MonoBehaviour
 
     void Start()
     {
-        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
+        _playerMovementController = PlayerMovementController.Instance; 
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
-        _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_gustSFX, _notGustingVolume, false, true, 2); 
+        _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_windSFX, _normalVolume, false, true, 2); 
         GetOriginalTreeValues();
         EnterFluctuation();
     }
@@ -68,13 +68,13 @@ public class Wind : MonoBehaviour
         switch (current)
         {
             case WindStates.GustBuilding: 
-                AudioManager.Instance.TryAdjustVolume(_gustSFX, _gustingVolume, 1f);
+                AudioManager.Instance.TryAdjustVolume(_windSFX, _gustingVolume, 1f);
                 break;
             case WindStates.GustPeak:
                 StartTreeShake();
                 break;
             case WindStates.GustDying:
-                AudioManager.Instance.TryAdjustVolume(_gustSFX, _notGustingVolume, 5f);
+                AudioManager.Instance.TryAdjustVolume(_windSFX, _normalVolume, 5f);
                 StopTreeShake();
                 break;
         }
