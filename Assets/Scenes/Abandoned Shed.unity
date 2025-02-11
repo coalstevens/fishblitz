@@ -296,10 +296,10 @@ MonoBehaviour:
   _nightLightIntensity: 0.08
   _dayTimeLight: {r: 1, g: 1, b: 1, a: 1}
   _nightTimeLight: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
-  _sunriseStartGameHour24h: 6
-  _sunriseEndGameHour24h: 10
-  _sunsetStartGameHour24h: 18
-  _sunsetEndGameHour24h: 22
+  _sunriseStartHour24h: 6
+  _sunriseEndHour24h: 10
+  _sunsetStartHour24h: 18
+  _sunsetEndHour24h: 22
   _sunrise:
     serializedVersion: 2
     key0: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
@@ -360,7 +360,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  debug: 0
 --- !u!114 &467934820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6119,10 +6118,10 @@ MonoBehaviour:
   _nightLightIntensity: 0.08
   _dayTimeLight: {r: 1, g: 1, b: 1, a: 1}
   _nightTimeLight: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
-  _sunriseStartGameHour24h: 6
-  _sunriseEndGameHour24h: 10
-  _sunsetStartGameHour24h: 18
-  _sunsetEndGameHour24h: 22
+  _sunriseStartHour24h: 6
+  _sunriseEndHour24h: 10
+  _sunsetStartHour24h: 18
+  _sunsetEndHour24h: 22
   _sunrise:
     serializedVersion: 2
     key0: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
@@ -6183,7 +6182,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  debug: 0
 --- !u!1 &1479943246
 GameObject:
   m_ObjectHideFlags: 0
@@ -6286,10 +6284,10 @@ MonoBehaviour:
   _nightLightIntensity: 0.08
   _dayTimeLight: {r: 1, g: 1, b: 1, a: 1}
   _nightTimeLight: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
-  _sunriseStartGameHour24h: 6
-  _sunriseEndGameHour24h: 10
-  _sunsetStartGameHour24h: 18
-  _sunsetEndGameHour24h: 22
+  _sunriseStartHour24h: 6
+  _sunriseEndHour24h: 10
+  _sunsetStartHour24h: 18
+  _sunsetEndHour24h: 22
   _sunrise:
     serializedVersion: 2
     key0: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
@@ -6350,7 +6348,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  debug: 0
 --- !u!1 &1568978149
 GameObject:
   m_ObjectHideFlags: 0
@@ -11558,6 +11555,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
+      propertyPath: _sound
+      value: 
+      objectReference: {fileID: 8300000, guid: 5ef32318af9214b5c9ded0b1fb0137dc, type: 3}
     - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
       propertyPath: toScene
       value: Level 3

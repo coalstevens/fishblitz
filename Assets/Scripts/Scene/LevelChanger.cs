@@ -9,12 +9,15 @@ public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractabl
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private AudioClip _sound;
+    [SerializeField] private float _soundVolume = 1;
     private Scene test;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!OnInteract && other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>())
         {
             _playerData.SceneSpawnPosition = _spawnLocation;
+            PlaySound();
             ChangeLevel(_toScene);
         }
     }
@@ -24,6 +27,7 @@ public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractabl
         if (OnInteract)
         {
             _playerData.SceneSpawnPosition = _spawnLocation;
+            PlaySound();
             ChangeLevel(_toScene);
             return true;
         }
@@ -34,4 +38,11 @@ public class LevelChanger : MonoBehaviour, PlayerInteractionManager.IInteractabl
     {
         SmoothSceneManager.LoadScene(sceneName);
     }
+
+    private void PlaySound()
+    {
+        if (_sound != null)
+            AudioManager.Instance.PlaySFX(_sound, _soundVolume);
+    }
+
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
@@ -19,7 +18,7 @@ public class BirdingGame : MonoBehaviour
             return _instance;
         }
     }
-    private float _currentBeamAngularVelocity = 0f; 
+    private float _currentBeamAngularVelocity = 0f;
     private Vector2 _motionInput = Vector2.zero;
     private Transform _beam;
     private Light2D _beamLight;
@@ -31,7 +30,7 @@ public class BirdingGame : MonoBehaviour
         _instance = this;
         _beam = transform.GetChild(0);
         _beamLight = GetComponentInChildren<Light2D>();
-        _sun = GameObject.FindGameObjectWithTag("Sun").GetComponent<SunLightControl>();
+        _sun = GameObject.FindGameObjectWithTag("Sun")?.GetComponent<SunLightControl>();
     }
 
     private void FixedUpdate()
@@ -42,29 +41,53 @@ public class BirdingGame : MonoBehaviour
     public void Play()
     {
         _logger.Info("Birding Game begun");
-        _sun.FadeOutLight(0.3f);
+        if (_sun != null) _sun.FadeOutLight(0.3f);
         gameObject.SetActive(true);
         _beam.gameObject.SetActive(true);
-        _motionInput = Vector2.zero;
-        AlignBeamToFacingDirection();
+        _motionInput = PlayerMovementController.Instance.CurrentMotion;
+        if (_motionInput != Vector2.zero)
+            AlignBeamToMotionDirection();
+        else
+            AlignBeamToFacingDirection();
     }
-
 
     private void RotateBeam()
     {
         if (_motionInput == Vector2.zero)
         {
-            _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, 0, _beamAcceleration  * Time.fixedDeltaTime);
+            // Smooth deceleration when no input is given
+            _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, 0, _beamAcceleration * Time.fixedDeltaTime);
             _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
             return;
         }
 
+        // Calculate the target angle from input direction
         float _targetAngle = Mathf.Atan2(_motionInput.y, _motionInput.x) * Mathf.Rad2Deg;
         float _delta = Mathf.DeltaAngle(_beam.localEulerAngles.z, _targetAngle);
         float _maxDelta = _beamRotationSpeedDegreesPerSecond;
 
-        _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, Mathf.Sign(_delta) * _maxDelta, _beamAcceleration * Time.fixedDeltaTime);
-        _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
+        // If the difference between the current angle and target angle is very small, snap to target angle
+        if (Mathf.Abs(_delta) < 1f) // Threshold for snapping
+        {
+            _currentBeamAngularVelocity = 0;
+            _beam.localEulerAngles = new Vector3(0, 0, _targetAngle);  // Snap to target angle
+        }
+        else
+        {
+            // Smooth rotation towards target angle
+            _currentBeamAngularVelocity = Mathf.MoveTowards(_currentBeamAngularVelocity, Mathf.Sign(_delta) * _maxDelta, _beamAcceleration * Time.fixedDeltaTime);
+            _beam.localEulerAngles += new Vector3(0, 0, _currentBeamAngularVelocity * Time.fixedDeltaTime);
+        }
+    }
+    private void AlignBeamToMotionDirection() 
+    {
+        float angle = Mathf.Atan2(_motionInput.y, _motionInput.x) * Mathf.Rad2Deg; 
+        _beam.localEulerAngles = new Vector3
+        (
+            _beam.localEulerAngles.x,
+            _beam.localEulerAngles.y,
+            angle
+        );
     }
 
     private void AlignBeamToFacingDirection()
@@ -99,7 +122,7 @@ public class BirdingGame : MonoBehaviour
     private IEnumerator EndGame()
     {
         _logger.Info("Birding Game Ended");
-        _sun.FadeInLight(0.3f);
+        if (_sun != null) _sun.FadeInLight(0.3f);
         _currentBeamAngularVelocity = 0;
         yield return null;
         gameObject.SetActive(false);

@@ -16,6 +16,10 @@ public class PlayerSoundManager : MonoBehaviour
     }
 
     private void OnDisable() {
+        if (_stopSoundCB != null) {
+            _stopSoundCB();
+            _stopSoundCB = null;
+        }
         _unsubscribeCB();
     }
 
