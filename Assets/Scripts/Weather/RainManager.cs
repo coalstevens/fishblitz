@@ -18,18 +18,19 @@ public class Rain : ScriptableObject
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribe.Add(State.OnChange((prev, curr) => OnStateChange(prev, curr)));
-        _unsubscribe.Add(_isRainMuffled.OnChange((_, curr) => OnMuffleChange(curr)));
+        _unsubscribe.Add(State.OnChange(curr => OnStateChange(curr)));
+        _unsubscribe.Add(_isRainMuffled.OnChange(curr => OnMuffleChange(curr)));
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        StopRainAudio();
         foreach (var hook in _unsubscribe)
             hook();
     }
 
-    private void OnStateChange(States prev, States curr)
+    private void OnStateChange(States curr)
     {
         switch (curr)
         {
@@ -54,6 +55,7 @@ public class Rain : ScriptableObject
 
     private void PlayRainAudio(bool isMuffled)
     {
+        Debug.Log("Rain audio play");
         if (isMuffled)
             _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, 1, true);
         else
@@ -81,8 +83,8 @@ public class Rain : ScriptableObject
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Boot")
-            return;
         _isRainMuffled.Value = IsRainMuffled();
+        if (_stopAudio == null)
+            PlayRainAudio(_isRainMuffled.Value);
     }
 }

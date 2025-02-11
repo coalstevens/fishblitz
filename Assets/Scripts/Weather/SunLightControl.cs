@@ -9,11 +9,13 @@ public class SunLightControl : MonoBehaviour
 {
     private GameClock _gameClock;
     [SerializeField] private int _lightUpdateIntervalGameMins = 10;
+    [SerializeField] private Rain _rain;
     [Header("Daytime and Nightime")]
     [SerializeField] private float _dayLightIntensity = 1f;
     [SerializeField] private float _nightLightIntensity = 0.1f;
     [SerializeField] private Color _dayTimeLight = Color.white;
     [SerializeField] private Color _nightTimeLight = Color.white;
+    [SerializeField] private Color _rainOverlay = Color.white;
 
     [Header("Sunset and Sunrise")]
     [SerializeField] private float _sunriseStartHour24h = 6f;
@@ -77,10 +79,10 @@ public class SunLightControl : MonoBehaviour
         switch (_lightState.Value)
         {
             case LightStates.Day:
-                SetLightSettings(_dayLightIntensity, _dayTimeLight);
+                SetLightSettings(_dayLightIntensity, _rain.State.Value == Rain.States.NoRain ? _dayTimeLight : _dayTimeLight * _rainOverlay);
                 break;
             case LightStates.Night:
-                SetLightSettings(_nightLightIntensity, _nightTimeLight);
+                SetLightSettings(_nightLightIntensity, _rain.State.Value == Rain.States.NoRain ? _nightTimeLight : _nightTimeLight * _rainOverlay);
                 break;
             case LightStates.Sunrise:
             case LightStates.Sunset:
@@ -91,19 +93,23 @@ public class SunLightControl : MonoBehaviour
 
     private void UpdateLightForTwilight()
     {
-        Gradient gradient = _lightState.Value == LightStates.Sunrise ? _sunrise : _sunset;
-        float startHour = _lightState.Value == LightStates.Sunrise ? _sunriseStartHour24h : _sunsetStartHour24h;
-        float endHour = _lightState.Value == LightStates.Sunrise ? _sunriseEndHour24h : _sunsetEndHour24h;
-        float minIntensity = _lightState.Value == LightStates.Sunrise ? _nightLightIntensity : _dayLightIntensity;
-        float maxIntensity = _lightState.Value == LightStates.Sunrise ? _dayLightIntensity : _nightLightIntensity;
+        Gradient _gradient = _lightState.Value == LightStates.Sunrise ? _sunrise : _sunset;
+        float _startHour = _lightState.Value == LightStates.Sunrise ? _sunriseStartHour24h : _sunsetStartHour24h;
+        float _endHour = _lightState.Value == LightStates.Sunrise ? _sunriseEndHour24h : _sunsetEndHour24h;
+        float _minIntensity = _lightState.Value == LightStates.Sunrise ? _nightLightIntensity : _dayLightIntensity;
+        float _maxIntensity = _lightState.Value == LightStates.Sunrise ? _dayLightIntensity : _nightLightIntensity;
 
-        float currentMinutes = (_gameClock.GameHour.Value * 60f) + _gameClock.GameMinute.Value;
+        float _currentMinutes = (_gameClock.GameHour.Value * 60f) + _gameClock.GameMinute.Value;
 
-        float normalizedTime = Map(currentMinutes, startHour * 60f, endHour * 60f, 0, 1);
+        float _normalizedTime = Map(_currentMinutes, _startHour * 60f, _endHour * 60f, 0, 1);
+
+        Color _result = _gradient.Evaluate(_normalizedTime);
+        if (_rain.State.Value != Rain.States.NoRain)
+            _result *= _rainOverlay;
         SetLightSettings
         (
-            Map(currentMinutes, startHour * 60f, endHour * 60f, minIntensity, maxIntensity),
-            gradient.Evaluate(normalizedTime)
+            Map(_currentMinutes, _startHour * 60f, _endHour * 60f, _minIntensity, _maxIntensity),
+            _result
         );
     }
 
