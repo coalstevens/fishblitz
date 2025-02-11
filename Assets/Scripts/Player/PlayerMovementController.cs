@@ -51,6 +51,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     private const float DEFAULT_MOVE_SPEED = 3.5f;
     private Vector2 _currentMotion = Vector2.zero;
+    public Vector2 CurrentMotion => _currentMotion;
     private Rigidbody2D _rb;
     public Reactive<FacingDirection> FacingDirection = new Reactive<FacingDirection>(global::FacingDirection.North);
     public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(PlayerStates.Idle);
