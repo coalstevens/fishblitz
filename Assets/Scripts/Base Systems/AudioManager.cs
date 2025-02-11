@@ -14,7 +14,7 @@ public class AudioManager : Singleton<AudioManager>
     private Stack<AudioSource> _loopingSFXPool = new();
     private const float FADE_DURATION_SECS = 2f;
 
-    private void Start()
+    private void OnEnable()
     {
         foreach (var _source in _SFXContainer.GetComponentsInChildren<AudioSource>(true))
             _SFXPool.Push(_source);
