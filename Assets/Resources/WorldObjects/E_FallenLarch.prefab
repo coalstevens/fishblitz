@@ -50,6 +50,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -72,14 +75,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2138312857
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4032848435425977184, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  m_Sprite: {fileID: -9061440824275850847, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.65625, y: 5.5625}
+  m_Size: {x: 4.96875, y: 2.25}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -141,6 +144,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8824272052186368021}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -164,13 +168,14 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -3.3, y: -0.7}
-  m_Size: {x: 3.9817042, y: 1.1751213}
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -3.6110034, y: -0.8067633}
+  m_Size: {x: 3.0069175, y: 0.8316227}
   m_Direction: 1
 --- !u!95 &6938546424267943343
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -184,6 +189,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -202,8 +208,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fallsEast: 1
-  _idle: {fileID: -4032848435425977184, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
-  _falling: {fileID: -142243955360043195, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _idle: {fileID: -9061440824275850847, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _falling: {fileID: 738145578342714636, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
   _shakeDuration: 0.5
   _shakeStrength: 0.05
   _shakeVibrato: 10

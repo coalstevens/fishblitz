@@ -119,7 +119,7 @@ public abstract class TreePlant : MonoBehaviour, PlayerInteractionManager.IInter
         GameObject _treeToFall = _fallsEast ? _E_fallenTree : _W_fallenTree;
 
         // Falls a hand-picked distance to the side of the stump
-        Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0) : new Vector3(-0.5f, 1f, 0);
+        Vector3 _fallenTreePosition = _fallsEast ? new Vector3(6f, 1f, 0f) : new Vector3(-0.5f, 1f, 0f);
 
         // Instantiating
         GameObject _larchStump = UnityEngine.Object.Instantiate

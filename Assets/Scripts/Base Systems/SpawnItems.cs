@@ -89,28 +89,36 @@ public static class SpawnItems
         return _spawnedItem;
     }
 
-    private static Vector3[] GetRandomPositionsWithinCollider(Collider2D collider, int quantity)
+    public static Vector3[] GetRandomPositionsWithinCollider(Collider2D collider, int quantity)
     {
-        // Get bounds, collider has to be enabled
-        Bounds _bounds;
-        if (collider.enabled)
-            _bounds = collider.bounds;
-        else
+        if (collider == null)
         {
-            collider.enabled = true;
-            _bounds = collider.bounds;
-            collider.enabled = false;
+            Debug.LogError("Collider is null!");
+            return new Vector3[0];
+        }
+        List<Vector3> _validPositions = new List<Vector3>();
+        Bounds _bounds = collider.bounds;
+
+        int _attempts = 0;
+        int _maxAttempts = quantity * 10; 
+
+        while (_validPositions.Count < quantity && _attempts < _maxAttempts)
+        {
+            Vector2 randomPoint = new Vector2(
+                UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
+                UnityEngine.Random.Range(_bounds.min.y, _bounds.max.y)
+            );
+
+            if (collider.OverlapPoint(randomPoint))
+                _validPositions.Add(new Vector3(randomPoint.x, randomPoint.y, 0));
+
+            _attempts++;
         }
 
-        // Find positions
-        Vector3[] _positions = new Vector3[quantity];
-        for (int i = 0; i < quantity; i++)
-        {
-            _positions[i] = new Vector3(UnityEngine.Random.Range(_bounds.min.x, _bounds.max.x),
-                                        UnityEngine.Random.Range(_bounds.min.y, _bounds.max.y),
-                                        0);
-        }
-        return _positions;
+        if (_validPositions.Count < quantity)
+            Debug.LogWarning($"Only found {_validPositions.Count} valid positions out of {quantity} requested.");
+
+        return _validPositions.ToArray();
     }
 
     private static void SetLaunchSpeed(GameObject _launchedObject, LaunchDirection launchDirection, float launchSpeed, float launchDrag)
