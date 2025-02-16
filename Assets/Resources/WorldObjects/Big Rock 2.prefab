@@ -129,7 +129,7 @@ PolygonCollider2D:
   m_Offset: {x: -0.02, y: -0.45}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.25, y: 0.09375}
     oldSize: {x: 2, y: 1}
     newSize: {x: 0.96875, y: 0.6875}
     adaptiveTilingThreshold: 0.5
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   extraTilesToLeft: 0
-  extraTilesToRight: 0
+  extraTilesToRight: 1
   extraTilesAbove: 0
   extraTilesBelow: 0
 --- !u!1 &8825151242290672157
