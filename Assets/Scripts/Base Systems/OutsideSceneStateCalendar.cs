@@ -1,5 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+public class WeatherCalendar : ScriptableObject
+{
+    public enum WeatherStates { Clear, Windy, HeavyRain, Storm }
+
+}
 
 public class OutsideSceneStateCalendar : MonoBehaviour
 {
