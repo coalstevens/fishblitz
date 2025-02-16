@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9009013296849134356}
   - component: {fileID: 7620490667574045521}
   - component: {fileID: -4526484989529986270}
+  - component: {fileID: -8543803766642722872}
   m_Layer: 0
   m_Name: Small Plants_4
   m_TagString: Untagged
@@ -50,6 +51,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -72,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2138312857
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1428338368181104647, guid: e1d4095b312464dd786d62ad0118e7f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,3 +101,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8543803766642722872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8417582889741890823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb6ec90b8ef74a50a6b91415c3d78be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraTilesToLeft: 0
+  extraTilesToRight: 0
+  extraTilesAbove: 0
+  extraTilesBelow: 0

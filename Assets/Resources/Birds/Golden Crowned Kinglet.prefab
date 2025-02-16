@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 6724720882062252639}
   - component: {fileID: 8308902192013366318}
   - component: {fileID: 2985183667386420714}
+  - component: {fileID: 1943411604227389352}
   m_Layer: 0
   m_Name: Golden Crowned Kinglet
   m_TagString: Untagged
@@ -236,9 +237,9 @@ MonoBehaviour:
   Caught:
     _val: 0
   TimetoCatchSeconds: 2
-  _captureSound: {fileID: 0}
-  _soundVolume: 0
-  _playerData: {fileID: 0}
+  _captureSound: {fileID: 8300000, guid: 7b148410d4cba4c1db1a7e28b91fbd80, type: 3}
+  _soundVolume: 0.5
+  _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   BeamHoveredElapsedSeconds:
     _val: 0
 --- !u!114 &6724720882062252639
@@ -327,6 +328,26 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.05, y: 0.16}
   m_Radius: 0.1
+--- !u!114 &1943411604227389352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3956817024216338719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf097de6627cf4d92bc0490e4b55a789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _birdSounds:
+  - Sound: {fileID: 8300000, guid: 1d4b5e0814f094b38abcdea7db56ffcc, type: 3}
+    Volume: 0.3
+  - Sound: {fileID: 8300000, guid: 4c99d88cc18864c21b0fa6ba8eeabfb0, type: 3}
+    Volume: 0.3
+  _soundPlayInterval: {x: 10, y: 40}
+  _silenceRadius: 30
+  _fullVolumeRadius: 5
 --- !u!1 &4119929554772199349
 GameObject:
   m_ObjectHideFlags: 0
