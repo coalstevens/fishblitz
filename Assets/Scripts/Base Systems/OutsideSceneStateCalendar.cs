@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RiverStates{Puddles, Flood, FullGrass, Shallow, FullDirt};                   
 public class OutsideSceneStateCalendar : MonoBehaviour
-    {
+{
+    public enum RiverStates { Puddles, Flood, FullGrass, Shallow, FullDirt };
     [SerializeField] private GameObject _waterFull;
     [SerializeField] private GameObject _waterPuddles;
     [SerializeField] private GameObject _waterShallow;
@@ -24,10 +24,11 @@ public class OutsideSceneStateCalendar : MonoBehaviour
                                    GameClock.Instance.GameSeason.Value,
                                    GameClock.Instance.GameDay.Value),
                                    out RiverStates result);
-        SetSceneState(result);                           
+        SetSceneState(result);
     }
 
-    private void InitalizeCalendar() {
+    private void InitalizeCalendar()
+    {
         _riverCalendar = new()
         {
             [(1, GameClock.Seasons.EndOfSpring, 11)] = RiverStates.Puddles,
@@ -42,13 +43,16 @@ public class OutsideSceneStateCalendar : MonoBehaviour
         };
     }
 
-    private void SetSceneState(RiverStates newState) {
+    private void SetSceneState(RiverStates newState)
+    {
         HandleRiver(newState);
         HandleRain();
     }
 
-    private void HandleRain() {
-        switch(GameClock.Instance.GameSeason.Value) {
+    private void HandleRain()
+    {
+        switch (GameClock.Instance.GameSeason.Value)
+        {
             case GameClock.Seasons.EndOfSpring:
                 _rainManager.State.Value = Rain.States.HeavyRain;
                 break;
@@ -58,9 +62,11 @@ public class OutsideSceneStateCalendar : MonoBehaviour
         }
     }
 
-    private void HandleRiver(RiverStates newState) {
+    private void HandleRiver(RiverStates newState)
+    {
         DisableAllRiverTilemaps();
-        switch (newState) {    
+        switch (newState)
+        {
             case RiverStates.Puddles:
                 _waterPuddles.SetActive(true);
                 _banksGrass.SetActive(true);
@@ -91,21 +97,26 @@ public class OutsideSceneStateCalendar : MonoBehaviour
                 break;
         }
     }
-    private void SubmergeShallowRocks() {
-        foreach (SpriteRenderer rock in _shallowRocksSubmerged.GetComponentsInChildren<SpriteRenderer>()) {
+    private void SubmergeShallowRocks()
+    {
+        foreach (SpriteRenderer rock in _shallowRocksSubmerged.GetComponentsInChildren<SpriteRenderer>())
+        {
             rock.sortingLayerName = "Background";
             rock.sortingOrder = -6;
         }
     }
-    private void SubmergeAllRocks() {
+    private void SubmergeAllRocks()
+    {
         SubmergeShallowRocks();
-        foreach (SpriteRenderer rock in _allRocks.GetComponentsInChildren<SpriteRenderer>()) {
+        foreach (SpriteRenderer rock in _allRocks.GetComponentsInChildren<SpriteRenderer>())
+        {
             rock.sortingLayerName = "Background";
             rock.sortingOrder = -6;
         }
     }
 
-    private void DisableAllRiverTilemaps() {
+    private void DisableAllRiverTilemaps()
+    {
         _waterFlood.SetActive(false);
         _waterFull.SetActive(false);
         _waterPuddles.SetActive(false);
