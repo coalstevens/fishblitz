@@ -44,6 +44,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667917436774412631}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -67,13 +68,14 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -2.27116, y: -0.71266615}
-  m_Size: {x: 3.9817042, y: 1.1751213}
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -1.5832293, y: -0.85114557}
+  m_Size: {x: 2.605848, y: 0.7909535}
   m_Direction: 1
 --- !u!95 &3174461756675346385
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -87,6 +89,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -105,8 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fallsEast: 0
-  _idle: {fileID: -1670120144816762444, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
-  _falling: {fileID: 8001064062289937979, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
+  _idle: {fileID: 1842751373713753437, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _falling: {fileID: 1083624060261415816, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
   _shakeDuration: 0.5
   _shakeStrength: 0.05
   _shakeVibrato: 10
@@ -126,9 +129,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnOnDestroy: 1
   _itemsToSpawn:
-  - identifier: WetLog
-    minQuantity: 2
-    maxQuantity: 6
+  - ItemType: {fileID: 11400000, guid: 10b2fa3e6e9d44fa9bd2ed7a36f824d7, type: 2}
+    MinQuantity: 2
+    MaxQuantity: 5
   _spawnArea: {fileID: 2785344821184485068}
   _speed: 3
   _drag: 3
@@ -182,6 +185,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -204,14 +210,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2138312857
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1670120144816762444, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
+  m_Sprite: {fileID: -7417393219636278539, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.65625, y: 5.5625}
+  m_Size: {x: 5.15625, y: 2.28125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

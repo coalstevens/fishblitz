@@ -226,7 +226,7 @@ public class PlayerInteractionManager : MonoBehaviour
             case 0:
                 return null;
             default:
-                Debug.LogError("There are two interactable objects on this cursor location");
+                Debug.LogError($"There are {_foundInteractables.Count} interactable objects on this cursor location.");
                 return null;
         }
     }
