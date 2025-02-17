@@ -12,6 +12,17 @@ static class Diet
         playerData.TodaysProtein = playerData.TodaysProtein + food.Protein > PlayerData.PROTEIN_REQUIRED_DAILY ? PlayerData.PROTEIN_REQUIRED_DAILY : playerData.TodaysProtein + food.Protein;
         playerData.TodaysCarbs = playerData.TodaysCarbs + food.Carbs > PlayerData.CARBS_REQUIRED_DAILY ? PlayerData.CARBS_REQUIRED_DAILY : playerData.TodaysCarbs + food.Carbs;
         playerData.TodaysNutrients = playerData.TodaysNutrients + food.Nutrients > PlayerData.NURTRIENTS_REQUIRD_DAILY ? PlayerData.NURTRIENTS_REQUIRD_DAILY : playerData.TodaysNutrients + food.Nutrients;
+        PrintFoodMessage(food);
+    }
+    
+    private static void PrintFoodMessage(IFood food) 
+    {
+        if (NarratorSpeechController.Instance == null) return;
+
+        string _protein = food.Protein == 0 ? "" : $"+{food.Protein}P ";
+        string _carbs = food.Carbs == 0 ? "" : $"+{food.Carbs}C";
+        string _nutrients = food.Nutrients == 0 ? "" : $"+{food.Nutrients}N";
+        NarratorSpeechController.Instance.PostMessage(_nutrients + _carbs + _protein);
     }
 
     public static void ResetDailyIntake(PlayerData playerData)
