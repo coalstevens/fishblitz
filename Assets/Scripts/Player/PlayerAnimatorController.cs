@@ -127,7 +127,7 @@ public class PlayerAnimatorController : MonoBehaviour
         }
 
         // Active item switch
-        switch (_activeItem.ItemName)
+        switch (_activeItem.ItemLabel)
         {
             case "Axe":
                 HandleAxeWalking(facingDir);
@@ -186,7 +186,7 @@ public class PlayerAnimatorController : MonoBehaviour
         }
 
         // Active item switch
-        switch (_activeItem.ItemName)
+        switch (_activeItem.ItemLabel)
         {
             case "Axe":
                 HandleAxeIdle(facingDir);

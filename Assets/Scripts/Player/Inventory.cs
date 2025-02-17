@@ -23,7 +23,7 @@ public class Inventory : ScriptableObject
     public class ItemType : ScriptableObject
     {
         public Sprite ItemSprite;
-        public string ItemName;
+        public string ItemLabel;
         public int StackCapacity;
     }
 
@@ -42,7 +42,7 @@ public class Inventory : ScriptableObject
         _saveFilePath = Path.Combine(Application.persistentDataPath, "InventoryData.json");
         SlotItems = LoadInventory();
         foreach (ItemData _item in _startingItems)
-            TryAddItem(_item.ItemType.ItemName, _item.Quantity);
+            TryAddItem(_item.ItemType.name, _item.Quantity);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class Inventory : ScriptableObject
 
         _logger.Info($"Adding {quantity} of {itemName} to inventory");
         int _residual = quantity;
-        foreach (var _slot in SlotItems.Where(slot => slot.Value.ItemType.ItemName == itemName))
+        foreach (var _slot in SlotItems.Where(slot => slot.Value.ItemType.name == itemName))
         {
             ItemData _slotItem = _slot.Value;
             int _availableSpace = _slot.Value.ItemType.StackCapacity - _slotItem.Quantity;
@@ -100,7 +100,7 @@ public class Inventory : ScriptableObject
     /// </summary>
     public void AddItemOrDrop(Inventory.ItemType itemType, int quantity, Collider2D spawnCollider)
     {
-        if (!TryAddItem(itemType.ItemName, quantity))
+        if (!TryAddItem(itemType.name, quantity))
         {
             _logger.Info("Insufficient inventory space. Dropping item instead.");
             SpawnItems.SpawnItemData[] _itemToSpawn = { new SpawnItems.SpawnItemData(itemType, quantity, quantity) };
@@ -114,7 +114,7 @@ public class Inventory : ScriptableObject
     /// <returns>False if inventory doesn't have quantity of item, no change to inventory</returns>
     public bool TryRemoveItem(string itemName, int quantity)
     {
-        var _slotsWithTheItem = SlotItems.Where(slot => slot.Value.ItemType.ItemName == itemName).OrderBy(slot => slot.Value.Quantity).ToList();
+        var _slotsWithTheItem = SlotItems.Where(slot => slot.Value.ItemType.name == itemName).OrderBy(slot => slot.Value.Quantity).ToList();
         int _totalQuantity = _slotsWithTheItem.Sum(slot => slot.Value.Quantity);
 
         _logger.Info($"Attempting to remove {quantity} of {itemName} from inventory. Amount in inventory {_totalQuantity}.");
@@ -152,6 +152,7 @@ public class Inventory : ScriptableObject
         else
         {
             SlotItems[ActiveItemSlot.Value].Quantity -= quantity;   
+            SlotUpdated?.Invoke(this, ActiveItemSlot.Value);
         }
         return true;
     }
@@ -179,7 +180,7 @@ public class Inventory : ScriptableObject
     // Returns true if player has enough inventory space to add quantity of itemName
     public bool HasEnoughInventorySpace(string itemName, int quantity)
     {
-        int availableSpace = SlotItems.Values.Where(x => x.ItemType.ItemName == itemName)
+        int availableSpace = SlotItems.Values.Where(x => x.ItemType.name == itemName)
             .Sum(x => x.ItemType.StackCapacity - x.Quantity);
 
         int emptySlots = _totalSlots - SlotItems.Count;
@@ -194,7 +195,7 @@ public class Inventory : ScriptableObject
     {
         ItemData _activeItem = GetActiveItemData();
         _logger.Info($"Checked if player was holding {itemName}");
-        if (_activeItem == null || _activeItem.ItemType.ItemName != itemName)
+        if (_activeItem == null || _activeItem.ItemType.name != itemName)
             return false;
         return true;
     }
@@ -226,7 +227,7 @@ public class Inventory : ScriptableObject
         saveData.items = new List<InventorySlotData>();
 
         foreach (var item in SlotItems)
-            saveData.items.Add(new InventorySlotData(item.Key, item.Value.ItemType.ItemName, item.Value.Quantity));
+            saveData.items.Add(new InventorySlotData(item.Key, item.Value.ItemType.name, item.Value.Quantity));
 
         string json = JsonUtility.ToJson(saveData);
         File.WriteAllText(_saveFilePath, json);

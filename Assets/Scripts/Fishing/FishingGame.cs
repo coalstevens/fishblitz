@@ -183,7 +183,7 @@ public class FishingGame : MonoBehaviour
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
-        _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemName, _gameStartSeason, _gameStartPeriod);
+        _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel, _gameStartSeason, _gameStartPeriod);
         _stopReelingSFXCB();
         _stopReelingSFXCB = null;
         EndGame();

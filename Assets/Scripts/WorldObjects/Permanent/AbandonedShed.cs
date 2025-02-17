@@ -104,9 +104,9 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
         }
 
         // check for material
-        if (!_playerInventory.TryRemoveItem(_nextState.ItemType.ItemName, _nextState.Quantity))
+        if (!_playerInventory.TryRemoveItem(_nextState.ItemType.ItemLabel, _nextState.Quantity))
         {
-            PlayerDialogueController.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemName} to fix the {_nextState.RepairName}");
+            PlayerDialogueController.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemLabel} to fix the {_nextState.RepairName}");
             return true;
         }
 
