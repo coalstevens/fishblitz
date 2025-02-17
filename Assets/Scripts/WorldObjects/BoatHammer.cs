@@ -8,7 +8,7 @@ public class BoatHammer : MonoBehaviour, PlayerInteractionManager.IInteractable
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        if (_playerInventory.TryAddItem(_hammer.ItemName, 1))
+        if (_playerInventory.TryAddItem(_hammer.ItemLabel, 1))
         {
             PlayerDialogueController.Instance.PostMessage("Looks a little rusty");
             _beachedBoat.RemoveHammer();

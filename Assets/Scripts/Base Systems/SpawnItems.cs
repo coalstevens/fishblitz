@@ -32,7 +32,7 @@ public static class SpawnItems
     {
         foreach (var _item in itemsToSpawn)
         {
-            Inventory.ItemType _spawnItem = FetchItem(_item.ItemType.ItemName);
+            Inventory.ItemType _spawnItem = FetchItem(_item.ItemType.ItemLabel);
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, UnityEngine.Random.Range(_item.MinQuantity, _item.MaxQuantity)))
             {
@@ -49,7 +49,7 @@ public static class SpawnItems
 
     public static void SpawnLooseItems(Inventory.ItemType itemType, Vector3[] spawnPositions, bool playBounceAnimation = true, LaunchDirection launchDirection = LaunchDirection.ANY, float launchSpeed = DEFAULT_LAUNCH_SPEED, float launchDrag = DEFAULT_LAUNCH_DRAG)
     {
-        Inventory.ItemType _spawnItem = FetchItem(itemType.ItemName);
+        Inventory.ItemType _spawnItem = FetchItem(itemType.ItemLabel);
 
         foreach (var _spawnPosition in spawnPositions)
         {
