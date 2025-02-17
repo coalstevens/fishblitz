@@ -7,7 +7,7 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     [SerializeField] private Image _carbsBar;
     [SerializeField] private Image _nutrientsBar;
     [SerializeField] private PlayerData _playerData;
-    private float _maxBarWidth; // max width is currently the starting width of the sprite 
+    [SerializeField] private float _maxBarWidth; // max width is currently the starting width of the sprite 
 
     public void DisableCursor()
     {
@@ -22,7 +22,6 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     public void LoadPage()
     {
         gameObject.SetActive(true);
-        _maxBarWidth = _proteinBar.rectTransform.rect.width;
         UpdateDietBars();
     }
 
