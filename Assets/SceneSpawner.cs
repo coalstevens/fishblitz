@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// TODO?: This class isn't as efficient as it could be, but its not run frequently so it's probably not an issue
+// TODO: The spawn density behavior isn't exactly what i want
 public class SceneSpawner : MonoBehaviour
 {
     [Serializable]
@@ -13,9 +15,9 @@ public class SceneSpawner : MonoBehaviour
         public List<Tilemap> SpawnAreas = new();
         public List<TileBase> ValidTileTypes = new();
         public float Density = 0.05f;
-        public bool SpawnNear = false;
-        public float NearRadius = 2f;
-        public List<GameObject> NearTypes = new();
+        public bool SpawnNearbyOtherTypes = false;
+        public int NearbyAdjacentDistance = 1;
+        public List<GameObject> NearbyTypes = new();
         public bool UsePerlinNoise = false;  
         public float PerlinNoiseScale = 0.1f;  
         public float PerlinThreshold = 0.5f;
@@ -23,6 +25,7 @@ public class SceneSpawner : MonoBehaviour
 
     [SerializeField] private List<SpawnObjectInfo> ObjectsToSpawn = new();
     [SerializeField] private Logger _logger = new();
+    private Dictionary<GameObject, List<Vector3Int>> _spawnedObjects = new();
     private Transform _impermanentContainer;
     private WorldObjectOccupancyMap _occupancyMap;
     private List<Tilemap> _allTilemaps;
@@ -63,26 +66,31 @@ public class SceneSpawner : MonoBehaviour
                 int _numToSpawn = Mathf.CeilToInt(_validSpawnPositions.Count * _spawnObject.Density);
                 _logger.Info($"Attempting to spawn {_numToSpawn} of variants of {_spawnObject.PrefabVariants[0].name}");
 
+                // Apply filters
                 _validSpawnPositions = RemovePositionsThatAreOccupied(_validSpawnPositions);
                 _validSpawnPositions = RemovePositionsThatAreTooSmall(_validSpawnPositions, _spaceOccupiedByObject);
-                _validSpawnPositions = Shuffle(_validSpawnPositions);
-
                 if (_spawnObject.UsePerlinNoise)
-                {
                     _validSpawnPositions = ApplyPerlinNoiseToPositions(_validSpawnPositions, _area, _spawnObject);
-                }
+                if (_spawnObject.SpawnNearbyOtherTypes)
+                    _validSpawnPositions = RemovePositionsNotNearTypes(_validSpawnPositions, _spawnObject.NearbyTypes, _area, _spawnObject.NearbyAdjacentDistance);
 
+                // Spawn objects
+                _validSpawnPositions = Shuffle(_validSpawnPositions);
                 while (_numToSpawn > 0 && _validSpawnPositions.Count > 0)
                 {
-                    if (_validSpawnPositions.Count == 0) break;
-
-                    Vector3Int tilePos = _validSpawnPositions[0];
-                    Vector3 worldPos = _area.CellToWorld(tilePos) + new Vector3(0.5f, 0, 0);
-
-                    _numToSpawn--;
+                    Vector3Int _tilePos = _validSpawnPositions[0];
+                    Vector3 _worldPos = _area.CellToWorld(_tilePos) + new Vector3(0.5f, 0, 0);
+                    
                     var _variant = _spawnObject.PrefabVariants[UnityEngine.Random.Range(0, _spawnObject.PrefabVariants.Count)];
-                    Instantiate(_variant, worldPos, Quaternion.identity, _impermanentContainer);
-                    _validSpawnPositions = RemovePositionsOccupiedByNewObject(_validSpawnPositions, tilePos, _spaceOccupiedByObject);
+                    GameObject _spawnedObj = Instantiate(_variant, _worldPos, Quaternion.identity, _impermanentContainer);
+                    
+                    if (!_spawnedObjects.ContainsKey(_variant))
+                        _spawnedObjects[_variant] = new List<Vector3Int>();
+                    
+                    _spawnedObjects[_variant].Add(_tilePos);
+
+                    _validSpawnPositions = RemovePositionsOccupiedByNewObject(_validSpawnPositions, _tilePos, _spaceOccupiedByObject);
+                    _numToSpawn--;
                 }
             }
         }
@@ -90,21 +98,18 @@ public class SceneSpawner : MonoBehaviour
 
     private List<Vector3Int> ApplyPerlinNoiseToPositions(List<Vector3Int> positions, Tilemap area, SpawnObjectInfo spawnObject)
     {
-        List<Vector3Int> sortedPositions = new List<Vector3Int>();
+        List<Vector3Int> _sortedPositions = new List<Vector3Int>();
         
-        foreach (var pos in positions)
+        foreach (var _pos in positions)
         {
-            float perlinValue = Mathf.PerlinNoise(pos.x * spawnObject.PerlinNoiseScale, pos.y * spawnObject.PerlinNoiseScale);
+            float _perlinValue = Mathf.PerlinNoise(_pos.x * spawnObject.PerlinNoiseScale, _pos.y * spawnObject.PerlinNoiseScale);
             
-            // Adjust the spawn probability based on Perlin noise (higher perlin values indicate more likelihood of spawning)
-            if (perlinValue > spawnObject.PerlinThreshold)  // Threshold can be adjusted
-            {
-                sortedPositions.Add(pos);
-            }
+            if (_perlinValue > spawnObject.PerlinThreshold)  // higher perlin threshold indicates more likelihood of spawning
+                _sortedPositions.Add(_pos);
         }
 
-        _logger.Info($"Valid positions after Perlin noise filtering: {sortedPositions.Count}");
-        return sortedPositions;
+        _logger.Info($"Valid positions after Perlin noise filtering: {_sortedPositions.Count}");
+        return _sortedPositions;
     }
 
     private List<Vector3Int> RemovePositionsOccupiedByNewObject(List<Vector3Int> validSpawnPositions, Vector3Int tilePos, OccupyWorldObjectSpace spaceOccupiedByObject)
@@ -115,13 +120,13 @@ public class SceneSpawner : MonoBehaviour
             return validSpawnPositions;
         }
 
-        HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
+        HashSet<Vector3Int> _occupiedPositions = new HashSet<Vector3Int>();
 
         for (int x = -spaceOccupiedByObject.extraTilesToLeft; x <= spaceOccupiedByObject.extraTilesToRight; x++)
             for (int y = -spaceOccupiedByObject.extraTilesBelow; y <= spaceOccupiedByObject.extraTilesAbove; y++)
-                occupiedPositions.Add(new Vector3Int(tilePos.x + x, tilePos.y + y, tilePos.z));
+                _occupiedPositions.Add(new Vector3Int(tilePos.x + x, tilePos.y + y, tilePos.z));
 
-        validSpawnPositions.RemoveAll(pos => occupiedPositions.Contains(pos));
+        validSpawnPositions.RemoveAll(pos => _occupiedPositions.Contains(pos));
         return validSpawnPositions;
     }
 
@@ -133,14 +138,14 @@ public class SceneSpawner : MonoBehaviour
             return validSpawnPositions;
         }
 
-        List<Vector3Int> filteredTiles = new List<Vector3Int>();
+        List<Vector3Int> _filteredTiles = new List<Vector3Int>();
 
-        foreach (var pos in validSpawnPositions)
-            if (!_occupancyMap.CheckOccupied(pos)) 
-                filteredTiles.Add(pos);
+        foreach (var _pos in validSpawnPositions)
+            if (!_occupancyMap.CheckOccupied(_pos)) 
+                _filteredTiles.Add(_pos);
 
-        _logger.Info($"Number of spawn positions after removing occupied spaces: {filteredTiles.Count}");
-        return filteredTiles;
+        _logger.Info($"Number of spawn positions after removing occupied spaces: {_filteredTiles.Count}");
+        return _filteredTiles;
     }
 
     private List<Vector3Int> RemovePositionsThatAreTooSmall(List<Vector3Int> spawnPositions, OccupyWorldObjectSpace spaceOccupiedByObject)
@@ -152,26 +157,26 @@ public class SceneSpawner : MonoBehaviour
         }
         List<Vector3Int> _filteredTiles = new List<Vector3Int>();
 
-        foreach (var pos in spawnPositions)
+        foreach (var _pos in spawnPositions)
         {
-            bool hasSpace = true;
+            bool _hasSpace = true;
 
             for (int x = -spaceOccupiedByObject.extraTilesToLeft; x <= spaceOccupiedByObject.extraTilesToRight; x++)
             {
                 for (int y = -spaceOccupiedByObject.extraTilesBelow; y <= spaceOccupiedByObject.extraTilesAbove; y++)
                 {
-                    Vector3Int checkPos = new Vector3Int(pos.x + x, pos.y + y, pos.z);
-                    if (!spawnPositions.Contains(checkPos))
+                    Vector3Int _checkPos = new Vector3Int(_pos.x + x, _pos.y + y, _pos.z);
+                    if (!spawnPositions.Contains(_checkPos))
                     {
-                        hasSpace = false;
+                        _hasSpace = false;
                         break;
                     }
                 }
-                if (!hasSpace) break;
+                if (!_hasSpace) break;
             }
 
-            if (hasSpace)
-                _filteredTiles.Add(pos);
+            if (_hasSpace)
+                _filteredTiles.Add(_pos);
         }
         _logger.Info($"Number of spawn positions after filtering by object size: {_filteredTiles.Count}");
         return _filteredTiles;
@@ -179,38 +184,78 @@ public class SceneSpawner : MonoBehaviour
 
     private List<Vector3Int> GetPositionsOfValidTilesInArea(Tilemap targetTilemap, List<TileBase> validTiles)
     {
-        List<Vector3Int> validPositions = new List<Vector3Int>();
-        BoundsInt bounds = targetTilemap.cellBounds;
+        List<Vector3Int> _validPositions = new List<Vector3Int>();
+        BoundsInt _bounds = targetTilemap.cellBounds;
 
-        foreach (Vector3Int position in bounds.allPositionsWithin)
+        foreach (Vector3Int _position in _bounds.allPositionsWithin)
         {
-            if (!targetTilemap.HasTile(position)) 
-                continue; // Skip if there's no tile in the target tilemap
+            if (!targetTilemap.HasTile(_position)) 
+                continue; 
             
-            // Check if any tilemap in the same grid has a valid tile
-            bool isValid = _allTilemaps.Any(tilemap => validTiles.Contains(tilemap.GetTile(position)));
+            bool _isValid = _allTilemaps.Any(tilemap => validTiles.Contains(tilemap.GetTile(_position)));
 
-            if (isValid)
-            {
-                validPositions.Add(position);
-            }
+            if (_isValid)
+                _validPositions.Add(_position);
         }
 
-        _logger.Info($"Valid tiles in area: {validPositions.Count}");
-        return validPositions;
+        _logger.Info($"Valid tiles in area: {_validPositions.Count}");
+        return _validPositions;
     }
 
-    private bool IsNearRequiredType(Vector3 position, List<GameObject> nearTypes, float nearRadius)
+    private List<Vector3Int> RemovePositionsNotNearTypes(List<Vector3Int> spawnPositions, List<GameObject> nearTypes, Tilemap tilemap, int adjacentDistance)
     {
-        Collider2D[] nearbyObjects = Physics2D.OverlapCircleAll(position, nearRadius);
-        foreach (var obj in nearbyObjects)
-        {
-            if (nearTypes.Contains(obj.gameObject))
-                return true;
-        }
-        return false;
-    }
+        if (nearTypes == null || nearTypes.Count == 0)
+            return spawnPositions;
 
+        List<Vector3Int> _filteredPositions = new List<Vector3Int>();
+        GameObject[] _existingObjects = GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        foreach (var _pos in spawnPositions)
+        {
+            bool _foundNearby = false;
+
+            for (int x = -adjacentDistance; x <= adjacentDistance; x++)
+            {
+                for (int y = -adjacentDistance; y <= adjacentDistance; y++)
+                {
+                    Vector3Int _checkPos = new Vector3Int(_pos.x + x, _pos.y + y, _pos.z);
+
+                    // Check spawned objects
+                    foreach (var _nearType in nearTypes)
+                    {
+                        if (_spawnedObjects.TryGetValue(_nearType, out List<Vector3Int> spawnedPositions) && spawnedPositions.Contains(_checkPos))
+                        {
+                            _foundNearby = true;
+                            break;
+                        }
+                    }
+
+                    // Check all GameObjects in the scene
+                    foreach (var _obj in _existingObjects)
+                    {
+                        if (nearTypes.Contains(_obj))
+                        {
+                            Vector3Int objTilePos = tilemap.WorldToCell(_obj.transform.position);
+                            if (objTilePos == _checkPos)
+                            {
+                                _foundNearby = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (_foundNearby) break;
+                }
+                if (_foundNearby) break;
+            }
+
+            if (_foundNearby)
+                _filteredPositions.Add(_pos);
+        }
+
+        _logger.Info($"Number of spawn positions after proximity filtering: {_filteredPositions.Count}");
+        return _filteredPositions;
+    }
+    
     private List<T> Shuffle<T>(List<T> list)
     {
         for (int i = list.Count - 1; i > 0; i--)
@@ -226,29 +271,29 @@ public class SceneSpawner : MonoBehaviour
         if (ObjectsToSpawn == null || ObjectsToSpawn.Count <= 1)
             return;
 
-        foreach (var spawnObject in ObjectsToSpawn)
+        foreach (var _spawnObject in ObjectsToSpawn)
         {
-            if (spawnObject.PrefabVariants == null || spawnObject.PrefabVariants.Count == 0)
+            if (_spawnObject.PrefabVariants == null || _spawnObject.PrefabVariants.Count == 0)
                 continue;
 
-            OccupyWorldObjectSpace initialSpaceOccupied = spawnObject.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
+            OccupyWorldObjectSpace _initialSpaceOccupied = _spawnObject.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
 
-            foreach (var variant in spawnObject.PrefabVariants)
+            foreach (var _variant in _spawnObject.PrefabVariants)
             {
-                OccupyWorldObjectSpace spaceOccupied = variant.GetComponent<OccupyWorldObjectSpace>();
+                OccupyWorldObjectSpace spaceOccupied = _variant.GetComponent<OccupyWorldObjectSpace>();
 
                 if (spaceOccupied == null)
                 {
-                    Debug.LogError($"Prefab {variant.name} does not have an OccupyWorldObjectSpace component.");
+                    Debug.LogError($"Prefab {_variant.name} does not have an OccupyWorldObjectSpace component.");
                     continue;
                 }
 
-                if (initialSpaceOccupied.extraTilesToLeft != spaceOccupied.extraTilesToLeft ||
-                    initialSpaceOccupied.extraTilesToRight != spaceOccupied.extraTilesToRight ||
-                    initialSpaceOccupied.extraTilesBelow != spaceOccupied.extraTilesBelow ||
-                    initialSpaceOccupied.extraTilesAbove != spaceOccupied.extraTilesAbove)
+                if (_initialSpaceOccupied.extraTilesToLeft != spaceOccupied.extraTilesToLeft ||
+                    _initialSpaceOccupied.extraTilesToRight != spaceOccupied.extraTilesToRight ||
+                    _initialSpaceOccupied.extraTilesBelow != spaceOccupied.extraTilesBelow ||
+                    _initialSpaceOccupied.extraTilesAbove != spaceOccupied.extraTilesAbove)
                 {
-                    Debug.LogError($"Prefab variants for {variant.name} do not occupy the same space.");
+                    Debug.LogError($"Prefab variants for {_variant.name} do not occupy the same space.");
                     return;
                 }
             }
