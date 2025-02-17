@@ -145,15 +145,11 @@ public class Inventory : ScriptableObject
             return false;
 
         if (SlotItems[ActiveItemSlot.Value].Quantity == quantity)
-        {
             SlotItems.Remove(ActiveItemSlot.Value);
-            SlotUpdated?.Invoke(this, ActiveItemSlot.Value);
-        }    
         else
-        {
             SlotItems[ActiveItemSlot.Value].Quantity -= quantity;   
-            SlotUpdated?.Invoke(this, ActiveItemSlot.Value);
-        }
+            
+        SlotUpdated?.Invoke(this, ActiveItemSlot.Value);
         return true;
     }
 
