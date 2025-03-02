@@ -1,38 +1,41 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class PlayerInteractionManager : MonoBehaviour
 {
-    public interface ITool
+    public interface IUsableOnWorldObject
     {
         /// <summary>
-        /// Uses tool on the world object under player object. Returns false if ignored.
+        /// Uses item on the world object under player cursor. Returns false if ignored.
         /// </summary>
-        public bool UseToolOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
+        public bool UseOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
+    }
 
+    public interface IUsableOnTileMap
+    {
         /// <summary>
-        /// Uses tool on the interactive tilemap under cursor. Returns false if ignored.
+        /// Uses tool on the interactive tilemap under player cursor. Returns false if ignored.
         /// </summary>
-        public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
+        /// ///
+        public bool UseOnTileMap(string tilemapLayerName, Vector3Int cursorLocation);
+    }
 
-        /// <summary>
-        /// Uses tool on no object in particular 
-        /// </summary>
+    public interface IUsableWithoutTarget
+    {
         /// <returns> True if energy is used </returns>
-        public bool UseToolWithoutTarget();
+        public bool UseWithoutTarget();
+    }
 
-        /// <summary>
-        /// Plays a sound when the tool interacts with the target
-        /// </summary>
-        public void PlayToolHitSound();
+    public interface IUsableWithSound
+    {
+        public void PlayHitSound();
+    }
 
-        /// <summary>
-        /// Returns the energy cost of using the tool
-        /// </summary>
+    public interface IEnergyDepleting
+    {
         public int EnergyCost { get; }
     }
 
@@ -44,17 +47,12 @@ public class PlayerInteractionManager : MonoBehaviour
         public bool CursorInteract(Vector3 cursorLocation);
     }
 
-    public interface IPlayerCursorUsingItem
-    {
-        public bool UseItemOnWorldObject(IInteractable interactableWorldObject, Vector3Int cursorLocation);
-        public bool UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation);
-    }
-
     [SerializeField] private Cursor _cursorN;
     [SerializeField] private Cursor _cursorE;
     [SerializeField] private Cursor _cursorS;
     [SerializeField] private Cursor _cursorW;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private Logger _logger = new();
     private Grid _grid;
     private PlayerMovementController _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
@@ -67,21 +65,19 @@ public class PlayerInteractionManager : MonoBehaviour
         _activeCursor = _cursorE;
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         _playerEnergyManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerEnergyManager>();
-        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        foreach (var hook in _unsubscribeHooks)
-            hook();
-    }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        _grid = GameObject.FindFirstObjectByType<Grid>();
+        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => SetPlayerCursorToFacingDirection(curr)));
+        SceneManager.sceneLoaded += (scene, mode) => _grid = GameObject.FindFirstObjectByType<Grid>();
     }
 
-    private void OnDirectionChange(FacingDirection curr)
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= (scene, mode) => _grid = GameObject.FindFirstObjectByType<Grid>();
+        foreach (var hook in _unsubscribeHooks)
+            hook();
+        _unsubscribeHooks.Clear();
+    }
+
+    private void SetPlayerCursorToFacingDirection(FacingDirection curr)
     {
         switch (curr)
         {
@@ -100,14 +96,7 @@ public class PlayerInteractionManager : MonoBehaviour
         }
     }
 
-    public Vector3Int GetActiveCursorLocation()
-    {
-        if (_grid == null)
-            Debug.LogError("Grid is null, can't find active cursor location");
-        return _grid.WorldToCell(_activeCursor.transform.position);
-    }
-
-    private void OnUseTool()
+    private void OnUseItem()
     {
         // can't interrupt these
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
@@ -118,58 +107,25 @@ public class PlayerInteractionManager : MonoBehaviour
             return;
         }
 
-        // check active inventory slot for tool
         Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
         if (_activeItem == null)
         {
-            Debug.Log("Active item is null");
-            return;
-        }
-        ITool _activeTool = _activeItem as ITool;
-        if (_activeTool == null)
-        {
-            Debug.Log("Active item is not ITool");
+            _logger.Info("Active item is null");
             return;
         }
 
-        if (!_playerEnergyManager.IsEnergyAvailable() && _activeTool.EnergyCost > 0)
-        {
-            Debug.Log("No energy remaining.");
-            return;
-        }
+        if (!IsSufficientEnergyAvailable(_activeItem)) return;
 
-        // try to use tool on worldobject
         Vector3Int _cursorLocation = GetActiveCursorLocation();
         IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(_cursorLocation);
-        if (_interactableWorldObject != null)
-        {
-            if (_activeTool.UseToolOnWorldObject(_interactableWorldObject, _cursorLocation))
-            {
-                _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
-                _activeTool.PlayToolHitSound();
-                return;
-            }
-        }
+        if (TryUseItemOnWorldObject(_activeItem, _cursorLocation)) return;
 
-        // try to use tool on tilemap
         string _interactableTilemapName = FindPlayerCursorInteractableTileMap(_cursorLocation);
-        if (_interactableTilemapName != null)
-        {
-            if (_activeTool.UseToolOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
-            {
-                _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
-                _activeTool.PlayToolHitSound();
-                return;
-            }
-        }
-        // swing at nothing
-        if (_activeTool.UseToolWithoutTarget())
-        {
-            _playerEnergyManager.DepleteEnergy(_activeTool.EnergyCost);
-        }
+        if (TryUseItemOnTileMap(_activeItem, _interactableTilemapName, _cursorLocation)) return;
+        if (TryUseItemWithoutTarget(_activeItem)) return;
     }
 
-    private void OnPlayerCursorAction()
+    private void OnInteract()
     {
         // returns if player is not idle or walking
         if (_playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Idle &&
@@ -181,22 +137,78 @@ public class PlayerInteractionManager : MonoBehaviour
         IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(_cursorLocation);
         if (_interactableWorldObject?.CursorInteract(_cursorLocation) == true)
             return;
+    }
 
-        // check active inventory slot for interactable item
-        Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
-        if (_activeItem == null) return;
-        if (_activeItem is not IPlayerCursorUsingItem) return;
+    public Vector3Int GetActiveCursorLocation()
+    {
+        if (_grid == null)
+            Debug.LogError("Grid is null, can't find active cursor location");
+        return _grid.WorldToCell(_activeCursor.transform.position);
+    }
 
-        // try to use item on worldobject
+    private bool TryUseItemOnWorldObject(Inventory.ItemType activeItem, Vector3Int cursorLocation)
+    {
+        IInteractable _interactableWorldObject = FindPlayerCursorInteractableObject(cursorLocation);
         if (_interactableWorldObject != null)
-            if (((IPlayerCursorUsingItem)_activeItem).UseItemOnWorldObject(_interactableWorldObject, _cursorLocation))
-                return;
+        {
+            if (activeItem is IUsableOnWorldObject)
+            {
+                if (((IUsableOnWorldObject)activeItem).UseOnWorldObject(_interactableWorldObject, cursorLocation))
+                {
+                    DepleteUseEnergy(activeItem);
+                    PlayHitSound(activeItem);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-        // try to use item on tilemap
-        string _interactableTilemapName = FindPlayerCursorInteractableTileMap(_cursorLocation);
-        if (_interactableTilemapName != null)
-            if (((IPlayerCursorUsingItem)_activeItem).UseItemOnInteractableTileMap(_interactableTilemapName, _cursorLocation))
-                return;
+    private bool TryUseItemOnTileMap(Inventory.ItemType activeItem, string tilemapLayerName, Vector3Int cursorLocation)
+    {
+        if (activeItem is IUsableOnTileMap)
+        {
+            if (((IUsableOnTileMap)activeItem).UseOnTileMap(tilemapLayerName, cursorLocation))
+            {
+                DepleteUseEnergy(activeItem);
+                PlayHitSound(activeItem);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool TryUseItemWithoutTarget(Inventory.ItemType activeItem)
+    {
+        if (activeItem is IUsableWithoutTarget)
+        {
+            if (((IUsableWithoutTarget)activeItem).UseWithoutTarget())
+            {
+                DepleteUseEnergy(activeItem);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void PlayHitSound(Inventory.ItemType activeItem)
+    {
+        if (activeItem is IUsableWithSound)
+            ((IUsableWithSound)activeItem).PlayHitSound();
+    }
+
+    private bool IsSufficientEnergyAvailable(Inventory.ItemType activeItem)
+    {
+        if (_playerEnergyManager.IsEnergyAvailable() || activeItem is not IEnergyDepleting)
+            return true;
+        _logger.Info("Not enough energy remaining.");
+        return false;
+    }
+
+    private void DepleteUseEnergy(Inventory.ItemType activeItem)
+    {
+        if (activeItem is IEnergyDepleting)
+            _playerEnergyManager.DepleteEnergy(((IEnergyDepleting)activeItem).EnergyCost);
     }
 
     private IInteractable FindPlayerCursorInteractableObject(Vector3Int cursorLocation)

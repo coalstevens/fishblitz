@@ -39,8 +39,12 @@ public class ActiveWhenRaining : MonoBehaviour
             collider.enabled = true; 
         else if (component is Renderer renderer)
             renderer.enabled = true; 
-        else if (component is ParticleSystem particleSystem)
+        else if (component is ParticleSystem particleSystem) {
+            // manually prewarming due to warping player transform on spawn
+            Debug.Log("particlesystemenbaled");
+            particleSystem.Simulate(particleSystem.main.startLifetime.constantMax, false);
             particleSystem.Play();
+        }
         else
             Debug.LogError("This component type is not handled yet.");
     }

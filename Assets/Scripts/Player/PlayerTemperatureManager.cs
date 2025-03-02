@@ -32,7 +32,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 
     private void OnEnable()
     {
-        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange(_ => OnGameMinuteTick()));
+        GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
         _unsubscribeHooks.Add(_playerData.PlayerIsWet.OnChange(_ => UpdateActualTemperature()));
         _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => UpdateActualTemperature()));
         _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => ResetCounterToMatchAmbient()));
@@ -42,6 +42,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 
     private void OnDisable()
     {
+        GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var hook in _unsubscribeHooks)
             hook();
         _unsubscribeHooks.Clear();

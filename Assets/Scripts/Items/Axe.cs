@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
-public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
+public class Axe : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldObject, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IEnergyDepleting
 {
     [SerializeField] private int _energyCost = 2;
     public interface IUseableWithAxe
@@ -12,7 +12,12 @@ public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
 
     public int EnergyCost => _energyCost;
 
-    bool PlayerInteractionManager.ITool.UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    public void PlayToolHitSound()
+    {
+        AudioManager.Instance.PlaySFX(_chopSFX, 0.4f);
+    }
+
+    public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IUseableWithAxe _worldObject)
         {
@@ -23,19 +28,9 @@ public class Axe : Inventory.ItemType, PlayerInteractionManager.ITool
         return false;
     }
 
-    bool PlayerInteractionManager.ITool.UseToolWithoutTarget()
+    public bool UseWithoutTarget()
     {
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
         return false;
-    }
-
-    bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
-    {
-        return false; // does nothing
-    }
-
-    public void PlayToolHitSound()
-    {
-        AudioManager.Instance.PlaySFX(_chopSFX, 0.4f);
     }
 }

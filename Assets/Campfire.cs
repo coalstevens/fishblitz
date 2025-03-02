@@ -35,13 +35,14 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         _localHeatSource = GetComponent<LocalHeatSource>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
 
+        GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
         _unsubscribeHooks.Add(_stoveState.OnChange((curr, prev) => OnStateChange()));
-        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((curr, prev) => OnGameMinuteTick()));
         EnterDead();
     }
 
     private void OnDisable()
     {
+        GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var _hook in _unsubscribeHooks)
             _hook();
     }

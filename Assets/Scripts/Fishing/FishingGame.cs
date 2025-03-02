@@ -108,7 +108,7 @@ public class FishingGame : MonoBehaviour
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
         _fishType = GetRandomValidFishType();
         _gameStartPeriod = GameClock.Instance.GetDayPeriod();
-        _gameStartSeason = GameClock.Instance.GameSeason.Value;
+        _gameStartSeason = GameClock.Instance.GameSeason;
         _overlaySpriteRenderer.sprite = null;
         _failed = false;
         _roundNumber = 0;
@@ -376,7 +376,7 @@ public class FishingGame : MonoBehaviour
             _fish = _child.GetComponent<FishType>();
             if (
                 _fish.CatchableSceneNames.Contains(SceneManager.GetActiveScene().name) &&
-                _fish.SpawnableSeasons.Contains(GameClock.Instance.GameSeason.Value) &&
+                _fish.SpawnableSeasons.Contains(GameClock.Instance.GameSeason) &&
                 _fish.SpawnablePeriods.Contains(GameClock.Instance.GetDayPeriod()) 
             )
             {

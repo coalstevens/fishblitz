@@ -65,6 +65,6 @@ public static class SleepQuality
 
     private static float GetPastCurfewPenalty()
     {
-        return GameClock.Instance.GameHour.Value >= _sleepCurfewHour ? _pastCurfewPenalty : 0;
+        return GameClock.Instance.GameHour >= _sleepCurfewHour ? _pastCurfewPenalty : 0;
     }
 }

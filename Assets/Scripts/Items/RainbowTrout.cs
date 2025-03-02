@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRainbowTrout", menuName = "Items/RainbowTrout")]
-public class RainbowTrout : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.ITool
+public class RainbowTrout : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.IUsableOnWorldObject, PlayerInteractionManager.IUsableWithoutTarget
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -13,17 +13,7 @@ public class RainbowTrout : Inventory.ItemType, Diet.IFood, PlayerInteractionMan
     public int Nutrients => _nutrients;
     public int EnergyCost => 0;
 
-    public void PlayToolHitSound()
-    {
-        // NOM NOM NOM
-    }
-
-    public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
-    {
-        return false;
-    }
-
-    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IGiftAble _giftAble)
         {
@@ -36,7 +26,7 @@ public class RainbowTrout : Inventory.ItemType, Diet.IFood, PlayerInteractionMan
         return false;
     }
 
-    public bool UseToolWithoutTarget()
+    public bool UseWithoutTarget()
     {
         if (_inventory.TryRemoveActiveItem(1))
         {

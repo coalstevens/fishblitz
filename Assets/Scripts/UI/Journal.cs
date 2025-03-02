@@ -338,10 +338,10 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         SetIconOpacity(_seasonIcons[2], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Fall));
         SetIconOpacity(_seasonIcons[3], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Winter));
 
-        SetIconOpacity(_dayPeriodIcons[0], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNRISE));
-        SetIconOpacity(_dayPeriodIcons[1], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.DAY));
-        SetIconOpacity(_dayPeriodIcons[2], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.SUNSET));
-        SetIconOpacity(_dayPeriodIcons[3], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.NIGHT));
+        SetIconOpacity(_dayPeriodIcons[0], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Sunrise));
+        SetIconOpacity(_dayPeriodIcons[1], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Day));
+        SetIconOpacity(_dayPeriodIcons[2], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Sunset));
+        SetIconOpacity(_dayPeriodIcons[3], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Night));
     }
 
     private void SetIconOpacity(Image icon, bool isDim)
