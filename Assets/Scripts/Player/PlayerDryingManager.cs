@@ -30,14 +30,15 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
         _unsubscribeHooks.Add(WorldStateByCalendar.RainState.OnChange((_, curr) => OnRainStateChange(curr)));
-        _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_, _) => OnGameMinuteTick()));
         _unsubscribeHooks.Add(_playerData.WetnessState.OnChange((_, _) => OnWetnessStateChange()));
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var hook in _unsubscribeHooks)
             hook();
         _unsubscribeHooks.Clear();

@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
 using UnityEngine.SceneManagement;
-using System.ComponentModel;
 public enum FacingDirection
 {
     North,
@@ -65,21 +64,6 @@ public class PlayerMovementController : MonoBehaviour
         transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);
         _moveSpeedsMultiplier = new CardinalVector(1);
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable() {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "GameMenu") return;
-        transform.position = _playerData.SceneSpawnPosition;
     }
 
     public void OnMove(InputValue value)

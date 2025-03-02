@@ -29,21 +29,20 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     [SerializeField] private int _hotFireDurationGameMinutes = 60;
     private List<Action> _unsubscribeHooks = new();
     
-    void Awake()
+    private void OnEnable()
     {
-        // References
         _animator = GetComponent<Animator>();
         _localHeatSource = GetComponent<LocalHeatSource>();
-        _gameClock = GameObject.FindGameObjectWithTag("GameClock").GetComponent<GameClock>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
         
-        // Reactive
         _unsubscribeHooks.Add(_stoveState.OnChange((curr,prev) => OnStateChange()));
-        _unsubscribeHooks.Add(_gameClock.GameMinute.OnChange((curr, prev) => OnGameMinuteTick()));
+        GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
+
         EnterDead();
     }
 
     private void OnDisable() {
+        GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var _hook in _unsubscribeHooks) 
             _hook();
     }

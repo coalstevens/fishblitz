@@ -1497,6 +1497,7 @@ MonoBehaviour:
   _toScene: Outside
   _sceneSpawnLocation: {x: 37, y: 37, z: 0}
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _rainManager: {fileID: 11400000, guid: bebb3cc9b17a94c3ab00bc48719e471d, type: 2}
 --- !u!4 &1138146526
 Transform:
   m_ObjectHideFlags: 0
@@ -2357,18 +2358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 419211f37f49740db9849954a952fa95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SeasonNames:
-  - Spring
-  - EndOfSpring
-  - Summer
-  - EndOfSummer
-  - Fall
-  - EndOfFall
-  - Winter
-  - EndOfWinter
   _gameDayInRealMinutes: 8
-  _numRegularSeasonDays: 10
-  _numTransitionSeasonDays: 5
+  _numSeasonDays: 15
   _dayPeriodRanges:
   - Period: 0
     StartHour: 6
@@ -2382,17 +2373,17 @@ MonoBehaviour:
   - Period: 3
     StartHour: 20
     EndHour: 6
-  GameclockPaused: 0
-  GameYear:
-    _val: 1
-  GameSeason:
-    _val: 1
-  GameDay:
-    _val: 11
-  GameHour:
-    _val: 12
-  GameMinute:
-    _val: 0
+  _logger:
+    _info: 1
+    _verbose: 1
+    _prefix: Gameclock
+    _color: white
+  GameClockPaused: 0
+  _startDay: 11
+  _startHour: 16
+  _startMinute: 0
+  _startSeason: 0
+  _startYear: 1
   GameIsPaused:
     _val: 0
 --- !u!4 &1950503954

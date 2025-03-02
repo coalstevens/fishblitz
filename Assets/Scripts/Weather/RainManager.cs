@@ -28,7 +28,7 @@ public class Rain : ScriptableObject
             hook();
     }
 
-    private void OnStateChange(WorldStateByCalendar.RainStates curr)
+    public void OnStateChange(WorldStateByCalendar.RainStates curr)
     {
         switch (curr)
         {
@@ -53,7 +53,6 @@ public class Rain : ScriptableObject
 
     private void PlayRainAudio(bool isMuffled)
     {
-        Debug.Log("Rain audio play");
         if (isMuffled)
             _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, 1, true);
         else
@@ -74,7 +73,9 @@ public class Rain : ScriptableObject
         return SceneManager.GetActiveScene().name switch
         {
             "Abandoned Shed" => true,
+            "Sleep Menu" => true,
             "Outside" => false,
+            "Boot" => false,
             _ => false
         };
     }

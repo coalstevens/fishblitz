@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MountedRod : Inventory.ItemType, PlayerInteractionManager.IPlayerCursorUsingItem
+public class MountedRod : Inventory.ItemType
 {
     private Inventory _inventory;
 
@@ -14,11 +14,6 @@ public class MountedRod : Inventory.ItemType, PlayerInteractionManager.IPlayerCu
     {
         // Instantiate(((RodPlacement)interactableTile).RodToPlace, cursorLocation + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
         // _inventory.TryRemoveItem("MountedRod", 1);
-    }
-
-    bool PlayerInteractionManager.IPlayerCursorUsingItem.UseItemOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
-    {
-        return false; // do nothing
     }
 
     public bool UseItemOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)

@@ -40,7 +40,7 @@ public class ShedGerard : MonoBehaviour, PlayerInteractionManager.IInteractable
 
         if (_isInside)
         {
-            if (GameClock.Instance.GameHour.Value >= _isOutsideGameHours.x && GameClock.Instance.GameHour.Value <= _isOutsideGameHours.y)
+            if (GameClock.Instance.GameHour >= _isOutsideGameHours.x && GameClock.Instance.GameHour <= _isOutsideGameHours.y)
             {
                 gameObject.SetActive(false);
                 return;
@@ -49,7 +49,7 @@ public class ShedGerard : MonoBehaviour, PlayerInteractionManager.IInteractable
         }
         else
         {
-            if (GameClock.Instance.GameHour.Value < _isOutsideGameHours.x && GameClock.Instance.GameHour.Value > _isOutsideGameHours.y)
+            if (GameClock.Instance.GameHour < _isOutsideGameHours.x && GameClock.Instance.GameHour > _isOutsideGameHours.y)
             {
                 gameObject.SetActive(false);
                 return;

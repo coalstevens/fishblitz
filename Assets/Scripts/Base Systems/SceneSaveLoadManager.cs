@@ -15,13 +15,14 @@ public class SceneSaveLoadManager : MonoBehaviour {
         SaveData Save();
         void Load(SaveData saveData);
     }
+    [SerializeField] private Logger _logger = new();
 
     Transform _impermanentContainer;
     public delegate void FirstVisitToSceneHandler(string sceneName);
     public static event FirstVisitToSceneHandler FirstVisitToScene;
     private class SceneSaveData {
         public List<SaveData> SaveDatas = new();
-        public GameClockCapture SceneExitGameTime;
+        public int SceneExitGameTime;
     }
 
     private void Start() {
@@ -32,19 +33,18 @@ public class SceneSaveLoadManager : MonoBehaviour {
     public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
         _sceneSaveData.SaveDatas = GatherChildSaveData(_impermanentContainer);
-        _sceneSaveData.SceneExitGameTime = GameClock.GenerateCapture();
+        _sceneSaveData.SceneExitGameTime = GameClock.Instance.GameMinutesElapsed;
 
         JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
     }
 
     private void LoadScene() {
-        String _fileName = GetFileName();
+        string _fileName = GetFileName();
+        string _sceneName = SceneManager.GetActiveScene().name;
 
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
-            string _sceneName = SceneManager.GetActiveScene().name;
-            Debug.Log($"Scene loaded: {_sceneName}");
-            Debug.Log("This is the first visit to this scene");
+            _logger.Info($"{_sceneName} initial scene visit.");
             FirstVisitToScene?.Invoke(_sceneName); 
             return;
         }
@@ -56,6 +56,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
         InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, _impermanentContainer);
         ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
+        _logger.Info($"{_sceneName} loaded from save.");
     }
 
     // dang
@@ -81,7 +82,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         }
     }
 
-    private void ProcessElaspedTimeForChildren(GameClockCapture pastTime, Transform parent) {  
+    private void ProcessElaspedTimeForChildren(int pastTime, Transform parent) {  
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
         // Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
         List<GameClock.ITickable> _tickables = new();

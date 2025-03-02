@@ -1,22 +1,12 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBinoculars", menuName = "Items/Binoculars")]
-public class Binoculars : Inventory.ItemType, PlayerInteractionManager.ITool
+public class Binoculars : Inventory.ItemType, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IEnergyDepleting
 {
     [SerializeField] private int _energyCost = 1;
     public int EnergyCost => _energyCost;
 
-    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
-    {
-        return false;
-    }
-
-    public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
-    {
-        return false;
-    }
-
-    public bool UseToolWithoutTarget()
+    public bool UseWithoutTarget()
     {
         if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Birding)
             return false;
@@ -24,10 +14,5 @@ public class Binoculars : Inventory.ItemType, PlayerInteractionManager.ITool
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Birding;
         BirdingGame.Instance.Play();
         return true;
-    }
-
-    public void PlayToolHitSound()
-    {
-        // no sound
     }
 }

@@ -71,7 +71,7 @@ public class BirdGenerator : MonoBehaviour
 
     private void UpdateSpawnableBirdsList()
     {
-        _currSeason = GameClock.Instance.GameSeason.Value;
+        _currSeason = GameClock.Instance.GameSeason;
         _currPeriod = GameClock.Instance.GetDayPeriod();
 
         if (_prevSeason == _currSeason && _prevPeriod == _currPeriod)

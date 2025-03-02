@@ -10,6 +10,7 @@ public class BootManager : MonoBehaviour
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _sceneSpawnLocation;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Rain _rainManager; 
     private void Awake()
     {
         GameStateManager.Initialize();
@@ -19,6 +20,7 @@ public class BootManager : MonoBehaviour
     private void Start()
     {
         WorldStateByCalendar.UpdateWorldState();
+        _rainManager.OnStateChange(WorldStateByCalendar.RainState.Value);
     }
 
     private IEnumerator OpeningDialogue() {

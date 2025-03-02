@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FlyAgaric", menuName = "Items/FlyAgaric")]
-public class FlyAgaric : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.ITool
+public class FlyAgaric : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.IUsableWithoutTarget
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -11,24 +11,8 @@ public class FlyAgaric : Inventory.ItemType, Diet.IFood, PlayerInteractionManage
     public int Protein => _protein;
     public int Carbs => _carbs;
     public int Nutrients => _nutrients;
-    public int EnergyCost => 0;
 
-    public void PlayToolHitSound()
-    {
-        // NOM NOM NOM
-    }
-
-    public bool UseToolOnInteractableTileMap(string tilemapLayerName, Vector3Int cursorLocation)
-    {
-        return false;
-    }
-
-    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
-    {
-        return false;
-    }
-
-    public bool UseToolWithoutTarget()
+    public bool UseWithoutTarget()
     {
         if (_inventory.TryRemoveActiveItem(1))
         {

@@ -7,7 +7,6 @@ using UnityEngine.Rendering.Universal;
 
 public class SunLightControl : MonoBehaviour
 {
-    private GameClock _gameClock;
     [SerializeField] private int _lightUpdateIntervalGameMins = 10;
     [SerializeField] private Rain _rain;
     [Header("Daytime and Nightime")]
@@ -35,17 +34,22 @@ public class SunLightControl : MonoBehaviour
     public float Intensity => _intensity;
     public Color LightColor => _light.color;
     private Coroutine _fadeRoutine;
+    private Action _unsubscribe;
 
-    void Awake()
+    void OnEnable()
     {
         _light = GetComponent<Light2D>();
-        _gameClock = GameClock.Instance;
-        _gameClock.GameMinute.OnChange((prev, curr) => OnMinuteChange());
-        _lightState.OnChange((prev, curr) => UpdateLight());
+        GameClock.Instance.OnGameMinuteTick += OnMinuteChange; 
+        _unsubscribe = _lightState.OnChange((prev, curr) => UpdateLight());
         _intensity = _light.intensity;
 
         UpdateLightState();
         UpdateLight();
+    }
+    void OnDisable()
+    {
+        GameClock.Instance.OnGameMinuteTick -= OnMinuteChange; 
+        _unsubscribe();
     }
 
     void OnMinuteChange()
@@ -59,7 +63,7 @@ public class SunLightControl : MonoBehaviour
 
     void UpdateLightState()
     {
-        int _currentHour = _gameClock.GameHour.Value;
+        int _currentHour = GameClock.Instance.GameHour;
         if (IsWithinRange(_currentHour, _sunsetStartHour24h, _sunsetEndHour24h))
         {
             _lightState.Value = LightStates.Sunset;
@@ -100,7 +104,7 @@ public class SunLightControl : MonoBehaviour
         float _minIntensity = _lightState.Value == LightStates.Sunrise ? _nightLightIntensity : _dayLightIntensity;
         float _maxIntensity = _lightState.Value == LightStates.Sunrise ? _dayLightIntensity : _nightLightIntensity;
 
-        float _currentMinutes = (_gameClock.GameHour.Value * 60f) + _gameClock.GameMinute.Value;
+        float _currentMinutes = (GameClock.Instance.GameHour * 60f) + GameClock.Instance.GameMinute;
 
         float _normalizedTime = Map(_currentMinutes, _startHour * 60f, _endHour * 60f, 0, 1);
 

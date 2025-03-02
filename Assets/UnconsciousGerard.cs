@@ -61,7 +61,7 @@ public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IIntera
         {
             if (_gerard.State != Gerard.States.UnconsciousBeach)
                 Destroy(gameObject);
-            if (GameClock.Instance.GameYear.Value == 1 && GameClock.Instance.GameSeason.Value == GameClock.Seasons.EndOfSpring)
+            if (GameClock.Instance.GameYear == 1 && GameClock.Instance.GameSeason == GameClock.Seasons.Spring)
             {
                 gameObject.SetActive(false);
                 return;

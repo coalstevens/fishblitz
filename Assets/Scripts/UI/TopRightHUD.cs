@@ -15,52 +15,56 @@ public class TopRightHUD : MonoBehaviour
     [SerializeField] private Sprite _winterFrame;
     private Image _frame;
 
-    void Start()
+    void OnEnable()
     {
         _frame = GetComponent<Image>();
-        GameClock.Instance.GameMinute.OnChange(curr => UpdateClockTextEveryFiveMinutes(curr));
-        GameClock.Instance.GameHour.OnChange(_ => UpdateClockText());
-        GameClock.Instance.GameDay.OnChange(_ => UpdateDateText());
-        GameClock.Instance.GameSeason.OnChange(_ => UpdateSeasonFrame());
-
+        GameClock.Instance.OnGameMinuteTick += UpdateClockTextEveryFiveMinutes;
+        GameClock.Instance.OnGameHourTick += UpdateClockText;
+        GameClock.Instance.OnGameDayTick += UpdateDateText;
+        GameClock.Instance.OnGameSeasonTick += UpdateSeasonFrame; 
+        
         UpdateClockText();
         UpdateDateText();
         UpdateSeasonFrame();
     }
 
+    void OnDisable()
+    {
+        GameClock.Instance.OnGameMinuteTick -= UpdateClockTextEveryFiveMinutes;
+        GameClock.Instance.OnGameHourTick -= UpdateClockText;
+        GameClock.Instance.OnGameDayTick -= UpdateDateText;
+        GameClock.Instance.OnGameSeasonTick -= UpdateSeasonFrame; 
+    }
+
     void UpdateSeasonFrame()
     {
-        _frame.sprite = GameClock.Instance.GameSeason.Value switch
+        _frame.sprite = GameClock.Instance.GameSeason switch
         {
             GameClock.Seasons.Spring => _springFrame,
-            GameClock.Seasons.EndOfSpring => _springFrame,
             GameClock.Seasons.Summer => _summerFrame,
-            GameClock.Seasons.EndOfSummer => _summerFrame,
             GameClock.Seasons.Fall => _fallFrame,
-            GameClock.Seasons.EndOfFall => _fallFrame,
             GameClock.Seasons.Winter => _winterFrame,
-            GameClock.Seasons.EndOfWinter => _winterFrame,
             _ => null
         };
     }
 
-    void UpdateClockTextEveryFiveMinutes(int minute)
+    void UpdateClockTextEveryFiveMinutes()
     {
-        if (minute % 5 == 0) 
+        if (GameClock.Instance.GameMinute % 5 == 0) 
             UpdateClockText();
     }
 
     void UpdateClockText()
     {
         // 24h clock
-        _clockText.text = GameClock.Instance.GameHour.Value.ToString() + ":";
-        _clockText.text += GameClock.Instance.GameMinute.Value < 10 ? "0" : ""; // add a leading zero for <10 min
-        _clockText.text += GameClock.Instance.GameMinute.Value.ToString();
+        _clockText.text = GameClock.Instance.GameHour.ToString() + ":";
+        _clockText.text += GameClock.Instance.GameMinute < 10 ? "0" : ""; // add a leading zero for <10 min
+        _clockText.text += GameClock.Instance.GameMinute.ToString();
     }
 
     void UpdateDateText()
     {
-        int _gameDay = GameClock.Instance.GameDay.Value;
+        int _gameDay = GameClock.Instance.GameDay;
 
         // "1st" thru "15th" 
         _dateText.text = $"The {_gameDay}";

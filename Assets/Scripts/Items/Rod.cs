@@ -1,14 +1,13 @@
-using System.Collections;
 using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "NewRod", menuName = "Items/Rod")]
-public class Rod : Inventory.ItemType, PlayerInteractionManager.ITool
+public class Rod : Inventory.ItemType, PlayerInteractionManager.IUsableOnTileMap, PlayerInteractionManager.IEnergyDepleting
 {
     [SerializeField] private int _energyCost = 2;
     public int EnergyCost => _energyCost;
 
-    bool PlayerInteractionManager.ITool.UseToolOnInteractableTileMap(string tilemapLayerName, UnityEngine.Vector3Int cursorLocation)
+    public bool UseOnTileMap(string tilemapLayerName, Vector3Int cursorLocation)
     {
         // if fishing stop fishing
         if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Fishing) {
@@ -25,22 +24,5 @@ public class Rod : Inventory.ItemType, PlayerInteractionManager.ITool
         }
         
         return false;
-    }
-
-    public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
-    {
-        Debug.Log("Used rod on world object");
-        return false; // does nothing
-    }
-
-    public bool UseToolWithoutTarget()
-    {
-        Debug.Log("Swung fishing rod");
-        return false; // does nothing. Make a casting animation?
-    }
-
-    public void PlayToolHitSound()
-    {
-        // has no sound
     }
 }

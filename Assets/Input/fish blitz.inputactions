@@ -15,19 +15,19 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "UseTool",
+                    "name": "UseItem",
                     "type": "Button",
                     "id": "38b0b375-e6ae-4aca-a570-7c07d0d8d1d9",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PlayerCursorAction",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "0895c70a-60a2-4e1d-bca2-87b4424ebbcc",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -126,7 +126,25 @@
                     "name": "ItemSelect10",
                     "type": "Button",
                     "id": "58244605-ba03-49bc-a05b-459e5a3810df",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveItemCursorRight",
+                    "type": "Button",
+                    "id": "e068ef3d-ebb8-42d2-b256-43a38a0af8b6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveItemCursorLeft",
+                    "type": "Button",
+                    "id": "53144c3a-a7ac-4fac-83a3-3158df27890e",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -135,7 +153,7 @@
                     "name": "OnClick",
                     "type": "Button",
                     "id": "ef5bca02-d3e6-4e30-adca-96fbee13480a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -290,7 +308,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -301,7 +319,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -312,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Touch",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -323,7 +341,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -334,7 +352,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -345,7 +363,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "UseTool",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -356,7 +374,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "PlayerCursorAction",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -467,6 +485,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ItemSelect10",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8c86b28e-2321-4914-8eba-6aa8ed634f08",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveItemCursorRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c02f5537-f14b-49fe-8f9e-f6adb26a6b18",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveItemCursorLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
