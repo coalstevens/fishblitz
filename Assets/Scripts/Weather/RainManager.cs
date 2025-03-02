@@ -9,8 +9,6 @@ public class Rain : ScriptableObject
 {
     [SerializeField] private AudioClip _muffledRainSFX;
     [SerializeField] private AudioClip _RainSFX;
-    public enum States { HeavyRain, NoRain };
-    public Reactive<States> State = new Reactive<States>(States.NoRain);
     private Reactive<bool> _isRainMuffled = new Reactive<bool>(false);
     private Action _stopAudio;
     private List<Action> _unsubscribe = new();
@@ -18,7 +16,7 @@ public class Rain : ScriptableObject
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribe.Add(State.OnChange(curr => OnStateChange(curr)));
+        _unsubscribe.Add(WorldStateByCalendar.RainState.OnChange(curr => OnStateChange(curr)));
         _unsubscribe.Add(_isRainMuffled.OnChange(curr => OnMuffleChange(curr)));
     }
 
@@ -30,14 +28,14 @@ public class Rain : ScriptableObject
             hook();
     }
 
-    private void OnStateChange(States curr)
+    private void OnStateChange(WorldStateByCalendar.RainStates curr)
     {
         switch (curr)
         {
-            case States.HeavyRain:
+            case WorldStateByCalendar.RainStates.HeavyRain:
                 PlayRainAudio(_isRainMuffled.Value);
                 break;
-            case States.NoRain:
+            case WorldStateByCalendar.RainStates.NoRain:
                 StopRainAudio();
                 break;
             default:
@@ -48,7 +46,7 @@ public class Rain : ScriptableObject
 
     private void OnMuffleChange(bool isMuffled)
     {
-        if (State.Value == States.NoRain) return;
+        if (WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain) return;
         StopRainAudio();
         PlayRainAudio(isMuffled);
     }

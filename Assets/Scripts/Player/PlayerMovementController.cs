@@ -104,8 +104,9 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         // Can only change direction when in Idle or Walking
-        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking)
+        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking) {
             return;
+        }
 
         if (_currentMotion.x > 0)
             FacingDirection.Value = global::FacingDirection.East;
@@ -125,8 +126,11 @@ public class PlayerMovementController : MonoBehaviour
     private void FixedUpdate()
     {
         // Can only move when in Idle or Walking
-        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking)
+        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking) {
+            _rb.bodyType = RigidbodyType2D.Static;
             return;
+        }
+        _rb.bodyType = RigidbodyType2D.Dynamic;
 
         Vector2 _scalarMoveSpeed;
         _scalarMoveSpeed.x = _currentMotion.x >= 0 ? _maxMoveSpeeds.east * _moveSpeedsMultiplier.east :

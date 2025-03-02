@@ -10,8 +10,8 @@ public class ActiveWhenRaining : MonoBehaviour
 
     private void OnEnable()
     {
-        _unsubscribe = _rainManager.State.OnChange((_, curr) => OnRainStateChange(curr));
-        OnRainStateChange(_rainManager.State.Value);
+        _unsubscribe = WorldStateByCalendar.RainState.OnChange((_, curr) => OnRainStateChange(curr));
+        OnRainStateChange(WorldStateByCalendar.RainState.Value);
     }
 
     private void OnDisable() 
@@ -19,9 +19,9 @@ public class ActiveWhenRaining : MonoBehaviour
         _unsubscribe();
     }
 
-    private void OnRainStateChange(Rain.States newState)
+    private void OnRainStateChange(WorldStateByCalendar.RainStates newState)
     {
-        bool _isNotRaining = newState == Rain.States.NoRain;
+        bool _isNotRaining = newState == WorldStateByCalendar.RainStates.NoRain;
 
         foreach (var _component in _components) {
             if (_isNotRaining)

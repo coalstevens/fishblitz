@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public enum StoveStates {Dead, Ready, Hot, Embers};
+public enum FireStates {Dead, Ready, Hot, Embers};
 public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
     private const string IDENTIFIER = "WoodStove";
     private class WoodStoveSaveData {
-        public StoveStates State;
+        public FireStates State;
         public int FireDurationCounterGameMinutes;
     }
     private Animator _animator;
     private GameClock _gameClock;
     private LocalHeatSource _localHeatSource;
-    private Reactive<StoveStates> _stoveState = new Reactive<StoveStates>(StoveStates.Dead);
+    private Reactive<FireStates> _stoveState = new Reactive<FireStates>(FireStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
     [SerializeField] private Inventory _inventory;
@@ -50,31 +50,31 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
 
     public void OnGameMinuteTick() { 
         switch (_stoveState.Value) {
-            case StoveStates.Hot:
+            case FireStates.Hot:
                 _fireDurationCounterGameMinutes++;
                 if (_fireDurationCounterGameMinutes >= _hotFireDurationGameMinutes)
-                    _stoveState.Value = StoveStates.Embers;
+                    _stoveState.Value = FireStates.Embers;
                 break;
-            case StoveStates.Embers:
+            case FireStates.Embers:
                 _fireDurationCounterGameMinutes++;
                 if (_fireDurationCounterGameMinutes >= (_hotFireDurationGameMinutes + _embersDurationGameMinutes))
-                    _stoveState.Value = StoveStates.Dead;
+                    _stoveState.Value = FireStates.Dead;
                 break;
         } 
     }
 
     void OnStateChange() {
         switch (_stoveState.Value) {
-            case StoveStates.Dead:
+            case FireStates.Dead:
                 EnterDead();
                 break;
-            case StoveStates.Ready:
+            case FireStates.Ready:
                 EnterReady();
                 break;
-            case StoveStates.Hot:
+            case FireStates.Hot:
                 EnterHot();
                 break;
-            case StoveStates.Embers:
+            case FireStates.Embers:
                 EnterEmbers();
                 break;
         } 
@@ -115,20 +115,20 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
 
     public bool CursorInteract(Vector3 cursorLocation) {
         switch (_stoveState.Value) {
-            case StoveStates.Dead:
+            case FireStates.Dead:
                 // Add wood to ashes
                 if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
-                    _stoveState.Value = StoveStates.Ready;
+                    _stoveState.Value = FireStates.Ready;
                     return true;
                 }
                 return false;
-            case StoveStates.Ready:
+            case FireStates.Ready:
                 // Start fire
                 NarratorSpeechController.Instance.PostMessage("The room gets warm...");
-                _stoveState.Value = StoveStates.Hot;
+                _stoveState.Value = FireStates.Hot;
                 return true;
-            case StoveStates.Hot:
+            case FireStates.Hot:
                 // state internal transition, stoke fire
                 if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
@@ -136,11 +136,11 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                     return true;
                 }
                 return false;   
-            case StoveStates.Embers:
+            case FireStates.Embers:
                 // Stoke fire
                 if (_inventory.IsPlayerHoldingItem("Firewood")) {
                     StokeFlame();
-                    _stoveState.Value = StoveStates.Hot;
+                    _stoveState.Value = FireStates.Hot;
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
                     return true;
                 }   

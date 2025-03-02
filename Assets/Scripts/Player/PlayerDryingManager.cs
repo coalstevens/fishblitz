@@ -24,13 +24,13 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
     private const int DURATION_TO_GET_WET_GAMEMINS = 30;
 
     private string _sceneName;
-    private Rain.States _rainState;
+    private WorldStateByCalendar.RainStates _rainState;
     private List<Action> _unsubscribeHooks = new List<Action>();
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribeHooks.Add(_rainManager.State.OnChange((_, curr) => OnRainStateChange(curr)));
+        _unsubscribeHooks.Add(WorldStateByCalendar.RainState.OnChange((_, curr) => OnRainStateChange(curr)));
         _unsubscribeHooks.Add(GameClock.Instance.GameMinute.OnChange((_, _) => OnGameMinuteTick()));
         _unsubscribeHooks.Add(_playerData.WetnessState.OnChange((_, _) => OnWetnessStateChange()));
     }
@@ -78,7 +78,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         }
     }
 
-    private void OnRainStateChange(Rain.States newState)
+    private void OnRainStateChange(WorldStateByCalendar.RainStates newState)
     {
         _rainState = newState;
         HandleRain();
@@ -91,7 +91,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
         switch (_rainState)
         {
-            case Rain.States.HeavyRain:
+            case WorldStateByCalendar.RainStates.HeavyRain:
                 // if wet stay wet
                 // if wetting stay wetting
                 if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Dry)
@@ -99,7 +99,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
                 if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Drying)
                     EnterWet();
                 break;
-            case Rain.States.NoRain:
+            case WorldStateByCalendar.RainStates.NoRain:
                 // if dry stay dry
                 // if drying stay drying
                 if (_playerData.WetnessState.Value == PlayerData.WetnessStates.Wet)

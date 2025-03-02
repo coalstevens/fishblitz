@@ -30,30 +30,35 @@ public class SceneSpawner : MonoBehaviour
     private WorldObjectOccupancyMap _occupancyMap;
     private List<Tilemap> _allTilemaps;
 
-    void Start()
-    {
-        _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent")?.transform;
-        if (_impermanentContainer == null)
-            Debug.LogError("Impermanent container not found! Creating one.");
-        _occupancyMap = _impermanentContainer.GetComponent<WorldObjectOccupancyMap>();
-        VerifyVariantsAreSameSize();
-        SpawnObjects("");
-        gameObject.SetActive(false); // Disables all spawn area markers as well (child objects)
-    }
-
     private void OnEnable()
     {
-        //SceneSaveLoadManager.FirstVisitToScene += SpawnObjects;
+        SceneSaveLoadManager.FirstVisitToScene += SpawnObjects;
+        foreach(var child in transform)
+            (child as GameObject)?.SetActive(false);
     }
 
     private void OnDisable()
     {
-        //SceneSaveLoadManager.FirstVisitToScene -= SpawnObjects;
+        SceneSaveLoadManager.FirstVisitToScene -= SpawnObjects;
+    }
+
+    void InitializeSpawner()
+    {
+        _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent")?.transform;
+        if (_impermanentContainer == null)
+            Debug.LogError("Impermanent container not found!");
+        _occupancyMap = _impermanentContainer.GetComponent<WorldObjectOccupancyMap>();
+        if (_occupancyMap == null)
+            Debug.LogError("Occupancy map not found!");
+        foreach(var child in transform)
+            (child as GameObject)?.SetActive(true);
+        VerifyVariantsAreSameSize();
     }
 
     private void SpawnObjects(string sceneName)
     {
         _logger.Info("Spawn start");
+        InitializeSpawner();
         _allTilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None).ToList();
         
         foreach (var _spawnObject in ObjectsToSpawn)
@@ -94,6 +99,7 @@ public class SceneSpawner : MonoBehaviour
                 }
             }
         }
+        gameObject.SetActive(false); // Disables all spawn area markers as well (child objects)
     }
 
     private List<Vector3Int> ApplyPerlinNoiseToPositions(List<Vector3Int> positions, Tilemap area, SpawnObjectInfo spawnObject)

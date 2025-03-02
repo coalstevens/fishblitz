@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class SleepMenu : MonoBehaviour
 {
     [SerializeField] PlayerData _playerData;
-
+    public static event Action PlayerSlept;
     private void Start()
     {
         StartCoroutine(SleepRoutine());
@@ -24,6 +25,7 @@ public class SleepMenu : MonoBehaviour
         float _energyFromDiet = SleepQuality.DIET_RECOVERY_RATIO * Diet.GetRecoveryRatio(_playerData);
         _playerData.CurrentEnergy.Value = Mathf.RoundToInt(_energyFromDiet + _energyFromSleep);
 
+        PlayerSlept.Invoke();
         GameClock.Instance.ResumeGame();
         _playerData.IsPlayerSleeping = false;
         LevelChanger.ChangeLevel(_playerData.SceneOnAwake);
