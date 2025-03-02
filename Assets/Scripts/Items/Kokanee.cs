@@ -25,6 +25,14 @@ public class Kokanee : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.
 
     public bool UseToolOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
+        if (interactableWorldObject is IGiftAble _giftAble)
+        {
+            if (_giftAble.TryGiveGift(this))
+            {
+                _inventory.TryRemoveActiveItem(1);
+                return true;
+            }
+        }
         return false;
     }
 

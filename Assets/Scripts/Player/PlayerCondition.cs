@@ -1,18 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Player condition serves as a simple mediator to all its component scripts
 public class PlayerEnergyManager : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
-
     private PlayerTemperatureManager _playerTemperatureManager;
     private Logger _logger = new();
-
     private void Awake()
     {
         _playerTemperatureManager = GetComponent<PlayerTemperatureManager>();

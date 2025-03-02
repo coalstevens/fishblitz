@@ -132,7 +132,7 @@ public class PlayerInteractionManager : MonoBehaviour
             return;
         }
 
-        if (!_playerEnergyManager.IsEnergyAvailable())
+        if (!_playerEnergyManager.IsEnergyAvailable() && _activeTool.EnergyCost > 0)
         {
             Debug.Log("No energy remaining.");
             return;

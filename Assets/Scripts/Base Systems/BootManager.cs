@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -15,13 +16,16 @@ public class BootManager : MonoBehaviour
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
+    private void Start()
+    {
+        WorldStateByCalendar.UpdateWorldState();
+    }
 
     private IEnumerator OpeningDialogue() {
         if (!_skipIntro) {
             yield return new WaitForSeconds(1f);
-            NarratorSpeechController.Instance.PostMessage("you are wet.");
-            NarratorSpeechController.Instance.PostMessage("you are freezing.");
-            NarratorSpeechController.Instance.PostMessage("you are exhausted.");
+            NarratorSpeechController.Instance.PostMessage("...");
+            NarratorSpeechController.Instance.PostMessage("everything feels heavy...");
             yield return new WaitUntil(() => NarratorSpeechController.Instance.AreMessagesClear());
             yield return new WaitForSeconds(1f); 
         }

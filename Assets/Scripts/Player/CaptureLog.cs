@@ -24,7 +24,6 @@ public class CaptureLog : ScriptableObject
     public bool AddToLog(string name, GameClock.Seasons caughtSeason, GameClock.DayPeriods caughtPeriod)
     {
         NumberCaught++;
-
         // Check if the bird already exists in the log
         if (CaughtCreatures.TryGetValue(name, out CapturePeriod existingEntry))
         {
