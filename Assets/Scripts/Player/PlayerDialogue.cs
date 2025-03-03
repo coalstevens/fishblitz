@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class PlayerDialogueController : MonoBehaviour
+public class PlayerDialogue : MonoBehaviour
 {
-    public static PlayerDialogueController Instance;
-    private CharacterDialogueController _characterDialogueController;
+    public static PlayerDialogue Instance;
+    private DialogueController _characterDialogueController;
     
     private void Awake()
     {
         Instance = this;
-        _characterDialogueController = GetComponent<CharacterDialogueController>();
+        _characterDialogueController = GetComponent<DialogueController>();
     }
 
     public void PostMessage(string message) 

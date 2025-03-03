@@ -64,9 +64,9 @@ public class BootManager : MonoBehaviour
         if (!_skipIntro)
         {
             yield return new WaitForSeconds(1f);
-            NarratorSpeechController.Instance.PostMessage("...");
-            NarratorSpeechController.Instance.PostMessage("everything feels heavy...");
-            yield return new WaitUntil(() => NarratorSpeechController.Instance.AreMessagesClear());
+            Narrator.Instance.PostMessage("...");
+            Narrator.Instance.PostMessage("everything feels heavy...");
+            yield return new WaitUntil(() => Narrator.Instance.AreMessagesClear());
             yield return new WaitForSeconds(1f);
         }
         LoadInitialScene();

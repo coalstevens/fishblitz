@@ -47,16 +47,16 @@ public class PlayerInteractionManager : MonoBehaviour
         public bool CursorInteract(Vector3 cursorLocation);
     }
 
-    [SerializeField] private Cursor _cursorN;
-    [SerializeField] private Cursor _cursorE;
-    [SerializeField] private Cursor _cursorS;
-    [SerializeField] private Cursor _cursorW;
+    [SerializeField] private PlayerCursor _cursorN;
+    [SerializeField] private PlayerCursor _cursorE;
+    [SerializeField] private PlayerCursor _cursorS;
+    [SerializeField] private PlayerCursor _cursorW;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Logger _logger = new();
     private Grid _grid;
     private PlayerMovementController _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
-    public Cursor _activeCursor;
+    public PlayerCursor _activeCursor;
     private List<Action> _unsubscribeHooks = new();
     private static readonly List<string> INTERACTABLE_TILEMAP_LAYERS = new List<string> { "Water" };
 

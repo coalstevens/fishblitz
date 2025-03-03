@@ -17,8 +17,8 @@ public class SleepMenu : MonoBehaviour
         GameClock.Instance.PauseGame();
         GameClock.Instance.SkipToTime(GameClock.Instance.GameDay + 1, SleepQuality.GetAwakeHour(_playerData.ActualPlayerTemperature.Value), 0);
         yield return new WaitForSecondsRealtime(1f);
-        NarratorSpeechController.Instance.PostMessage(SleepQuality.GetAwakeMessage(_playerData.ActualPlayerTemperature.Value));
-        yield return new WaitUntil(() => NarratorSpeechController.Instance.AreMessagesClear());
+        Narrator.Instance.PostMessage(SleepQuality.GetAwakeMessage(_playerData.ActualPlayerTemperature.Value));
+        yield return new WaitUntil(() => Narrator.Instance.AreMessagesClear());
         yield return new WaitForSecondsRealtime(1f);
 
         float _energyFromSleep = SleepQuality.SLEEP_RECOVERY_RATIO * SleepQuality.GetSleepRecoveryRatio(_playerData.ActualPlayerTemperature.Value);

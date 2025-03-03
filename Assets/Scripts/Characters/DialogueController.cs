@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class CharacterDialogueController : MonoBehaviour
+public class DialogueController : MonoBehaviour
 {
     private TextMeshProUGUI _textBox;
     private Transform _followTransform;

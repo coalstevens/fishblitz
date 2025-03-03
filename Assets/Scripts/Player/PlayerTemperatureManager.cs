@@ -106,7 +106,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
         // Post temperature change message
         if (!_temperatureChangeMessages.TryGetValue(_playerData.ActualPlayerTemperature.Value, out var _message))
             Debug.LogError("There is no temp change message associated with the adjusted temp.");
-        NarratorSpeechController.Instance.PostMessage(_message);
+        Narrator.Instance.PostMessage(_message);
     }
 
     private void ResetCounterToMatchAmbient()

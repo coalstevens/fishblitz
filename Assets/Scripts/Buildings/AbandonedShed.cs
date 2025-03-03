@@ -100,20 +100,20 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
         RepairState _nextState = _repairStates[_shedData.RepairProgress + 1];
         if (!_playerInventory.IsPlayerHoldingItem(_hammer))
         {
-            PlayerDialogueController.Instance.PostMessage($"I could fix the {_nextState.RepairName} if I had a hammer");
+            PlayerDialogue.Instance.PostMessage($"I could fix the {_nextState.RepairName} if I had a hammer");
             return true;
         }
 
         // check for material
         if (!_playerInventory.TryRemoveItem(_nextState.ItemType, _nextState.Quantity))
         {
-            PlayerDialogueController.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemLabel} to fix the {_nextState.RepairName}");
+            PlayerDialogue.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemLabel} to fix the {_nextState.RepairName}");
             return true;
         }
 
         // fix the thing
         _shedData.RepairProgress++;
-        NarratorSpeechController.Instance.PostMessage($"The {_repairStates[_shedData.RepairProgress].RepairName} has been repaired.");
+        Narrator.Instance.PostMessage($"The {_repairStates[_shedData.RepairProgress].RepairName} has been repaired.");
         _renderer.sprite = _repairStates[_shedData.RepairProgress].Sprite;
         _shedData.NamesOfRepaired.Add(_repairStates[_shedData.RepairProgress].RepairName);
         return true;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 // Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
-public class NarratorSpeechController : MonoBehaviour
+public class Narrator : MonoBehaviour
 {
     private List<TextMeshProUGUI> _postedMessages = new();
     private Queue<string> _messageQueue = new();
@@ -20,8 +20,8 @@ public class NarratorSpeechController : MonoBehaviour
     [SerializeField] private float _postMessageDelaySeconds = 2f;
     private float _postMessageBuffer = 0f;
     private Transform _narratorMessageContainer;
-    private static NarratorSpeechController _instance;
-    public static NarratorSpeechController Instance
+    private static Narrator _instance;
+    public static Narrator Instance
     {
         get
         {
@@ -145,6 +145,6 @@ public class NarratorSpeechController : MonoBehaviour
         if (narrator)
             PostMessage(message);
         else 
-            PlayerDialogueController.Instance.PostMessage(message);
+            PlayerDialogue.Instance.PostMessage(message);
     }
 }

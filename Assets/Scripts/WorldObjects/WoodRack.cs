@@ -77,7 +77,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     private void AllLogsDry(int previousCount, int currentCount)
     {
         if (previousCount > 0 && currentCount == 0 && _numDryLogs.Value > 0)
-            NarratorSpeechController.Instance.PostMessage("All logs on the woodrack have dried out.");
+            Narrator.Instance.PostMessage("All logs on the woodrack have dried out.");
     }
 
     private void UpdateRackSprite()
@@ -114,7 +114,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     {
         if (_numWetLogs.Value + _numDryLogs.Value >= _rackLogCapacity)
         {
-            PlayerDialogueController.Instance.PostMessage("I can't fit anymore...");
+            PlayerDialogue.Instance.PostMessage("I can't fit anymore...");
             return true;
         }
         else
@@ -138,7 +138,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         // only wet logs on rack
         if (_numDryLogs.Value == 0 && _numWetLogs.Value > 0)
         {
-            PlayerDialogueController.Instance.PostMessage("These are all still wet...");
+            PlayerDialogue.Instance.PostMessage("These are all still wet...");
             return;
         }
 
@@ -149,7 +149,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         }
         else
         {
-            PlayerDialogueController.Instance.PostMessage("I'm all full up...");
+            PlayerDialogue.Instance.PostMessage("I'm all full up...");
         }
     }
 
