@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public enum FireStates {Dead, Ready, Hot, Embers};
 public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
+    private enum FireStates { Dead, Ready, Hot, Embers };
     private const string IDENTIFIER = "WoodStove";
-    private class WoodStoveSaveData {
+    private class WoodStoveSaveData
+    {
         public FireStates State;
         public int FireDurationCounterGameMinutes;
     }
     private Animator _animator;
-    private GameClock _gameClock;
     private LocalHeatSource _localHeatSource;
     private Reactive<FireStates> _stoveState = new Reactive<FireStates>(FireStates.Dead);
     private PulseLight _fireLight;
@@ -21,6 +21,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     [SerializeField] private Inventory.ItemType _firewood;
     [SerializeField] private Inventory.ItemType _dryWood;
     [SerializeField] private Inventory.ItemType _wetWood;
+
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
     [SerializeField] float _embersMaxIntensity = 1.0f;
@@ -31,27 +32,30 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     [SerializeField] float _fireMaxIntensity = 2f;
     [SerializeField] private int _hotFireDurationGameMinutes = 60;
     private List<Action> _unsubscribeHooks = new();
-    
+
     private void OnEnable()
     {
         _animator = GetComponent<Animator>();
         _localHeatSource = GetComponent<LocalHeatSource>();
         _fireLight = transform.GetComponentInChildren<PulseLight>();
-        
-        _unsubscribeHooks.Add(_stoveState.OnChange((curr,prev) => OnStateChange()));
+
+        _unsubscribeHooks.Add(_stoveState.OnChange((curr, prev) => OnStateChange()));
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
-
-        EnterDead();
+        OnStateChange();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
-        foreach (var _hook in _unsubscribeHooks) 
+        foreach (var _hook in _unsubscribeHooks)
             _hook();
+        _unsubscribeHooks.Clear();
     }
 
-    public void OnGameMinuteTick() { 
-        switch (_stoveState.Value) {
+    public void OnGameMinuteTick()
+    {
+        switch (_stoveState.Value)
+        {
             case FireStates.Hot:
                 _fireDurationCounterGameMinutes++;
                 if (_fireDurationCounterGameMinutes >= _hotFireDurationGameMinutes)
@@ -62,11 +66,14 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 if (_fireDurationCounterGameMinutes >= (_hotFireDurationGameMinutes + _embersDurationGameMinutes))
                     _stoveState.Value = FireStates.Dead;
                 break;
-        } 
+        }
     }
 
-    void OnStateChange() {
-        switch (_stoveState.Value) {
+    void OnStateChange()
+    {
+        Debug.Log("WoodStove state change: " + _stoveState.Value);
+        switch (_stoveState.Value)
+        {
             case FireStates.Dead:
                 EnterDead();
                 break;
@@ -79,10 +86,11 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
             case FireStates.Embers:
                 EnterEmbers();
                 break;
-        } 
+        }
     }
 
-    private void EnterHot() {
+    private void EnterHot()
+    {
         _fireDurationCounterGameMinutes = 0;
         _animator.speed = 1f;
         _animator.Play("HotFire");
@@ -92,8 +100,9 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         _fireLight.SetIntensity(_fireMinIntensity, _fireMaxIntensity);
     }
 
-    private void EnterEmbers() {
-        _animator.speed = 0.05f;
+    private void EnterEmbers()
+    {
+        _animator.speed = 0.0f;
         _animator.Play("Embers");
         _localHeatSource.enabled = true;
         _localHeatSource.Temperature = Temperature.Warm;
@@ -101,34 +110,42 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         _fireLight.SetIntensity(_embersMinIntensity, _embersMaxIntensity);
     }
 
-    private void EnterDead() {
+    private void EnterDead()
+    {
         _animator.speed = 1f;
+        _animator.Play(""); // this little reset fixes some jank when the fire dies in a different scene
         _animator.Play("Dead");
         _localHeatSource.enabled = false;
         _fireLight.gameObject.SetActive(false);
     }
 
-    private void EnterReady() {
+    private void EnterReady()
+    {
         _animator.speed = 1f;
         _animator.Play("Ready");
         _localHeatSource.enabled = false;
         _fireLight.gameObject.SetActive(false);
     }
 
-    public bool CursorInteract(Vector3 cursorLocation) {
-        switch (_stoveState.Value) {
+    public bool CursorInteract(Vector3 cursorLocation)
+    {
+        switch (_stoveState.Value)
+        {
             case FireStates.Dead:
                 // Add wood to ashes
-                if (_inventory.IsPlayerHoldingItem(_firewood)) {
+                if (_inventory.IsPlayerHoldingItem(_firewood))
+                {
                     StokeFlame();
                     _stoveState.Value = FireStates.Ready;
                     return true;
                 }
-                if (_inventory.IsPlayerHoldingItem(_dryWood)) {
+                if (_inventory.IsPlayerHoldingItem(_dryWood))
+                {
                     PlayerDialogue.Instance.PostMessage("i need to chop this first");
                     return true;
                 }
-                if (_inventory.IsPlayerHoldingItem(_wetWood)) {
+                if (_inventory.IsPlayerHoldingItem(_wetWood))
+                {
                     PlayerDialogue.Instance.PostMessage("i need to dry this first");
                     return true;
                 }
@@ -140,35 +157,39 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return true;
             case FireStates.Hot:
                 // state internal transition, stoke fire
-                if (_inventory.IsPlayerHoldingItem(_firewood)) {
+                if (_inventory.IsPlayerHoldingItem(_firewood))
+                {
                     StokeFlame();
                     Narrator.Instance.PostMessage("you stoke the flames.");
                     return true;
                 }
-                return false;   
+                return false;
             case FireStates.Embers:
                 // Stoke fire
-                if (_inventory.IsPlayerHoldingItem(_firewood)) {
+                if (_inventory.IsPlayerHoldingItem(_firewood))
+                {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
                     Narrator.Instance.PostMessage("you stoke the flames.");
                     return true;
-                }   
+                }
                 return false;
             default:
                 Debug.LogError("WoodStove guard handler defaulted.");
                 return false;
-        } 
+        }
     }
 
-    private void StokeFlame() {
+    private void StokeFlame()
+    {
         _inventory.TryRemoveItem(_firewood, 1);
         _fireDurationCounterGameMinutes = 0;
     }
 
     public SaveData Save()
     {
-        var _extendedData = new WoodStoveSaveData {
+        var _extendedData = new WoodStoveSaveData
+        {
             State = _stoveState.Value,
             FireDurationCounterGameMinutes = _fireDurationCounterGameMinutes
         };
