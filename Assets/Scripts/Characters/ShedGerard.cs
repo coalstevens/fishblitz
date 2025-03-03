@@ -22,7 +22,7 @@ public class ShedGerard : MonoBehaviour, PlayerInteractionManager.IInteractable
 
     [SerializeField] private Gerard _gerard;
     [SerializeField] private bool _isInside = true;
-    private CharacterDialogueController _dialogueController;
+    private DialogueController _dialogueController;
     private int _insideMessageIndex = 0;
     private int _outsideMessageIndex = 0;
     private Vector2 _isOutsideGameHours = new Vector2(9, 19);
@@ -57,7 +57,7 @@ public class ShedGerard : MonoBehaviour, PlayerInteractionManager.IInteractable
             gameObject.SetActive(true);
         }
 
-        _dialogueController = GetComponentInChildren<CharacterDialogueController>();
+        _dialogueController = GetComponentInChildren<DialogueController>();
     }
 
     public bool CursorInteract(Vector3 cursorLocation)

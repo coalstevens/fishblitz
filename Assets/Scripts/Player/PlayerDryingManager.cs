@@ -160,8 +160,8 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
             _ => ""
         };
 
-        if (!string.IsNullOrEmpty(message) && NarratorSpeechController.Instance != null)
-            NarratorSpeechController.Instance.PostMessage(message);
+        if (!string.IsNullOrEmpty(message) && Narrator.Instance != null)
+            Narrator.Instance.PostMessage(message);
     }
 
     private int GetDryingPoints(Temperature currentTemperature)

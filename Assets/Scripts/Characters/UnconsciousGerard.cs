@@ -1,12 +1,6 @@
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
 using UnityEngine;
-using UnityEngine.U2D.IK;
 
-public interface IGiftAble
-{
-    public bool TryGiveGift(Inventory.ItemType gift);
-}
 public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IInteractable, IGiftAble
 {
     private List<string> _initialMessages = new()
@@ -39,7 +33,7 @@ public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IIntera
     [SerializeField] private List<ScriptableObject> _acceptableFood = new();
     [SerializeField] private Gerard _gerard;
     [SerializeField] private bool _atShed = false;
-    private CharacterDialogueController _dialogueController;
+    private DialogueController _dialogueController;
     private int _fedIndexMessage = 0;
     private bool _isAsleep = false;
 
@@ -68,7 +62,7 @@ public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IIntera
             }
             gameObject.SetActive(true);
         }
-        _dialogueController = GetComponentInChildren<CharacterDialogueController>();
+        _dialogueController = GetComponentInChildren<DialogueController>();
     }
 
     public bool TryGiveGift(Inventory.ItemType gift)
@@ -105,7 +99,7 @@ public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IIntera
     {
         if (_isAsleep)
         {
-            NarratorSpeechController.Instance.PostMessage(_sleepMessages[0]);
+            Narrator.Instance.PostMessage(_sleepMessages[0]);
             return;
         }
 

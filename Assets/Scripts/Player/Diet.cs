@@ -17,12 +17,12 @@ static class Diet
     
     private static void PrintFoodMessage(IFood food) 
     {
-        if (NarratorSpeechController.Instance == null) return;
+        if (Narrator.Instance == null) return;
 
         string _protein = food.Protein == 0 ? "" : $"+{food.Protein}P ";
         string _carbs = food.Carbs == 0 ? "" : $"+{food.Carbs}C";
         string _nutrients = food.Nutrients == 0 ? "" : $"+{food.Nutrients}N";
-        NarratorSpeechController.Instance.PostMessage(_nutrients + _carbs + _protein);
+        Narrator.Instance.PostMessage(_nutrients + _carbs + _protein);
     }
 
     public static void ResetDailyIntake(PlayerData playerData)

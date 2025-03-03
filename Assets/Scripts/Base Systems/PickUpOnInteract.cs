@@ -19,7 +19,7 @@ public class PickUpOnInteract : MonoBehaviour, PlayerInteractionManager.IInterac
         }
         else
         {
-            PlayerDialogueController.Instance.PostMessage("I don't have space for this");
+            PlayerDialogue.Instance.PostMessage("I don't have space for this");
         }
         return true;
     }

@@ -137,7 +137,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 return false;
             case FireStates.Ready:
                 // Start fire
-                NarratorSpeechController.Instance.PostMessage("The room gets warm...");
+                Narrator.Instance.PostMessage("The room gets warm...");
                 _stoveState.Value = FireStates.Hot;
                 return true;
             case FireStates.Hot:
@@ -145,7 +145,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 if (_inventory.IsPlayerHoldingItem(_firewood))
                 {
                     StokeFlame();
-                    NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
+                    Narrator.Instance.PostMessage("You stoke the fire...");
                     return true;
                 }
                 return false;
@@ -155,7 +155,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
-                    NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
+                    Narrator.Instance.PostMessage("You stoke the fire...");
                     return true;
                 }
                 return false;

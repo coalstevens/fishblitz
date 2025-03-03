@@ -55,7 +55,7 @@ public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, Sc
         }
         else
         {
-            PlayerDialogueController.Instance.PostMessage("I'm all full up");
+            PlayerDialogue.Instance.PostMessage("I'm all full up");
         }
     }
 

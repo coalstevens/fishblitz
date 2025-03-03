@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// There are 4 cursor gameObjects, one for each cardinal direction.
 /// Only the cursor matching the player facing direction should be active.
 /// </summary>
-public class Cursor : MonoBehaviour
+public class PlayerCursor : MonoBehaviour
 {
     [SerializeField] public Transform _renderedTransform;
     [SerializeField] private FacingDirection _cursorActiveDirection;

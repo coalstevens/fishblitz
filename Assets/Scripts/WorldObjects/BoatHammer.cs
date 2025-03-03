@@ -10,13 +10,13 @@ public class BoatHammer : MonoBehaviour, PlayerInteractionManager.IInteractable
     {
         if (_playerInventory.TryAddItem(_hammer, 1))
         {
-            PlayerDialogueController.Instance.PostMessage("Looks a little rusty");
+            PlayerDialogue.Instance.PostMessage("Looks a little rusty");
             _beachedBoat.RemoveHammer();
             GameObject.Destroy(this);
         }
         else
         {
-            PlayerDialogueController.Instance.PostMessage("I'm carrying too much already");
+            PlayerDialogue.Instance.PostMessage("I'm carrying too much already");
         }
         return true;
     }
