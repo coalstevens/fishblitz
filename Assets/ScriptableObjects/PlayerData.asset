@@ -12,25 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e388998d6e64c46d89be8f85de5db11e, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  SceneSpawnPosition: {x: 55.9, y: -18.5, z: 0}
+  SceneSpawnPosition: {x: 68, y: -20, z: 0}
   SceneOnAwake: Abandoned Shed
   BirdingLog: {fileID: 11400000, guid: 86882a3afa8cf4c44ab57b780ed10cf1, type: 2}
   FishingLog: {fileID: 11400000, guid: b66954a92efca48f5b470994ca96ed9a, type: 2}
   _startingEnergy: 100
   CurrentEnergy:
-    _val: 74
+    _val: 73
   MaxEnergy: 100
   TodaysProtein: 0
   TodaysCarbs: 0
   TodaysNutrients: 0
   PlayerIsWet:
-    _val: 0
-  ActualPlayerTemperature:
-    _val: 3
-  DryPlayerTemperature:
-    _val: 3
-  WetnessState:
     _val: 1
+  ActualPlayerTemperature:
+    _val: 1
+  DryPlayerTemperature:
+    _val: 2
+  WetnessState:
+    _val: 0
   DryingPointsCounter: 0
   WettingGameMinCounter: 0
   CounterToMatchAmbientGamemins: 0

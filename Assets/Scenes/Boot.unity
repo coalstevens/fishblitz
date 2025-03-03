@@ -1881,12 +1881,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skipIntro: 0
-  _toScene: Outside
-  _spawnPosition: 2
-  _useCustomSpawn: 0
-  _customSpawnLocation: {x: 0, y: 0, z: 0}
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _rainManager: {fileID: 11400000, guid: bebb3cc9b17a94c3ab00bc48719e471d, type: 2}
+  _toScene: Outside
+  _spawnPosition: 0
+  _useCustomSpawn: 0
+  _customSpawnLocation: {x: 0, y: 0, z: 0}
+  _initialWetnessState: 3
+  _initialTemperature: 2
+  _initialEnergy: 100
 --- !u!4 &1138146526
 Transform:
   m_ObjectHideFlags: 0
