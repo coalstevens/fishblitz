@@ -19,6 +19,8 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     public int _fireDurationCounterGameMinutes;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Inventory.ItemType _firewood;
+    [SerializeField] private Inventory.ItemType _dryWood;
+    [SerializeField] private Inventory.ItemType _wetWood;
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
     [SerializeField] float _embersMaxIntensity = 1.0f;
@@ -122,17 +124,25 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                     _stoveState.Value = FireStates.Ready;
                     return true;
                 }
+                if (_inventory.IsPlayerHoldingItem(_dryWood)) {
+                    PlayerDialogueController.Instance.PostMessage("i need to chop this first");
+                    return true;
+                }
+                if (_inventory.IsPlayerHoldingItem(_wetWood)) {
+                    PlayerDialogueController.Instance.PostMessage("i need to dry this first");
+                    return true;
+                }
                 return false;
             case FireStates.Ready:
                 // Start fire
-                NarratorSpeechController.Instance.PostMessage("The room gets warm...");
+                NarratorSpeechController.Instance.PostMessage("the room grows warm.");
                 _stoveState.Value = FireStates.Hot;
                 return true;
             case FireStates.Hot:
                 // state internal transition, stoke fire
                 if (_inventory.IsPlayerHoldingItem(_firewood)) {
                     StokeFlame();
-                    NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
+                    NarratorSpeechController.Instance.PostMessage("you stoke the flames.");
                     return true;
                 }
                 return false;   
@@ -141,7 +151,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 if (_inventory.IsPlayerHoldingItem(_firewood)) {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
-                    NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
+                    NarratorSpeechController.Instance.PostMessage("you stoke the flames.");
                     return true;
                 }   
                 return false;

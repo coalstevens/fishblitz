@@ -9,13 +9,13 @@ public class PulseLight : MonoBehaviour
     private bool _brighten = true;
     [SerializeField] float _minIntensity = 1f;
     [SerializeField] float _maxIntensity = 1.5f;
-    [SerializeField] float _intensityChangePerFrame = 0.001f;
+    [SerializeField] float _intensityChangePerFrame = 0.000005f;
+
     void Awake()
     {
         _light = GetComponent<Light2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_brighten) { 

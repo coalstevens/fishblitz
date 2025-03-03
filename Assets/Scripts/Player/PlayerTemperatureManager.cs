@@ -17,9 +17,9 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
     {
         [Temperature.Freezing] = "the cold is relentless.",
         [Temperature.Cold] = "chill seeps in.",
-        [Temperature.Neutral] = "the temperature is unremarkable.",
-        [Temperature.Warm] = "a comfortable warmth.",
-        [Temperature.Hot] = "it is sweltering."
+        [Temperature.Neutral] = "you feel neither warmth nor cold.",
+        [Temperature.Warm] = "you reach a comfortable warmth.",
+        [Temperature.Hot] = "the heat presses down."
     };
 
     private bool _skipNarratorMessage;
