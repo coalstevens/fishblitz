@@ -45,7 +45,7 @@ public class Magnetosphere : MonoBehaviour
             return false;
 
         // Try to add item to inventory. This should never fail as HasEnoughInventorySpace was already checked
-        if (!_inventory.TryAddItem(looseItem.Item.ItemType.ItemLabel, looseItem.Item.Quantity))
+        if (!_inventory.TryAddItem(looseItem.Item.ItemType, looseItem.Item.Quantity))
             return false;
         
         return true;

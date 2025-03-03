@@ -145,7 +145,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
         }
 
         StopCoroutine(_changeStateRoutine);
-        _inventory.TryAddItem("MountedRod", 1);
+        //_inventory.TryAddItem("MountedRod", 1);
         _fishBar.Play();
         Destroy(gameObject);
         return true;

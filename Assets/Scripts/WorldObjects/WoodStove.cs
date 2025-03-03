@@ -18,6 +18,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private Inventory.ItemType _firewood;
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
     [SerializeField] float _embersMaxIntensity = 1.0f;
@@ -116,7 +117,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         switch (_stoveState.Value) {
             case FireStates.Dead:
                 // Add wood to ashes
-                if (_inventory.IsPlayerHoldingItem("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem(_firewood)) {
                     StokeFlame();
                     _stoveState.Value = FireStates.Ready;
                     return true;
@@ -129,7 +130,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return true;
             case FireStates.Hot:
                 // state internal transition, stoke fire
-                if (_inventory.IsPlayerHoldingItem("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem(_firewood)) {
                     StokeFlame();
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
                     return true;
@@ -137,7 +138,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return false;   
             case FireStates.Embers:
                 // Stoke fire
-                if (_inventory.IsPlayerHoldingItem("Firewood")) {
+                if (_inventory.IsPlayerHoldingItem(_firewood)) {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
@@ -151,7 +152,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     }
 
     private void StokeFlame() {
-        _inventory.TryRemoveItem("Firewood", 1);
+        _inventory.TryRemoveItem(_firewood, 1);
         _fireDurationCounterGameMinutes = 0;
     }
 

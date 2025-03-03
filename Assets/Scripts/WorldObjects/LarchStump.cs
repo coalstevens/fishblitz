@@ -21,6 +21,8 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
     [SerializeField] private Collider2D _birdPerchTarget;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Inventory.ItemType _firewood;
+    [SerializeField] private Inventory.ItemType _dryLog;
+    [SerializeField] private Inventory.ItemType _axe;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
     private List<Action> _unsubscribeHooks = new();
@@ -88,7 +90,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
 
     public void LoadLog()
     {
-        if (_inventory.TryRemoveItem("DryLog", 1))
+        if (_inventory.TryRemoveItem(_dryLog, 1))
             _state.Value = StumpStates.LogOn;
     }
 
@@ -115,7 +117,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
         switch (_state.Value)
         {
             case StumpStates.AxeIn:
-                if (_inventory.TryAddItem("Axe", 1))
+                if (_inventory.TryAddItem(_axe, 1))
                 {
                     _state.Value = StumpStates.Idle;
                     return true;
@@ -123,7 +125,7 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
                 else
                     return false;
             case StumpStates.LogOn:
-                if (_inventory.TryAddItem("DryLog", 1))
+                if (_inventory.TryAddItem(_dryLog, 1))
                 {
                     _state.Value = StumpStates.Idle;
                     return true;

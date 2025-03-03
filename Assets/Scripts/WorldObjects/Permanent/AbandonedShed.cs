@@ -24,6 +24,7 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
     [SerializeField] List<RepairState> _repairStates = new();
     [SerializeField] private int _vineChopsToDestroy = 5;
     [SerializeField] private Inventory.ItemType _vineDestroySpawnItem;
+    [SerializeField] private Inventory.ItemType _hammer;
     [SerializeField] private int _spawnItemQuantity = 3;
 
     [Header("Vine Chop Shake Properties")]
@@ -97,14 +98,14 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, P
 
         // check for hammer
         RepairState _nextState = _repairStates[_shedData.RepairProgress + 1];
-        if (!_playerInventory.IsPlayerHoldingItem("Hammer"))
+        if (!_playerInventory.IsPlayerHoldingItem(_hammer))
         {
             PlayerDialogueController.Instance.PostMessage($"I could fix the {_nextState.RepairName} if I had a hammer");
             return true;
         }
 
         // check for material
-        if (!_playerInventory.TryRemoveItem(_nextState.ItemType.ItemLabel, _nextState.Quantity))
+        if (!_playerInventory.TryRemoveItem(_nextState.ItemType, _nextState.Quantity))
         {
             PlayerDialogueController.Instance.PostMessage($"I need {_nextState.Quantity} {_nextState.ItemType.ItemLabel} to fix the {_nextState.RepairName}");
             return true;
