@@ -15,11 +15,11 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
     private const int DURATION_TO_MATCH_AMBIENT_GAMEMINS = 30;
     private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string>
     {
-        [Temperature.Freezing] = "you are freezing.",
-        [Temperature.Cold] = "you are cold.",
-        [Temperature.Neutral] = "you are comfortable.",
-        [Temperature.Warm] = "you are warm.",
-        [Temperature.Hot] = "you are hot."
+        [Temperature.Freezing] = "the cold is relentless.",
+        [Temperature.Cold] = "chill seeps in.",
+        [Temperature.Neutral] = "the temperature is unremarkable.",
+        [Temperature.Warm] = "a comfortable warmth.",
+        [Temperature.Hot] = "it is sweltering."
     };
 
     private bool _skipNarratorMessage;
