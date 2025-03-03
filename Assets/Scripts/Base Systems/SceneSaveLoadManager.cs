@@ -91,7 +91,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private void ProcessElaspedTimeForChildren(int pastTime, Transform parent) {  
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
-        // Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
+        Debug.Log("Processing " + _elapsedGameMinutes + " game minutes.");
         List<GameClock.ITickable> _tickables = new();
 
         // get tickables

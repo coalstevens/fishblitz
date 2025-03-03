@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
+    private enum FireStates {Dead, Ready, Hot, Embers};
     private const string IDENTIFIER = "Campfire";
     private class CampfireSaveData
     {
@@ -19,6 +20,8 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     public int _fireDurationCounterGameMinutes;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Inventory.ItemType _firewood;
+    [SerializeField] private Inventory.ItemType _dryWood;
+    [SerializeField] private Inventory.ItemType _wetWood;
 
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
@@ -109,6 +112,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     private void EnterDead()
     {
         _animator.speed = 1f;
+        _animator.Play(""); // this little reset fixes some jank when the fire dies in a different scene
         _animator.Play("Dead");
         _localHeatSource.enabled = false;
         _fireLight.gameObject.SetActive(false);
@@ -134,10 +138,20 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                     _stoveState.Value = FireStates.Ready;
                     return true;
                 }
+                if (_inventory.IsPlayerHoldingItem(_dryWood))
+                {
+                    PlayerDialogue.Instance.PostMessage("i need to chop this first");
+                    return true;
+                }
+                if (_inventory.IsPlayerHoldingItem(_wetWood))
+                {
+                    PlayerDialogue.Instance.PostMessage("i need to dry this first");
+                    return true;
+                }
                 return false;
             case FireStates.Ready:
                 // Start fire
-                Narrator.Instance.PostMessage("The room gets warm...");
+                Narrator.Instance.PostMessage("the room grows warm.");
                 _stoveState.Value = FireStates.Hot;
                 return true;
             case FireStates.Hot:
@@ -145,7 +159,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 if (_inventory.IsPlayerHoldingItem(_firewood))
                 {
                     StokeFlame();
-                    Narrator.Instance.PostMessage("You stoke the fire...");
+                    Narrator.Instance.PostMessage("you stoke the flames.");
                     return true;
                 }
                 return false;
@@ -155,7 +169,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
-                    Narrator.Instance.PostMessage("You stoke the fire...");
+                    Narrator.Instance.PostMessage("you stoke the flames.");
                     return true;
                 }
                 return false;
