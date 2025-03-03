@@ -14,13 +14,19 @@ public class BootManager : MonoBehaviour
         Waterfall
     }
     [SerializeField] private bool _skipIntro = true;
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Rain _rainManager;
+
+    [Header("Initial Scene Transition")]
     [SerializeField] private string _toScene;
     [SerializeField] private SpawnPositions _spawnPosition;
     [SerializeField] private bool _useCustomSpawn;
     [SerializeField] private Vector3 _customSpawnLocation;
-    [SerializeField] private PlayerData _playerData;
-    [SerializeField] private Rain _rainManager;
 
+    [Header("Initial Player State")]
+    [SerializeField] private PlayerData.WetnessStates _initialWetnessState;
+    [SerializeField] private Temperature _initialTemperature;
+    [SerializeField] private int _initialEnergy;
     private Dictionary<SpawnPositions, Vector3> _spawnPositions = new Dictionary<SpawnPositions, Vector3> {
         { SpawnPositions.GameSpawn, new Vector3(-1.5f, -7f) },
         { SpawnPositions.AbandonedShed, new Vector3(37f, 37f) },
@@ -30,6 +36,7 @@ public class BootManager : MonoBehaviour
     private void Awake()
     {
         GameStateManager.Initialize();
+        SetInitialPlayerState();
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());
     }
@@ -38,6 +45,18 @@ public class BootManager : MonoBehaviour
     {
         WorldStateByCalendar.UpdateWorldState();
         _rainManager.OnStateChange(WorldStateByCalendar.RainState.Value);
+    }
+
+    private void SetInitialPlayerState() 
+    {
+        _playerData.WettingGameMinCounter = 0;
+        _playerData.DryingPointsCounter = 0;
+        _playerData.CounterToMatchAmbientGamemins = 0;
+        _playerData.WetnessState.Value = _initialWetnessState;
+        _playerData.PlayerIsWet.Value = _initialWetnessState == PlayerData.WetnessStates.Wet || _initialWetnessState == PlayerData.WetnessStates.Drying;
+        _playerData.ActualPlayerTemperature.Value = _initialTemperature;
+        _playerData.DryPlayerTemperature.Value = _playerData.PlayerIsWet.Value ? _initialTemperature - 1 : _initialTemperature;
+        _playerData.CurrentEnergy.Value = _initialEnergy;
     }
 
     private IEnumerator OpeningDialogue()

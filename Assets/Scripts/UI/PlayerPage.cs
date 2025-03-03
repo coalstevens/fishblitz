@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,9 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     [SerializeField] private Image _carbsBar;
     [SerializeField] private Image _nutrientsBar;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private TextMeshProUGUI _healthText;
+    [SerializeField] private TextMeshProUGUI _wetnessText;
+    [SerializeField] private TextMeshProUGUI _temperatureText;
     [SerializeField] private float _maxBarWidth; // max width is currently the starting width of the sprite 
 
     public void DisableCursor()
@@ -23,11 +27,26 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     {
         gameObject.SetActive(true);
         UpdateDietBars();
+        UpdatePlayerStatus();
+    }
+
+    private void UpdatePlayerStatus()
+    {
+        _healthText.text = "Healthy";
+        _wetnessText.text = _playerData.WetnessState.Value switch
+        {
+            PlayerData.WetnessStates.Wet => "Wet",
+            PlayerData.WetnessStates.Dry => "Dry",
+            PlayerData.WetnessStates.Drying => "Drying",
+            PlayerData.WetnessStates.Wetting => "Wetting",
+            _ => "Unknown"
+        };
+        _temperatureText.text = _playerData.ActualPlayerTemperature.Value.ToString();
     }
 
     private void UpdateDietBars()
     {
-        float proteinWidth = Mathf.Lerp(0, _maxBarWidth, (float)_playerData.TodaysProtein/ PlayerData.PROTEIN_REQUIRED_DAILY);
+        float proteinWidth = Mathf.Lerp(0, _maxBarWidth, (float)_playerData.TodaysProtein / PlayerData.PROTEIN_REQUIRED_DAILY);
         var proteinSizeDelta = _proteinBar.rectTransform.sizeDelta;
         proteinSizeDelta.x = proteinWidth;
         _proteinBar.rectTransform.sizeDelta = proteinSizeDelta;
@@ -47,7 +66,7 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     {
         gameObject.SetActive(false);
     }
-    
+
     public bool MoveCursor(Vector2 inputDirection)
     {
         return false;

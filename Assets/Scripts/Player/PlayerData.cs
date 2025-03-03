@@ -14,7 +14,6 @@ public class PlayerData : ScriptableObject
     [SerializeField] public CaptureLog FishingLog;
 
     [Header("Energy")]
-    [SerializeField] private int _startingEnergy = 100;
     public Reactive<int> CurrentEnergy = new Reactive<int>(0);
     public int MaxEnergy = 100;
 
@@ -35,11 +34,5 @@ public class PlayerData : ScriptableObject
     public int WettingGameMinCounter = 0;
     public int CounterToMatchAmbientGamemins = 0;
     public bool IsPlayerSleeping = false;
-
-    private void Start() 
-    {
-        Debug.Log("PlayerData Start");
-        CurrentEnergy.Value = _startingEnergy;
-    }
 }
 
