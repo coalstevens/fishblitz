@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ColePersistence;
-using System;
+using System.Collections.Generic;
 
 // Note about instantiating objects here:
 // World objects instantiated by this Manager should use Awake() instead of Start()
@@ -25,7 +25,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         public int SceneExitGameTime;
     }
 
-    private void Start() {
+    private void Awake() {
         _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
         LoadScene();
     }
@@ -45,7 +45,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
             _logger.Info($"{_sceneName} initial scene visit.");
-            FirstVisitToScene?.Invoke(_sceneName); 
+            StartCoroutine(InvokeFirstVisitToSceneAfterFrame(_sceneName));
             return;
         }
 
@@ -57,6 +57,13 @@ public class SceneSaveLoadManager : MonoBehaviour {
         InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, _impermanentContainer);
         ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
         _logger.Info($"{_sceneName} loaded from save.");
+    }
+
+    // hack so that the additive scenes (narrator, hud, etc) have time to load in
+    private System.Collections.IEnumerator InvokeFirstVisitToSceneAfterFrame(string sceneName)
+    {
+        yield return null; // wait for the next frame
+        FirstVisitToScene?.Invoke(sceneName);
     }
 
     // dang

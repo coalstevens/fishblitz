@@ -28,11 +28,11 @@ public static class SleepQuality
 
     private static Dictionary<Temperature, string> _awakeMessages = new Dictionary<Temperature, string>
     {
-        [Temperature.Freezing] = "the night was freezing. you slept poorly.",
-        [Temperature.Cold] = "the night was cold, you slept okay.",
-        [Temperature.Neutral] = "the night was comfortable. you slept well.",
-        [Temperature.Warm] = "the night was warm. you slept great.",
-        [Temperature.Hot] = "the night was hot. you slept okay."
+        [Temperature.Freezing] = "the night was freezing. you barely slept.",
+        [Temperature.Cold] = "the night was cold, you slept lightly.",
+        [Temperature.Neutral] = "the night was comfortable. you slept soundly.",
+        [Temperature.Warm] = "the night was warm. you slept deeply.",
+        [Temperature.Hot] = "the night was stifling. you tossed and turned."
     };
 
     public static int GetAwakeHour(Temperature playerTemperature)

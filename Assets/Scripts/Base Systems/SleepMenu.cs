@@ -23,7 +23,7 @@ public class SleepMenu : MonoBehaviour
 
         float _energyFromSleep = SleepQuality.SLEEP_RECOVERY_RATIO * SleepQuality.GetSleepRecoveryRatio(_playerData.ActualPlayerTemperature.Value);
         float _energyFromDiet = SleepQuality.DIET_RECOVERY_RATIO * Diet.GetRecoveryRatio(_playerData);
-        _playerData.CurrentEnergy.Value = Mathf.RoundToInt(_energyFromDiet + _energyFromSleep);
+        _playerData.CurrentEnergy.Value = Mathf.RoundToInt(_playerData.MaxEnergy * (_energyFromDiet + _energyFromSleep));
 
         PlayerSlept.Invoke();
         GameClock.Instance.ResumeGame();

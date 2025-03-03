@@ -1,7 +1,10 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 // Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
@@ -33,7 +36,7 @@ public class NarratorSpeechController : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         _instance = this;
         _narratorMessageContainer = GameObject.FindGameObjectWithTag("NarratorMessageContainer").transform;
@@ -128,10 +131,22 @@ public class NarratorSpeechController : MonoBehaviour
         switch (sceneName)
         {
             case "Outside":
-                NarratorSpeechController.Instance.PostMessage("press 'v' to interact. press space to use a tool.");
+                StartCoroutine(PostMessageAfterDelay("damn this rain", 20f, false));
+                break;
+            case "Abandoned Shed":
+                StartCoroutine(PostMessageAfterDelay("guess i'm sleeping in this wreck", 2f, false));
                 break;
             default:
                 break;
         }
+    }
+
+    private IEnumerator PostMessageAfterDelay(string message, float delay, bool narrator)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        if (narrator)
+            PostMessage(message);
+        else 
+            PlayerDialogueController.Instance.PostMessage(message);
     }
 }

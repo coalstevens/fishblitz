@@ -4,6 +4,7 @@ using ReactiveUnity;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Collections;
 public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 {
     [SerializeField] private PlayerData _playerData;
@@ -67,6 +68,12 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        StartCoroutine(WaitAndSetWetnessState()); // wait for narrator to load in
+    }
+
+    private IEnumerator WaitAndSetWetnessState()
+    {
+        yield return null;
         SetWetnessState();
     }
 
