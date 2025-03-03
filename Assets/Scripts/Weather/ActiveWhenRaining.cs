@@ -41,7 +41,6 @@ public class ActiveWhenRaining : MonoBehaviour
             renderer.enabled = true; 
         else if (component is ParticleSystem particleSystem) {
             // manually prewarming due to warping player transform on spawn
-            Debug.Log("particlesystemenbaled");
             particleSystem.Simulate(particleSystem.main.startLifetime.constantMax, false);
             particleSystem.Play();
         }

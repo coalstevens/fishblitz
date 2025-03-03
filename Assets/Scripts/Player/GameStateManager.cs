@@ -44,6 +44,7 @@ public static class GameStateManager
             "SleepMenu" => _narratorOnBlack,
             "Outside" => _playingState,
             "Abandoned Shed" => _playingState,
+            "Waterfall Cave" => _playingState,
             _ => throw new System.IndexOutOfRangeException("Scene not recognized")
         };
     }

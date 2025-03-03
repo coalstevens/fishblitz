@@ -224,7 +224,7 @@ public class FishingGame : MonoBehaviour
     /// <summary>
     /// Determines result of keypress. Success, Hit, or Failed
     /// </summary>
-    private void OnUseTool()
+    private void OnUseItem()
     {
         if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Fishing &&
             PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Catching)

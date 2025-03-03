@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
 {
-    // SaveData
     private class WoodRackSaveData
     {
         public int NumWetLogs;
@@ -15,25 +14,25 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         public List<float> LogTimers;
     }
 
-    // References
+    [SerializeField] private Inventory _inventory;
+    [SerializeField] private Sprite[] _rackSprites;
+    [SerializeField] private Inventory.ItemType _dryLog;
+    [SerializeField] private Inventory.ItemType _wetLog;
+
     private SpriteRenderer _spriteRenderer;
     private HeatSensitive _heatSensitive;
 
-    // Reactive
     private Reactive<int> _numWetLogs = new Reactive<int>(0);
     private Reactive<int> _numDryLogs = new Reactive<int>(0);
     private List<Action> _unsubscribeCBs = new();
 
-    // Basic Fields
     private const string IDENTIFIER = "WoodRack";
     private const int _rackLogCapacity = 18;
     private const float _timeToDryGameMins = 120f;
     private List<float> _logDryingTimers = new List<float>();
     private float _temperatureMultiplier = 1.5f;
 
-    // Inspector    
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private Sprite[] _rackSprites;
+
 
     public Collider2D ObjCollider
     {
@@ -106,7 +105,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
 
     public void AddWetLog()
     {
-        _inventory.TryRemoveItem("WetLog", 1);
+        _inventory.TryRemoveItem(_wetLog, 1);
         _numWetLogs.Value++;
         _logDryingTimers.Add(0);
     }
@@ -126,7 +125,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
 
     public void AddDryLog()
     {
-        _inventory.TryRemoveItem("DryLog", 1);
+        _inventory.TryRemoveItem(_dryLog, 1);
         _numDryLogs.Value++;
     }
 
@@ -144,7 +143,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         }
 
         // Add a dry log to inventory
-        if (_inventory.TryAddItem("DryLog", 1))
+        if (_inventory.TryAddItem(_dryLog, 1))
         {
             _numDryLogs.Value--;
         }

@@ -11,7 +11,7 @@ public class PickUpOnInteract : MonoBehaviour, PlayerInteractionManager.IInterac
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        if (_playerInventory.TryAddItem(_item.name, _itemQuantity))
+        if (_playerInventory.TryAddItem(_item, _itemQuantity))
         {
             if (_pickUpSFX != null)
                 AudioManager.Instance.PlaySFX(_pickUpSFX, _SFXVolume);

@@ -112,7 +112,7 @@ public class BirdingGame : MonoBehaviour
         _motionInput = value.Get<Vector2>();
     }
 
-    private void OnUseTool()
+    private void OnUseItem()
     {
         if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Birding)
             return;

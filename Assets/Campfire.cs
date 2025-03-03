@@ -17,6 +17,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private Inventory.ItemType _firewood;
 
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;
@@ -29,7 +30,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     [SerializeField] private int _hotFireDurationGameMinutes = 30;
     private List<Action> _unsubscribeHooks = new();
 
-    void Awake()
+    private void OnEnable()
     {
         _animator = GetComponent<Animator>();
         _localHeatSource = GetComponent<LocalHeatSource>();
@@ -126,7 +127,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         {
             case FireStates.Dead:
                 // Add wood to ashes
-                if (_inventory.IsPlayerHoldingItem("Firewood"))
+                if (_inventory.IsPlayerHoldingItem(_firewood))
                 {
                     StokeFlame();
                     _stoveState.Value = FireStates.Ready;
@@ -140,7 +141,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 return true;
             case FireStates.Hot:
                 // state internal transition, stoke fire
-                if (_inventory.IsPlayerHoldingItem("Firewood"))
+                if (_inventory.IsPlayerHoldingItem(_firewood))
                 {
                     StokeFlame();
                     NarratorSpeechController.Instance.PostMessage("You stoke the fire...");
@@ -149,7 +150,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
                 return false;
             case FireStates.Embers:
                 // Stoke fire
-                if (_inventory.IsPlayerHoldingItem("Firewood"))
+                if (_inventory.IsPlayerHoldingItem(_firewood))
                 {
                     StokeFlame();
                     _stoveState.Value = FireStates.Hot;
@@ -165,7 +166,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
 
     private void StokeFlame()
     {
-        _inventory.TryRemoveItem("Firewood", 1);
+        _inventory.TryRemoveItem(_firewood, 1);
         _fireDurationCounterGameMinutes = 0;
     }
 

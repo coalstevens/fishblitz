@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ReactiveUnity;
-using TMPro;
 using UnityEngine;
 
 public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
@@ -11,14 +10,13 @@ public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, Sc
         public int NumLogs;
     }
 
-    private SpriteRenderer _spriteRenderer;
-
-    private Reactive<int> _numLogs = new Reactive<int>(4);
-    private List<Action> _unsubscribeCBs = new();
     private const string IDENTIFIER = "LogPile";
-
     [SerializeField] private Inventory _inventory;
     [SerializeField] private List<Sprite> _logSprites = new();
+    [SerializeField] private Inventory.ItemType _logItemType;
+    private SpriteRenderer _spriteRenderer;
+    private Reactive<int> _numLogs = new Reactive<int>(4);
+    private List<Action> _unsubscribeCBs = new();
 
     private void Awake()
     {
@@ -49,7 +47,7 @@ public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, Sc
         if (_numLogs.Value == 0)
             return;
 
-        if (_inventory.TryAddItem("DryLog", 1))
+        if (_inventory.TryAddItem(_logItemType, 1))
         {
             _numLogs.Value--;
             if (_numLogs.Value == 0)
