@@ -11,6 +11,7 @@ public class WorldStateByCalendar : ScriptableObject
     private static Dictionary<(int gameYear, GameClock.Seasons season), WaterStates> _waterCalendarGeneral;
     public static Reactive<WaterStates> WaterState = new Reactive<WaterStates>(WaterStates.Shallow);
     public static Reactive<RainStates> RainState = new Reactive<RainStates>(RainStates.NoRain);
+    public static Temperature OutsideTemperature = Temperature.Freezing;
 
     void OnEnable()
     {

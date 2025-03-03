@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class SunLightControl : MonoBehaviour
 {
     [SerializeField] private int _lightUpdateIntervalGameMins = 10;
-    [SerializeField] private Rain _rain;
+    [SerializeField] private RainAudio _rain;
     [Header("Daytime and Nightime")]
     [SerializeField] private float _dayLightIntensity = 1f;
     [SerializeField] private float _nightLightIntensity = 0.1f;

@@ -5,7 +5,7 @@ using ReactiveUnity;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Rain", menuName = "Weather/Rain")]
-public class Rain : ScriptableObject
+public class RainAudio : ScriptableObject
 {
     [SerializeField] private AudioClip _muffledRainSFX;
     [SerializeField] private AudioClip _RainSFX;
