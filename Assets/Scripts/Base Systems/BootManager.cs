@@ -15,7 +15,7 @@ public class BootManager : MonoBehaviour
     }
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private Rain _rainManager;
+    [SerializeField] private RainAudio _rainManager;
 
     [Header("Initial Scene Transition")]
     [SerializeField] private string _toScene;

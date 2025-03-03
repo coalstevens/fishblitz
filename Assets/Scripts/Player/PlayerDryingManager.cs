@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using ReactiveUnity;
 using System;
 using UnityEngine.SceneManagement;
-using System.Linq;
 using System.Collections;
 public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 {

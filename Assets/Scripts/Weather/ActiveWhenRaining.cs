@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class ActiveWhenRaining : MonoBehaviour
 {
-    [SerializeField] private Rain _rainManager;
     [SerializeField] private List<Component> _components = new();
     private Action _unsubscribe;
+
+    private void Start()
+    {
+        OnRainStateChange(WorldStateByCalendar.RainState.Value);
+    }
 
     private void OnEnable()
     {
         _unsubscribe = WorldStateByCalendar.RainState.OnChange((_, curr) => OnRainStateChange(curr));
-        OnRainStateChange(WorldStateByCalendar.RainState.Value);
     }
 
     private void OnDisable() 
@@ -40,8 +43,8 @@ public class ActiveWhenRaining : MonoBehaviour
         else if (component is Renderer renderer)
             renderer.enabled = true; 
         else if (component is ParticleSystem particleSystem) {
-            // manually prewarming due to warping player transform on spawn
-            particleSystem.Simulate(particleSystem.main.startLifetime.constantMax, false);
+            // manually prewarming due to warping player transform on spawn/awake
+            particleSystem.Simulate(particleSystem.main.duration, true);
             particleSystem.Play();
         }
         else

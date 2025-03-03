@@ -12,7 +12,7 @@ using UnityEngine;
 public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 {
     [SerializeField] private PlayerData _playerData;
-    private const int DURATION_TO_MATCH_AMBIENT_GAMEMINS = 30;
+    private const int DURATION_TO_SHIFT_TO_AMBIENT_GAMEMINS = 60;
     private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string>
     {
         [Temperature.Freezing] = "the cold is relentless.",
@@ -79,8 +79,12 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
             return;
 
         _playerData.CounterToMatchAmbientGamemins++;
-        if (_playerData.CounterToMatchAmbientGamemins >= DURATION_TO_MATCH_AMBIENT_GAMEMINS)
-            _playerData.DryPlayerTemperature.Value = _ambientTemperature.Value;
+        if (_playerData.CounterToMatchAmbientGamemins >= DURATION_TO_SHIFT_TO_AMBIENT_GAMEMINS) {
+            if(_ambientTemperature.Value > _playerData.DryPlayerTemperature.Value)
+                _playerData.DryPlayerTemperature.Value++;
+            else
+                _playerData.DryPlayerTemperature.Value--;
+        } 
     }
 
     private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature)

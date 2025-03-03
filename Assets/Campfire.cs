@@ -11,6 +11,7 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         public FireStates State;
         public int FireDurationCounterGameMinutes;
     }
+
     private Animator _animator;
     private LocalHeatSource _localHeatSource;
     private Reactive<FireStates> _stoveState = new Reactive<FireStates>(FireStates.Dead);
