@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class BirdGenerator : MonoBehaviour
 {
-
     [SerializeField] int _birdsInScene = 15;
     [SerializeField] Collider2D _world;
-    [SerializeField] private string _birdDirectioryName = "Birds"; 
+    [SerializeField] private string _birdDirectoryName = "Birds"; 
 
     private Bounds _worldBounds;
     private List<GameObject> _allBirds;
@@ -22,15 +21,18 @@ public class BirdGenerator : MonoBehaviour
     {
         _worldBounds = _world.bounds;
         _mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        _allBirds = Resources.LoadAll<GameObject>(_birdDirectioryName).ToList();
-        _allBirds = Resources.LoadAll<GameObject>(_birdDirectioryName)?.ToList();
+        _allBirds = Resources.LoadAll<GameObject>(_birdDirectoryName)?.ToList();
         if (_allBirds == null || _allBirds.Count == 0)
         {
-            Debug.LogError("No birds found in the Resources/" + _birdDirectioryName + " folder.");
+            Debug.LogError("No birds found in the Resources/" + _birdDirectoryName + " folder.");
             return;
         }
 
         UpdateSpawnableBirdsList();
+
+        if (WorldStateByCalendar.RainState.Value != WorldStateByCalendar.RainStates.NoRain)
+            return;
+
         if(_spawnableBirds.Count != 0) {
             for (int i = 0; i < _birdsInScene; i++)
                 SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorld()); // birds can spawn in camera view only at the start of the scene
@@ -44,9 +46,9 @@ public class BirdGenerator : MonoBehaviour
         
         UpdateSpawnableBirdsList();
         if (_spawnableBirds.Count == 0)
-                return;
-
-        SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorldAndOutsideCamera());
+            return;
+        if (WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain)
+            SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorldAndOutsideCamera());
     }
 
     private void SpawnBird(GameObject bird, Vector2 spawnPoint)
@@ -72,7 +74,7 @@ public class BirdGenerator : MonoBehaviour
     private void UpdateSpawnableBirdsList()
     {
         _currSeason = GameClock.Instance.GameSeason;
-        _currPeriod = GameClock.Instance.GetDayPeriod();
+        _currPeriod = GameClock.Instance.GameDayPeriod;
 
         if (_prevSeason == _currSeason && _prevPeriod == _currPeriod)
             return;

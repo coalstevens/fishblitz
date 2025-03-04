@@ -41,6 +41,27 @@ public class GameClock : Singleton<GameClock>
     public int GameDay => (_gameMinutesElapsed / (60 * 24)) % _numSeasonDays + 1;
     public Seasons GameSeason => (Seasons)((_gameMinutesElapsed / (60 * 24 * _numSeasonDays)) % 4);
     public int GameYear => _gameMinutesElapsed / (60 * 24 * _numSeasonDays * 4);
+    public DayPeriods GameDayPeriod
+    {
+        get
+        {
+            foreach (var _range in _dayPeriodRanges)
+            {
+                if (_range.StartHour <= _range.EndHour)
+                {
+                    if (GameHour >= _range.StartHour && GameHour < _range.EndHour)
+                        return _range.Period;
+                }
+                else
+                {
+                    if (GameHour >= _range.StartHour || GameHour < _range.EndHour)
+                        return _range.Period;
+                }
+            }
+            Debug.LogError("Day ranges should include all possible hours.");
+            return DayPeriods.Day;
+        }
+    }
     public Reactive<bool> GameIsPaused = new Reactive<bool>(false);
     private float _timeBuffer = 0;
     private float _gameMinuteInRealSeconds;
@@ -148,23 +169,4 @@ public class GameClock : Singleton<GameClock>
         Time.timeScale = 1f;
     }
 
-    public DayPeriods GetDayPeriod()
-    {
-        foreach (var range in _dayPeriodRanges)
-        {
-            if (range.StartHour <= range.EndHour)
-            {
-                if (GameHour >= range.StartHour && GameHour < range.EndHour)
-                    return range.Period;
-            }
-            else
-            {
-                if (GameHour >= range.StartHour || GameHour < range.EndHour)
-                    return range.Period;
-            }
-        }
-
-        Debug.LogError("Day ranges should include all possible hours.");
-        return DayPeriods.Day;
-    }
 }
