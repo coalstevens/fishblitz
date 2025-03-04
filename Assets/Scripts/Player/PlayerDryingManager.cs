@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 {
     [SerializeField] private PlayerData _playerData;
+    private PlayerTemperatureManager _temperatureManager;
 
     // The drying points system is just math to enforce
     // the drying times amongst possible temperature changes
@@ -33,6 +34,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void OnEnable()
     {
+        _temperatureManager = GetComponent<PlayerTemperatureManager>();
         SceneManager.sceneLoaded += OnSceneLoaded;
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
         _unsubscribeHooks.Add(WorldStateByCalendar.RainState.OnChange(_ => SetWetnessState()));
@@ -124,7 +126,6 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void HandleWetnessState()
     {
-        Debug.Log("wetness state being handled");
         // can't dry/wet during sleep
         if (_playerData.IsPlayerSleeping)
             return;
@@ -132,7 +133,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         switch (_playerData.WetnessState.Value)
         {
             case PlayerData.WetnessStates.Drying:
-                _playerData.DryingPointsCounter += GetDryingPoints(_playerData.ActualPlayerTemperature.Value);
+                _playerData.DryingPointsCounter += GetDryingPoints(_temperatureManager.AmbientTemperature);
                 if (_playerData.DryingPointsCounter >= DRYING_COMPLETE_POINTS)
                     _playerData.WetnessState.Value = PlayerData.WetnessStates.Dry;
                 break;
@@ -165,9 +166,9 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
             Narrator.Instance.PostMessage(message);
     }
 
-    private int GetDryingPoints(Temperature currentTemperature)
+    private int GetDryingPoints(Temperature ambientTemperature)
     {
-        if (_dryingTimesGameMins.TryGetValue(currentTemperature, out var _dryingTime))
+        if (_dryingTimesGameMins.TryGetValue(ambientTemperature, out var _dryingTime))
             return DRYING_COMPLETE_POINTS / _dryingTime;
         else
             Debug.LogError("The current temperature doesn't have an associated drying time.");

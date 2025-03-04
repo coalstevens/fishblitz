@@ -71,7 +71,6 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
 
     void OnStateChange()
     {
-        Debug.Log("WoodStove state change: " + _stoveState.Value);
         switch (_stoveState.Value)
         {
             case FireStates.Dead:
