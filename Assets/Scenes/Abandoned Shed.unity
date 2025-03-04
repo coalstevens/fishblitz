@@ -298,6 +298,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Impermanent
       objectReference: {fileID: 0}
+    - target: {fileID: 9201240629991108096, guid: 5a1bc622c67a74d019415c9af09f7d27, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5558,6 +5562,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 142494036}
     m_Modifications:
+    - target: {fileID: 602916560364616551, guid: 36326a9801c3a4548835c27714e21bad, type: 3}
+      propertyPath: m_Size.x
+      value: 2.0094547
+      objectReference: {fileID: 0}
+    - target: {fileID: 602916560364616551, guid: 36326a9801c3a4548835c27714e21bad, type: 3}
+      propertyPath: m_Size.y
+      value: 0.52476835
+      objectReference: {fileID: 0}
+    - target: {fileID: 602916560364616551, guid: 36326a9801c3a4548835c27714e21bad, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.50101304
+      objectReference: {fileID: 0}
+    - target: {fileID: 602916560364616551, guid: 36326a9801c3a4548835c27714e21bad, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.23113418
+      objectReference: {fileID: 0}
     - target: {fileID: 711832440675195216, guid: 36326a9801c3a4548835c27714e21bad, type: 3}
       propertyPath: _inventory
       value: 
@@ -12043,8 +12063,8 @@ EdgeCollider2D:
   - {x: 4.3233314, y: -6.721996}
   - {x: 4.313735, y: -5.089807}
   - {x: 0.32023382, y: -5.0934615}
-  - {x: 0.32478046, y: -2.3349211}
-  - {x: 6.323949, y: -2.3349626}
+  - {x: 0.3282442, y: -2.5705025}
+  - {x: 6.323949, y: -2.5612707}
   - {x: 6.324686, y: -5.0873866}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
