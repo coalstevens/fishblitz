@@ -30,6 +30,8 @@ public class Inventory : ScriptableObject
     [SerializeField] private List<ItemData> _startingItems = new();
     [SerializeField] private Logger _logger = new();
     [SerializeField] private bool _newInventoryOnLoad = true;
+    [SerializeField] private AudioClip _addItemSFX;
+    [SerializeField] private float _addItemVolume = 1f;
     public delegate void SlotUpdateHandler(Inventory inventory, int slotNumber);
     public event SlotUpdateHandler SlotUpdated;
     private string _saveFilePath;
@@ -73,6 +75,9 @@ public class Inventory : ScriptableObject
         if (!HasEnoughInventorySpace(itemType.name, quantity)) return false;
 
         _logger.Info($"Adding {quantity} of {itemType} to inventory");
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(_addItemSFX, _addItemVolume);
+
         int _residual = quantity;
         foreach (var _slot in SlotItems.Where(slot => slot.Value.ItemType.name == itemType.name))
         {
