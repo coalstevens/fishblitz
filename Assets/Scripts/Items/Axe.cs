@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
-public class Axe : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldObject, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IEnergyDepleting
+public class Axe : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldObject, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IEnergyDepleting, PlayerInteractionManager.IUsableWithSound
 {
     [SerializeField] private int _energyCost = 2;
     public interface IUseableWithAxe
@@ -9,13 +9,9 @@ public class Axe : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldOb
         void OnUseAxe();
     }
     [SerializeField] protected AudioClip _chopSFX;
+    [SerializeField] protected float _chopVolume = 1f;
 
     public int EnergyCost => _energyCost;
-
-    public void PlayToolHitSound()
-    {
-        AudioManager.Instance.PlaySFX(_chopSFX, 0.4f);
-    }
 
     public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
@@ -32,5 +28,10 @@ public class Axe : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldOb
     {
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
         return false;
+    }
+
+    public void PlayHitSound()
+    {
+        AudioManager.Instance.PlaySFX(_chopSFX, 1f);
     }
 }

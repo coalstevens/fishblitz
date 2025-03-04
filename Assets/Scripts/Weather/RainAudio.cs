@@ -8,7 +8,9 @@ using System.Collections.Generic;
 public class RainAudio : ScriptableObject
 {
     [SerializeField] private AudioClip _muffledRainSFX;
+    [SerializeField] private float _muffledRainVolume = 1f;
     [SerializeField] private AudioClip _RainSFX;
+    [SerializeField] private float _rainVolume = 0.3f;
     private Reactive<bool> _isRainMuffled = new Reactive<bool>(false);
     private Action _stopAudio;
     private List<Action> _unsubscribe = new();
@@ -33,7 +35,8 @@ public class RainAudio : ScriptableObject
         switch (curr)
         {
             case WorldStateByCalendar.RainStates.HeavyRain:
-                PlayRainAudio(_isRainMuffled.Value);
+                if (_stopAudio == null)
+                    PlayRainAudio(_isRainMuffled.Value);
                 break;
             case WorldStateByCalendar.RainStates.NoRain:
                 StopRainAudio();
@@ -54,9 +57,9 @@ public class RainAudio : ScriptableObject
     private void PlayRainAudio(bool isMuffled)
     {
         if (isMuffled)
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, 1, true);
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, _muffledRainVolume, true);
         else
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, 0.5f, true);
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, _rainVolume, true);
     }
 
     private void StopRainAudio()

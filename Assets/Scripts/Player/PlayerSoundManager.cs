@@ -12,28 +12,34 @@ public class PlayerSoundManager : MonoBehaviour
     private void OnEnable()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
-        _unsubscribeCB = _playerMovementController.PlayerState.OnChange((prev,curr) => OnPlayerStateChange(prev,curr));
+        _unsubscribeCB = _playerMovementController.PlayerState.OnChange((prev, curr) => OnPlayerStateChange(prev, curr));
     }
 
-    private void OnDisable() {
-        if (_stopSoundCB != null) {
-            _stopSoundCB();
-            _stopSoundCB = null;
-        }
+    private void OnDisable()
+    {
+        StopSound();
         _unsubscribeCB();
     }
 
     private void OnPlayerStateChange(PlayerMovementController.PlayerStates previous, PlayerMovementController.PlayerStates current)
     {
-        if (_stopSoundCB != null) {
-            _stopSoundCB();
-            _stopSoundCB = null;
-        }
-
-        switch (current) {
+        switch (current)
+        {
             case PlayerMovementController.PlayerStates.Walking:
                 _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, _walkingSFXVolume);
                 break;
+            default:
+                StopSound();
+                break;
+        }
+    }
+
+    private void StopSound()
+    {
+        if (_stopSoundCB != null)
+        {
+            _stopSoundCB();
+            _stopSoundCB = null;
         }
     }
 }
