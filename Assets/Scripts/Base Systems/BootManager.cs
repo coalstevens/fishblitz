@@ -57,6 +57,7 @@ public class BootManager : MonoBehaviour
         _playerData.ActualPlayerTemperature.Value = _initialTemperature;
         _playerData.DryPlayerTemperature.Value = _playerData.PlayerIsWet.Value ? _initialTemperature - 1 : _initialTemperature;
         _playerData.CurrentEnergy.Value = _initialEnergy;
+        _playerData.IsPlayerSleeping = false;
     }
 
     private IEnumerator OpeningDialogue()

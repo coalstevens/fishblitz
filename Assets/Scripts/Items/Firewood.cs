@@ -1,32 +1,23 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "NewFirewood", menuName = "Items/Firewood")]
-public class Firewood : Inventory.ItemType //IPlayerCursorUsingItem
+public class Firewood : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldObject
 {
-    public void CursorAction(TileData tileData, Vector3 cursorLocation)
+    [SerializeField] private Inventory _playerInventory;
+    public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
     {
-        LarchStump _stump = GetStump(cursorLocation);
-        if (_stump != null) {
-            _stump.LoadLog();
-        }
-    }
-
-    // TODO Convert to GetFirePlace or GetWoodRack 
-    private LarchStump GetStump(Vector3 cursorLocation)
-    {
-        List<Collider2D> _results = new List<Collider2D>();
-        Physics2D.OverlapBox(cursorLocation + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
-
-        foreach (var _result in _results)
+        if (interactableWorldObject is WoodStove _stove)
         {
-            var _placedItem = _result.GetComponent<LarchStump>();
-            if (_placedItem != null)
-            {
-                return _placedItem;
-            }
+            if (_stove.AddFirewood())
+                _playerInventory.TryRemoveActiveItem(1);
+            return true;
         }
-        return null;
+        if (interactableWorldObject is Campfire _campfire)
+        {
+            if (_campfire.AddFirewood())
+                _playerInventory.TryRemoveActiveItem(1);
+            return true;
+        }
+        return false;
     }
 }
