@@ -131,58 +131,42 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         switch (_stoveState.Value)
         {
             case FireStates.Dead:
-                // Add wood to ashes
-                if (_inventory.IsPlayerHoldingItem(_firewood))
-                {
-                    StokeFlame();
-                    _stoveState.Value = FireStates.Ready;
-                    return true;
-                }
-                if (_inventory.IsPlayerHoldingItem(_dryWood))
-                {
-                    PlayerDialogue.Instance.PostMessage("i need to chop this first");
-                    return true;
-                }
-                if (_inventory.IsPlayerHoldingItem(_wetWood))
-                {
-                    PlayerDialogue.Instance.PostMessage("i need to dry this first");
-                    return true;
-                }
-                return false;
-            case FireStates.Ready:
-                // Start fire
-                Narrator.Instance.PostMessage("the room grows warm.");
-                _stoveState.Value = FireStates.Hot;
+                Narrator.Instance.PostMessage("the stove is cold.");
                 return true;
-            case FireStates.Hot:
-                // state internal transition, stoke fire
-                if (_inventory.IsPlayerHoldingItem(_firewood))
-                {
-                    StokeFlame();
-                    Narrator.Instance.PostMessage("you stoke the flames.");
-                    return true;
-                }
-                return false;
-            case FireStates.Embers:
-                // Stoke fire
-                if (_inventory.IsPlayerHoldingItem(_firewood))
-                {
-                    StokeFlame();
-                    _stoveState.Value = FireStates.Hot;
-                    Narrator.Instance.PostMessage("you stoke the flames.");
-                    return true;
-                }
-                return false;
+            case FireStates.Ready: // Start fire
+                _stoveState.Value = FireStates.Hot;
+                Narrator.Instance.PostMessage("the room grows warm.");
+                return true;
             default:
-                Debug.LogError("WoodStove guard handler defaulted.");
                 return false;
         }
     }
 
-    private void StokeFlame()
-    {
-        _inventory.TryRemoveItem(_firewood, 1);
+    public bool AddFirewood() {
+        if (_stoveState.Value == FireStates.Ready)
+            return false;
+
         _fireDurationCounterGameMinutes = 0;
+
+        if (_stoveState.Value == FireStates.Dead)
+        {
+            _stoveState.Value = FireStates.Ready;
+            return true;
+        }
+        if (_stoveState.Value == FireStates.Hot)
+        {
+            Narrator.Instance.PostMessage("you stoke the flames.");
+            return true;
+        }
+        if (_stoveState.Value == FireStates.Embers)
+        {
+            _stoveState.Value = FireStates.Hot;
+            Narrator.Instance.PostMessage("you stoke the flames.");
+            return true;
+        }
+
+        Debug.LogError("State not handled for adding firewood.");
+        return false;
     }
 
     public SaveData Save()
