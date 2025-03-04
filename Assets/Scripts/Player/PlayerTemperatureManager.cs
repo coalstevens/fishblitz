@@ -24,7 +24,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 
     private bool _skipNarratorMessage;
     private List<Action> _unsubscribeHooks = new List<Action>();
-
+    public Temperature AmbientTemperature => _ambientTemperature.Value;
     public override Temperature Temperature
     {
         get => _playerData.ActualPlayerTemperature.Value;
