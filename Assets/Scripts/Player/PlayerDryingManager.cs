@@ -124,6 +124,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
 
     private void HandleWetnessState()
     {
+        Debug.Log("wetness state being handled");
         // can't dry/wet during sleep
         if (_playerData.IsPlayerSleeping)
             return;

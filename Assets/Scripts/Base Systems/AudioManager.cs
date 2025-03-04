@@ -189,7 +189,7 @@ public class AudioManager : Singleton<AudioManager>
         // Combine all audio sources into one list
         var allSources = _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>()
             .Concat(_SFXContainer.GetComponentsInChildren<AudioSource>());
-        allSources.Append<AudioSource>(_musicPlayer);
+        allSources = allSources.Append<AudioSource>(_musicPlayer);
 
         // Find the audio source with the matching clip
         AudioSource _sourcePlayingClip = allSources.FirstOrDefault(s => s.clip == clip);
