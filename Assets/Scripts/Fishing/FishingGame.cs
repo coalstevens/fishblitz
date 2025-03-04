@@ -107,7 +107,7 @@ public class FishingGame : MonoBehaviour
         _stopReelingSFXCB = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
         _fishType = GetRandomValidFishType();
-        _gameStartPeriod = GameClock.Instance.GetDayPeriod();
+        _gameStartPeriod = GameClock.Instance.GameDayPeriod;
         _gameStartSeason = GameClock.Instance.GameSeason;
         _overlaySpriteRenderer.sprite = null;
         _failed = false;
@@ -377,7 +377,7 @@ public class FishingGame : MonoBehaviour
             if (
                 _fish.CatchableSceneNames.Contains(SceneManager.GetActiveScene().name) &&
                 _fish.SpawnableSeasons.Contains(GameClock.Instance.GameSeason) &&
-                _fish.SpawnablePeriods.Contains(GameClock.Instance.GetDayPeriod()) 
+                _fish.SpawnablePeriods.Contains(GameClock.Instance.GameDayPeriod) 
             )
             {
                 _fishes.Add(_fish);
