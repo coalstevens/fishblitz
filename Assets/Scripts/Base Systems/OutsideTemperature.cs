@@ -5,14 +5,16 @@ public class OutsideTemperature : Singleton<OutsideTemperature>, IHeatSource
 {
     private Grid _sceneGrid;
     private PlayerTemperatureManager _playerTemperatureManager;
+    [SerializeField] private Logger _logger = new();
     public Temperature Temperature
     {
-        get => WorldStateByCalendar.OutsideTemperature;
+        get => WorldState.OutsideTemperature;
         set
         {
-            if (value == WorldStateByCalendar.OutsideTemperature)
+            if (value == WorldState.OutsideTemperature)
                 return;
-            WorldStateByCalendar.OutsideTemperature = value;
+            WorldState.OutsideTemperature = value;
+            _logger.Info($"Outside temperature changed to: {WorldState.OutsideTemperature}");
             OnTemperatureChange();
         }
     }

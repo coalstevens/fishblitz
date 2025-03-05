@@ -9,7 +9,7 @@ public class AbandonedShedInterior : MonoBehaviour
     [SerializeField] private GameObject _rainParticleSystem;
     void Start()
     {
-        bool _isNotRaining = WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain;
+        bool _isNotRaining = WorldState.RainState.Value == WorldState.RainStates.NoRain;
         bool _isRoofRepaired = _shedData.NamesOfRepaired.Contains("roof");
         bool _isFloorRepaired = _shedData.NamesOfRepaired.Contains("floor");
 

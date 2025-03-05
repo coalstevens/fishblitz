@@ -893,6 +893,125 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &285846305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285846306}
+  - component: {fileID: 285846307}
+  - component: {fileID: 285846308}
+  m_Layer: 0
+  m_Name: WorldState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &285846306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285846305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.474707, y: 19.45233, z: 0.03485166}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &285846307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285846305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463cf6b2287de405f8bad423e5933157, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameclock: {fileID: 1950503953}
+  _logger:
+    _info: 1
+    _verbose: 0
+    _prefix: World State
+    _color: white
+  _calendar:
+  - GameYear: 1
+    GameDay: 11
+    Season: 0
+    WaterState: 0
+    RainState: 0
+  - GameYear: 1
+    GameDay: 12
+    Season: 0
+    WaterState: 3
+    RainState: 0
+  - GameYear: 1
+    GameDay: 13
+    Season: 0
+    WaterState: 2
+    RainState: 0
+  - GameYear: 1
+    GameDay: 14
+    Season: 0
+    WaterState: 1
+    RainState: 0
+  - GameYear: 1
+    GameDay: 15
+    Season: 0
+    WaterState: 1
+    RainState: 0
+  - GameYear: 1
+    GameDay: 15
+    Season: 0
+    WaterState: 1
+    RainState: 0
+  - GameYear: 1
+    GameDay: 2
+    Season: 1
+    WaterState: 4
+    RainState: 1
+  - GameYear: 1
+    GameDay: 3
+    Season: 1
+    WaterState: 2
+    RainState: 1
+  - GameYear: 1
+    GameDay: 4
+    Season: 1
+    WaterState: 2
+    RainState: 1
+  - GameYear: 1
+    GameDay: 5
+    Season: 1
+    WaterState: 2
+    RainState: 1
+--- !u!114 &285846308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285846305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a46f456aa8be44601857fcd390e02114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _logger:
+    _info: 1
+    _verbose: 0
+    _prefix: Outside Temperature
+    _color: white
 --- !u!1 &321047887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,6 +2002,7 @@ MonoBehaviour:
   _skipIntro: 0
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _rainManager: {fileID: 11400000, guid: bebb3cc9b17a94c3ab00bc48719e471d, type: 2}
+  _worldStateCalendar: {fileID: 285846307}
   _toScene: Outside
   _spawnPosition: 1
   _useCustomSpawn: 0
@@ -1900,50 +2020,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.452363, y: 0.34037757, z: 0.80073565}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1179631317
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1179631319}
-  - component: {fileID: 1179631318}
-  m_Layer: 0
-  m_Name: OutsideTemperature
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1179631318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1179631317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a46f456aa8be44601857fcd390e02114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1179631319
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1179631317}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.76804507, y: 3.5737596, z: -0.030918568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4432,4 +4508,4 @@ SceneRoots:
   - {fileID: 4364136194637707386}
   - {fileID: 1138146526}
   - {fileID: 701997159}
-  - {fileID: 1179631319}
+  - {fileID: 285846306}

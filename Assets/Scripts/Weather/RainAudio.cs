@@ -18,7 +18,7 @@ public class RainAudio : ScriptableObject
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribe.Add(WorldStateByCalendar.RainState.OnChange(curr => OnStateChange(curr)));
+        _unsubscribe.Add(WorldState.RainState.OnChange(curr => OnStateChange(curr)));
         _unsubscribe.Add(_isRainMuffled.OnChange(curr => OnMuffleChange(curr)));
     }
 
@@ -30,15 +30,15 @@ public class RainAudio : ScriptableObject
             hook();
     }
 
-    public void OnStateChange(WorldStateByCalendar.RainStates curr)
+    public void OnStateChange(WorldState.RainStates curr)
     {
         switch (curr)
         {
-            case WorldStateByCalendar.RainStates.HeavyRain:
+            case WorldState.RainStates.HeavyRain:
                 if (_stopAudio == null)
                     PlayRainAudio(_isRainMuffled.Value);
                 break;
-            case WorldStateByCalendar.RainStates.NoRain:
+            case WorldState.RainStates.NoRain:
                 StopRainAudio();
                 break;
             default:
@@ -49,7 +49,7 @@ public class RainAudio : ScriptableObject
 
     private void OnMuffleChange(bool isMuffled)
     {
-        if (WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain) return;
+        if (WorldState.RainState.Value == WorldState.RainStates.NoRain) return;
         StopRainAudio();
         PlayRainAudio(isMuffled);
     }

@@ -30,7 +30,7 @@ public class BirdGenerator : MonoBehaviour
 
         UpdateSpawnableBirdsList();
 
-        if (WorldStateByCalendar.RainState.Value != WorldStateByCalendar.RainStates.NoRain)
+        if (WorldState.RainState.Value != WorldState.RainStates.NoRain)
             return;
 
         if(_spawnableBirds.Count != 0) {
@@ -47,7 +47,7 @@ public class BirdGenerator : MonoBehaviour
         UpdateSpawnableBirdsList();
         if (_spawnableBirds.Count == 0)
             return;
-        if (WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain)
+        if (WorldState.RainState.Value == WorldState.RainStates.NoRain)
             SpawnBird(_spawnableBirds[Random.Range(0, _spawnableBirds.Count)], GetPointWithinWorldAndOutsideCamera());
     }
 

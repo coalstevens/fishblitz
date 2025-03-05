@@ -1,94 +1,48 @@
+using System;
 using System.Collections.Generic;
-using ReactiveUnity;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WorldState", menuName = "Base Systems/World State")]
-public class WorldStateByCalendar : ScriptableObject
+public class WorldStateCalendar : Singleton<WorldStateCalendar>
 {
-    public enum WaterStates { Puddles, Flood, Full, Shallow, PostFlood };
-    public enum RainStates { HeavyRain, NoRain };
-    private static Dictionary<(int gameYear, GameClock.Seasons season, int gameDay), WaterStates> _waterCalendarSpecific;
-    private static Dictionary<(int gameYear, GameClock.Seasons season), WaterStates> _waterCalendarGeneral;
-    public static Reactive<WaterStates> WaterState = new Reactive<WaterStates>(WaterStates.Shallow);
-    public static Reactive<RainStates> RainState = new Reactive<RainStates>(RainStates.NoRain);
-    public static Temperature OutsideTemperature = Temperature.Freezing;
+    [Serializable]
+    public class DayState
+    {
+        public int GameYear;
+        public int GameDay;
+        public GameClock.Seasons Season;
+        public WorldState.WaterStates WaterState;
+        public WorldState.RainStates RainState;
+    }
+    [SerializeField] private GameClock _gameclock;
+    [SerializeField] private Logger _logger = new();
+    [SerializeField] private List<DayState> _calendar = new();
 
     void OnEnable()
     {
-        GameClock.Instance.OnGameDayTick += UpdateWorldState;
+        _gameclock.OnGameDayTick += UpdateWorldState;
     }
 
     void OnDisable()
     {
-        GameClock.Instance.OnGameDayTick -= UpdateWorldState;
+        _gameclock.OnGameDayTick -= UpdateWorldState;
     }
 
-    private static void InitializeWaterState()
+    public void UpdateWorldState()
     {
-        _waterCalendarSpecific = new()
-        {
-            [(1, GameClock.Seasons.Spring, 11)] = WaterStates.Puddles,
-            [(1, GameClock.Seasons.Spring, 12)] = WaterStates.Shallow,
-            [(1, GameClock.Seasons.Spring, 13)] = WaterStates.Full,
-            [(1, GameClock.Seasons.Spring, 14)] = WaterStates.Flood,
-            [(1, GameClock.Seasons.Spring, 15)] = WaterStates.Flood,
-            [(1, GameClock.Seasons.Summer, 1)] = WaterStates.PostFlood,
-            [(1, GameClock.Seasons.Summer, 2)] = WaterStates.PostFlood,
-        };
+        DayState _currentDayState = _calendar.Find(dayState =>
+            dayState.GameYear == GameClock.Instance.GameYear &&
+            dayState.GameDay == GameClock.Instance.GameDay &&
+            dayState.Season == GameClock.Instance.GameSeason);
 
-        _waterCalendarGeneral = new()
+        if (_currentDayState != null)
         {
-            [(1, GameClock.Seasons.Summer)] = WaterStates.Full,
-            [(1, GameClock.Seasons.Fall)] = WaterStates.Shallow,
-        };
-    }
-
-    private static void SetWaterState()
-    {
-        if (_waterCalendarSpecific.TryGetValue((GameClock.Instance.GameYear,
-                                               GameClock.Instance.GameSeason,
-                                               GameClock.Instance.GameDay),
-                                               out WaterStates result))
-        {
-            WaterState.Value = result;
+            WorldState.WaterState.Value = _currentDayState.WaterState;
+            WorldState.RainState.Value = _currentDayState.RainState;
+            _logger.Info($"RainState: {WorldState.RainState.Value.ToString()}, WaterState: {WorldState.WaterState.Value.ToString()}");
             return;
         }
 
-        if (_waterCalendarGeneral.TryGetValue((GameClock.Instance.GameYear,
-                                              GameClock.Instance.GameSeason),
-                                              out WaterStates resultGeneral))
-        {
-            WaterState.Value = resultGeneral;
-            return;
-        }
-        Debug.LogError("Waterstate defaulted, no calendar date match.");
-        Debug.Log("Current Date: " + GameClock.Instance.GameYear + " " + GameClock.Instance.GameSeason + " " + GameClock.Instance.GameDay);
-        Debug.Log("Current Time: " + GameClock.Instance.GameHour + ":" + GameClock.Instance.GameMinute);
-        WaterState.Value = WaterStates.Shallow;
-    }
-
-    public static void UpdateWorldState()
-    {
-        Debug.Log("world state updated");
-        if (_waterCalendarSpecific == null)
-            InitializeWaterState();
-        SetRainState();
-        SetWaterState();
-    }
-
-    private static void SetRainState()
-    {
-        switch (GameClock.Instance.GameSeason)
-        {
-            case GameClock.Seasons.Spring:
-                RainState.Value = RainStates.HeavyRain;
-                break;
-            case GameClock.Seasons.Summer:
-                RainState.Value = RainStates.NoRain;
-                break;
-            default:
-                RainState.Value = RainStates.NoRain;
-                break;
-        }
+        Debug.LogError($"World state defaulted, no calendar date match. Current Date: {GameClock.Instance.GameYear} {GameClock.Instance.GameSeason} {GameClock.Instance.GameDay}, Current Time: {GameClock.Instance.GameHour}:{GameClock.Instance.GameMinute}");
+        WorldState.WaterState.Value = WorldState.WaterStates.Shallow;
     }
 }

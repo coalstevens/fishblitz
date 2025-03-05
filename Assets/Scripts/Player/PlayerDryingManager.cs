@@ -37,7 +37,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
         _temperatureManager = GetComponent<PlayerTemperatureManager>();
         SceneManager.sceneLoaded += OnSceneLoaded;
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
-        _unsubscribeHooks.Add(WorldStateByCalendar.RainState.OnChange(_ => SetWetnessState()));
+        _unsubscribeHooks.Add(WorldState.RainState.OnChange(_ => SetWetnessState()));
         _unsubscribeHooks.Add(_playerData.WetnessState.OnChange((prev, curr) => OnWetnessStateChange(prev, curr)));
     }
 
@@ -91,9 +91,9 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
             return;
         }
 
-        switch (WorldStateByCalendar.RainState.Value)
+        switch (WorldState.RainState.Value)
         {
-            case WorldStateByCalendar.RainStates.HeavyRain:
+            case WorldState.RainStates.HeavyRain:
                 switch (_playerData.WetnessState.Value)
                 {
                     case PlayerData.WetnessStates.Dry:
@@ -107,7 +107,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
                     default: break;
                 }
                 break;
-            case WorldStateByCalendar.RainStates.NoRain:
+            case WorldState.RainStates.NoRain:
                 switch (_playerData.WetnessState.Value)
                 {
                     case PlayerData.WetnessStates.Wet:

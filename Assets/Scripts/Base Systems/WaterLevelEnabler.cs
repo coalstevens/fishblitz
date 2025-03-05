@@ -12,21 +12,21 @@ public class WaterLevelEnabler : MonoBehaviour
     void Start()
     {
         DisableAllObjects();
-        switch (WorldStateByCalendar.WaterState.Value)
+        switch (WorldState.WaterState.Value)
         {
-            case WorldStateByCalendar.WaterStates.Flood:
+            case WorldState.WaterStates.Flood:
                 EnableObjects(_flood);
                 break;
-            case WorldStateByCalendar.WaterStates.Full:
+            case WorldState.WaterStates.Full:
                 EnableObjects(_full);
                 break;
-            case WorldStateByCalendar.WaterStates.Shallow:
+            case WorldState.WaterStates.Shallow:
                 EnableObjects(_shallow);
                 break;
-            case WorldStateByCalendar.WaterStates.Puddles:
+            case WorldState.WaterStates.Puddles:
                 EnableObjects(_puddles);
                 break;
-            case WorldStateByCalendar.WaterStates.PostFlood:
+            case WorldState.WaterStates.PostFlood:
                 EnableObjects(_postFlood);
                 break;
         }

@@ -16,6 +16,7 @@ public class BootManager : MonoBehaviour
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private RainAudio _rainManager;
+    [SerializeField] private WorldStateCalendar _worldStateCalendar;
 
     [Header("Initial Scene Transition")]
     [SerializeField] private string _toScene;
@@ -43,8 +44,8 @@ public class BootManager : MonoBehaviour
 
     private void Start()
     {
-        WorldStateByCalendar.UpdateWorldState();
-        _rainManager.OnStateChange(WorldStateByCalendar.RainState.Value);
+        _worldStateCalendar.UpdateWorldState();
+        _rainManager.OnStateChange(WorldState.RainState.Value);
     }
 
     private void SetInitialPlayerState() 

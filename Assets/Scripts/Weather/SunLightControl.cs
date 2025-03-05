@@ -80,7 +80,7 @@ public class SunLightControl : MonoBehaviour
 
     void UpdateLight()
     {
-        bool _isNotRaining = WorldStateByCalendar.RainState.Value == WorldStateByCalendar.RainStates.NoRain;
+        bool _isNotRaining = WorldState.RainState.Value == WorldState.RainStates.NoRain;
         switch (_lightState.Value)
         {
             case LightStates.Day:
@@ -109,7 +109,7 @@ public class SunLightControl : MonoBehaviour
         float _normalizedTime = Map(_currentMinutes, _startHour * 60f, _endHour * 60f, 0, 1);
 
         Color _result = _gradient.Evaluate(_normalizedTime);
-        if (WorldStateByCalendar.RainState.Value != WorldStateByCalendar.RainStates.NoRain)
+        if (WorldState.RainState.Value != WorldState.RainStates.NoRain)
             _result *= _rainOverlay;
         SetLightSettings
         (
