@@ -45,7 +45,6 @@ public class WorldStateByCalendar : ScriptableObject
 
     private static void SetWaterState()
     {
-
         if (_waterCalendarSpecific.TryGetValue((GameClock.Instance.GameYear,
                                                GameClock.Instance.GameSeason,
                                                GameClock.Instance.GameDay),
@@ -70,6 +69,7 @@ public class WorldStateByCalendar : ScriptableObject
 
     public static void UpdateWorldState()
     {
+        Debug.Log("world state updated");
         if (_waterCalendarSpecific == null)
             InitializeWaterState();
         SetRainState();
