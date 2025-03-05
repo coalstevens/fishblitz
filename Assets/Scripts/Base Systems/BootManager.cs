@@ -15,6 +15,7 @@ public class BootManager : MonoBehaviour
     }
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Inventory _playerInventory;
     [SerializeField] private RainAudio _rainManager;
     [SerializeField] private WorldStateCalendar _worldStateCalendar;
 
@@ -59,6 +60,7 @@ public class BootManager : MonoBehaviour
         _playerData.DryPlayerTemperature.Value = _playerData.PlayerIsWet.Value ? _initialTemperature - 1 : _initialTemperature;
         _playerData.CurrentEnergy.Value = _initialEnergy;
         _playerData.IsPlayerSleeping = false;
+        _playerInventory.ActiveItemSlot.Value = 0;
     }
 
     private IEnumerator OpeningDialogue()

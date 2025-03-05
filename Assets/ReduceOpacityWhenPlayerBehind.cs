@@ -14,13 +14,15 @@ public class ReduceOpacityWhenPlayerBehind : MonoBehaviour
     {
         _spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
         if (_spriteRenderer != null)
-        {
             _originalColor = _spriteRenderer.color;
-        }
         else
-        {
             Debug.LogError("SpriteRenderer component not found on the GameObject.");
-        }
+    }
+
+    private void OnDisable()
+    {
+        if(_fadeCoroutine != null)
+            StopCoroutine(_fadeCoroutine);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
