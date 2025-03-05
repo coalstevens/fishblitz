@@ -4,17 +4,6 @@ public class HUDInputManager : MonoBehaviour
 {
     [SerializeField] private Inventory _inventory;
 
-    private void Awake()
-    {
-        StartCoroutine(WaitForUIUpdate());
-    }
-
-    private IEnumerator WaitForUIUpdate()
-    {
-        yield return null;
-        SetActiveSlot(0);
-    }
-
     private void OnItemSelect1()
     {
         SetActiveSlot(0);

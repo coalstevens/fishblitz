@@ -76,7 +76,7 @@ public class RainAudio : ScriptableObject
         return SceneManager.GetActiveScene().name switch
         {
             "Abandoned Shed" => true,
-            "Sleep Menu" => true,
+            "SleepMenu" => true,
             "Outside" => false,
             "Boot" => false,
             _ => false
