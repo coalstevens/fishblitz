@@ -13,57 +13,39 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         public List<float> LogTimers;
     }
 
+    [SerializeField] private string _identifier = "WoodRack";
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Sprite[] _rackSprites;
     [SerializeField] private Inventory.ItemType _dryLog;
     [SerializeField] private Inventory.ItemType _wetLog;
+    [SerializeField] private int _rackLogCapacity = 18;
+    [SerializeField] private int _startingWetLogs = 0;
+    [SerializeField] private int _startingDryLogs = 0;
+    private Reactive<int> _numWetLogs = new Reactive<int>(0);
+    private Reactive<int> _numDryLogs = new Reactive<int>(0);
 
     private SpriteRenderer _spriteRenderer;
     private HeatSensitive _heatSensitive;
 
-    private Reactive<int> _numWetLogs = new Reactive<int>(0);
-    private Reactive<int> _numDryLogs = new Reactive<int>(0);
     private List<Action> _unsubscribeCBs = new();
 
-    private const string IDENTIFIER = "WoodRack";
-    private const int _rackLogCapacity = 18;
-    private const float _timeToDryGameMins = 120f;
-    private List<float> _logDryingTimers = new List<float>();
-    private float _temperatureMultiplier = 1.5f;
-
-
-
-    public Collider2D ObjCollider
-    {
-        get
-        {
-            Collider2D _collider = GetComponent<Collider2D>();
-            if (_collider != null)
-            {
-                return _collider;
-            }
-            else
-            {
-                Debug.LogError("Woodrack does not have a collider component");
-                return null;
-            }
-        }
-    }
-
-    private void Awake()
-    {
-        // References
-        _heatSensitive = GetComponent<HeatSensitive>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateRackSprite();
-    }
+    private const float _timeToDryGameMins = 2880f;
+    [SerializeField] private List<float> _logDryingTimers = new List<float>();
+    private float _temperatureMultiplier = 12f;
 
     private void OnEnable()
     {
-        _unsubscribeCBs.Add(_numWetLogs.OnChange((prev, curr) => UpdateRackSprite()));
-        _unsubscribeCBs.Add(_numDryLogs.OnChange((prev, curr) => UpdateRackSprite()));
-        _unsubscribeCBs.Add(_numWetLogs.OnChange((prev, curr) => AllLogsDry(prev, curr)));
+        _heatSensitive = GetComponent<HeatSensitive>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _unsubscribeCBs.Add(_numWetLogs.OnChange(_ => UpdateRackSprite()));
+        _unsubscribeCBs.Add(_numDryLogs.OnChange(_ => UpdateRackSprite()));
+        _unsubscribeCBs.Add(_numWetLogs.OnChange((prev, curr) => PostAllLogsDryMessage(prev, curr)));
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
+        for (int i = 0; i < _startingWetLogs; i++) 
+            TryAddWetLog();
+        for (int i = 0; i < _startingDryLogs; i++) 
+            TryAddDryLog();
+        UpdateRackSprite();
     }
 
     private void OnDisable()
@@ -71,11 +53,12 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var _cb in _unsubscribeCBs)
             _cb();
+        _unsubscribeCBs.Clear();
     }
 
-    private void AllLogsDry(int previousCount, int currentCount)
+    private void PostAllLogsDryMessage(int previousCount, int currentCount)
     {
-        if (previousCount > 0 && currentCount == 0 && _numDryLogs.Value > 0)
+        if (previousCount > 0 && currentCount == 0)
             Narrator.Instance.PostMessage("All logs on the woodrack have dried out.");
     }
 
@@ -89,43 +72,41 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         for (int i = 0; i < _logDryingTimers.Count; i++)
         {
             if (_heatSensitive.Temperature == Temperature.Hot || _heatSensitive.Temperature == Temperature.Warm)
-            {
                 _logDryingTimers[i] += 1 * _temperatureMultiplier;
-            }
             else
-            {
                 _logDryingTimers[i]++;
-            }
         }
         int _numOfExpiredTimers = _logDryingTimers.RemoveAll(timerCount => timerCount >= _timeToDryGameMins);
         _numWetLogs.Value -= _numOfExpiredTimers;
         _numDryLogs.Value += _numOfExpiredTimers;
     }
 
-    public void AddWetLog()
+    public bool TryAddWetLog()
     {
-        _inventory.TryRemoveItem(_wetLog, 1);
+        if (IsRackFull())
+            return false;
         _numWetLogs.Value++;
         _logDryingTimers.Add(0);
+        return true;
     }
 
     private bool IsRackFull()
     {
         if (_numWetLogs.Value + _numDryLogs.Value >= _rackLogCapacity)
         {
-            PlayerDialogue.Instance.PostMessage("I can't fit anymore...");
+            Narrator.Instance.PostMessage("the rack is full.");
             return true;
         }
         else
-        {
             return false;
-        }
     }
 
-    public void AddDryLog()
+    public bool TryAddDryLog()
     {
-        _inventory.TryRemoveItem(_dryLog, 1);
+        if (IsRackFull())
+            return false;
         _numDryLogs.Value++;
+        return true;
     }
 
     public void RemoveDryLog()
@@ -137,48 +118,17 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         // only wet logs on rack
         if (_numDryLogs.Value == 0 && _numWetLogs.Value > 0)
         {
-            PlayerDialogue.Instance.PostMessage("These are all still wet...");
+            PlayerDialogue.Instance.PostMessage("this wood is wet");
             return;
         }
 
-        // Add a dry log to inventory
         if (_inventory.TryAddItem(_dryLog, 1))
-        {
             _numDryLogs.Value--;
-        }
-        else
-        {
-            PlayerDialogue.Instance.PostMessage("I'm all full up...");
-        }
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        if (_inventory.TryGetActiveItemType(out var _activeItem))
-        {
-            switch (_activeItem.ItemLabel)
-            {
-                case "DryLog":
-                    if (!IsRackFull())
-                    {
-                        AddDryLog();
-                    }
-                    break;
-                case "WetLog":
-                    if (!IsRackFull())
-                    {
-                        AddWetLog();
-                    }
-                    break;
-                default:
-                    RemoveDryLog();
-                    break;
-            }
-        }
-        else
-        {
-            RemoveDryLog();
-        }
+        RemoveDryLog();
         return true;
     }
 
@@ -192,7 +142,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         };
 
         var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddIdentifier(_identifier);
         _saveData.AddTransformPosition(transform.position);
         _saveData.AddExtendedSaveData<WoodRackSaveData>(_extendedData);
 

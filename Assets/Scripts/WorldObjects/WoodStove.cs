@@ -17,6 +17,8 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     private Reactive<FireStates> _stoveState = new Reactive<FireStates>(FireStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
+    [SerializeField] private AudioClip _fireSFX;
+    [SerializeField] private float _fireVolume = 1f;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Inventory.ItemType _firewood;
     [SerializeField] private Inventory.ItemType _dryWood;
@@ -32,6 +34,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
     [SerializeField] float _fireMaxIntensity = 2f;
     [SerializeField] private int _hotFireDurationGameMinutes = 60;
     private List<Action> _unsubscribeHooks = new();
+    private Action _stopAudio;
 
     private void OnEnable()
     {
@@ -46,6 +49,11 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
 
     private void OnDisable()
     {
+        if (_stopAudio != null)
+        {
+            _stopAudio();
+            _stopAudio = null;
+        }
         GameClock.Instance.OnGameMinuteTick -= OnGameMinuteTick;
         foreach (var _hook in _unsubscribeHooks)
             _hook();
@@ -101,7 +109,8 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
 
     private void EnterEmbers()
     {
-        _animator.speed = 0.0f;
+        StopFireSFX();
+        _animator.speed = 0.05f;
         _animator.Play("Embers");
         _localHeatSource.enabled = true;
         _localHeatSource.Temperature = Temperature.Warm;
@@ -135,6 +144,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
                 return true;
             case FireStates.Ready: // Start fire
                 _stoveState.Value = FireStates.Hot;
+                StartFireSFX();
                 Narrator.Instance.PostMessage("the room grows warm.");
                 return true;
             default:
@@ -142,7 +152,8 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         }
     }
 
-    public bool AddFirewood() {
+    public bool AddFirewood()
+    {
         if (_stoveState.Value == FireStates.Ready)
             return false;
 
@@ -161,6 +172,7 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         if (_stoveState.Value == FireStates.Embers)
         {
             _stoveState.Value = FireStates.Hot;
+            StartFireSFX();
             Narrator.Instance.PostMessage("you stoke the flames.");
             return true;
         }
@@ -189,5 +201,23 @@ public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, 
         var _extendedData = saveData.GetExtendedSaveData<WoodStoveSaveData>();
         _stoveState.Value = _extendedData.State;
         _fireDurationCounterGameMinutes = _extendedData.FireDurationCounterGameMinutes;
+
+        if (_stoveState.Value == FireStates.Hot)
+            StartFireSFX();
+    }
+
+    private void StopFireSFX()
+    {
+        if (_stopAudio != null)
+        {
+            _stopAudio();
+            _stopAudio = null;
+        }
+    }
+
+    private void StartFireSFX()
+    {
+        if (_fireSFX != null && _stopAudio == null)
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_fireSFX, _fireVolume);
     }
 }

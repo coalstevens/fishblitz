@@ -57,9 +57,9 @@ public class RainAudio : ScriptableObject
     private void PlayRainAudio(bool isMuffled)
     {
         if (isMuffled)
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, _muffledRainVolume, true);
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, _muffledRainVolume);
         else
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, _rainVolume, true);
+            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, _rainVolume);
     }
 
     private void StopRainAudio()

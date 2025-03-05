@@ -88,10 +88,14 @@ public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable,
             _state.Value = StumpStates.Splitting;
     }
 
-    public void LoadLog()
+    public bool TryLoadLog()
     {
-        if (_inventory.TryRemoveItem(_dryLog, 1))
+        if (_state.Value == StumpStates.Idle)
+        {
             _state.Value = StumpStates.LogOn;
+            return true;
+        }
+        return false;
     }
 
     private IEnumerator WaitForAnimationThenSpawnFirewood()
