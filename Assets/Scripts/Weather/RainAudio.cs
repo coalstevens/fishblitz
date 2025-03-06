@@ -4,62 +4,60 @@ using UnityEngine.SceneManagement;
 using ReactiveUnity;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "Rain", menuName = "Weather/Rain")]
+[CreateAssetMenu(fileName = "RainAudio", menuName = "Weather/Rain")]
 public class RainAudio : ScriptableObject
 {
-    [SerializeField] private AudioClip _muffledRainSFX;
-    [SerializeField] private float _muffledRainVolume = 1f;
-    [SerializeField] private AudioClip _RainSFX;
-    [SerializeField] private float _rainVolume = 0.3f;
-    private Reactive<bool> _isRainMuffled = new Reactive<bool>(false);
+    private enum SoundType { Interior, HeavyExterior }
+
+    [Serializable]
+    private class SoundEffect
+    {
+        public SoundType _type;
+        public AudioClip _sfxClip;
+        public float _volume;
+    }
+    [SerializeField] List<SoundEffect> _rainSounds = new();
     private Action _stopAudio;
     private List<Action> _unsubscribe = new();
+    private Reactive<SoundType> _currentSoundType = new Reactive<SoundType>(SoundType.HeavyExterior);
 
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribe.Add(WorldState.RainState.OnChange(curr => OnStateChange(curr)));
-        _unsubscribe.Add(_isRainMuffled.OnChange(curr => OnMuffleChange(curr)));
+        _unsubscribe.Add(WorldState.RainState.OnChange(_ => UpdateRainAudio()));
+        _unsubscribe.Add(_currentSoundType.OnChange(_ => UpdateRainAudio()));
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
         StopRainAudio();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (var hook in _unsubscribe)
             hook();
+        _unsubscribe.Clear();
     }
 
-    public void OnStateChange(WorldState.RainStates curr)
+    public void UpdateRainAudio()
     {
-        switch (curr)
+        StopRainAudio();
+        switch (WorldState.RainState.Value)
         {
             case WorldState.RainStates.HeavyRain:
-                if (_stopAudio == null)
-                    PlayRainAudio(_isRainMuffled.Value);
-                break;
-            case WorldState.RainStates.NoRain:
-                StopRainAudio();
-                break;
-            default:
-                Debug.LogError("Rain state does not exist.");
+                PlayRainAudio();
                 break;
         }
     }
 
-    private void OnMuffleChange(bool isMuffled)
+    private void PlayRainAudio()
     {
-        if (WorldState.RainState.Value == WorldState.RainStates.NoRain) return;
-        StopRainAudio();
-        PlayRainAudio(isMuffled);
-    }
+        SoundEffect _sfx = _rainSounds.Find(sfx => sfx._type == _currentSoundType.Value);
+        if (_sfx == null)
+        {
+            Debug.LogError("No matching sound effect found for the current scene.");
+            return;
+        }
 
-    private void PlayRainAudio(bool isMuffled)
-    {
-        if (isMuffled)
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_muffledRainSFX, _muffledRainVolume);
-        else
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_RainSFX, _rainVolume);
+        _stopAudio = AudioManager.Instance.PlayLoopingSFX(_sfx._sfxClip, _sfx._volume);
     }
 
     private void StopRainAudio()
@@ -71,22 +69,24 @@ public class RainAudio : ScriptableObject
         }
     }
 
-    private bool IsRainMuffled()
+    private SoundType GetSceneSoundType(string sceneName)
     {
-        return SceneManager.GetActiveScene().name switch
+        return sceneName switch
         {
-            "Abandoned Shed" => true,
-            "SleepMenu" => true,
-            "Outside" => false,
-            "Boot" => false,
-            _ => false
+            "Abandoned Shed" => SoundType.Interior,
+            "SleepMenu" => SoundType.Interior,
+            "Waterfall Cave" => SoundType.Interior,
+            "Outside" => SoundType.HeavyExterior,
+            "Boot" => SoundType.HeavyExterior,
+            _ => SoundType.HeavyExterior
         };
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _isRainMuffled.Value = IsRainMuffled();
         if (_stopAudio == null)
-            PlayRainAudio(_isRainMuffled.Value);
+            UpdateRainAudio();
+        if (mode != LoadSceneMode.Additive)
+            _currentSoundType.Value = GetSceneSoundType(scene.name);
     }
 }

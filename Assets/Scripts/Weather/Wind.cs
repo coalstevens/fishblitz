@@ -18,7 +18,7 @@ public class Wind : MonoBehaviour
     [SerializeField] private float _larchGustStrength = 1;
     [SerializeField] private float _spruceGustStrength = 0.5f;
     [SerializeField] private ParticleSystem _rain;
-    [SerializeField] private ParticleSystemForceField _windAOE;
+    [SerializeField] private ParticleSystemForceField _windForceField;
     private PlayerMovementController _playerMovementController;
     [SerializeField] private float _rainParticleRotationScalar = 0.1f;
     [SerializeField] private float _playerMoveSpeedMultiplier = 0.4f;
@@ -29,7 +29,7 @@ public class Wind : MonoBehaviour
     [SerializeField] private float _flucFrequency = 0.5f;
 
     [Header("Gust Settings")]
-    [SerializeField] private bool _gustEnabled = true;
+    [SerializeField] private bool _isGustingEnabled = true;
     [SerializeField] private float _gustPeakDurationSecs = 5;
     [SerializeField] private float _gustGrowthPerFrame = 0.001f;
     [SerializeField] private float _gustDecayPerFrame = 0.0002f;
@@ -55,10 +55,13 @@ public class Wind : MonoBehaviour
 
     void Start()
     {
-        _playerMovementController = PlayerMovementController.Instance; 
+        _playerMovementController = PlayerMovementController.Instance;
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
-        _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_windSFX, _normalVolume, false, true, 2); 
+        _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_windSFX, _normalVolume, false, true, 2);
+        
+        _isGustingEnabled = WorldState.WindState.Value == WorldState.WindStates.Windy;
+
         GetOriginalTreeValues();
         EnterFluctuation();
     }
@@ -67,7 +70,7 @@ public class Wind : MonoBehaviour
     {
         switch (current)
         {
-            case WindStates.GustBuilding: 
+            case WindStates.GustBuilding:
                 AudioManager.Instance.TryAdjustVolume(_windSFX, _gustingVolume, 1f);
                 break;
             case WindStates.GustPeak:
@@ -91,7 +94,7 @@ public class Wind : MonoBehaviour
 
     void Update()
     {
-        _windAOE.transform.position = _playerCamera.transform.position;
+        _windForceField.transform.position = _playerCamera.transform.position;
 
         // Update wind vector
         switch (WindState.Value)
@@ -114,13 +117,11 @@ public class Wind : MonoBehaviour
 
     private void ApplyWindVectorToAffectedEntities()
     {
-        // Adjust the amount of bending on the tree material
         _larchMaterial.SetFloat("_BendDirection", _windXVector);
         _spruceMaterial.SetFloat("_BendDirection", _windXVector);
 
-        // Set the force field force
-        _windAOE.directionX = _windXVector;
 
+        _windForceField.directionX = _windXVector;
         // Add some slight rotation to the raindrops
         var rot = _rain.rotationOverLifetime;
         rot.z = new ParticleSystem.MinMaxCurve(-1 * _windXVector * _rainParticleRotationScalar);
@@ -158,7 +159,7 @@ public class Wind : MonoBehaviour
     {
         _windXVector = GetFluctuationValue();
 
-        if (!_gustEnabled)
+        if (!_isGustingEnabled)
         {
             return;
         }
@@ -211,31 +212,36 @@ public class Wind : MonoBehaviour
     {
         // Reset multiplier when exiting scene
         _playerMovementController.SetMoveSpeedMultiplier(new CardinalVector(1));
-        
+
         ResetTreeMaterials();
     }
 
-    public void GetOriginalTreeValues() {
+    public void GetOriginalTreeValues()
+    {
         _spruceOriginalSpeed = _spruceMaterial.GetVector("_WindSpeed").x;
         _spruceOriginalStrength = _spruceMaterial.GetFloat("_WindStrength");
         _larchOriginalSpeed = _larchMaterial.GetVector("_WindSpeed").x;
         _larchOriginalStrength = _larchMaterial.GetFloat("_WindStrength");
     }
-   public void StartTreeShake() {
-        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceGustSpeed,0,0,0));
+
+    public void StartTreeShake()
+    {
+        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceGustSpeed, 0, 0, 0));
         _spruceMaterial.SetFloat("_WindStrength", _spruceGustStrength);
-        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchGustSpeed,0,0,0));
+        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchGustSpeed, 0, 0, 0));
         _larchMaterial.SetFloat("_WindStrength", _larchGustStrength);
     }
 
-    public void StopTreeShake() {
+    public void StopTreeShake()
+    {
         ResetTreeMaterials();
-    } 
+    }
 
-    private void ResetTreeMaterials() {
-        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceOriginalSpeed,0,0,0));
+    private void ResetTreeMaterials()
+    {
+        _spruceMaterial.SetVector("_WindSpeed", new Vector4(_spruceOriginalSpeed, 0, 0, 0));
         _spruceMaterial.SetFloat("_WindStrength", _spruceOriginalStrength);
-        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchOriginalSpeed,0,0,0));
+        _larchMaterial.SetVector("_WindSpeed", new Vector4(_larchOriginalSpeed, 0, 0, 0));
         _larchMaterial.SetFloat("_WindStrength", _larchOriginalStrength);
     }
 }

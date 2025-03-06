@@ -12,7 +12,9 @@ public class WorldStateCalendar : Singleton<WorldStateCalendar>
         public GameClock.Seasons Season;
         public WorldState.WaterStates WaterState;
         public WorldState.RainStates RainState;
+        public WorldState.WindStates WindState;
     }
+
     [SerializeField] private GameClock _gameclock;
     [SerializeField] private Logger _logger = new();
     [SerializeField] private List<DayState> _calendar = new();

@@ -46,7 +46,7 @@ public class BootManager : MonoBehaviour
     private void Start()
     {
         _worldStateCalendar.UpdateWorldState();
-        _rainManager.OnStateChange(WorldState.RainState.Value);
+        _rainManager.UpdateRainAudio();
     }
 
     private void SetInitialPlayerState() 

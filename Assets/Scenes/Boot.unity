@@ -950,51 +950,61 @@ MonoBehaviour:
     Season: 0
     WaterState: 0
     RainState: 0
+    WindState: 0
   - GameYear: 1
     GameDay: 12
     Season: 0
     WaterState: 3
     RainState: 0
+    WindState: 0
   - GameYear: 1
     GameDay: 13
     Season: 0
     WaterState: 2
     RainState: 0
+    WindState: 0
   - GameYear: 1
     GameDay: 14
     Season: 0
     WaterState: 1
     RainState: 0
+    WindState: 0
   - GameYear: 1
     GameDay: 15
     Season: 0
     WaterState: 1
     RainState: 0
+    WindState: 1
   - GameYear: 1
     GameDay: 1
     Season: 1
     WaterState: 4
     RainState: 1
+    WindState: 1
   - GameYear: 1
     GameDay: 2
     Season: 1
     WaterState: 4
     RainState: 1
+    WindState: 1
   - GameYear: 1
     GameDay: 3
     Season: 1
     WaterState: 2
     RainState: 1
+    WindState: 1
   - GameYear: 1
     GameDay: 4
     Season: 1
     WaterState: 2
     RainState: 1
+    WindState: 1
   - GameYear: 1
     GameDay: 5
     Season: 1
     WaterState: 2
     RainState: 1
+    WindState: 1
 --- !u!114 &285846308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3800,7 +3810,7 @@ MonoBehaviour:
     _prefix: Gameclock
     _color: white
   GameClockPaused: 0
-  _startDay: 13
+  _startDay: 15
   _startHour: 20
   _startMinute: 0
   _startSeason: 0

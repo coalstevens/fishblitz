@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a7759eb92a44f528a4cf36b0af9352, type: 3}
   m_Name: Rain
   m_EditorClassIdentifier: 
-  _muffledRainSFX: {fileID: 8300000, guid: 8943d37280bb543c0aabf0f3b911216b, type: 3}
-  _muffledRainVolume: 0.3
-  _RainSFX: {fileID: 8300000, guid: df97200eeae5940ce858e203a6927863, type: 3}
-  _rainVolume: 0.3
+  _rainSounds:
+  - _type: 0
+    _sfxClip: {fileID: 8300000, guid: 8943d37280bb543c0aabf0f3b911216b, type: 3}
+    _volume: 0.3
+  - _type: 1
+    _sfxClip: {fileID: 8300000, guid: df97200eeae5940ce858e203a6927863, type: 3}
+    _volume: 0.3
