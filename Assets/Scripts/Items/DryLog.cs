@@ -18,12 +18,6 @@ public class DryLog : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorl
             return true;
         }
 
-        // if (interactableWorldObject is WoodStove || interactableWorldObject is Campfire)
-        // {
-        //     PlayerDialogue.Instance.PostMessage("i need to chop this first");
-        //     return true;
-        // }
-
         if (interactableWorldObject is WoodRack _rack)
         {
             if (_rack.TryAddDryLog())

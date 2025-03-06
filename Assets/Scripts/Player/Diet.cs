@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 static class Diet
 {
     public interface IFood
@@ -7,15 +10,24 @@ static class Diet
         public int Nutrients { get; }
     }
 
+    private static List<(float, string)> _recoveryMessages = new List<(float, string)>
+    {
+        (0f, "your stomach is empty. hunger gnaws."),
+        (0.1f, "the scraps you found offer little relief."),
+        (0.33f, "it wasn't much to eat. it keeps you going."),
+        (0.66f, "your hunger fades. your strength returns."),
+        (1f, "you ate well. you feel whole."),
+    };
+
     public static void EatFood(PlayerData playerData, IFood food)
     {
         playerData.TodaysProtein = playerData.TodaysProtein + food.Protein > PlayerData.PROTEIN_REQUIRED_DAILY ? PlayerData.PROTEIN_REQUIRED_DAILY : playerData.TodaysProtein + food.Protein;
         playerData.TodaysCarbs = playerData.TodaysCarbs + food.Carbs > PlayerData.CARBS_REQUIRED_DAILY ? PlayerData.CARBS_REQUIRED_DAILY : playerData.TodaysCarbs + food.Carbs;
-        playerData.TodaysNutrients = playerData.TodaysNutrients + food.Nutrients > PlayerData.NURTRIENTS_REQUIRD_DAILY ? PlayerData.NURTRIENTS_REQUIRD_DAILY : playerData.TodaysNutrients + food.Nutrients;
+        playerData.TodaysNutrients = playerData.TodaysNutrients + food.Nutrients > PlayerData.NUTRIENTS_REQUIRED_DAILY ? PlayerData.NUTRIENTS_REQUIRED_DAILY : playerData.TodaysNutrients + food.Nutrients;
         PrintFoodMessage(food);
     }
-    
-    private static void PrintFoodMessage(IFood food) 
+
+    private static void PrintFoodMessage(IFood food)
     {
         if (Narrator.Instance == null) return;
 
@@ -34,11 +46,22 @@ static class Diet
 
     public static float GetRecoveryRatio(PlayerData playerData)
     {
-        return 
+        return
         (
-            playerData.TodaysProtein / PlayerData.PROTEIN_REQUIRED_DAILY + 
-            playerData.TodaysCarbs / PlayerData.CARBS_REQUIRED_DAILY + 
-            playerData.TodaysNutrients / PlayerData.NURTRIENTS_REQUIRD_DAILY
+            playerData.TodaysProtein / PlayerData.PROTEIN_REQUIRED_DAILY +
+            playerData.TodaysCarbs / PlayerData.CARBS_REQUIRED_DAILY +
+            playerData.TodaysNutrients / PlayerData.NUTRIENTS_REQUIRED_DAILY
         ) / 3;
+    }
+
+    public static string GetRecoveryMessage(PlayerData playerData)
+    {
+        float _recoveryRatio = GetRecoveryRatio(playerData);
+        for (int i = _recoveryMessages.Count - 1; i >= 0; i--)
+            if (_recoveryRatio <= _recoveryMessages[i].Item1)
+                return _recoveryMessages[i].Item2;
+
+        Debug.LogError("Unreachable code reached.");
+        return "";
     }
 }

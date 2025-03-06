@@ -26,7 +26,7 @@ public static class SleepQuality
         [Temperature.Hot] = 6
     };
 
-    private static Dictionary<Temperature, string> _awakeMessages = new Dictionary<Temperature, string>
+    private static Dictionary<Temperature, string> _recoveryMessages = new Dictionary<Temperature, string>
     {
         [Temperature.Freezing] = "the night was freezing. you barely slept.",
         [Temperature.Cold] = "the night was cold, you slept lightly.",
@@ -44,9 +44,9 @@ public static class SleepQuality
         return 7; // default to 7am
     }
 
-    public static string GetAwakeMessage(Temperature playerTemperature)
+    public static string GetRecoveryMessage(Temperature playerTemperature)
     {
-        if (_awakeMessages.TryGetValue(playerTemperature, out var _message))
+        if (_recoveryMessages.TryGetValue(playerTemperature, out var _message))
             return _message;
 
         Debug.LogError("There is no awake hour for the given temperature");

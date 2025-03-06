@@ -23,9 +23,9 @@ public class PlayerData : ScriptableObject
     public int TodaysNutrients = 0;
     public const int PROTEIN_REQUIRED_DAILY = 100;
     public const int CARBS_REQUIRED_DAILY = 100;
-    public const int NURTRIENTS_REQUIRD_DAILY = 100;
+    public const int NUTRIENTS_REQUIRED_DAILY = 100;
 
-    [Header("Dryness")]
+    [Header("Dryness")] 
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
     public Reactive<Temperature> ActualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
     public Reactive<Temperature> DryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);

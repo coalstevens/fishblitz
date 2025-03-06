@@ -56,7 +56,7 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
         carbsSizeDelta.x = carbsWidth;
         _carbsBar.rectTransform.sizeDelta = carbsSizeDelta;
 
-        float nutrientsWidth = Mathf.Lerp(0, _maxBarWidth, (float)_playerData.TodaysNutrients / PlayerData.NURTRIENTS_REQUIRD_DAILY);
+        float nutrientsWidth = Mathf.Lerp(0, _maxBarWidth, (float)_playerData.TodaysNutrients / PlayerData.NUTRIENTS_REQUIRED_DAILY);
         var nutrientsSizeDelta = _nutrientsBar.rectTransform.sizeDelta;
         nutrientsSizeDelta.x = nutrientsWidth;
         _nutrientsBar.rectTransform.sizeDelta = nutrientsSizeDelta;
