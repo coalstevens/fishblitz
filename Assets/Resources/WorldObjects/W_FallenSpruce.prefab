@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fallsEast: 0
-  _idle: {fileID: 1842751373713753437, guid: 7915c418df39e4fc6bb9941d98492f3f, type: 3}
+  _idle: {fileID: -7417393219636278539, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
   _falling: {fileID: 1083624060261415816, guid: 218ecf8f3968344709e111286dde80c3, type: 3}
   _shakeDuration: 0.5
   _shakeStrength: 0.05
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2f82c58cff8d4d4484fd58637ca8e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnOnDestroy: 1
+  _spawnOnDisable: 1
   _itemsToSpawn:
   - ItemType: {fileID: 11400000, guid: 10b2fa3e6e9d44fa9bd2ed7a36f824d7, type: 2}
     MinQuantity: 2
