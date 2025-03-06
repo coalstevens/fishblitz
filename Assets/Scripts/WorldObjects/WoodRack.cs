@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
     }
 
     [SerializeField] private string _identifier = "WoodRack";
+    [SerializeField] private PlayerData _playerData;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Sprite[] _rackSprites;
     [SerializeField] private Inventory.ItemType _dryLog;
@@ -41,9 +43,9 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         _unsubscribeCBs.Add(_numDryLogs.OnChange(_ => UpdateRackSprite()));
         _unsubscribeCBs.Add(_numWetLogs.OnChange((prev, curr) => PostAllLogsDryMessage(prev, curr)));
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
-        for (int i = 0; i < _startingWetLogs; i++) 
+        for (int i = 0; i < _startingWetLogs; i++)
             TryAddWetLog();
-        for (int i = 0; i < _startingDryLogs; i++) 
+        for (int i = 0; i < _startingDryLogs; i++)
             TryAddDryLog();
         UpdateRackSprite();
     }
@@ -58,8 +60,20 @@ public class WoodRack : MonoBehaviour, PlayerInteractionManager.IInteractable, G
 
     private void PostAllLogsDryMessage(int previousCount, int currentCount)
     {
-        if (previousCount > 0 && currentCount == 0)
-            Narrator.Instance.PostMessage("All logs on the woodrack have dried out.");
+        string _message = "All logs on the woodrack have dried out.";
+        if (previousCount > 0 && currentCount == 0) 
+        {
+            if (_playerData.IsPlayerSleeping)
+                Narrator.Instance.PostMessage(_message);
+            else
+                StartCoroutine(WaitToPostMessage(_message)); // waiting for narrator to load in
+        }
+    }
+
+    private IEnumerator WaitToPostMessage(string message)
+    { 
+        yield return null;
+        Narrator.Instance.PostMessage(message);
     }
 
     private void UpdateRackSprite()

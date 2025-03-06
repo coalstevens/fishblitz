@@ -18,12 +18,12 @@ public class PlayerData : ScriptableObject
     public int MaxEnergy = 100;
 
     [Header("Diet")]
-    public int TodaysProtein = 0;
-    public int TodaysCarbs = 0;
-    public int TodaysNutrients = 0;
-    public const int PROTEIN_REQUIRED_DAILY = 100;
-    public const int CARBS_REQUIRED_DAILY = 100;
-    public const int NUTRIENTS_REQUIRED_DAILY = 100;
+    public float TodaysProtein = 0;
+    public float TodaysCarbs = 0;
+    public float TodaysNutrients = 0;
+    public const float PROTEIN_REQUIRED_DAILY = 100;
+    public const float CARBS_REQUIRED_DAILY = 100;
+    public const float NUTRIENTS_REQUIRED_DAILY = 100;
 
     [Header("Dryness")] 
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);

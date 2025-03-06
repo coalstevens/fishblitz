@@ -57,8 +57,9 @@ static class Diet
     public static string GetRecoveryMessage(PlayerData playerData)
     {
         float _recoveryRatio = GetRecoveryRatio(playerData);
+        Debug.Log($"Food recovery value: {_recoveryRatio}");
         for (int i = _recoveryMessages.Count - 1; i >= 0; i--)
-            if (_recoveryRatio <= _recoveryMessages[i].Item1)
+            if (_recoveryRatio >= _recoveryMessages[i].Item1)
                 return _recoveryMessages[i].Item2;
 
         Debug.LogError("Unreachable code reached.");

@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _identifier: WoodRackSmall
+  _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _inventory: {fileID: 11400000, guid: bb05bba148edf495b8bd16e44a2260f0, type: 2}
   _rackSprites:
   - {fileID: -4706165387472886269, guid: fbe29ed7f204f478ca722ddc56c46e47, type: 3}
@@ -190,7 +191,6 @@ MonoBehaviour:
   _dryLog: {fileID: 11400000, guid: 0469918a5730a48679387fe460199c62, type: 2}
   _wetLog: {fileID: 11400000, guid: 10b2fa3e6e9d44fa9bd2ed7a36f824d7, type: 2}
   _rackLogCapacity: 6
-  _numWetLogs:
-    _val: 0
-  _numDryLogs:
-    _val: 0
+  _startingWetLogs: 0
+  _startingDryLogs: 0
+  _logDryingTimers: []
