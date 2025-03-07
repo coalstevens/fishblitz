@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemCursor : MonoBehaviour
 {
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private Transform _inventoryContainer;
+    [SerializeField] private Transform _itemSlotContainer;
     [Header("Label")]
     [SerializeField] private RectTransform _fill;
     [SerializeField] private TextMeshProUGUI _text;
@@ -29,7 +29,7 @@ public class ItemCursor : MonoBehaviour
 
     private void OnActiveItemChange(int newSlotNum)
     {
-        transform.position = _inventoryContainer.GetChild(newSlotNum).position;
+        transform.position = _itemSlotContainer.GetChild(newSlotNum).position;
         UpdateLabel(newSlotNum);
     }
 

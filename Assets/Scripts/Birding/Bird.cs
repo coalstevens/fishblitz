@@ -37,7 +37,6 @@ public class Bird : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other != _beam) return;
-        Debug.Log("Beam collider detected.");
         BeamHoveredElapsedSeconds.Value += Time.deltaTime;
         if (BeamHoveredElapsedSeconds.Value >= TimetoCatchSeconds && !Caught.Value)
             OnCaught();
