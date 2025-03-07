@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 602916560364616551}
   - component: {fileID: 8069647239064676079}
   - component: {fileID: 5763836562655645790}
+  - component: {fileID: 4040873764866879436}
   m_Layer: 0
   m_Name: LogPile
   m_TagString: Untagged
@@ -167,3 +168,19 @@ MonoBehaviour:
   - {fileID: 1017415512737200433, guid: 5db110db3d3b146249ed109b779fb505, type: 3}
   - {fileID: 1743122336343530349, guid: 5db110db3d3b146249ed109b779fb505, type: 3}
   _logItemType: {fileID: 11400000, guid: 0469918a5730a48679387fe460199c62, type: 2}
+--- !u!114 &4040873764866879436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb6ec90b8ef74a50a6b91415c3d78be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraTilesToLeft: 0
+  extraTilesToRight: 0
+  extraTilesAbove: 0
+  extraTilesBelow: 0

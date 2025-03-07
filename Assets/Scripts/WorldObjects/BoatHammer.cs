@@ -1,10 +1,11 @@
 using UnityEngine;
 
+// This class is so that the hammer has a unique collider when it's leaning against the boat 
 public class BoatHammer : MonoBehaviour, PlayerInteractionManager.IInteractable
 {
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private Inventory.ItemType _hammer;
-    BeachedBoat _beachedBoat;
+    private BeachedBoat _beachedBoat;
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
@@ -12,7 +13,6 @@ public class BoatHammer : MonoBehaviour, PlayerInteractionManager.IInteractable
         {
             PlayerDialogue.Instance.PostMessage("Looks a little rusty");
             _beachedBoat.RemoveHammer();
-            GameObject.Destroy(this);
         }
         else
         {

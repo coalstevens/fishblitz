@@ -105,8 +105,8 @@ GameObject:
   - component: {fileID: 2735282465885396377}
   - component: {fileID: 2830209708523369752}
   - component: {fileID: 4021717091281597496}
-  - component: {fileID: 6045477378818906792}
   - component: {fileID: 4305620982733036640}
+  - component: {fileID: 7185330013688711421}
   m_Layer: 0
   m_Name: Boat
   m_TagString: Untagged
@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb725868e97e4ce7a41474a1bc4019a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _identifier: BeachedBoat
   _boat: {fileID: -7110420899443501998, guid: fb3acf93984d14dd6a311a3b2bb51b3c, type: 3}
   _damagedBoat: {fileID: -3240432804971586756, guid: fb3acf93984d14dd6a311a3b2bb51b3c, type: 3}
   _damagedBoatWithHammer: {fileID: -1542915666772802605, guid: fb3acf93984d14dd6a311a3b2bb51b3c, type: 3}
@@ -259,18 +260,6 @@ PolygonCollider2D:
       - {x: 1.3168716, y: 0.8098817}
       - {x: 1.261856, y: 0.9609456}
   m_UseDelaunayMesh: 0
---- !u!114 &6045477378818906792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5481940331449367124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4305620982733036640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,3 +276,15 @@ MonoBehaviour:
   extraTilesToRight: 0
   extraTilesAbove: 0
   extraTilesBelow: 0
+--- !u!114 &7185330013688711421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481940331449367124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

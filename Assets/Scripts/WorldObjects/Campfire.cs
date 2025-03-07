@@ -131,7 +131,6 @@ public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, G
         switch (_stoveState.Value)
         {
             case FireStates.Dead:
-                Narrator.Instance.PostMessage("the stove is cold.");
                 return true;
             case FireStates.Ready: // Start fire
                 _stoveState.Value = FireStates.Hot;
