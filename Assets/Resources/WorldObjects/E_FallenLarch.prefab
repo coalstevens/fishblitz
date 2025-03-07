@@ -129,7 +129,7 @@ Transform:
   m_GameObject: {fileID: 8824272052186368021}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5, y: 8.5, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -170,8 +170,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -3.6110034, y: -0.8067633}
-  m_Size: {x: 3.0069175, y: 0.8316227}
+  m_Offset: {x: -3.5249238, y: -0.641225}
+  m_Size: {x: 3.1790776, y: 0.67270833}
   m_Direction: 1
 --- !u!95 &6938546424267943343
 Animator:
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2f82c58cff8d4d4484fd58637ca8e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnOnDestroy: 1
+  _spawnOnDisable: 1
   _itemsToSpawn:
   - ItemType: {fileID: 11400000, guid: 10b2fa3e6e9d44fa9bd2ed7a36f824d7, type: 2}
     MinQuantity: 3

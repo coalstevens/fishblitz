@@ -2015,12 +2015,12 @@ MonoBehaviour:
   _rainManager: {fileID: 11400000, guid: bebb3cc9b17a94c3ab00bc48719e471d, type: 2}
   _worldStateCalendar: {fileID: 285846307}
   _toScene: Outside
-  _spawnPosition: 2
+  _spawnPosition: 0
   _useCustomSpawn: 0
   _customSpawnLocation: {x: 0, y: 0, z: 0}
   _initialWetnessState: 3
   _initialTemperature: 2
-  _initialEnergy: 100
+  _initialEnergy: 0
 --- !u!4 &1138146526
 Transform:
   m_ObjectHideFlags: 0
@@ -3810,10 +3810,10 @@ MonoBehaviour:
     _prefix: Gameclock
     _color: white
   GameClockPaused: 0
-  _startDay: 1
-  _startHour: 12
+  _startDay: 11
+  _startHour: 20
   _startMinute: 0
-  _startSeason: 1
+  _startSeason: 0
   _startYear: 1
   GameIsPaused:
     _val: 0
