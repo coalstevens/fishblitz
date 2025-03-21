@@ -5,23 +5,26 @@ using UnityEngine;
 public class PlayerAnimatorController : MonoBehaviour
 {
     private Animator _animator;
-    private PlayerMovementController _playerMovementController;
     [SerializeField] private Inventory _inventory;
+    [SerializeField] private PlayerData _playerData;
+    private PlayerMovementController _playerMovementController;
     private List<Action> _unsubscribeHooks = new();
+
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
         _animator = GetComponent<Animator>();
+        _playerMovementController = GetComponentInParent<PlayerMovementController>();
 
-        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev, curr) => OnStateChange(curr)));
-        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange((prev, curr) => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange(curr => OnStateChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerData.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
     }
 
     private void OnDisable()
     {
         foreach (var hook in _unsubscribeHooks)
-            hook(); 
+            hook();
         _unsubscribeHooks.Clear();
     }
 
@@ -78,6 +81,7 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
+
     private void HandleChopping(FacingDirection facingDir)
     {
         switch (facingDir)
@@ -119,14 +123,18 @@ public class PlayerAnimatorController : MonoBehaviour
     }
     private void HandleWalking(FacingDirection facingDir)
     {
-        // Active item null
+        if (_playerData.IsHoldingWheelBarrow.Value)
+        {
+            HandleBarrowWalking(facingDir);
+            return;
+        }
+
         if (!_inventory.TryGetActiveItemType(out var _activeItem))
         {
             HandleNoToolWalking(facingDir);
             return;
         }
 
-        // Active item switch
         switch (_activeItem.ItemLabel)
         {
             case "Axe":
@@ -176,16 +184,39 @@ public class PlayerAnimatorController : MonoBehaviour
         }
     }
 
+    private void HandleBarrowWalking(FacingDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_Barrow", 0, 0.25f);
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_Barrow", 0, 0.25f);
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_Barrow", 0, 0.25f);
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_Barrow", 0, 0.25f);
+                break;
+        }
+    }
+
     private void HandleIdle(FacingDirection facingDir)
     {
-        // Active item null
+        if (_playerData.IsHoldingWheelBarrow.Value)
+        {
+            HandleBarrowIdle(facingDir);
+            return;
+        }
+
         if (!_inventory.TryGetActiveItemType(out var _activeItem))
         {
             HandleNoToolIdle(facingDir);
             return;
         }
 
-        // Active item switch
         switch (_activeItem.ItemLabel)
         {
             case "Axe":
@@ -215,6 +246,7 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
+
     private void HandleAxeIdle(FacingDirection facingDir)
     {
         switch (facingDir)
@@ -233,6 +265,45 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
+
+    private void HandleCarryIdle(FacingDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_CarryIdle");
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_CarryIdle");
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_CarryIdle");
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_CarryIdle");
+                break;
+        }
+    }
+
+    private void HandleBarrowIdle(FacingDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_BarrowIdle");
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_BarrowIdle");
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_BarrowIdle");
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_BarrowIdle");
+                break;
+        }
+    }
+
 
     private void SetPlayerIdle()
     {

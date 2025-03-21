@@ -30,6 +30,7 @@ public class PlayerData : ScriptableObject
     public Reactive<Temperature> ActualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
     public Reactive<Temperature> DryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
     public Reactive<WetnessStates> WetnessState = new Reactive<WetnessStates>(WetnessStates.Wet);
+    public Reactive<bool> IsHoldingWheelBarrow = new Reactive<bool>(false);
     public int DryingPointsCounter = 0;
     public int WettingGameMinCounter = 0;
     public int CounterToMatchAmbientGamemins = 0;

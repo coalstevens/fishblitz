@@ -61,6 +61,7 @@ public class BootManager : MonoBehaviour
         _playerData.CurrentEnergy.Value = _initialEnergy;
         _playerData.IsPlayerSleeping = false;
         _playerInventory.ActiveItemSlot.Value = 0;
+        _playerData.IsHoldingWheelBarrow.Value = false;
     }
 
     private IEnumerator OpeningDialogue()

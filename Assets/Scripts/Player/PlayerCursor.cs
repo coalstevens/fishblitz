@@ -3,6 +3,7 @@ using UnityEngine;
 using ReactiveUnity;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// Handles the Player world cursor.
@@ -15,22 +16,19 @@ public class PlayerCursor : MonoBehaviour
     [SerializeField] public Transform _renderedTransform;
     [SerializeField] private FacingDirection _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SortingGroup _playerSpriteSortingGroup;
     [SerializeField] private Collider2D _collider;
     public Collider2D Collider {
         get => _collider;
     }
     private PlayerMovementController _playerMovementController;
     private Grid _grid;
-    private SpriteRenderer _playerSpriteRenderer;
     private List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()
     {
-        // References
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
-        _playerSpriteRenderer = GameObject.FindWithTag("Player").GetComponent<SpriteRenderer>();
 
-        // Subscriptions
         SceneManager.sceneLoaded += OnSceneLoaded;
         _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
         _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev,curr) => TryHideCursor(curr)));
@@ -70,7 +68,7 @@ public class PlayerCursor : MonoBehaviour
     {
         if (_grid != null) {
             _renderedTransform.position = _grid.WorldToCell(transform.position);
-            _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteRenderer.sortingOrder;
+            _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteSortingGroup.sortingOrder;
         }
     }
 }
