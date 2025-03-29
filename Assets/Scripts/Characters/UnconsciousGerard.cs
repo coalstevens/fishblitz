@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnconsciousGerard : MonoBehaviour, PlayerInteractionManager.IInteractable, IGiftAble
+public class UnconsciousGerard : MonoBehaviour, InteractInput.IInteractable, IGiftReceiving
 {
     private List<string> _initialMessages = new()
     {

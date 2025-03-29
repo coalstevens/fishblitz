@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FlyAgaric2", menuName = "Items/FlyAgaric2")]
-public class FlyAgaric2 : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.IUsableWithoutTarget
+public class FlyAgaric2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget
 {
    [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;

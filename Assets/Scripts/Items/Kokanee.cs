@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewKokanee", menuName = "Items/Kokanee")]
-public class Kokanee : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IUsableOnWorldObject
+public class Kokanee : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget, UseItemInput.IUsableOnWorldObject
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -12,9 +12,9 @@ public class Kokanee : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.
     public int Carbs => _carbs;
     public int Nutrients => _nutrients;
 
-    public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
-        if (interactableWorldObject is IGiftAble _giftAble)
+        if (interactableWorldObject is IGiftReceiving _giftAble)
         {
             if (_giftAble.TryGiveGift(this))
             {

@@ -15,6 +15,7 @@ public class BootManager : MonoBehaviour
     }
     [SerializeField] private bool _skipIntro = true;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private WeightyObjectStackData _playerCarriedObjects;
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private RainAudio _rainManager;
     [SerializeField] private WorldStateCalendar _worldStateCalendar;
@@ -62,6 +63,9 @@ public class BootManager : MonoBehaviour
         _playerData.IsPlayerSleeping = false;
         _playerInventory.ActiveItemSlot.Value = 0;
         _playerData.IsHoldingWheelBarrow.Value = false;
+        _playerData.IsCarrying.Value = false;
+        _playerCarriedObjects.StoredObjects.Clear();
+        _playerCarriedObjects.CurrentWeight = 0;
     }
 
     private IEnumerator OpeningDialogue()

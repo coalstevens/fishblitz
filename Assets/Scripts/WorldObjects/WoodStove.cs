@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class WoodStove : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
+public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInput.IUsableTarget, GameClock.ITickable, SaveData.ISaveable
 {
     private enum FireStates { Dead, Ready, Hot, Embers };
     private const string IDENTIFIER = "WoodStove";

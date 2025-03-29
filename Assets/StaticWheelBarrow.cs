@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Assertions;
 
 public class StaticWheelBarrow : MonoBehaviour
 {
@@ -9,9 +9,13 @@ public class StaticWheelBarrow : MonoBehaviour
     [SerializeField] private GameObject _facingSouth;
     [SerializeField] private GameObject _facingWest;
 
-
     private void Start()
     {
+        Assert.IsNotNull(_facingNorth);
+        Assert.IsNotNull(_facingEast);
+        Assert.IsNotNull(_facingSouth);
+        Assert.IsNotNull(_facingWest);
+        
         SetDirection(FacingDirection);
     }
 

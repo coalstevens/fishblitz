@@ -1,12 +1,13 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDryLog", menuName = "Items/DryLog")]
-public class DryLog : Inventory.ItemType, PlayerInteractionManager.IUsableOnWorldObject
+public class DryLog : Inventory.ItemType, UseItemInput.IUsableOnWorldObject
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private AudioClip _placeItemSFX;
     [SerializeField] private float _placeItemVolume = 1f;
-    public bool UseOnWorldObject(PlayerInteractionManager.IInteractable interactableWorldObject, Vector3Int cursorLocation)
+
+    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is LarchStump _larchStump)
         {

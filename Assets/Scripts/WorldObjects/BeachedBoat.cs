@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class BeachedBoat : MonoBehaviour, SceneSaveLoadManager.ISaveable
+public class BeachedBoat : MonoBehaviour, SaveData.ISaveable
 {
     private enum States { DamagedWithHammer, Damaged, Normal }
     private class BoatSaveData

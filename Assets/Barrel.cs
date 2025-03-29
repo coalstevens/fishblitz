@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class Barrel : MonoBehaviour, SceneSaveLoadManager.ISaveable
+public class Barrel : MonoBehaviour, SaveData.ISaveable
 {
     private enum States { Normal, WithBinos }
     private class BarrelSaveData

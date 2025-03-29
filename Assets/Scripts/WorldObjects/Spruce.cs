@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Spruce : TreePlant, SceneSaveLoadManager.ISaveable
+public class Spruce : TreePlant, SaveData.ISaveable
 {
 
     private const string IDENTIFIER = "Spruce";

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Larch : TreePlant, SceneSaveLoadManager.ISaveable
+public class Larch : TreePlant, SaveData.ISaveable
 {
     private const string IDENTIFIER = "Larch";
     private class LarchSaveData

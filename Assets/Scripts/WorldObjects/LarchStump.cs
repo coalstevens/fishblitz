@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class LarchStump : MonoBehaviour, PlayerInteractionManager.IInteractable, Axe.IUseableWithAxe, SceneSaveLoadManager.ISaveable, BirdBrain.IPerchableLowElevation
+public class LarchStump : MonoBehaviour, InteractInput.IInteractable, Axe.IUseableWithAxe, SaveData.ISaveable, BirdBrain.IPerchableLowElevation
 {
     private const string IDENTIFIER = "LarchStump";
     private enum StumpStates { AxeIn, LogOn, Splitting, Idle };

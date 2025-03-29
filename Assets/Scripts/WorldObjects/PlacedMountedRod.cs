@@ -7,7 +7,7 @@ using System;
 
 // Used for 4 different prefabs (different rod facing directions)
 // Hence there is lots of serialized members
-public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
+public class PlacedMountedRod : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
 {
     private class PlacedMountedRodSaveData {
         public bool fishOnState;
@@ -35,7 +35,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
     private Reactive<bool> _selected = new Reactive<bool>(false);
     private FishingGame _fishBar;
     private Coroutine _changeStateRoutine;
-    private PlayerInteractionManager _activeGridCell;
+    private InteractInput _activeGridCell;
     private List<Action> _unsubscribeHooks = new();
 
     public Collider2D ObjCollider {
@@ -68,7 +68,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
     private void Awake()
     {
         // References
-        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<PlayerInteractionManager>();
+        _activeGridCell = GameObject.FindWithTag("ActiveGridCell").GetComponent<InteractInput>();
         _inventory = GameObject.FindWithTag("Inventory").GetComponent<Inventory>();
         _fishBar = GameObject.FindWithTag("Player").GetComponentInChildren<FishingGame>(true);
         _changeStateRoutine = StartCoroutine(ChangeStateRoutine());
@@ -118,7 +118,7 @@ public class PlacedMountedRod : MonoBehaviour, PlayerInteractionManager.IInterac
     private void Update()
     {
         List<Collider2D> _results = new List<Collider2D>();
-        Physics2D.OverlapBox(_activeGridCell.GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
+        //Physics2D.OverlapBox(_activeGridCell.GetActiveCursorLocation() + new Vector3(0.5f, 0.5f, 0f), new Vector2(1, 1), 0, new ContactFilter2D().NoFilter(), _results);
 
         bool _found = false;
         foreach (var _result in _results)

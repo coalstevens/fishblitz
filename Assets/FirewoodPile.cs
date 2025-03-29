@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class FirewoodPile : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
+public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
 {
     private class LogPileSaveData
     {

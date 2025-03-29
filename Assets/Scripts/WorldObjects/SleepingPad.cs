@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SleepingPad : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
+public class SleepingPad : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
 {
     PlayerEnergyManager _playerEnergyManager;
     private const string IDENTIFIER = "Sleeping Pad";

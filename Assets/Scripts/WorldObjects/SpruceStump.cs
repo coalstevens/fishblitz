@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class SpruceStump : MonoBehaviour, SceneSaveLoadManager.ISaveable
+public class SpruceStump : MonoBehaviour, SaveData.ISaveable
 {
     private const string IDENTIFIER = "SpruceStump";
     private enum StumpStates { Idle };

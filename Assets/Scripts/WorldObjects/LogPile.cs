@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, SceneSaveLoadManager.ISaveable
+public class LogPile : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
 {
     private class LogPileSaveData
     {
@@ -85,6 +85,4 @@ public class LogPile : MonoBehaviour, PlayerInteractionManager.IInteractable, Sc
         var _extendedData = saveData.GetExtendedSaveData<LogPileSaveData>();
         _numLogs.Value = _extendedData.NumLogs;
     }
-
-
 }

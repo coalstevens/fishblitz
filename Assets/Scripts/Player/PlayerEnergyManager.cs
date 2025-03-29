@@ -1,8 +1,14 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 public class PlayerEnergyManager : MonoBehaviour
 {
+    public interface IEnergyDepleting
+    {
+        public int EnergyCost { get; }
+    }
+
     [SerializeField] private PlayerData _playerData;
     private PlayerTemperatureManager _playerTemperatureManager;
     private Logger _logger = new();
@@ -26,6 +32,7 @@ public class PlayerEnergyManager : MonoBehaviour
 
     public void DepleteEnergy(int energy)
     {
+        Assert.IsTrue(energy >= 0, "Energy to deplete must be non negative.");
         if (_playerData.CurrentEnergy.Value >= energy)
         {
             _playerData.CurrentEnergy.Value -= energy;
@@ -45,6 +52,7 @@ public class PlayerEnergyManager : MonoBehaviour
 
     public void RecoverEnergy(int energy)
     {
+        Assert.IsTrue(energy >= 0, "Energy to recover must be non negative.");
         if (_playerData.CurrentEnergy.Value + energy <= _playerData.MaxEnergy)
         {
             _playerData.CurrentEnergy.Value += energy;
@@ -61,5 +69,13 @@ public class PlayerEnergyManager : MonoBehaviour
     public bool IsEnergyAvailable()
     {
         return _playerData.CurrentEnergy.Value > 0;
+    }
+
+    public bool IsSufficientEnergyAvailable(IEnergyDepleting energyDepletingThing)
+    {
+        if (IsEnergyAvailable())
+            return true;
+        _logger.Info("Not enough energy remaining.");
+        return false;
     }
 }

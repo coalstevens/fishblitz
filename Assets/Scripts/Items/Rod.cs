@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "NewRod", menuName = "Items/Rod")]
-public class Rod : Inventory.ItemType, PlayerInteractionManager.IUsableOnTileMap, PlayerInteractionManager.IEnergyDepleting
+public class Rod : Inventory.ItemType, UseItemInput.IUsableOnTileMap, PlayerEnergyManager.IEnergyDepleting
 {
     [SerializeField] private int _energyCost = 2;
     public int EnergyCost => _energyCost;

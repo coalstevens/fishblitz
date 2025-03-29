@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
-public class Campfire : MonoBehaviour, PlayerInteractionManager.IInteractable, GameClock.ITickable, SceneSaveLoadManager.ISaveable
+public class Campfire : MonoBehaviour, InteractInput.IInteractable, GameClock.ITickable, SaveData.ISaveable
 {
     private enum FireStates {Dead, Ready, Hot, Embers};
     private const string IDENTIFIER = "Campfire";

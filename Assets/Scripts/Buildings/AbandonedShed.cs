@@ -5,7 +5,7 @@ using UnityEngine;
 
 // the roof is huge so gonna let infinite birds land on it.
 // hopefully thats not an issue
-public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, PlayerInteractionManager.IInteractable, Axe.IUseableWithAxe
+public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, InteractInput.IInteractable, Axe.IUseableWithAxe
 {
     [Serializable]
     private class RepairState

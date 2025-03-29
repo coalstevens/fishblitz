@@ -1,4 +1,4 @@
-public interface IGiftAble
+public interface IGiftReceiving : UseItemInput.IUsableTarget
 {
     public bool TryGiveGift(Inventory.ItemType gift);
 }

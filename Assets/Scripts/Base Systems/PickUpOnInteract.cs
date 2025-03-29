@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PickUpOnInteract : MonoBehaviour, PlayerInteractionManager.IInteractable
+public class PickUpOnInteract : MonoBehaviour, InteractInput.IInteractable
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Inventory _playerInventory;

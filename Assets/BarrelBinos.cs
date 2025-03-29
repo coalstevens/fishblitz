@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BarrelBinos : MonoBehaviour, PlayerInteractionManager.IInteractable
+public class BarrelBinos : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private Inventory.ItemType _binoculars;

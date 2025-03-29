@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FallenLarch : FallenTree, SceneSaveLoadManager.ISaveable
+public class FallenLarch : FallenTree, SaveData.ISaveable
 {
     [SerializeField] private string _identifier;
     private class FallenLarchSaveData

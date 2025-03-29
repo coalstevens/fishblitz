@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LarchBolete", menuName = "Items/LarchBolete")]
-public class LarchBolete : Inventory.ItemType, Diet.IFood, PlayerInteractionManager.IUsableWithoutTarget
+public class LarchBolete : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;

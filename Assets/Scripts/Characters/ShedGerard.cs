@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShedGerard : MonoBehaviour, PlayerInteractionManager.IInteractable
+public class ShedGerard : MonoBehaviour, InteractInput.IInteractable
 {
     private List<string> _insideMessages = new()
     {

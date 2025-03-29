@@ -18,6 +18,7 @@ public class PlayerAnimatorController : MonoBehaviour
         _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange(curr => OnStateChange(curr)));
         _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
         _unsubscribeHooks.Add(_playerData.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerData.IsCarrying.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
         _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
     }
 
@@ -129,6 +130,12 @@ public class PlayerAnimatorController : MonoBehaviour
             return;
         }
 
+        if (_playerData.IsCarrying.Value)
+        {
+            HandleCarryWalking(facingDir);
+            return;
+        }
+
         if (!_inventory.TryGetActiveItemType(out var _activeItem))
         {
             HandleNoToolWalking(facingDir);
@@ -211,6 +218,12 @@ public class PlayerAnimatorController : MonoBehaviour
             return;
         }
 
+        if (_playerData.IsCarrying.Value)
+        {
+            HandleCarryIdle(facingDir);
+            return;
+        }
+
         if (!_inventory.TryGetActiveItemType(out var _activeItem))
         {
             HandleNoToolIdle(facingDir);
@@ -281,6 +294,24 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
             case FacingDirection.West:
                 _animator.Play("W_CarryIdle");
+                break;
+        }
+    }
+    private void HandleCarryWalking(FacingDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_Carry");
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_Carry");
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_Carry");
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_Carry");
                 break;
         }
     }

@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 public enum TreeStates { SummerAdult, FallAdult, DeadAdult };
-public abstract class TreePlant : MonoBehaviour, PlayerInteractionManager.IInteractable, Axe.IUseableWithAxe, BirdBrain.IShelterable
+public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Axe.IUseableWithAxe, BirdBrain.IShelterable
 {
 
     [Header("Tree Base State")]

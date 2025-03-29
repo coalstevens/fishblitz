@@ -10,11 +10,7 @@ using System.Collections.Generic;
 // Start() is called before first frame of scene, which has occured before instantiation.
 
 public class SceneSaveLoadManager : MonoBehaviour {
-    public interface ISaveable 
-    {
-        SaveData Save();
-        void Load(SaveData saveData);
-    }
+
     [SerializeField] private Logger _logger = new();
 
     Transform _impermanentContainer;
@@ -75,7 +71,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
     private List<SaveData> GatherChildSaveData(Transform parent) {
         List<SaveData> _saveDatas = new();
         foreach (Transform _child in parent)
-            if (_child.TryGetComponent<ISaveable>(out var _saveable) ) {
+            if (_child.TryGetComponent<SaveData.ISaveable>(out var _saveable) ) {
                 SaveData _savedata = _saveable.Save();
                 _saveDatas.Add(_savedata);
             }
@@ -84,7 +80,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private void InstantiateAndLoadSavedObjects(List<SaveData> saveDatas, Transform container) {
         foreach (var _saveData in saveDatas) {
-            var newObject = _saveData.InstantiateGameObjectFromSaveData(container).GetComponent<ISaveable>();
+            var newObject = _saveData.InstantiateGameObjectFromSaveData(container).GetComponent<SaveData.ISaveable>();
             newObject.Load(_saveData);
         }
     }

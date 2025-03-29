@@ -4,6 +4,13 @@ using UnityEngine;
 
 
 public class SaveData {
+
+    public interface ISaveable 
+    {
+        SaveData Save();
+        void Load(SaveData saveData);
+    }
+
     public string Identifier;
     public SimpleVector3 Position;
     public string ExtendedData;

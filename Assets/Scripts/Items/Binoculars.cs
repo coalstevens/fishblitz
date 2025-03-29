@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBinoculars", menuName = "Items/Binoculars")]
-public class Binoculars : Inventory.ItemType, PlayerInteractionManager.IUsableWithoutTarget, PlayerInteractionManager.IEnergyDepleting
+public class Binoculars : Inventory.ItemType, UseItemInput.IUsableWithoutTarget, PlayerEnergyManager.IEnergyDepleting
 {
     [SerializeField] private int _energyCost = 1;
     public int EnergyCost => _energyCost;

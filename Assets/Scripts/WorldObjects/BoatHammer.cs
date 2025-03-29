@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // This class is so that the hammer has a unique collider when it's leaning against the boat 
-public class BoatHammer : MonoBehaviour, PlayerInteractionManager.IInteractable
+public class BoatHammer : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private Inventory.ItemType _hammer;
