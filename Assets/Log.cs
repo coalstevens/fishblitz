@@ -18,7 +18,12 @@ public class Log : MonoBehaviour, IWeighty
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        return _playerCarry.TryPickUpWeightyObject(this);
+        if (_playerCarry.TryPickUpWeightyObject(this))
+        {
+            Destroy(gameObject);
+            return true;
+        }
+        return false;
     }
 
     void Awake()
