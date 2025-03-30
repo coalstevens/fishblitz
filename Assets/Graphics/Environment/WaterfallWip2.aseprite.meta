@@ -8,7 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -84,6 +84,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 1
     importHiddenLayers: 0
@@ -97,6 +99,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
   platformSettingsDirtyTick: 638754694333374160
   textureAssetName: 
@@ -16399,8 +16403,14 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 2407, y: 1647}
   spriteSheetImportData: []
+  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
+    uuid:
+      value0: 1848080214
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1848080214
     name: Walkway
     layerFlags: 3
@@ -16840,8 +16850,15 @@ ScriptedImporter:
         height: 257
       spriteId: c8c7a8a5cdbc341b3974a90dcbeedb7c
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2900836112
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1394131184
     name: Entrance
     layerFlags: 1
@@ -17281,8 +17298,15 @@ ScriptedImporter:
         height: 257
       spriteId: 5420e8a9e1cc2421a9ef0df076c0b5e4
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 568250130
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 568250130
     name: OuterCliffs
     layerFlags: 1
@@ -17722,8 +17746,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2515819385
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1779147911
     name: Water
     layerFlags: 1
@@ -18163,8 +18194,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 883842517
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 883842517
     name: Ripples
     layerFlags: 1
@@ -18604,8 +18642,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466684
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500612
     name: Layer 5
     layerFlags: 1
@@ -19045,8 +19090,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466681
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500615
     name: Layer 6
     layerFlags: 1
@@ -19486,8 +19538,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466682
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500614
     name: Layer 7
     layerFlags: 1
@@ -19927,8 +19986,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466687
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500609
     name: Layer 8
     layerFlags: 1
@@ -20368,8 +20434,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466688
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500608
     name: Layer 9
     layerFlags: 1
@@ -20809,8 +20882,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 3780712520
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -514254776
     name: Layer 10
     layerFlags: 1
@@ -21250,8 +21330,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2214628579
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -2080338717
     name: Layer 11
     layerFlags: 1
@@ -21691,8 +21778,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2617913106
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1677054190
     name: Layer 12
     layerFlags: 1
@@ -22132,8 +22226,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466678
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500618
     name: Layer 3
     layerFlags: 1
@@ -22573,8 +22674,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466680
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500616
     name: Layer 1
     layerFlags: 1
@@ -23014,8 +23122,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466677
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500619
     name: Layer 2
     layerFlags: 1
@@ -23455,8 +23570,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4287466683
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500613
     name: Layer 4
     layerFlags: 1
@@ -23896,8 +24018,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2002020735
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 2002020735
     name: WaterfallBase
     layerFlags: 1
@@ -24337,8 +24466,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 2620291625
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1674675671
     name: StreaksDark
     layerFlags: 1
@@ -24778,8 +24914,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 230170851
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 230170851
     name: StreaksBright
     layerFlags: 1
@@ -25219,8 +25362,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 4023114392
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -271852904
     name: Top and Bottom Fuzz
     layerFlags: 3
@@ -25660,8 +25810,15 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 0
+    uuid:
+      value0: 1051829165
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1051829165
     name: Layer 13
     layerFlags: 3
@@ -26101,7 +26258,10 @@ ScriptedImporter:
         height: 257
       spriteId: 14e03e1fafe8d4e26b235e5540beb4d9
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: Default
     overridden: 0

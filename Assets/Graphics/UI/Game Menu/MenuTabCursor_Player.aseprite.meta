@@ -13,7 +13,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -89,6 +89,8 @@ ScriptedImporter:
     generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 1
     importHiddenLayers: 0
@@ -102,6 +104,8 @@ ScriptedImporter:
     generateAnimationClips: 0
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
   platformSettingsDirtyTick: 638734043726304500
   textureAssetName: 
@@ -213,8 +217,14 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 76}
   spriteSheetImportData: []
+  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
+    uuid:
+      value0: 1715226794
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1715226794
     name: MenuTabCursor_Player
     layerFlags: 0
@@ -258,7 +268,10 @@ ScriptedImporter:
         height: 16
       spriteId: b0438423a6800465caf21d9848b182ee
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: DefaultTexturePlatform
     overridden: 0

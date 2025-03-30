@@ -24,7 +24,7 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
             { FacingDirection.South, _facingSouth },
             { FacingDirection.West, _facingWest }
         };
-         
+
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_facingNorth);
@@ -66,15 +66,14 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
 
     private void UpdateStackItemRenderers()
     {
-        Debug.Log("Update stack called");
         FacingDirection _currentDirection = _playerMovementController.FacingDirection.Value;
         Transform _activeObject = _facingObjects[_currentDirection].transform;
         int i = 0;
 
         foreach (StoredWeightyObject _carriedObject in _playerCarriedObjects.StoredObjects)
-        { 
+        {
             Transform _child = _activeObject.GetChild(i);
-            _child.gameObject.SetActive(true); 
+            _child.gameObject.SetActive(true);
             if (_currentDirection == FacingDirection.North || _currentDirection == FacingDirection.South)
                 _child.GetComponent<SpriteRenderer>().sprite = _carriedObject.Type.NSCarry;
             else
@@ -82,7 +81,7 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
             i++;
         }
 
-        for ( ; i < _activeObject.childCount; i++)
+        for (; i < _activeObject.childCount; i++)
         {
             Transform _child = _activeObject.GetChild(i);
             _child.gameObject.SetActive(false);

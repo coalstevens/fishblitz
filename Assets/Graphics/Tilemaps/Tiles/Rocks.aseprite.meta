@@ -8,7 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -84,6 +84,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 0
     importHiddenLayers: 0
@@ -97,6 +99,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
   platformSettingsDirtyTick: 638752411317752090
   textureAssetName: 
@@ -607,8 +611,14 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
+  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
+    uuid:
+      value0: 4287466680
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -7500616
     name: Layer 1
     layerFlags: 3
@@ -625,8 +635,15 @@ ScriptedImporter:
         height: 123
       spriteId: 5e3a845a7b213476f81fbd9730534c1d
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 1
+    uuid:
+      value0: 2153171353
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -2141795943
     name: DeepWater
     layerFlags: 3
@@ -643,8 +660,15 @@ ScriptedImporter:
         height: 64
       spriteId: 6390b1c0af8534b7b806192f043cabce
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
   - layerIndex: 2
+    uuid:
+      value0: 1237372963
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1237372963
     name: ShallowWater
     layerFlags: 3
@@ -661,7 +685,10 @@ ScriptedImporter:
         height: 128
       spriteId: 72f16895ab42c4d23a86908cfbdbdc22
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: DefaultTexturePlatform
     overridden: 0

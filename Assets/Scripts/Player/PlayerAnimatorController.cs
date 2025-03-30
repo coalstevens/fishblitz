@@ -302,16 +302,16 @@ public class PlayerAnimatorController : MonoBehaviour
         switch (facingDir)
         {
             case FacingDirection.North:
-                _animator.Play("N_Carry");
+                _animator.Play("N_CarryWalk");
                 break;
             case FacingDirection.South:
-                _animator.Play("S_Carry");
+                _animator.Play("S_CarryWalk");
                 break;
             case FacingDirection.East:
-                _animator.Play("E_Carry");
+                _animator.Play("E_CarryWalk");
                 break;
             case FacingDirection.West:
-                _animator.Play("W_Carry");
+                _animator.Play("W_CarryWalk");
                 break;
         }
     }

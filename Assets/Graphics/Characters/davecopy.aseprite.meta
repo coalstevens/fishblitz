@@ -8,7 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
-  importerVersion: 1
+  importerVersion: 2
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -84,6 +84,8 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   asepriteImporterSettings:
     fileImportMode: 1
     importHiddenLayers: 0
@@ -97,8 +99,10 @@ ScriptedImporter:
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
+    generateIndividualEvents: 1
+    generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638774618266242860
+  platformSettingsDirtyTick: 638789446615786630
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -3652,8 +3656,14 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 202, y: 400}
   spriteSheetImportData: []
+  tileSetImportData: []
   asepriteLayers:
-  - layerIndex: 0
+  - layerIndex: 1
+    uuid:
+      value0: 3604860654
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -690106642
     name: Shadow
     layerFlags: 3
@@ -3944,8 +3954,15 @@ ScriptedImporter:
       linkedToFrame: 114
     - frameIndex: 116
       linkedToFrame: 55
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 1
+  - layerIndex: 2
+    uuid:
+      value0: 4123756841
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -171210455
     name: BackArm0
     layerFlags: 19
@@ -4010,8 +4027,15 @@ ScriptedImporter:
       linkedToFrame: 109
     - frameIndex: 112
       linkedToFrame: 109
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 2
+  - layerIndex: 3
+    uuid:
+      value0: 2557672900
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1737294396
     name: BackArm1
     layerFlags: 19
@@ -4072,8 +4096,15 @@ ScriptedImporter:
       linkedToFrame: 2
     - frameIndex: 113
       linkedToFrame: 111
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 3
+  - layerIndex: 4
+    uuid:
+      value0: 124656729
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 124656729
     name: Torso0
     layerFlags: 19
@@ -4411,8 +4442,15 @@ ScriptedImporter:
       linkedToFrame: 87
     - frameIndex: 112
       linkedToFrame: 87
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 4
+  - layerIndex: 5
+    uuid:
+      value0: 2853540084
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -1441427212
     name: Torso1
     layerFlags: 3
@@ -4555,8 +4593,15 @@ ScriptedImporter:
       linkedToFrame: 89
     - frameIndex: 113
       linkedToFrame: 89
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 6
+  - layerIndex: 7
+    uuid:
+      value0: 2045270461
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 2045270461
     name: Legs0
     layerFlags: 3
@@ -4762,8 +4807,15 @@ ScriptedImporter:
       linkedToFrame: 87
     - frameIndex: 112
       linkedToFrame: 87
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 7
+  - layerIndex: 8
+    uuid:
+      value0: 2045270462
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 2045270462
     name: Legs1
     layerFlags: 19
@@ -4858,8 +4910,15 @@ ScriptedImporter:
       linkedToFrame: 89
     - frameIndex: 111
       linkedToFrame: 89
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 8
+  - layerIndex: 9
+    uuid:
+      value0: 2045270459
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 2045270459
     name: Legs2
     layerFlags: 3
@@ -4952,8 +5011,15 @@ ScriptedImporter:
       linkedToFrame: 91
     - frameIndex: 113
       linkedToFrame: 91
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 9
+  - layerIndex: 10
+    uuid:
+      value0: 919915747
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 919915747
     name: FrontArm0
     layerFlags: 3
@@ -5257,8 +5323,15 @@ ScriptedImporter:
       linkedToFrame: 109
     - frameIndex: 112
       linkedToFrame: 109
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 10
+  - layerIndex: 11
+    uuid:
+      value0: 919915748
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 919915748
     name: FrontArm1
     layerFlags: 3
@@ -5454,8 +5527,15 @@ ScriptedImporter:
       linkedToFrame: 106
     - frameIndex: 113
       linkedToFrame: 111
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 11
+  - layerIndex: 12
+    uuid:
+      value0: 919915745
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 919915745
     name: FrontArm2
     layerFlags: 3
@@ -5530,8 +5610,15 @@ ScriptedImporter:
       linkedToFrame: 7
     - frameIndex: 96
       linkedToFrame: 91
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 12
+  - layerIndex: 13
+    uuid:
+      value0: 204392892
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 204392892
     name: Tool
     layerFlags: 3
@@ -5856,8 +5943,15 @@ ScriptedImporter:
     linkedCells:
     - frameIndex: 100
       linkedToFrame: 99
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 13
+  - layerIndex: 14
+    uuid:
+      value0: 3556066483
+      value1: 0
+      value2: 0
+      value3: 0
     guid: -738900813
     name: Swoosh
     layerFlags: 3
@@ -5937,8 +6031,15 @@ ScriptedImporter:
         height: 18
       spriteId: 8fb7920f1ea3241a183f21f39daa8634
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
-  - layerIndex: 5
+  - layerIndex: 6
+    uuid:
+      value0: 1378467293
+      value1: 0
+      value2: 0
+      value3: 0
     guid: 1378467293
     name: FrontArmBehindLeg
     layerFlags: 3
@@ -5964,7 +6065,10 @@ ScriptedImporter:
         height: 14
       spriteId: 313343e8be90543a5924e2453fafb2c8
     linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
     parentIndex: -1
+  tileSets: []
   platformSettings:
   - name: Default
     overridden: 0
