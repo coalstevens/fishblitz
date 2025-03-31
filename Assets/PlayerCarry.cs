@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Assertions;
+using System.Collections;
 
 public class PlayerCarry : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
     private WorldObjectOccupancyMap _worldObjectOccupancyMap;
     private WeightyObjectStack _carriedObjects;  
+    private PlayerMovementController _playermovementController;
     private GameObject _impermanent;
     private Grid _grid;
     private PlayerInput _playerInput;
@@ -21,6 +23,9 @@ public class PlayerCarry : MonoBehaviour
 
         _playerInput = _player.GetComponent<PlayerInput>();
         Assert.IsNotNull(_playerInput);
+
+        _playermovementController = _player.GetComponent<PlayerMovementController>();
+        Assert.IsNotNull(_playermovementController);
 
         _impermanent = GameObject.FindGameObjectWithTag("Impermanent");
         Assert.IsNotNull(_impermanent);
@@ -37,9 +42,17 @@ public class PlayerCarry : MonoBehaviour
     {
         if (HasEnoughSpace(objectToPickup.WeightyObject.Weight) == false)
             return false;
+        _playermovementController.PlayerState.Value = PlayerMovementController.PlayerStates.PickingUp;
 
-        Push(new StoredWeightyObject(objectToPickup));
-        // TODO run pickup animation
+        StoredWeightyObject _objectToStore = new StoredWeightyObject(objectToPickup);
+
+        IEnumerator DelayedPush(StoredWeightyObject objectToStore, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Push(objectToStore);
+        }
+
+        StartCoroutine(DelayedPush(_objectToStore, 0.167f));
 
         return true;
     }

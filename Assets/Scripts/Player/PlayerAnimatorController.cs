@@ -53,6 +53,9 @@ public class PlayerAnimatorController : MonoBehaviour
             case PlayerMovementController.PlayerStates.Celebrating:
                 HandleCelebrating();
                 break;
+            case PlayerMovementController.PlayerStates.PickingUp:
+                HandlePickingUp();
+                break;
             default:
                 break;
         }
@@ -62,6 +65,26 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         _animator.Play("Caught");
         Invoke(nameof(SetPlayerIdle), 1.5f);
+    }
+
+    private void HandlePickingUp()
+    {
+        switch (_playerMovementController.FacingDirection.Value)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_Pickup");
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_Pickup");
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_Pickup");
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_Pickup");
+                break;
+        }
+        Invoke(nameof(SetPlayerIdle), 0.501f);
     }
 
     private void HandleFishing(FacingDirection facingDir)

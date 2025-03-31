@@ -64,7 +64,8 @@ public class UseItemInput : MonoBehaviour
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Axing ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Birding)
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Birding ||
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.PickingUp )
         {
             return;
         }

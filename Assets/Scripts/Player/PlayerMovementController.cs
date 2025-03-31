@@ -36,7 +36,9 @@ public class PlayerMovementController : MonoBehaviour
         Catching,
         Celebrating,
         Birding,
+        PickingUp
     }
+
     private static PlayerMovementController _instance;
     public static PlayerMovementController Instance
     {
