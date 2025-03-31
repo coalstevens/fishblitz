@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Log : MonoBehaviour, IWeighty
+public class GenericWeightyObject : MonoBehaviour, IWeighty
 {
     [SerializeField] WeightyObjectType _weightyObjectType;
-    private const string IDENTIFIER = "Log";
+    [SerializeField] private string _identifier = "Log";
     private PlayerCarry _playerCarry;
     public WeightyObjectType WeightyObject => _weightyObjectType;
 
@@ -34,7 +34,7 @@ public class Log : MonoBehaviour, IWeighty
     public SaveData Save()
     {
         var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
+        _saveData.AddIdentifier(_identifier);
         _saveData.AddTransformPosition(transform.position);
         return _saveData;
     }

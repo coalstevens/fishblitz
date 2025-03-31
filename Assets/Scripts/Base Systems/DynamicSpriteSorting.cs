@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Rendering;
 
 public class DynamicSpriteSorting : MonoBehaviour
@@ -10,11 +11,11 @@ public class DynamicSpriteSorting : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _sortingGroup = GetComponent<SortingGroup>();
+        Assert.IsTrue(_spriteRenderer != null || _sortingGroup != null, "There is no sprite renderer or sorting group attached to this gameobject");
     }
 
     private void Update()
     {
-        // Calculate sorting order based on Y position
         int sortingOrder = Mathf.RoundToInt(transform.position.y * 100f);
         if (_spriteRenderer != null)
             _spriteRenderer.sortingOrder = -sortingOrder;
