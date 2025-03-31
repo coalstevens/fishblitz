@@ -39,11 +39,11 @@ public class InteractInput : MonoBehaviour
         Vector3Int _cursorLocation = _gridCursor.GridPosition;
         IInteractable _interactable = _gridCursor.FindObjectAtGridCursor<IInteractable>();
 
-        // Player can't interact except for picking up more objects when carrying
-        if (_playerData.IsCarrying.Value && _interactable is not IWeighty)
+        // Player can't interact except for weighty interactables
+        if (_playerData.IsCarrying.Value && _interactable is not IWeighty && _interactable is not IWeightyObjectContainer)
             return;
 
         if (_interactable?.CursorInteract(_cursorLocation) == true)
             return;
-    } 
+    }
 }
