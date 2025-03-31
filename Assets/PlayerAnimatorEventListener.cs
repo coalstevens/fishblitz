@@ -31,7 +31,7 @@ public class PlayerAnimatorEventListener : MonoBehaviour
     [SerializeField] private List<Effect> _effects = new();
     private List<TransformLocalData> _originals = new();
     private Animator _animator;
-    private enum PlayerAnimationEvents { AIRBORNE, GROUNDED }
+    private enum PlayerAnimationEvents { AIRBORNE, GROUNDED, HALF_SQUAT, SQUAT }
     private PlayerAnimationEvents _lastEvent = PlayerAnimationEvents.GROUNDED;
 
     private void OnEnable()
@@ -50,6 +50,16 @@ public class PlayerAnimatorEventListener : MonoBehaviour
     private void OnAirborne()
     {
         ApplyEventEffects(PlayerAnimationEvents.AIRBORNE);
+    }
+
+    private void OnHalfSquat()
+    {
+        ApplyEventEffects(PlayerAnimationEvents.HALF_SQUAT);
+    }
+
+    private void OnSquat()
+    {
+        ApplyEventEffects(PlayerAnimationEvents.SQUAT);
     }
 
     private void ApplyEventEffects(PlayerAnimationEvents animationEvent)
