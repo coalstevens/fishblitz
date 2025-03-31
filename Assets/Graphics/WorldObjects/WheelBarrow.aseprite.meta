@@ -72,7 +72,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -87,7 +87,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   asepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638776360564147360
+  platformSettingsDirtyTick: 638789643665048660
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -150,7 +150,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Frame_1
     originalName: 
-    pivot: {x: 0.92, y: 0}
+    pivot: {x: 0.56, y: -0.516129}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -192,14 +192,14 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 82}
   - name: Frame_3
     originalName: 
-    pivot: {x: 0.08, y: 0}
+    pivot: {x: 0.44, y: -0.516129}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 62
-      y: 4
+      x: 4
+      y: 121
       width: 50
       height: 31
     spriteID: e819df371e6ec44cc961e49329b84d23
@@ -210,19 +210,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 62, y: 4}
+    uvTransform: {x: 4, y: 121}
   - name: Frame_4
     originalName: 
-    pivot: {x: 0.47368422, y: -0.23076923}
+    pivot: {x: 0.47368422, y: -0.09090909}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 62
-      y: 43
+      x: 33
+      y: 160
       width: 19
-      height: 39
+      height: 44
     spriteID: ebd3fffc2ab124fd1be5e3e5bfc2f1bb
     spriteBone: []
     spriteOutline: []
@@ -231,19 +231,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 62, y: 43}
+    uvTransform: {x: 33, y: 160}
   - name: Frame_5
     originalName: 
-    pivot: {x: 0.47368422, y: -0.23684211}
+    pivot: {x: 0.47368422, y: -0.093023255}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 89
-      y: 43
+      x: 4
+      y: 209
       width: 19
-      height: 38
+      height: 43
     spriteID: e3b7329cb94b147ec88beb00d058b61e
     spriteBone: []
     spriteOutline: []
@@ -252,19 +252,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 89, y: 43}
+    uvTransform: {x: 4, y: 209}
   - name: Frame_6
     originalName: 
-    pivot: {x: 0.47619048, y: -0.5666667}
+    pivot: {x: 0.47619048, y: -0.24390243}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 89
-      y: 89
+      x: 4
+      y: 160
       width: 21
-      height: 30
+      height: 41
     spriteID: 1ffdbb5275d0a412e86f918cf1b21e6c
     spriteBone: []
     spriteOutline: []
@@ -273,18 +273,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 89, y: 89}
+    uvTransform: {x: 4, y: 160}
   spriteSheetImportData:
   - name: WheelBarrow_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.08, y: -0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
-      y: 63
+      y: 82
       width: 50
       height: 31
     spriteID: aa568e483f6874866a031ffe7b42b42d
@@ -298,14 +298,14 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: WheelBarrow_1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.91999996, y: -0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 72
-      y: 63
+      x: 4
+      y: 43
       width: 50
       height: 31
     spriteID: 1bf1aab7e6ca649f39b87f185855d9be
@@ -319,16 +319,16 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: WheelBarrow_2
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.47368422, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 7
-      y: 4
+      x: 4
+      y: 209
       width: 19
-      height: 39
+      height: 43
     spriteID: f6d2218ed32b442d8a71b2e4030f327c
     spriteBone: []
     spriteOutline: []
@@ -340,17 +340,80 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: WheelBarrow_3
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.47368422, y: -0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 52
-      y: 9
-      width: 21
-      height: 30
+      x: 33
+      y: 160
+      width: 19
+      height: 44
     spriteID: c88b0a61551d04152813fbc4e6d4c5a0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: WheelBarrow_4
+    originalName: 
+    pivot: {x: 0.91999996, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 50
+      height: 31
+    spriteID: a4a13f47bbf304455aaaefcf735ae79d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: WheelBarrow_5
+    originalName: 
+    pivot: {x: 0.08, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 121
+      width: 50
+      height: 31
+    spriteID: 954b15c65ab254780b6d9ae8053055f7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: WheelBarrow_6
+    originalName: 
+    pivot: {x: 0.47619048, y: -0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 160
+      width: 21
+      height: 41
+    spriteID: 86611b270bd164b44bf477020eafe46d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -414,27 +477,27 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 23
-        y: 9
+        y: 4
         width: 19
-        height: 39
+        height: 44
       spriteId: ebd3fffc2ab124fd1be5e3e5bfc2f1bb
     - name: Frame_5
       frameIndex: 5
       additiveSortOrder: 0
       cellRect:
         x: 23
-        y: 9
+        y: 4
         width: 19
-        height: 38
+        height: 43
       spriteId: e3b7329cb94b147ec88beb00d058b61e
     - name: Frame_6
       frameIndex: 6
       additiveSortOrder: 0
       cellRect:
         x: 22
-        y: 17
+        y: 10
         width: 21
-        height: 30
+        height: 41
       spriteId: 1ffdbb5275d0a412e86f918cf1b21e6c
     linkedCells: []
     tileCells: []
@@ -494,4 +557,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 64, y: 64}
-  previousTextureSize: {x: 128, y: 128}
+  previousTextureSize: {x: 128, y: 256}

@@ -26,7 +26,7 @@ public class PlayerWheelBarrow : MonoBehaviour
             _playerInput = player.GetComponent<PlayerInput>();
     }
 
-    private void OnUseWheelBarrow() 
+    private void OnUseWheelBarrow()
     {
         // not sure what to use this for yet. maybe dumping the wheelbarrow? or looking at its contents 
     }
@@ -52,21 +52,21 @@ public class PlayerWheelBarrow : MonoBehaviour
         else
         {
             _playerInput?.SwitchCurrentActionMap("Player");
+            StaticWheelBarrowSelector _staticWheelBarrow = InstantiateStaticWheelBarrow();
+            _staticWheelBarrow.SetFacingDirection(_playerMovementController.FacingDirection.Value);
             foreach (Transform child in _facingNorth.transform.parent)
                 child.gameObject.SetActive(false);
-            StaticWheelBarrow _staticWheelBarrow = InstantiateStaticWheelBarrow();
-            _staticWheelBarrow.SetFacingDirection(_playerMovementController.FacingDirection.Value);
         }
     }
 
-    private StaticWheelBarrow InstantiateStaticWheelBarrow()
+    private StaticWheelBarrowSelector InstantiateStaticWheelBarrow()
     {
         GameObject _staticWheelBarrowPrefab = Resources.Load<GameObject>("WorldObjects/StaticWheelBarrow");
         if (_staticWheelBarrowPrefab != null)
         {
             Transform _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
-            GameObject _staticWheelBarrow = Instantiate(_staticWheelBarrowPrefab, transform.position, quaternion.identity, _impermanentContainer);
-            StaticWheelBarrow _wheelBarrow = _staticWheelBarrow.GetComponent<StaticWheelBarrow>();
+            GameObject _staticWheelBarrow = Instantiate(_staticWheelBarrowPrefab, GetActiveWheelBarrowPosition() ,quaternion.identity, _impermanentContainer);
+            StaticWheelBarrowSelector _wheelBarrow = _staticWheelBarrow.GetComponent<StaticWheelBarrowSelector>();
             if (_wheelBarrow == null)
                 Debug.LogError("Static wheel barrow is missing its wheelbarrow component");
             return _wheelBarrow;
@@ -91,5 +91,19 @@ public class PlayerWheelBarrow : MonoBehaviour
         _facingEast.SetActive(direction == FacingDirection.East);
         _facingSouth.SetActive(direction == FacingDirection.South);
         _facingWest.SetActive(direction == FacingDirection.West);
+    }
+
+    private Vector3 GetActiveWheelBarrowPosition()
+    {
+        if (_facingNorth.activeSelf)
+            return _facingNorth.transform.position;
+        else if (_facingEast.activeSelf)
+            return _facingEast.transform.position;
+        else if (_facingSouth.activeSelf)
+            return _facingSouth.transform.position;
+        else if (_facingWest.activeSelf)
+            return _facingWest.transform.position;
+        else
+            throw new Exception("No active wheelbarrow found");
     }
 }

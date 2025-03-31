@@ -1,35 +1,51 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class StaticWheelBarrow : MonoBehaviour
+public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget
 {
-    [SerializeField] public FacingDirection FacingDirection;
-    [SerializeField] private GameObject _facingNorth;
-    [SerializeField] private GameObject _facingEast;
-    [SerializeField] private GameObject _facingSouth;
-    [SerializeField] private GameObject _facingWest;
+    [SerializeField] private PlayerData _playerData;
+    private PlayerMovementController _playerMovementController;
+    private StaticWheelBarrowSelector _staticWheelBarrow;
+    private WeightyObjectStack _weightyContainer;
+    private PlayerCarry _playerCarry;
+    public WeightyObjectStack WeightyStack => _weightyContainer;
 
-    private void Start()
+    void OnEnable()
     {
-        Assert.IsNotNull(_facingNorth);
-        Assert.IsNotNull(_facingEast);
-        Assert.IsNotNull(_facingSouth);
-        Assert.IsNotNull(_facingWest);
-        
-        SetDirection(FacingDirection);
+        _staticWheelBarrow = GetComponentInParent<StaticWheelBarrowSelector>();
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+        Assert.IsNotNull(_player);
+
+        _playerMovementController = _player.GetComponent<PlayerMovementController>();
+        _playerCarry = _player.GetComponent<PlayerCarry>();
+        _weightyContainer = GetComponent<WeightyObjectStack>();
+
+        Assert.IsNotNull(_playerCarry);
+        Assert.IsNotNull(_weightyContainer);
+        Assert.IsNotNull(_playerMovementController);
+        Assert.IsNotNull(_staticWheelBarrow);
+        Assert.IsNotNull(_playerData);
     }
 
-    public void SetFacingDirection(FacingDirection direction)
+    public bool CursorInteract(Vector3 cursorLocation)
     {
-        SetDirection(direction);
-    }
-
-    private void SetDirection(FacingDirection direction)
-    {
-        FacingDirection = direction;
-        _facingNorth.SetActive(direction == FacingDirection.North);
-        _facingEast.SetActive(direction == FacingDirection.East);
-        _facingSouth.SetActive(direction == FacingDirection.South);
-        _facingWest.SetActive(direction == FacingDirection.West);
+        // pick up wheelbarrow
+        if (_playerMovementController.FacingDirection.Value == _staticWheelBarrow.FacingDirection &&
+            _playerData.IsHoldingWheelBarrow.Value == false)
+        {
+            _playerData.IsHoldingWheelBarrow.Value = true;
+            Destroy(transform.parent.gameObject);
+            return true;
+        }
+        else // try to take from wheelbarrow
+        {
+            if (_weightyContainer.IsEmpty())
+                return false;
+            StoredWeightyObject _storedObject = _weightyContainer.Peek();
+            if (_playerCarry.HasEnoughSpace(_storedObject.Type.Weight) == false)
+                return false;
+            _playerCarry.Push(_weightyContainer.Pop()); 
+        }
+        return false;
     }
 }

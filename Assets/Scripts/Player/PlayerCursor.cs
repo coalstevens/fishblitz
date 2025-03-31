@@ -18,7 +18,9 @@ public class PlayerCursor : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private SortingGroup _playerSpriteSortingGroup;
     [SerializeField] private Collider2D _collider;
-    public Collider2D Collider {
+    [SerializeField] private bool _cursorVisible = false;
+    public Collider2D Collider
+    {
         get => _collider;
     }
     private PlayerMovementController _playerMovementController;
@@ -31,11 +33,13 @@ public class PlayerCursor : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
-        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev,curr) => TryHideCursor(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev, curr) => TryHideCursor(curr)));
 
         OnDirectionChange(_playerMovementController.FacingDirection.Value);
     }
-    private void OnDisable() {
+
+    private void OnDisable()
+    {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         foreach (var hook in _unsubscribeHooks)
             hook();
@@ -49,24 +53,30 @@ public class PlayerCursor : MonoBehaviour
     private void TryHideCursor(PlayerMovementController.PlayerStates playerState)
     {
         // If player is in an Acting State, hide the cursor
-        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Walking) {
+        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Walking)
+        {
             _spriteRenderer.enabled = false;
             return;
         }
-        
+
         bool playerFacingCursor = _playerMovementController.FacingDirection.Value == _cursorActiveDirection;
-        _spriteRenderer.enabled = playerFacingCursor;
+        if (_cursorVisible)
+            _spriteRenderer.enabled = playerFacingCursor;
     }
 
     private void OnDirectionChange(FacingDirection currentDirection)
     {
-        _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;
+        if (_cursorVisible)
+            _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;
+        else
+            _spriteRenderer.enabled = false;
         _collider.enabled = currentDirection == _cursorActiveDirection;
     }
 
     private void Update()
     {
-        if (_grid != null) {
+        if (_grid != null)
+        {
             _renderedTransform.position = _grid.WorldToCell(transform.position);
             _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteSortingGroup.sortingOrder;
         }
