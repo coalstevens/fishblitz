@@ -20,6 +20,8 @@ public class WeightyObjectStack : MonoBehaviour
         Assert.IsNotNull(storedObject);
         _data.CurrentWeight += storedObject.Type.Weight;
         _data.StoredObjects.Push(storedObject);
+        if (_data.InsertSound != null)
+            AudioManager.Instance.PlaySFX(_data.InsertSound, _data.InsertSoundVolume);
         return true;
     }
 
