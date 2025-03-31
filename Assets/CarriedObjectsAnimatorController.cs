@@ -68,8 +68,10 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
     {
         FacingDirection _currentDirection = _playerMovementController.FacingDirection.Value;
         Transform _activeObject = _facingObjects[_currentDirection].transform;
-        int i = 0;
 
+        Assert.IsTrue(_activeObject.childCount > _playerCarriedObjects.StoredObjects.Count, "There are not enough child objects to display the carried objects");
+
+        int i = 0;
         foreach (StoredWeightyObject _carriedObject in _playerCarriedObjects.StoredObjects)
         {
             Transform _child = _activeObject.GetChild(i);

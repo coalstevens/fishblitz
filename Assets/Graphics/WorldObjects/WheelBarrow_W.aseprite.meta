@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638790110491035430
+  platformSettingsDirtyTick: 638790311085137870
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -136,7 +136,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 55
+      y: 95
       width: 44
       height: 6
     spriteID: 04683c11f992840129c1ef0861d16fd8
@@ -147,7 +147,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 55}
+    uvTransform: {x: 4, y: 95}
   - name: BackHandle
     originalName: 
     pivot: {x: -2.0666668, y: -2.5714288}
@@ -157,7 +157,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 41
-      y: 36
+      y: 76
       width: 15
       height: 7
     spriteID: 2628cef06227644828a5c0b5a845dad9
@@ -168,7 +168,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 41, y: 36}
+    uvTransform: {x: 41, y: 76}
   - name: Back
     originalName: 
     pivot: {x: -0.06896552, y: -1.8181819}
@@ -178,7 +178,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 36
+      y: 76
       width: 29
       height: 11
     spriteID: c72cebd79155d46dca19d45af8859ea0
@@ -189,7 +189,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 36}
+    uvTransform: {x: 4, y: 76}
   - name: Front
     originalName: 
     pivot: {x: 0.08, y: 0}
@@ -199,10 +199,31 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
+      y: 44
       width: 50
       height: 24
     spriteID: 975929741e871410a91236e2cc174c46
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 44}
+  - name: Mask
+    originalName: 
+    pivot: {x: 0.102564104, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 39
+      height: 32
+    spriteID: 02d120402cb874f24834a89247cd48c6
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -310,6 +331,31 @@ ScriptedImporter:
         width: 50
         height: 24
       spriteId: 975929741e871410a91236e2cc174c46
+    linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
+    parentIndex: -1
+  - layerIndex: 4
+    uuid:
+      value0: 2778558502
+      value1: 0
+      value2: 0
+      value3: 0
+    guid: 0
+    name: Mask
+    layerFlags: 3
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Mask
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 10
+        y: 16
+        width: 39
+        height: 32
+      spriteId: 02d120402cb874f24834a89247cd48c6
     linkedCells: []
     tileCells: []
     tileSetIndex: 0

@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638790110395038320
+  platformSettingsDirtyTick: 638790310812835520
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -136,7 +136,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 44
+      y: 90
       width: 19
       height: 32
     spriteID: 0df42ff31991948c6a0ce2d5b52353e3
@@ -147,7 +147,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 44}
+    uvTransform: {x: 4, y: 90}
   - name: Back
     originalName: 
     pivot: {x: 0.4615385, y: -0.8636364}
@@ -156,8 +156,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 84
+      x: 44
+      y: 4
       width: 13
       height: 22
     spriteID: edfee5ddc76ec4146ad1877f77fff33a
@@ -168,7 +168,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 84}
+    uvTransform: {x: 44, y: 4}
   - name: Front
     originalName: 
     pivot: {x: 0.47619048, y: 0}
@@ -178,10 +178,31 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
+      y: 50
       width: 21
       height: 32
     spriteID: eb1f8a5f5702a4848b1fb3776b2f1a11
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 50}
+  - name: Mask
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 32
+      height: 38
+    spriteID: 29dacd3f9b6d14f3fbdf9b12df93c667
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -280,6 +301,31 @@ ScriptedImporter:
         width: 21
         height: 32
       spriteId: eb1f8a5f5702a4848b1fb3776b2f1a11
+    linkedCells: []
+    tileCells: []
+    tileSetIndex: 0
+    parentIndex: -1
+  - layerIndex: 4
+    uuid:
+      value0: 2778558502
+      value1: 0
+      value2: 0
+      value3: 0
+    guid: 0
+    name: Mask
+    layerFlags: 3
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Mask
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 16
+        y: 10
+        width: 32
+        height: 38
+      spriteId: 29dacd3f9b6d14f3fbdf9b12df93c667
     linkedCells: []
     tileCells: []
     tileSetIndex: 0

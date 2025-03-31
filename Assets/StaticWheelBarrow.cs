@@ -31,7 +31,8 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
     {
         // pick up wheelbarrow
         if (_playerMovementController.FacingDirection.Value == _staticWheelBarrow.FacingDirection &&
-            _playerData.IsHoldingWheelBarrow.Value == false)
+            _playerData.IsHoldingWheelBarrow.Value == false &&
+            _playerData.IsCarrying.Value == false)
         {
             _playerData.IsHoldingWheelBarrow.Value = true;
             Destroy(transform.parent.gameObject);

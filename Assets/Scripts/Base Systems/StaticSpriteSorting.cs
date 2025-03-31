@@ -16,8 +16,8 @@ public class StaticSpriteSorting : MonoBehaviour
         Assert.IsTrue(_spriteRenderer != null || _sortingGroup != null);
 
         if (_spriteRenderer != null)
-            _spriteRenderer.sortingOrder = Mathf.RoundToInt(transform.position.y * 100f);
+            _spriteRenderer.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100f);
         else
-            _sortingGroup.sortingOrder = Mathf.RoundToInt(transform.position.y * 100f);
+            _sortingGroup.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100f);
     }
 }

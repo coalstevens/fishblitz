@@ -11,17 +11,14 @@ public class DynamicSpriteSorting : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _sortingGroup = GetComponent<SortingGroup>();
-        Assert.IsTrue(_spriteRenderer != null || _sortingGroup != null, "There is no sprite renderer or sorting group attached to this gameobject");
     }
 
     private void Update()
     {
-        int sortingOrder = Mathf.RoundToInt(transform.position.y * 100f);
+        Assert.IsTrue(_spriteRenderer != null || _sortingGroup != null, "There is no sprite renderer or sorting group attached to this gameobject");
         if (_spriteRenderer != null)
-            _spriteRenderer.sortingOrder = -sortingOrder;
-        else if (_sortingGroup != null)
-            _sortingGroup.sortingOrder = -sortingOrder;
+            _spriteRenderer.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100f);
         else 
-            Debug.LogError("There is no sprite renderer or sorting group attached to this gameobject");
+            _sortingGroup.sortingOrder = -Mathf.RoundToInt(transform.position.y * 100f);
     }
 }
