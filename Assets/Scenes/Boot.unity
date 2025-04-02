@@ -2009,15 +2009,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b25f82161c834f8cb02d1c89231ea89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skipIntro: 0
+  _skipIntro: 1
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _playerCarriedObjects: {fileID: 11400000, guid: 373e1c06f12254beba3d2de134df42ea, type: 2}
   _playerInventory: {fileID: 11400000, guid: bb05bba148edf495b8bd16e44a2260f0, type: 2}
   _rainManager: {fileID: 11400000, guid: bebb3cc9b17a94c3ab00bc48719e471d, type: 2}
   _worldStateCalendar: {fileID: 285846307}
-  _toScene: Outside
+  _toScene: River0
   _spawnPosition: 0
-  _useCustomSpawn: 0
+  _useCustomSpawn: 1
   _customSpawnLocation: {x: 0, y: 0, z: 0}
   _initialWetnessState: 3
   _initialTemperature: 2
@@ -3810,7 +3810,7 @@ MonoBehaviour:
     _verbose: 1
     _prefix: Gameclock
     _color: white
-  GameClockPaused: 0
+  GameClockPaused: 1
   _startDay: 1
   _startHour: 12
   _startMinute: 0

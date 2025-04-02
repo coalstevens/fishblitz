@@ -70,6 +70,7 @@ public class BootManager : MonoBehaviour
 
     private IEnumerator OpeningDialogue()
     {
+        yield return null; // required for other stuff to load 
         if (!_skipIntro)
         {
             yield return new WaitForSeconds(1f);
