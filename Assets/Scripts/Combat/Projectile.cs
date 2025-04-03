@@ -1,39 +1,85 @@
 using UnityEngine;
-public interface IDamaging
+using UnityEngine.Assertions;
+
+public interface IHurtBox
 {
-    public float DamageAmount { get; }
-    public void OnHit();
+    public bool IsCovered { get; }
+    public void TakeDamage();
 }
 
-public class Projectile : MonoBehaviour, IDamaging
+public class Projectile : MonoBehaviour
 {
-    [SerializeField] float _damage = 1f;
-    [SerializeField] float _speed = 10f;
-    public float Damage
+    [SerializeField] private Logger _logger = new();
+    private Rigidbody2D _rb;
+    private IWeapon _sourceWeapon;
+    private bool _crossedCover = false;
+    private float _damage;
+
+    private void Awake()
     {
-        get { return _damage; }
-        set { _damage = value; }
+        _rb = GetComponent<Rigidbody2D>();
+        _sourceWeapon = transform.parent.GetComponent<IWeapon>();
+        Assert.IsNotNull(_rb);
+        Assert.IsNotNull(_sourceWeapon);
+
+        _damage = _sourceWeapon.Damage;
+        gameObject.SetActive(false);
     }
 
-    public float Speed
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        get { return _speed; }
-        set { _speed = value; }
-    }
-
-    public float DamageAmount => throw new System.NotImplementedException();
-
-    public void Launch(Vector3 direction)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
+        _logger.Info($"Projectile entered: {collision.gameObject.name}");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
-            rb.linearVelocity = direction.normalized * _speed;
+            _logger.Info("  Contacted default object. Disabling projectile.");
+            DisableProjectile();
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Cover"))
+        {
+            _logger.Info("  Entered cover effective area.");
+            if (!collision.isTrigger)
+            {
+                _crossedCover = true;
+            }
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("FriendlyHurtbox"))
+        {
+            _logger.Info("  Entered friendly hurtbox.");
+            IHurtBox _hurtbox = collision.transform.GetComponent<IHurtBox>();
+            if (!_hurtbox.IsCovered || !_crossedCover)
+            {
+                _logger.Info("  Hurtbox is not covered. Inflicting damage.");
+                _hurtbox.TakeDamage();
+                DisableProjectile();
+            }
         }
     }
 
-    public void OnHit()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        throw new System.NotImplementedException();
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Cover") && collision.isTrigger)
+        {
+            // left effective area of cover
+            if (_crossedCover)
+                _crossedCover = false;
+        }
+    }
+
+    public void Launch(Vector2 direction, float speed, float lifeSpan)
+    {
+        gameObject.SetActive(true);
+        Invoke(nameof(DisableProjectile), lifeSpan);
+        if (_rb != null)
+        {
+            _rb.linearVelocity = direction.normalized * speed;
+        }
+    }
+
+    public void DisableProjectile()
+    {
+        _rb.linearVelocity = Vector2.zero;
+        gameObject.SetActive(false);
     }
 }

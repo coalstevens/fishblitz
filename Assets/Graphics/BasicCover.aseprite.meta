@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 42eee980563f645449d76446684cb039
+guid: 0df839403ae054df89fe37ba34d65360
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +72,7 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -80,14 +80,14 @@ ScriptedImporter:
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
-    addSortingGroup: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 0
     addShadowCasters: 0
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   asepriteImporterSettings:
-    fileImportMode: 0
+    fileImportMode: 1
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -95,14 +95,14 @@ ScriptedImporter:
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
-    addSortingGroup: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 0
     addShadowCasters: 0
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638792052953171580
+  platformSettingsDirtyTick: 638792798936965190
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Projectiles
+  - name: BasicCover
     originalName: 
-    pivot: {x: 0.91489357, y: -1.5}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 47
-      height: 8
-    spriteID: 225b1e7ed90704644aa5b626b8d31079
+      width: 32
+      height: 64
+    spriteID: 2bbc04b62702441bf8381a1b89d0c07c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,72 +148,30 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  spriteSheetImportData:
-  - name: Projectiles_0
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 4
-      width: 24
-      height: 9
-    spriteID: d5323464fc2c94d71bdc4ea6a4b96f34
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: Projectiles_1
-    originalName: 
-    pivot: {x: 0, y: 0}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 44
-      y: 4
-      width: 8
-      height: 8
-    spriteID: 6c122bf198cdf455280fa94853428f81
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
+  spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3620931150
+      value0: 3338913391
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Projectiles
+    name: BasicCover
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Projectiles
+    - name: BasicCover
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 4
-        y: 12
-        width: 48
-        height: 9
-      spriteId: 225b1e7ed90704644aa5b626b8d31079
+        x: 0
+        y: 0
+        width: 32
+        height: 64
+      spriteId: 2bbc04b62702441bf8381a1b89d0c07c
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -256,8 +214,8 @@ ScriptedImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     androidETC2FallbackOverride: 0
-  generatePhysicsShape: 0
+  generatePhysicsShape: 1
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 96, y: 32}
-  previousTextureSize: {x: 64, y: 32}
+  canvasSize: {x: 32, y: 64}
+  previousTextureSize: {x: 64, y: 128}
