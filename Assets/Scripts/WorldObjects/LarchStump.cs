@@ -20,9 +20,9 @@ public class LarchStump : MonoBehaviour, InteractInput.IInteractable, Axe.IUseab
     [SerializeField] private AudioClip _fallingSplitWoodSFX;
     [SerializeField] private Collider2D _birdPerchTarget;
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private Inventory.ItemType _firewood;
-    [SerializeField] private Inventory.ItemType _dryLog;
-    [SerializeField] private Inventory.ItemType _axe;
+    [SerializeField] private Inventory.Item _firewood;
+    [SerializeField] private Inventory.Item _dryLog;
+    [SerializeField] private Inventory.Item _axe;
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
     private List<Action> _unsubscribeHooks = new();

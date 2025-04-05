@@ -65,7 +65,7 @@ public class UnconsciousGerard : MonoBehaviour, InteractInput.IInteractable, IGi
         _dialogueController = GetComponentInChildren<DialogueController>();
     }
 
-    public bool TryGiveGift(Inventory.ItemType gift)
+    public bool TryGiveGift(Inventory.Item gift)
     {
         if (_isAsleep || _gerard.ReadyForNextState)
         {

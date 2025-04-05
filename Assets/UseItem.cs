@@ -4,7 +4,8 @@ using UnityEngine.Assertions;
 
 public class UseItemInput : MonoBehaviour
 {
-    public interface IUsableTarget {
+    public interface IUsableTarget
+    {
     }
 
     public interface IUsableOnWorldObject
@@ -12,7 +13,7 @@ public class UseItemInput : MonoBehaviour
         /// <summary>
         /// Uses item on the world object under player cursor. Returns false if ignored.
         /// </summary>
-        public bool UseOnWorldObject(IUsableTarget interactableWorldObject, Vector3Int cursorLocation);
+        public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, IUsableTarget interactableWorldObject, Vector3Int cursorLocation);
     }
 
     public interface IUsableOnTileMap
@@ -21,18 +22,18 @@ public class UseItemInput : MonoBehaviour
         /// Uses tool on the interactive tilemap under player cursor. Returns false if ignored.
         /// </summary>
         /// ///
-        public bool UseOnTileMap(string tilemapLayerName, Vector3Int cursorLocation);
+        public bool UseOnTileMap(Inventory.ItemInstanceData instanceData, string tilemapLayerName, Vector3Int cursorLocation);
     }
 
     public interface IUsableWithoutTarget
     {
         /// <returns> True if energy is used </returns>
-        public bool UseWithoutTarget();
+        public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData);
     }
 
     public interface IUsableWithSound
     {
-        public void PlayHitSound();
+        public void PlayHitSound(Inventory.ItemInstanceData instanceData);
     }
 
     [SerializeField] private GridCursor _gridCursor;
@@ -65,7 +66,7 @@ public class UseItemInput : MonoBehaviour
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Axing ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Birding ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.PickingUp )
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.PickingUp)
         {
             return;
         }
@@ -80,11 +81,12 @@ public class UseItemInput : MonoBehaviour
 
     private bool TryUseCarriedObject(Vector3Int cursorLocation, IUsableTarget targetWorldObject)
     {
+        _logger.Info("Trying to use carried object");
         if (!_playerData.IsCarrying.Value)
             return false;
 
         // to use a carried object is to put it down or put it in a container
-        if (targetWorldObject is IWeightyObjectContainer _weightyObjectContainer && 
+        if (targetWorldObject is IWeightyObjectContainer _weightyObjectContainer &&
             _weightyObjectContainer.WeightyStack.HasEnoughSpace(_playerCarry.Peek().Type.Weight))
         {
             _weightyObjectContainer.WeightyStack.Push(_playerCarry.Pop());
@@ -99,7 +101,10 @@ public class UseItemInput : MonoBehaviour
 
     private bool TryUseInventoryItem(Vector3Int cursorLocation, string targetTilemapTag, IUsableTarget targetWorldObject)
     {
-        Inventory.ItemType _activeItem = _inventory.GetActiveItemType();
+        _logger.Info("Trying to use inventory item");
+        Inventory.Item _activeItem = _inventory.GetActiveItem();
+        Inventory.ItemInstanceData _activeItemInstanceData = _inventory.GetActiveItemInstanceData();
+
         if (_activeItem == null)
         {
             _logger.Info("Active item is null");
@@ -107,22 +112,23 @@ public class UseItemInput : MonoBehaviour
         }
 
         if (!_playerEnergyManager.IsSufficientEnergyAvailable(_activeItem as PlayerEnergyManager.IEnergyDepleting)) return true;
-        if (TryUseItemOnWorldObject(_activeItem, cursorLocation, targetWorldObject)) return true;
-        if (TryUseItemOnTileMap(_activeItem, targetTilemapTag, cursorLocation)) return true;
-        if (TryUseItemWithoutTarget(_activeItem)) return true;
+        if (TryUseItemOnWorldObject(_activeItem, _activeItemInstanceData, cursorLocation, targetWorldObject)) return true;
+        if (TryUseItemOnTileMap(_activeItem, _activeItemInstanceData, targetTilemapTag, cursorLocation)) return true;
+        if (TryUseItemWithoutTarget(_activeItem, _activeItemInstanceData)) return true;
         return false;
     }
 
-    private bool TryUseItemOnWorldObject(Inventory.ItemType activeItem, Vector3Int cursorLocation, IUsableTarget interactableWorldObject)
+    private bool TryUseItemOnWorldObject(Inventory.Item item, Inventory.ItemInstanceData instanceData, Vector3Int cursorLocation, IUsableTarget interactableWorldObject)
     {
+        _logger.Info("Trying to use item on world object");
         if (interactableWorldObject != null)
         {
-            if (activeItem is IUsableOnWorldObject)
+            if (item is IUsableOnWorldObject)
             {
-                if (((IUsableOnWorldObject)activeItem).UseOnWorldObject(interactableWorldObject, cursorLocation))
+                if (((IUsableOnWorldObject)item).UseOnWorldObject(instanceData, interactableWorldObject, cursorLocation))
                 {
-                    DepleteUseEnergy(activeItem);
-                    PlayHitSound(activeItem);
+                    DepleteUseEnergy(item, instanceData);
+                    PlayHitSound(item, instanceData);
                     return true;
                 }
             }
@@ -130,40 +136,42 @@ public class UseItemInput : MonoBehaviour
         return false;
     }
 
-    private bool TryUseItemOnTileMap(Inventory.ItemType activeItem, string tilemapLayerName, Vector3Int cursorLocation)
+    private bool TryUseItemOnTileMap(Inventory.Item item, Inventory.ItemInstanceData instanceData, string tilemapLayerName, Vector3Int cursorLocation)
     {
-        if (activeItem is IUsableOnTileMap)
+        _logger.Info("Trying to use item on tilemap");
+        if (item is IUsableOnTileMap)
         {
-            if (((IUsableOnTileMap)activeItem).UseOnTileMap(tilemapLayerName, cursorLocation))
+            if (((IUsableOnTileMap)item).UseOnTileMap(instanceData, tilemapLayerName, cursorLocation))
             {
-                DepleteUseEnergy(activeItem);
-                PlayHitSound(activeItem);
+                DepleteUseEnergy(item, instanceData);
+                PlayHitSound(item, instanceData);
                 return true;
             }
         }
         return false;
     }
 
-    private bool TryUseItemWithoutTarget(Inventory.ItemType activeItem)
+    private bool TryUseItemWithoutTarget(Inventory.Item item, Inventory.ItemInstanceData instanceData)
     {
-        if (activeItem is IUsableWithoutTarget)
+        _logger.Info("Trying to use item without target");
+        if (item is IUsableWithoutTarget)
         {
-            if (((IUsableWithoutTarget)activeItem).UseWithoutTarget())
+            if (((IUsableWithoutTarget)item).UseWithoutTarget(instanceData))
             {
-                DepleteUseEnergy(activeItem);
+                DepleteUseEnergy(item, instanceData);
                 return true;
             }
         }
         return false;
     }
 
-    private void PlayHitSound(Inventory.ItemType activeItem)
+    private void PlayHitSound(Inventory.Item item, Inventory.ItemInstanceData instanceData)
     {
-        if (activeItem is IUsableWithSound)
-            ((IUsableWithSound)activeItem).PlayHitSound();
+        if (item is IUsableWithSound)
+            ((IUsableWithSound)item).PlayHitSound(instanceData);
     }
 
-    private void DepleteUseEnergy(Inventory.ItemType activeItem)
+    private void DepleteUseEnergy(Inventory.Item activeItem, Inventory.ItemInstanceData instanceData)
     {
         if (activeItem is PlayerEnergyManager.IEnergyDepleting)
             _playerEnergyManager.DepleteEnergy(((PlayerEnergyManager.IEnergyDepleting)activeItem).EnergyCost);

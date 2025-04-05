@@ -14,7 +14,7 @@ public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, SaveData
     [SerializeField] private Reactive<int> _numLogs = new Reactive<int>(4);
     [SerializeField] private Inventory _inventory;
     [SerializeField] private List<Sprite> _sprites = new();
-    [SerializeField] private Inventory.ItemType _firewood;
+    [SerializeField] private Inventory.Item _firewood;
     private SpriteRenderer _spriteRenderer;
     private List<Action> _unsubscribeCBs = new();
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class BoatHammer : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] private Inventory _playerInventory;
-    [SerializeField] private Inventory.ItemType _hammer;
+    [SerializeField] private Inventory.Item _hammer;
     private BeachedBoat _beachedBoat;
 
     public bool CursorInteract(Vector3 cursorLocation)

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LarchBolete2", menuName = "Items/LarchBolete2")]
-public class LarchBolete2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget
+public class LarchBolete2 : Inventory.Item, Diet.IFood, UseItemInput.IUsableWithoutTarget
 {
    [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -13,7 +13,7 @@ public class LarchBolete2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsable
     public int Nutrients => _nutrients;
     public int EnergyCost => 0;
 
-    public bool UseWithoutTarget()
+    public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
         if (_inventory.TryRemoveActiveItem(1))
         {
@@ -21,5 +21,5 @@ public class LarchBolete2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsable
             return true;
         }
         return false;
-    } 
+    }
 }

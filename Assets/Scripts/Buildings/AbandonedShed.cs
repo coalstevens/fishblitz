@@ -11,7 +11,7 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, I
     private class RepairState
     {
         public Sprite Sprite;
-        public Inventory.ItemType ItemType;
+        public Inventory.Item ItemType;
         public int Quantity;
         public string RepairName;
     }
@@ -23,8 +23,8 @@ public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, I
     [SerializeField] private Transform _vines;
     [SerializeField] List<RepairState> _repairStates = new();
     [SerializeField] private int _vineChopsToDestroy = 5;
-    [SerializeField] private Inventory.ItemType _vineDestroySpawnItem;
-    [SerializeField] private Inventory.ItemType _hammer;
+    [SerializeField] private Inventory.Item _vineDestroySpawnItem;
+    [SerializeField] private Inventory.Item _hammer;
     [SerializeField] private int _spawnItemQuantity = 3;
 
     [Header("Vine Chop Shake Properties")]

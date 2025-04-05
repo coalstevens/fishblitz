@@ -11,18 +11,18 @@ public static class SpawnItems
     [System.Serializable]
     public class SpawnItemData
     {
-        public SpawnItemData(Inventory.ItemType item, int minQuantity, int maxQuantity)
+        public SpawnItemData(Inventory.Item item, int minQuantity, int maxQuantity)
         {
             this.ItemType = item;
             this.MinQuantity = minQuantity;
             this.MaxQuantity = maxQuantity;
         }
-        public Inventory.ItemType ItemType;
+        public Inventory.Item ItemType;
         public int MinQuantity;
         public int MaxQuantity;
     }
 
-    public static void SpawnItemsFromCollider(Collider2D collider, Inventory.ItemType itemType, int quantity, LaunchDirection launchDirection = LaunchDirection.ANY)
+    public static void SpawnItemsFromCollider(Collider2D collider, Inventory.Item itemType, int quantity, LaunchDirection launchDirection = LaunchDirection.ANY)
     {
         SpawnItemData[] _spawnItems = { new SpawnItemData(itemType, quantity, quantity) };
         SpawnItemsFromCollider(collider, _spawnItems, launchDirection);
@@ -32,13 +32,13 @@ public static class SpawnItems
     {
         foreach (var _item in itemsToSpawn)
         {
-            Inventory.ItemType _spawnItem = FetchItem(_item.ItemType.ItemLabel);
+            Inventory.Item _spawnItem = FetchItem(_item.ItemType.ItemLabel);
 
             foreach (var _spawnPosition in GetRandomPositionsWithinCollider(collider, UnityEngine.Random.Range(_item.MinQuantity, _item.MaxQuantity)))
             {
                 GameObject _spawnedItem = InstantiateLooseItem
                 (
-                    new Inventory.ItemData(_spawnItem, 1),
+                    new Inventory.ItemStack(_spawnItem, 1),
                     _spawnItem.ItemSprite,
                     _spawnPosition
                 );
@@ -47,15 +47,15 @@ public static class SpawnItems
         }
     }
 
-    public static void SpawnLooseItems(Inventory.ItemType itemType, Vector3[] spawnPositions, bool playBounceAnimation = true, LaunchDirection launchDirection = LaunchDirection.ANY, float launchSpeed = DEFAULT_LAUNCH_SPEED, float launchDrag = DEFAULT_LAUNCH_DRAG)
+    public static void SpawnLooseItems(Inventory.Item itemType, Vector3[] spawnPositions, bool playBounceAnimation = true, LaunchDirection launchDirection = LaunchDirection.ANY, float launchSpeed = DEFAULT_LAUNCH_SPEED, float launchDrag = DEFAULT_LAUNCH_DRAG)
     {
-        Inventory.ItemType _spawnItem = FetchItem(itemType.ItemLabel);
+        Inventory.Item _spawnItem = FetchItem(itemType.ItemLabel);
 
         foreach (var _spawnPosition in spawnPositions)
         {
             GameObject _spawnedItem = InstantiateLooseItem
             (
-                new Inventory.ItemData(_spawnItem, 1),
+                new Inventory.ItemStack(_spawnItem, 1),
                 _spawnItem.ItemSprite,
                 _spawnPosition
             );
@@ -65,15 +65,15 @@ public static class SpawnItems
         }
     }
 
-    private static Inventory.ItemType FetchItem(string itemName)
+    private static Inventory.Item FetchItem(string itemName)
     {
-        Inventory.ItemType _spawnItem = Resources.Load<Inventory.ItemType>($"Items/{itemName}");
+        Inventory.Item _spawnItem = Resources.Load<Inventory.Item>($"Items/{itemName}");
         if (_spawnItem == null)
             Debug.LogError("The spawn item doesn't exist.");
         return _spawnItem;
     }
 
-    private static GameObject InstantiateLooseItem(Inventory.ItemData item, Sprite itemSprite, Vector3 spawnPosition)
+    private static GameObject InstantiateLooseItem(Inventory.ItemStack item, Sprite itemSprite, Vector3 spawnPosition)
     {
         // Spawn a generic loose item
         GameObject _spawnedItem = Object.Instantiate(Resources.Load<GameObject>("Items/LooseItem"),

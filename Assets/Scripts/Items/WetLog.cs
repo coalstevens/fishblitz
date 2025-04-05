@@ -1,13 +1,13 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewWetLog", menuName = "Items/WetLog")]
-public class WetLog : Inventory.ItemType, UseItemInput.IUsableOnWorldObject
+public class WetLog : Inventory.Item, UseItemInput.IUsableOnWorldObject
 {
     [SerializeField] Inventory _inventory;
     [SerializeField] private AudioClip _placeItemSFX;
     [SerializeField] private float _placeItemVolume = 1f;
 
-    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is WoodStove || interactableWorldObject is Campfire)
         {

@@ -1,58 +1,74 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class ReloadBar : MonoBehaviour
 {
     [SerializeField] private Color _reloadBarColor;
-    private IWeapon _weapon;
+    [SerializeField] private Reloader _reloader;
     private SpriteRenderer _progressBar;
-    private bool _isReloading = false;
+    private Action _unsubscribeWeapon;
+    private Action _unsubscribeReload;
+    private Coroutine _reloadCoroutine;
 
     private void Awake()
     {
-        _weapon = transform.parent.GetComponentInChildren<IWeapon>();
         _progressBar = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        Assert.IsNotNull(_weapon);
+        Assert.IsNotNull(_reloader);
         Assert.IsNotNull(_progressBar);
     }
 
     private void OnEnable()
     {
-        _weapon.OnReloadStart += HandleReloadStart;
-        _weapon.OnReloadComplete += HandleReloadComplete;
+        _unsubscribeWeapon = _reloader.ActiveWeaponData.OnChange(curr => SubscribeToActiveWeaponReload(curr));
         _progressBar.color = _reloadBarColor;
     }
 
-
     private void OnDisable()
     {
-        _weapon.OnReloadStart -= HandleReloadStart;
-        _weapon.OnReloadComplete -= HandleReloadComplete;
+        _unsubscribeWeapon?.Invoke();
+        _unsubscribeWeapon = null;
     }
 
-    private void HandleReloadComplete()
-    {
-        _isReloading = false;
-        _progressBar.enabled = false;
-    }
-
-    private void HandleReloadStart()
-    {
-        _isReloading = true;
-        _progressBar.enabled = true;
-    }
-
-    private void Update()
-    {
-        if (_isReloading)
+    private void SubscribeToActiveWeaponReload(RangedWeaponItem.InstanceData curr) 
+    { 
+        if (curr == null)
         {
-            UpdateProgressMeter();
+            _unsubscribeReload?.Invoke();
+            _unsubscribeReload = null;
+        }
+        else
+        {
+            _unsubscribeReload?.Invoke();
+            _unsubscribeReload = curr.IsReloading.OnChange(curr => HandleReload(curr));
+            HandleReload(curr.IsReloading.Value);
         }
     }
 
-    private void UpdateProgressMeter()
+    private void HandleReload(bool isReloading)
     {
-        float newWidth = Mathf.Lerp(0, 1, _weapon.ReloadElapsedSecs / _weapon.ReloadTimeSecs);
-        _progressBar.transform.localScale = new Vector3(newWidth, 1, 1);
+        if (isReloading)
+        {
+            _progressBar.enabled = true;
+            _progressBar.color = _reloadBarColor;
+            _reloadCoroutine = StartCoroutine(UpdateProgressMeter());
+        }
+        else
+        {
+            if (_reloadCoroutine != null)
+                StopCoroutine(_reloadCoroutine);
+            _progressBar.enabled = false;
+        }
+    }
+
+    private IEnumerator UpdateProgressMeter()
+    {
+        while (_reloader.ActiveWeaponData.Value.IsReloading.Value)
+        {
+            float newWidth = Mathf.Lerp(0, 1, _reloader.ActiveWeaponData.Value.ReloadElapsed / _reloader.ActiveWeapon.Value.ReloadTime);
+            _progressBar.transform.localScale = new Vector3(newWidth, 1, 1);
+            yield return null;
+        }
     }
 }

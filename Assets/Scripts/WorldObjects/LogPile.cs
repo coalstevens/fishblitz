@@ -13,7 +13,7 @@ public class LogPile : MonoBehaviour, InteractInput.IInteractable, SaveData.ISav
     private const string IDENTIFIER = "LogPile";
     [SerializeField] private Inventory _inventory;
     [SerializeField] private List<Sprite> _logSprites = new();
-    [SerializeField] private Inventory.ItemType _logItemType;
+    [SerializeField] private Inventory.Item _logItemType;
     private SpriteRenderer _spriteRenderer;
     private Reactive<int> _numLogs = new Reactive<int>(4);
     private List<Action> _unsubscribeCBs = new();

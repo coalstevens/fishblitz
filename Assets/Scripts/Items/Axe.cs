@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAxe", menuName = "Items/Axe")]
-public class Axe : Inventory.ItemType, UseItemInput.IUsableOnWorldObject, UseItemInput.IUsableWithoutTarget, PlayerEnergyManager.IEnergyDepleting, UseItemInput.IUsableWithSound
+public class Axe : Inventory.Item, UseItemInput.IUsableOnWorldObject, UseItemInput.IUsableWithoutTarget, PlayerEnergyManager.IEnergyDepleting, UseItemInput.IUsableWithSound
 {
     [SerializeField] private int _energyCost = 2;
     public interface IUseableWithAxe : UseItemInput.IUsableTarget
@@ -14,18 +14,18 @@ public class Axe : Inventory.ItemType, UseItemInput.IUsableOnWorldObject, UseIte
 
     public int EnergyCost => _energyCost;
 
-    public bool UseWithoutTarget()
+    public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
         return false;
     }
 
-    public void PlayHitSound()
+    public void PlayHitSound(Inventory.ItemInstanceData instanceData)
     {
         AudioManager.Instance.PlaySFX(_chopSFX, 1f);
     }
 
-    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IUseableWithAxe _worldObject)
         {

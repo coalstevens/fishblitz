@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93c4c7fbd2ad42b6abd668f11ab7137, type: 3}
   m_Name: PlayerInventory
   m_EditorClassIdentifier: 
-  _startingItems:
+  _startingItemStacks:
   - Quantity: 1
-    ItemType: {fileID: 11400000, guid: 3aeda5fd12fd6437b91fda0893c26e7c, type: 2}
+    Item: {fileID: 11400000, guid: 851f8c555a52d4e8985a6eaf7c3d1bcc, type: 2}
   - Quantity: 1
-    ItemType: {fileID: 11400000, guid: 5e97eecbb8c39494bb26f1ba4d1143a5, type: 2}
+    Item: {fileID: 11400000, guid: 7ebdd94bc65bb455c8dc0c0bcd54f031, type: 2}
   _logger:
     _info: 0
     _verbose: 0

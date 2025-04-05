@@ -20,9 +20,9 @@ public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInpu
     [SerializeField] private AudioClip _fireSFX;
     [SerializeField] private float _fireVolume = 1f;
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private Inventory.ItemType _firewood;
-    [SerializeField] private Inventory.ItemType _dryWood;
-    [SerializeField] private Inventory.ItemType _wetWood;
+    [SerializeField] private Inventory.Item _firewood;
+    [SerializeField] private Inventory.Item _dryWood;
+    [SerializeField] private Inventory.Item _wetWood;
 
     [Header("Embers Settings")]
     [SerializeField] float _embersMinIntensity = 0.2f;

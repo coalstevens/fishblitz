@@ -73,6 +73,8 @@ public class PlayerEnergyManager : MonoBehaviour
 
     public bool IsSufficientEnergyAvailable(IEnergyDepleting energyDepletingThing)
     {
+        if(energyDepletingThing == null)
+            return false;
         if (IsEnergyAvailable())
             return true;
         _logger.Info("Not enough energy remaining.");

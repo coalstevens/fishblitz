@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FlyAgaric2", menuName = "Items/FlyAgaric2")]
-public class FlyAgaric2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget
+public class FlyAgaric2 : Inventory.Item, Diet.IFood, UseItemInput.IUsableWithoutTarget
 {
    [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -12,7 +12,7 @@ public class FlyAgaric2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWi
     public int Carbs => _carbs;
     public int Nutrients => _nutrients;
 
-    public bool UseWithoutTarget()
+    public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
         if (_inventory.TryRemoveActiveItem(1))
         {
@@ -20,5 +20,5 @@ public class FlyAgaric2 : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWi
             return true;
         }
         return false;
-    } 
+    }
 }

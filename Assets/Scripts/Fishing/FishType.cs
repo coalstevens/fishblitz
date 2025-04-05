@@ -5,7 +5,7 @@ using UnityEngine;
 public class FishType : MonoBehaviour
 {
     public List<string> CatchableSceneNames;
-    public Inventory.ItemType CaughtItem;
+    public Inventory.Item CaughtItem;
     [SerializeField] public List<GameClock.Seasons> SpawnableSeasons = new();
     [SerializeField] public List<GameClock.DayPeriods> SpawnablePeriods = new();
     

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BarrelBinos : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] private Inventory _playerInventory;
-    [SerializeField] private Inventory.ItemType _binoculars;
+    [SerializeField] private Inventory.Item _binoculars;
     private Barrel _barrel;
 
     public bool CursorInteract(Vector3 cursorLocation)

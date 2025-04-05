@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewKokanee", menuName = "Items/Kokanee")]
-public class Kokanee : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWithoutTarget, UseItemInput.IUsableOnWorldObject
+public class Kokanee : Inventory.Item, Diet.IFood, UseItemInput.IUsableWithoutTarget, UseItemInput.IUsableOnWorldObject
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -12,7 +12,7 @@ public class Kokanee : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWitho
     public int Carbs => _carbs;
     public int Nutrients => _nutrients;
 
-    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IGiftReceiving _giftAble)
         {
@@ -25,7 +25,7 @@ public class Kokanee : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableWitho
         return false;
     }
 
-    public bool UseWithoutTarget()
+    public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
         if (_inventory.TryRemoveActiveItem(1))
         {

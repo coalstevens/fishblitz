@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MountedRod : Inventory.ItemType
+public class MountedRod : Inventory.Item
 {
     private Inventory _inventory;
 

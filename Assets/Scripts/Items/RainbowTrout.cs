@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRainbowTrout", menuName = "Items/RainbowTrout")]
-public class RainbowTrout : Inventory.ItemType, Diet.IFood, UseItemInput.IUsableOnWorldObject, UseItemInput.IUsableWithoutTarget
+public class RainbowTrout : Inventory.Item, Diet.IFood, UseItemInput.IUsableOnWorldObject, UseItemInput.IUsableWithoutTarget
 {
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
@@ -13,7 +13,7 @@ public class RainbowTrout : Inventory.ItemType, Diet.IFood, UseItemInput.IUsable
     public int Nutrients => _nutrients;
     public int EnergyCost => 0;
 
-    public bool UseOnWorldObject(UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
+    public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
         if (interactableWorldObject is IGiftReceiving _giftAble)
         {
@@ -26,7 +26,7 @@ public class RainbowTrout : Inventory.ItemType, Diet.IFood, UseItemInput.IUsable
         return false;
     }
 
-    public bool UseWithoutTarget()
+    public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
         if (_inventory.TryRemoveActiveItem(1))
         {

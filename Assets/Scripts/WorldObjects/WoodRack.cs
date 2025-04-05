@@ -18,8 +18,8 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Sprite[] _rackSprites;
-    [SerializeField] private Inventory.ItemType _dryLog;
-    [SerializeField] private Inventory.ItemType _wetLog;
+    [SerializeField] private Inventory.Item _dryLog;
+    [SerializeField] private Inventory.Item _wetLog;
     [SerializeField] private int _rackLogCapacity = 18;
     [SerializeField] private int _startingWetLogs = 0;
     [SerializeField] private int _startingDryLogs = 0;

@@ -58,7 +58,7 @@ public class ItemCursor : MonoBehaviour
 
     private bool TrySetLabelText(int newSlotNum)
     {
-        var _itemType = _inventory.GetActiveItemType();
+        var _itemType = _inventory.GetActiveItem();
         if (_itemType == null || string.IsNullOrEmpty(_itemType.ItemLabel))
             return false;
 

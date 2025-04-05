@@ -30,7 +30,7 @@ public class ItemSlot : MonoBehaviour
     private void OnSlotUpdated(Inventory inventory, int slotIndex)
     {
         if (_slotIndex != slotIndex) return;
-        var _slotItem = inventory.SlotItems.ContainsKey(slotIndex) ? inventory.SlotItems[slotIndex] : null;
+        var _slotItem = inventory.SlotAssignments.ContainsKey(slotIndex) ? inventory.SlotAssignments[slotIndex] : null;
 
         _slotSprite.sprite = _slotItem != null ? _filledSlotSprite : _emptySlotSprite;
         _itemSprite.enabled = _slotItem != null;
@@ -38,7 +38,7 @@ public class ItemSlot : MonoBehaviour
         SetQuantityText(_slotItem?.Quantity ?? 0);
 
         if (_slotItem != null) {
-            _itemSprite.sprite = _slotItem.ItemType.ItemSprite;
+            _itemSprite.sprite = _slotItem.Item.ItemSprite;
             StartCoroutine(SetItemSpriteToNativeSize());
         }
     }

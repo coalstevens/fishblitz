@@ -4,7 +4,7 @@ public class PickUpOnInteract : MonoBehaviour, InteractInput.IInteractable
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Inventory _playerInventory;
-    [SerializeField] private Inventory.ItemType _item;
+    [SerializeField] private Inventory.Item _item;
     [SerializeField] private int _itemQuantity;
     [SerializeField] private AudioClip _pickUpSFX;
     [SerializeField] private float _SFXVolume = 0.5f;

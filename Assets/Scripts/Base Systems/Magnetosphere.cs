@@ -23,7 +23,7 @@ public class Magnetosphere : MonoBehaviour
         foreach (LooseItem _looseItem in _looseItemsInRange)
         {
             if (_looseItem.IsMagnetic && 
-                _inventory.HasEnoughInventorySpace(_looseItem.Item.ItemType.ItemLabel, _looseItem.Item.Quantity))
+                _inventory.HasEnoughInventorySpace(_looseItem.Item.Item.ItemLabel, _looseItem.Item.Quantity))
             {
                 ApplyMagneticForce(_looseItem);
                 if (CollectItem(_looseItem))
@@ -45,7 +45,7 @@ public class Magnetosphere : MonoBehaviour
             return false;
 
         // Try to add item to inventory. This should never fail as HasEnoughInventorySpace was already checked
-        if (!_inventory.TryAddItem(looseItem.Item.ItemType, looseItem.Item.Quantity))
+        if (!_inventory.TryAddItem(looseItem.Item.Item, looseItem.Item.Quantity))
             return false;
         
         return true;
