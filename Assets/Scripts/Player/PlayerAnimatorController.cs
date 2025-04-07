@@ -56,6 +56,9 @@ public class PlayerAnimatorController : MonoBehaviour
             case PlayerMovementController.PlayerStates.PickingUp:
                 HandlePickingUp();
                 break;
+            case PlayerMovementController.PlayerStates.Crouched:
+                HandleCrouched(_facingDir);
+                break;
             default:
                 break;
         }
@@ -65,6 +68,25 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         _animator.Play("Caught");
         Invoke(nameof(SetPlayerIdle), 1.5f);
+    }
+
+    private void HandleCrouched(FacingDirection facingDir)
+    {
+        switch (_playerMovementController.FacingDirection.Value)
+        {
+            case FacingDirection.North:
+                _animator.Play("N_Crouch");
+                break;
+            case FacingDirection.South:
+                _animator.Play("S_Crouch");
+                break;
+            case FacingDirection.East:
+                _animator.Play("E_Crouch");
+                break;
+            case FacingDirection.West:
+                _animator.Play("W_Crouch");
+                break;
+        }
     }
 
     private void HandlePickingUp()
@@ -357,7 +379,6 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
     }
-
 
     private void SetPlayerIdle()
     {

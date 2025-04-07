@@ -36,7 +36,7 @@
                     "name": "OpenInventory",
                     "type": "Button",
                     "id": "a697e019-df09-42fb-97c9-3d095463c963",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -162,9 +162,18 @@
                     "name": "ToggleMenu",
                     "type": "Button",
                     "id": "2acc64bb-23d4-4893-8752-6862af88465c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "Button",
+                    "id": "a49cdff7-2efd-4e24-9bf0-db325cd30b81",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 }
             ],
@@ -540,6 +549,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d472cc1-f713-4f46-b056-7d184a07851e",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

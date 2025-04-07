@@ -41,7 +41,10 @@ public class WorldObjectOccupancyMap : MonoBehaviour
         {
             foreach (var tilePos in placedTiles)
             {
-                _tileMap.SetTile(tilePos, null);
+                if (_tileMap != null)
+                {
+                    _tileMap.SetTile(tilePos, null);
+                }
             }
         };
     }

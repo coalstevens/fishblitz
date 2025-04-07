@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
-using UnityEngine.SceneManagement;
+using NUnit.Framework;
 public enum FacingDirection
 {
     North,
@@ -36,7 +36,8 @@ public class PlayerMovementController : MonoBehaviour
         Catching,
         Celebrating,
         Birding,
-        PickingUp
+        PickingUp,
+        Crouched
     }
 
     private static PlayerMovementController _instance;
@@ -66,25 +67,13 @@ public class PlayerMovementController : MonoBehaviour
         transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(DEFAULT_MOVE_SPEED);
         _moveSpeedsMultiplier = new CardinalVector(1);
+        
+        Assert.IsNotNull(_rb);
     }
 
     public void OnMove(InputValue value)
     {
         _currentMotion = value.Get<Vector2>();
-    }
-
-    private void OnMoveCursor(InputValue value)
-    {
-        if (value.Get<Vector2>() == Vector2.zero)
-            return;
-        GameMenuManager _gameMenu = FindFirstObjectByType<GameMenuManager>();
-        _gameMenu.OnMoveCursor(value);
-    }
-
-    private void OnSelect()
-    {
-        GameMenuManager _gameMenu = FindFirstObjectByType<GameMenuManager>();
-        _gameMenu.OnSelect();
     }
 
     private void Update()
