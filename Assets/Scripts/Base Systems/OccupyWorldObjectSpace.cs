@@ -20,6 +20,6 @@ public class OccupyWorldObjectSpace : MonoBehaviour
 
     private void OnDisable()
     {
-        _removeOccupancy();
+        _removeOccupancy?.Invoke();
     }
 }

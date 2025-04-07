@@ -26671,18 +26671,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020cce1abc36a4fd8a5786309b98145a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveWeapon: {fileID: 0}
+  ActiveWeapon:
+    _val: {fileID: 0}
   ActiveWeaponData:
-    ProjectileSpawnCenter: {x: 0, y: 0}
-    ProjectileSpawnRadius: 0
-    IsReloading:
-      _val: 0
-    IsCoolingDown:
-      _val: 0
-    ReloadElapsed: 0
-    CoolDownElapsed: 0
-    CurrentClipCount: 0
-    TargetCollider: {fileID: 0}
+    _val:
+      ProjectileSpawnCenter: {fileID: 0}
+      ProjectileSpawnRadius: 0
+      IsReloading:
+        _val: 0
+      IsCoolingDown:
+        _val: 0
+      ReloadElapsed: 0
+      CoolDownElapsed: 0
+      CurrentClipCount: 0
+      TargetCollider: {fileID: 0}
 --- !u!1 &1089314013
 GameObject:
   m_ObjectHideFlags: 0
@@ -70358,7 +70360,7 @@ MonoBehaviour:
   _targetCollider: {fileID: 2145894629}
   _weapon: {fileID: 11400000, guid: 0f040d1e278b048a787a6fbafb32b549, type: 2}
   _projectileSpawnRadius: 0
-  _isFiring: 0
+  _isFiring: 1
 --- !u!114 &1868021431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70371,18 +70373,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020cce1abc36a4fd8a5786309b98145a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveWeapon: {fileID: 0}
+  ActiveWeapon:
+    _val: {fileID: 0}
   ActiveWeaponData:
-    ProjectileSpawnCenter: {x: 0, y: 0}
-    ProjectileSpawnRadius: 0
-    IsReloading:
-      _val: 0
-    IsCoolingDown:
-      _val: 0
-    ReloadElapsed: 0
-    CoolDownElapsed: 0
-    CurrentClipCount: 0
-    TargetCollider: {fileID: 0}
+    _val:
+      ProjectileSpawnCenter: {fileID: 0}
+      ProjectileSpawnRadius: 0
+      IsReloading:
+        _val: 0
+      IsCoolingDown:
+        _val: 0
+      ReloadElapsed: 0
+      CoolDownElapsed: 0
+      CurrentClipCount: 0
+      TargetCollider: {fileID: 0}
 --- !u!1 &1894077725
 GameObject:
   m_ObjectHideFlags: 0
