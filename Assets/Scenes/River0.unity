@@ -3935,6 +3935,11 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!4 &64024409 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1869687676419805939, guid: 0618159d53a7c4a4e98b85b37c0e3413, type: 3}
+  m_PrefabInstance: {fileID: 6663011875306009126}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &174390809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2521177576572309556, guid: e282698cb82ec4e5eb277420c4693fe1, type: 3}
@@ -3953,7 +3958,7 @@ GameObject:
   - component: {fileID: 232769723}
   - component: {fileID: 232769722}
   - component: {fileID: 232769726}
-  m_Layer: 16
+  m_Layer: 0
   m_Name: Cover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18014,7 +18019,7 @@ MonoBehaviour:
   _nightLightIntensity: 0.08
   _dayTimeLight: {r: 1, g: 1, b: 1, a: 1}
   _nightTimeLight: {r: 0.1254902, g: 0.29803923, b: 0.7019608, a: 1}
-  _rainOverlay: {r: 0.8, g: 0.8, b: 1, a: 1}
+  _rainOverlay: {r: 0.709, g: 0.709, b: 1, a: 1}
   _sunriseStartHour24h: 6
   _sunriseEndHour24h: 10
   _sunsetStartHour24h: 18
@@ -80353,13 +80358,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2145894628}
   - component: {fileID: 2145894629}
+  - component: {fileID: 2145894630}
   m_Layer: 14
   m_Name: Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2145894628
 Transform:
   m_ObjectHideFlags: 0
@@ -80405,13 +80411,31 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: -0.052109092, y: 0.88584167}
   m_Size: {x: 0.8697924, y: 1.9145898}
   m_Direction: 0
+--- !u!114 &2145894630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145894627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9200d5dd7f9436ba9003f97c1033e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsCovered:
+    _val: 0
+  _isInCoveredArea:
+    _val: 0
+  _isCrouched:
+    _val: 0
 --- !u!1001 &190804688583237773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82193,6 +82217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69998d48a93004230add194feb1a4045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSpriteContainer: {fileID: 64024409}
+  _playerHurtbox: {fileID: 2145894630}
+  _coveredColor: {r: 0.4627451, g: 0.4627451, b: 0.4627451, a: 1}
 --- !u!212 &7288144431168144991
 SpriteRenderer:
   m_ObjectHideFlags: 0

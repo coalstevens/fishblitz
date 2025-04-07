@@ -4,7 +4,6 @@ using UnityEngine.Assertions;
 
 public interface IHurtBox
 {
-    public bool IsCovered { get; }
     public void TakeDamage();
 }
 
@@ -51,12 +50,12 @@ public class Projectile : MonoBehaviour
         {
             _logger.Info("  Entered friendly hurtbox.");
             IHurtBox _hurtbox = collision.transform.GetComponent<IHurtBox>();
-            if (!_hurtbox.IsCovered || !_crossedCover)
-            {
-                _logger.Info("  Hurtbox is not covered. Inflicting damage.");
-                _hurtbox.TakeDamage();
-                DisableProjectile();
-            }
+            // if (!_hurtbox.IsCovered || !_crossedCover)
+            // {
+            //     _logger.Info("  Hurtbox is not covered. Inflicting damage.");
+            //     _hurtbox.TakeDamage();
+            //     DisableProjectile();
+            // }
             return;
         }
     }
