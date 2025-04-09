@@ -13,6 +13,7 @@ public class RangedWeaponItem : Inventory.Item, Inventory.IInstancedItem<RangedW
     public float ReloadTime;
     public int ClipSize;
     public GameObject ProjectilePrefab;
+    public bool IsEnemyProjectile;
 
     [Serializable]
     public class InstanceData : Inventory.ItemInstanceData
@@ -97,6 +98,6 @@ public class RangedWeaponItem : Inventory.Item, Inventory.IInstancedItem<RangedW
         _projectileObject.transform.localRotation = Quaternion.FromToRotation(Vector2.left, _targetDirection);
 
         Projectile _projectile = _projectileObject.GetComponent<Projectile>();
-        _projectile.Launch(_targetDirection);
+        _projectile.Launch(_targetDirection, IsEnemyProjectile);
     }
 }

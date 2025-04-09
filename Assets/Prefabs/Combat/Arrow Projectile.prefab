@@ -50,13 +50,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lifespan: 2
   _speed: 10
-  _damager: 1
+  _damage: 1
   _logger:
     _info: 0
     _verbose: 0
     _prefix: 
     _color: green
-  IsFriendly: 0
+  IsEnemyProjectile: 0
 --- !u!212 &7942309864121402037
 SpriteRenderer:
   m_ObjectHideFlags: 0

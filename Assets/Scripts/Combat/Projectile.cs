@@ -4,22 +4,25 @@ using UnityEngine.Assertions;
 
 public interface IHurtBox
 {
-    public void TakeDamage();
+    public void TakeDamage(float damage);
+    public bool IsVulnerable { get; }
 }
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _lifespan;
     [SerializeField] private float _speed;
-    [SerializeField] private float _damager;
+    [SerializeField] private float _damage;
     [SerializeField] private Logger _logger = new();
     private Rigidbody2D _rb;
     private bool _crossedCover = false;
-    public bool IsFriendly = false;
+    public bool IsEnemyProjectile = false;
     private Coroutine _lifespanTimeoutCoroutine;
 
     private void Awake()
     {
+        Assert.IsTrue(_damage > 0);
+        Assert.IsTrue(_lifespan > 0);
         _rb = GetComponent<Rigidbody2D>();
         Assert.IsNotNull(_rb);
     }
@@ -45,17 +48,17 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        if (IsColliderInLayer(collision, "FriendlyHurtbox") && !IsFriendly ||
-            IsColliderInLayer(collision, "EnemyHurtbox") && IsFriendly)
+        if (IsColliderInLayer(collision, "FriendlyHurtbox") && IsEnemyProjectile ||
+            IsColliderInLayer(collision, "EnemyHurtbox") && !IsEnemyProjectile)
         {
             _logger.Info("  Entered friendly hurtbox.");
             IHurtBox _hurtbox = collision.transform.GetComponent<IHurtBox>();
-            // if (!_hurtbox.IsCovered || !_crossedCover)
-            // {
-            //     _logger.Info("  Hurtbox is not covered. Inflicting damage.");
-            //     _hurtbox.TakeDamage();
-            //     DisableProjectile();
-            // }
+            if (!_hurtbox.IsVulnerable || !_crossedCover)
+            {
+                _logger.Info("  Hurtbox is not covered. Inflicting damage.");
+                _hurtbox.TakeDamage(_damage);
+                DisableProjectile();
+            }
             return;
         }
     }
@@ -75,8 +78,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Launch(Vector2 direction)
+    public void Launch(Vector2 direction, bool isEnemyProjectile)
     {
+        IsEnemyProjectile = isEnemyProjectile;
         _lifespanTimeoutCoroutine = StartCoroutine(DisableProjectileAfterLifespan());
         if (_rb != null)
         {

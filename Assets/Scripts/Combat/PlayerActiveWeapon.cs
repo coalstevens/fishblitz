@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class PlayerWeaponInitializer : MonoBehaviour
+public class PlayerActiveWeapon : MonoBehaviour
 {
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private float _projectileSpawnRadius = 1f;

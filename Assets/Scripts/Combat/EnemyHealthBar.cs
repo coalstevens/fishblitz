@@ -1,56 +1,57 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-
-public interface IHealth
-{
-    public event Action OnHealthUpdate;
-    public float CurrentHealth { get ; }
-    public float MaxHealth { get ; }
-}
 
 public class EnemyHealthBar : MonoBehaviour
 {
     [SerializeField] private float _meterTimeoutSeconds = 5f;
     [SerializeField] private Color _healthBarColor;
-    private IHealth _enemy;
+    private EnemyHealth _enemyHealth;
     private SpriteRenderer _progressBar;
     private SpriteRenderer _frame;
     private bool _timedOut = true;
+    private Coroutine _timeoutCoroutine;
     private float _timeoutElapsed = 0;
+    private List<Action> _unsubscribeCBs = new();
 
     private void Awake()
     {
-        _enemy = transform.parent.GetComponent<IHealth>();
+        _enemyHealth = transform.parent.GetComponent<EnemyHealth>();  
         _progressBar = transform.GetChild(0).GetComponent<SpriteRenderer>();
         _frame = GetComponent<SpriteRenderer>();
         _progressBar.color = _healthBarColor;
 
-        Assert.IsNotNull(_enemy);
+        Assert.IsNotNull(_enemyHealth);
         Assert.IsNotNull(_progressBar);
         Assert.IsNotNull(_frame);
     }
 
     private void OnEnable()
     {
-        _enemy.OnHealthUpdate += UpdateHealthBar;
+        _unsubscribeCBs.Add(_enemyHealth.CurrentHealth.OnChange(curr => UpdateHealthBar(curr)));
     }
 
     private void OnDisable()
     {
-        _enemy.OnHealthUpdate -= UpdateHealthBar;
+        foreach (var cb in _unsubscribeCBs) 
+            cb();
+        _unsubscribeCBs.Clear();
     }
 
-    private void UpdateHealthBar()
+    private void UpdateHealthBar(float currentHealth)
     {
         if (_timedOut)
         {
             _timedOut = false;
+            _timeoutCoroutine = StartCoroutine(HandleTimeout());
             SetMeterVisibility(true);
         }
+
         _timeoutElapsed = 0;
 
-        float newWidth = Mathf.Lerp(0, 1, _enemy.CurrentHealth / _enemy.MaxHealth);
+        float newWidth = Mathf.Clamp01(currentHealth / _enemyHealth.MaxHealth);
         _progressBar.transform.localScale = new Vector3(newWidth, 1, 1);
     }
 
@@ -60,15 +61,16 @@ public class EnemyHealthBar : MonoBehaviour
         _frame.enabled = visible;
     }
 
-    private void Update()
+    private IEnumerator HandleTimeout()
     {
-        if (_timedOut) return;
-        _timeoutElapsed += Time.deltaTime;
-
-        if (_timeoutElapsed >= _meterTimeoutSeconds)
+        while (_timeoutElapsed < _meterTimeoutSeconds)
         {
-            _timedOut = true;
-            SetMeterVisibility(false);
+            _timeoutElapsed += Time.deltaTime;
+            yield return null;
         }
+
+        _timedOut = true;
+        SetMeterVisibility(false);
+        _timeoutCoroutine = null;
     }
 }

@@ -4,26 +4,20 @@ using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-// TODO: There are gonna be some issues with overlapping cover colliders
-
-public class PlayerHurtbox : MonoBehaviour, IHurtBox
+public class EnemyHurtbox : MonoBehaviour, IHurtBox
 {
     public Reactive<bool> IsCovered = new Reactive<bool>(false);
     [SerializeField] private Reactive<bool> _isInCoveredArea = new Reactive<bool>(false);
     [SerializeField] private Reactive<bool> _isCrouched = new Reactive<bool>(false);
-    private PlayerMovementController _playerMovementController;
-    private Transform _player;
+    private EnemyHealth _combatStatus;
     private List<Action> _unsubscribeCBs = new();
     public bool IsVulnerable => IsCovered.Value;
 
     private void OnEnable()
     {
-        _player = transform.parent;
-        Assert.IsNotNull(_player);
-        _playerMovementController = _player.GetComponent<PlayerMovementController>();
-        Assert.IsNotNull(_playerMovementController);
+        _combatStatus = transform.parent.GetComponent<EnemyHealth>();
+        Assert.IsNotNull(_combatStatus);
 
-        _unsubscribeCBs.Add(_playerMovementController.PlayerState.OnChange(curr => CheckIfCrouched(curr)));
         _unsubscribeCBs.Add(_isCrouched.OnChange(_ => CheckIfCovered()));
         _unsubscribeCBs.Add(_isInCoveredArea.OnChange(_ => CheckIfCovered()));
     }
@@ -42,12 +36,12 @@ public class PlayerHurtbox : MonoBehaviour, IHurtBox
 
     private void CheckIfCrouched(PlayerMovementController.PlayerStates curr)
     {
-        _isCrouched.Value = curr == PlayerMovementController.PlayerStates.Crouched;
+        throw new NotImplementedException();
     }
 
     public void TakeDamage(float damage)
     {
-        throw new NotImplementedException();
+        _combatStatus.TakeDamage(damage);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class EnemyWeaponHandler : MonoBehaviour 
+public class EnemyActiveWeapon : MonoBehaviour 
 {
     [SerializeField] private Collider2D _targetCollider;
     [SerializeField] private RangedWeaponItem _weapon;
