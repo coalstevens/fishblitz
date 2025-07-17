@@ -23,7 +23,7 @@ public class Reloader : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (ActiveWeapon == null || ActiveWeaponData == null)
+        if (ActiveWeapon.Value == null || ActiveWeaponData.Value == null)
             return;
 
         if (!ActiveWeaponData.Value.IsReloading.Value && !ActiveWeaponData.Value.IsCoolingDown.Value)

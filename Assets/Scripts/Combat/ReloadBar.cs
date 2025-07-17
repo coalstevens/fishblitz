@@ -31,38 +31,53 @@ public class ReloadBar : MonoBehaviour
         _unsubscribeWeapon = null;
     }
 
-    private void SubscribeToActiveWeaponReload(RangedWeaponItem.InstanceData curr) 
-    { 
+    private void SubscribeToActiveWeaponReload(RangedWeaponItem.InstanceData curr)
+    {
         if (curr == null)
         {
             _unsubscribeReload?.Invoke();
             _unsubscribeReload = null;
+            DisableProgressBar();
         }
         else
         {
             _unsubscribeReload?.Invoke();
-            _unsubscribeReload = curr.IsReloading.OnChange(curr => HandleReload(curr));
-            HandleReload(curr.IsReloading.Value);
+            _unsubscribeReload = curr.IsReloading.OnChange(curr => HandleProgressBar(curr));
+            HandleProgressBar(curr.IsReloading.Value);
         }
     }
 
-    private void HandleReload(bool isReloading)
+    private void HandleProgressBar(bool isReloading)
     {
         if (isReloading)
         {
-            _progressBar.enabled = true;
-            _progressBar.color = _reloadBarColor;
-            _reloadCoroutine = StartCoroutine(UpdateProgressMeter());
+            EnableProgressBar();
         }
         else
         {
-            if (_reloadCoroutine != null)
-                StopCoroutine(_reloadCoroutine);
-            _progressBar.enabled = false;
+            DisableProgressBar();
         }
     }
 
-    private IEnumerator UpdateProgressMeter()
+    private void EnableProgressBar()
+    {
+        _progressBar.enabled = true;
+        _progressBar.color = _reloadBarColor;
+        if (_reloadCoroutine != null) {
+            Debug.LogError("Reload coroutine already running, stopping it before starting a new one.");
+            StopCoroutine(_reloadCoroutine);
+        }
+        _reloadCoroutine = StartCoroutine(UpdateProgressBar());
+    }
+
+    private void DisableProgressBar()
+    {
+        if (_reloadCoroutine != null)
+            StopCoroutine(_reloadCoroutine);
+        _progressBar.enabled = false;
+    }
+
+    private IEnumerator UpdateProgressBar()
     {
         while (_reloader.ActiveWeaponData.Value.IsReloading.Value)
         {

@@ -9,6 +9,11 @@ public class StaticSpriteSorting : MonoBehaviour
         SortSprite();
     }
 
+    private void Start()
+    {
+        SortSprite();
+    }
+
     public void SortSprite()
     {
         SpriteRenderer _spriteRenderer = GetComponent<SpriteRenderer>();

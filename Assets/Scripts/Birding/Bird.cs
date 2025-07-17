@@ -27,7 +27,7 @@ public class Bird : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _beam = BirdingGame.Instance.BeamCollider;
+        // _beam = BirdingGame.Instance.BeamCollider;
     }
 
     public Vector2 GetVelocity()

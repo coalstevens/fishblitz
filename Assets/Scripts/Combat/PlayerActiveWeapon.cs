@@ -32,7 +32,20 @@ public class PlayerActiveWeapon : MonoBehaviour
     private void SetActiveWeapon()
     {
         var activeItem = _playerInventory.GetActiveItem();
+        if (activeItem == null || activeItem is not RangedWeaponItem)
+        {
+            _activeWeapon = null;
+            _activeWeaponData = null;
+            _reloader.SetActiveWeapon(null, null);
+            return;
+        }
+
         var activeItemInstanceData = _playerInventory.GetActiveItemInstanceData();
+        if (activeItemInstanceData == null)
+        {
+            Debug.LogError("Active ranged weapon item instance data is null.");
+            return;
+        }
 
         _activeWeapon = activeItem as RangedWeaponItem;
         _activeWeaponData = activeItemInstanceData as RangedWeaponItem.InstanceData;
@@ -41,7 +54,6 @@ public class PlayerActiveWeapon : MonoBehaviour
         if (_activeWeaponData != null)
         {
             // Verifying that the InstanceData was created correctly
-            Assert.IsNotNull(_activeWeaponData.IsReloading);
             Assert.IsNotNull(_activeWeaponData.IsReloading);
             _activeWeaponData.ProjectileSpawnCenter = transform;
             _activeWeaponData.ProjectileSpawnRadius = _projectileSpawnRadius;
