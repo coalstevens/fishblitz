@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
 
-public partial class BirdBrain : MonoBehaviour {
-    [Serializable]
+public partial class BirdBrain : MonoBehaviour
+{
     public class PerchedState : IBirdState
     {
-        [SerializeField] private Vector2 _perchedDurationRange = new Vector2(5f, 20f);
+        public void DrawGizmos(BirdBrain bird)
+        {
+        }
 
         public void Enter(BirdBrain bird)
         {
@@ -14,15 +16,15 @@ public partial class BirdBrain : MonoBehaviour {
                 Debug.LogError("LandingTargetSpot is null.");
                 return;
             }
-            
+
             bird.LandingTargetSpot.OnBirdEntry(bird);
-            bird._animator.Play("Idle");
-            bird.BehaviorDuration = UnityEngine.Random.Range(_perchedDurationRange.x, _perchedDurationRange.y);
+            bird._animator.PlayFlying();
+            bird._behaviorDuration = UnityEngine.Random.Range(bird.Config.Perched.BehaviourDurationRangeSecs.x, bird.Config.Perched.BehaviourDurationRangeSecs.y);
 
             bird._birdCollider.isTrigger = true;
             bird._spriteSorting.enabled = false;
-            bird._renderer.sortingLayerName = "Main";
-            bird._renderer.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 2; // +2 to make room for shadow as well, between the two
+            bird._sortingGroup.sortingLayerName = "Main";
+            bird._sortingGroup.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 2; // +2 to make room for shadow as well, between the two
         }
 
         public void Exit(BirdBrain bird)
@@ -32,16 +34,16 @@ public partial class BirdBrain : MonoBehaviour {
 
         public void Update(BirdBrain bird)
         {
-            if (bird.TickAndCheckBehaviorTimer())
+            if (bird.HasBehaviorTimerElapsed())
             {
-                if (bird.PreviousBirdState is LandingState)
-                    bird.TransitionToState(bird.Flying);
-                else if (bird.PreviousBirdState is SoaringLandingState)
-                    bird.TransitionToState(bird.Soaring);
+                if (bird._previousBirdState is LandingState)
+                    bird.TransitionToState(bird.LowFlying);
+                else if (bird._previousBirdState is HighLandingState)
+                    bird.TransitionToState(bird.HighFlying);
                 else
                 {
-                    Debug.LogError($"Unexpected code path. Previous state: {bird.PreviousBirdState}");
-                    bird.TransitionToState(bird.Flying);
+                    Debug.LogError($"Unexpected code path. Previous state: {bird._previousBirdState}");
+                    bird.TransitionToState(bird.LowFlying);
                 }
                 return;
             }

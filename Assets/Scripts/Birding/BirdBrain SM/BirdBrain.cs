@@ -2,20 +2,39 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ReactiveUnity;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // TODOS
 // Water Landing? Ducks?
 // might be a bug when the bird is hopping on the ground and the state changes during this process?
 // ^ does this make the bird slide along the ground in idle positon?
 
+[Serializable]
 public partial class BirdBrain : MonoBehaviour
 {
+    public class BirdInstanceData
+    {
+        [SerializeField] public GameClock.DayPeriods PeriodSpawned;
+        [SerializeField] public GameClock.Seasons SeasonSpawned;
+        public Vector3 SpawnPosition;
+        public Reactive<bool> IsTagged = new Reactive<bool>(false);
+
+        public void Tag(BirdSpeciesData SpeciesData)
+        {
+            IsTagged.Value = true;
+            AudioManager.Instance.PlaySFX(SpeciesData.CaptureSound, SpeciesData.SoundVolume);
+            SpeciesData.PlayerData.BirdingLog.AddToLog(SpeciesData.SpeciesName, SeasonSpawned, PeriodSpawned);
+        }
+    }
+
     public interface IBirdState
     {
         public void Enter(BirdBrain bird);
         public void Update(BirdBrain bird);
         public void Exit(BirdBrain bird);
+        public void DrawGizmos(BirdBrain bird);
     }
 
     public interface IBirdLandingSpot
@@ -33,33 +52,29 @@ public partial class BirdBrain : MonoBehaviour
         public bool IsThereSpace();
         public void ReserveSpace(BirdBrain bird);
     }
-    public interface IPerchableLowElevation : IPerchable {};
-    public interface IPerchableHighElevation : IPerchable {};
+    public interface IPerchableLowElevation : IPerchable { };
+    public interface IPerchableHighElevation : IPerchable { };
 
     [Header("General")]
-    [SerializeField] public string _stateName;
-    [SerializeField] public string _previousStateName;
-    [SerializeField] public Collider2D ViewDistance;
+    public BirdSpeciesData SpeciesData;
+    public Collider2D ViewDistance;
 
-    [Header("Flocking")]
-    [SerializeField] private List<string> FlockableBirdsNames = new();
-    [SerializeField] private float _reactionIntervalSecs = 2f;
-    [SerializeField] private float _slowestReactionTimeSecs = 0.5f;
-    
-    public delegate void BirdDestroyedHandler(Bird bird);
+    public delegate void BirdDestroyedHandler(BirdBrain bird);
     public static event BirdDestroyedHandler BirdDestroyed;
-    private delegate void BirdStateChangeHandler(Bird bird, Vector2 targetPosition, IBirdState newState);
+    private delegate void BirdStateChangeHandler(BirdBrain bird, Vector2 targetPosition, IBirdState newState);
     private static event BirdStateChangeHandler BirdStateChanged;
 
     // Properties
-    public Renderer Renderer { get => _renderer; }
     public IBirdState BirdState { get => _birdState; }
+    public BirdBehaviourConfig Config { get => SpeciesData.BehaviourConfig; }
 
     // State
+    public string _stateName;
+    public string _previousStateName;
     private IBirdState _birdState;
-    private IBirdState PreviousBirdState;
+    private IBirdState _previousBirdState;
     private FacingDirection _facingDirection = FacingDirection.West;
-    public float BehaviorDuration = 0;
+    public float _behaviorDuration = 0;
     private float _behaviorElapsed = 0;
     public Vector2 TargetPosition = Vector2.zero;
     public IBirdLandingSpot LandingTargetSpot;
@@ -68,45 +83,43 @@ public partial class BirdBrain : MonoBehaviour
     private bool _isFrightened = false;
 
     // States
-    private FlyingState Flying = new();
+    [HideInInspector] public BirdInstanceData InstanceData;
+    private LowFlyingState LowFlying = new();
     private LandingState Landing = new();
     private ShelteredState Sheltered = new();
     private PerchedState Perched = new();
     private GroundedState Grounded = new();
     private FleeingState Fleeing = new();
-    private SoaringState Soaring = new();
-    private SoaringLandingState SoarLanding = new();
+    private HighFlyingState HighFlying = new();
+    private HighLandingState HighLanding = new();
 
     // References
     private Collider2D _birdCollider;
-    private Animator _animator;
-    private SpriteRenderer _renderer;
+    private BirdAnimatorController _animator; 
+    private SortingGroup _sortingGroup;
     private DynamicSpriteSorting _spriteSorting;
     private NearbyBirdTracker _nearbyBirdsTracker;
     private ParticleSystem _leafSplash;
     private Renderer _leafSplashRenderer;
     private Rigidbody2D _rb;
-    private Bird _thisBird;
     private Collider2D _worldCollider;
     private Bounds _worldBounds;
-    private Collider2D _playerCollider;
-    private List<Action> _unsubscribeHooks = new();
-    
+
     private const string WATER_LAYER = "Water";
     private const string BIRDS_LAYER = "Birds";
     private int WaterLayer;
     private int BirdsLayer;
 
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _animator = GetComponentInChildren<Animator>();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
-        _spriteSorting = GetComponentInChildren<DynamicSpriteSorting>();
+        _animator = GetComponent<BirdAnimatorController>();
+        _sortingGroup = GetComponent<SortingGroup>();
+        _spriteSorting = GetComponent<DynamicSpriteSorting>();
         _nearbyBirdsTracker = GetComponentInChildren<NearbyBirdTracker>();
         _leafSplash = GetComponentInChildren<ParticleSystem>();
         _leafSplashRenderer = _leafSplash.GetComponent<Renderer>();
-        _thisBird = GetComponent<Bird>();
         _birdCollider = GetComponent<Collider2D>();
 
         WaterLayer = LayerMask.NameToLayer(WATER_LAYER);
@@ -116,12 +129,12 @@ public partial class BirdBrain : MonoBehaviour
         _worldBounds = _worldCollider.bounds;
 
         TargetPosition = transform.position;
-        TransitionToState(Flying);
+        TransitionToState(LowFlying);
     }
 
     private void Update()
     {
-        if (_isFrightened && _birdState is not FleeingState) 
+        if (_isFrightened && _birdState is not FleeingState)
             TransitionToState(Fleeing);
         UpdateStateText();
         SelfDestructIfWorldExited();
@@ -139,59 +152,63 @@ public partial class BirdBrain : MonoBehaviour
         BirdStateChanged -= ReactToNearbyBirdStateChange;
     }
 
-    private void ReactToNearbyBirdStateChange(Bird thatBird, Vector2 thatBirdTargetPosition, IBirdState thatBirdNewState)
+    private void ReactToNearbyBirdStateChange(BirdBrain thatBird, Vector2 thatBirdTargetPosition, IBirdState thatBirdNewState)
     {
         // AKA GoBeWithYourFlockieBoys()
-        if (Time.time - _lastFlockReactionTime < _reactionIntervalSecs) return;
+        if (Time.time - _lastFlockReactionTime < Config.ReactionCooldownSecs) return;
         if (thatBird == null) return; // that bird don't be
         if (_nearbyBirdsTracker == null) return;
-        if (thatBird == _thisBird) return; // that bird be this bird 
-        if (!FlockableBirdsNames.Contains(thatBird.BirdName)) return; // that bird don't flock wit this bird 
+        if (thatBird == this) return; // that bird be this bird 
+        if (!thatBird.SpeciesData.FlockableSpecies.Contains(thatBird.SpeciesData)) return; // that bird don't flock wit this bird 
         if (!_nearbyBirdsTracker.NearbyBirds.Contains(thatBird)) return; // that bird ain't nearby 
 
         // Fleeing beats following the flock
-        if (_birdState is FleeingState) 
-            return; 
+        if (_birdState is FleeingState)
+            return;
 
         // Flee with the flock!
-        if (thatBirdNewState is FleeingState && _birdState is not FleeingState) {
+        if (thatBirdNewState is FleeingState && _birdState is not FleeingState)
+        {
             StartCoroutine(ReactiveTransitionToStateWithDelay(Fleeing));
             return;
         }
 
-        // React to a landing flockmate by landing near them, from Flying
-        if (thatBirdNewState is LandingState && _birdState is FlyingState) 
+        // React to a landing flockmate by landing near them, from Low Flying
+        if (thatBirdNewState is LandingState && _birdState is LowFlyingState)
         {
-            Landing.SetLandingCircle(Landing.FlockLandingCircleRadius, thatBirdTargetPosition);
+            Landing.SetLandingTargetArea(Config.LowLanding.FlockLandingCircleRadius, thatBirdTargetPosition);
             StartCoroutine(ReactiveTransitionToStateWithDelay(Landing));
             return;
         }
 
-        // React to a landing flockmate by landing near them, from Soaring
-        if (thatBirdNewState is SoaringLandingState && _birdState is SoaringState) 
+        // React to a landing flockmate by landing near them, from High Flying
+        if (thatBirdNewState is HighLandingState && _birdState is HighFlyingState)
         {
-            SoarLanding.SetLandingCircle(SoarLanding.FlockLandingCircleRadius, thatBirdTargetPosition); // react by landing near that bird
-            StartCoroutine(ReactiveTransitionToStateWithDelay(SoarLanding));
+            HighLanding.SetLandingCircle(Config.HighLanding.FlockLandingAreaRadius, thatBirdTargetPosition); // react by landing near that bird
+            StartCoroutine(ReactiveTransitionToStateWithDelay(HighLanding));
             return;
         }
 
-        // Fly with that bird
-        if (thatBirdNewState is FlyingState && _birdState is not FlyingState) {
-            StartCoroutine(ReactiveTransitionToStateWithDelay(Flying));
+        // Fly Low with that bird
+        if (thatBirdNewState is LowFlyingState && _birdState is not LowFlyingState)
+        {
+            StartCoroutine(ReactiveTransitionToStateWithDelay(LowFlying));
             return;
         }
-        
-        // Soar with that bird
-        if (thatBirdNewState is SoaringState && _birdState is not SoaringState) {
-            StartCoroutine(ReactiveTransitionToStateWithDelay(Soaring));
-            return;
-        }
-    }   
 
-    private IEnumerator ReactiveTransitionToStateWithDelay(IBirdState newState) {
+        // Fly High with that bird
+        if (thatBirdNewState is HighFlyingState && _birdState is not HighFlyingState)
+        {
+            StartCoroutine(ReactiveTransitionToStateWithDelay(HighFlying));
+            return;
+        }
+    }
+
+    private IEnumerator ReactiveTransitionToStateWithDelay(IBirdState newState)
+    {
         _lastFlockReactionTime = Time.time;
         _isReacting = true;
-        float _delay = UnityEngine.Random.Range(0, _slowestReactionTimeSecs);
+        float _delay = UnityEngine.Random.Range(Config.ReactionTimeRangeSecs.x, Config.ReactionTimeRangeSecs.y);
         yield return new WaitForSeconds(_delay);
         _isReacting = false;
         TransitionToState(newState);
@@ -204,27 +221,28 @@ public partial class BirdBrain : MonoBehaviour
 
         // ignore any other transitions while bird is reacting
         if (_isReacting)
-            return; 
+            return;
+
         _birdState?.Exit(this);
-        PreviousBirdState = _birdState;
+        _previousBirdState = _birdState;
         _birdState = newState;
         _birdState.Enter(this);
-        BirdStateChanged(_thisBird, TargetPosition, newState); // this must be after the Enter() call
+        BirdStateChanged(this, TargetPosition, newState); // this must be after the Enter() call
     }
 
     private void SelfDestructIfWorldExited()
     {
         if (!_worldBounds.Contains(transform.position))
         {
-            BirdDestroyed(GetComponent<Bird>());
+            BirdDestroyed(this);
             Destroy(gameObject);
         }
     }
 
-    private bool TickAndCheckBehaviorTimer()
+    private bool HasBehaviorTimerElapsed()
     {
         _behaviorElapsed += Time.deltaTime;
-        if (_behaviorElapsed >= BehaviorDuration)
+        if (_behaviorElapsed >= _behaviorDuration)
         {
             _behaviorElapsed = 0;
             return true;
@@ -242,7 +260,7 @@ public partial class BirdBrain : MonoBehaviour
             _facingDirection = FacingDirection.West;
 
         if (previousDirection != _facingDirection)
-            MatchAnimationToFacingDirection();
+            _animator.MatchAnimationToFacingDirection(_facingDirection);
     }
 
     public void FrightenBird()
@@ -250,60 +268,30 @@ public partial class BirdBrain : MonoBehaviour
         _isFrightened = true;
     }
 
-    private void MatchAnimationToFacingDirection()
-    {
-        transform.localScale = new Vector3
-        (
-            _facingDirection == FacingDirection.West ?
-                Mathf.Abs(transform.localScale.x) :
-                -Mathf.Abs(transform.localScale.x),
-            transform.localScale.y,
-            transform.localScale.z
-        );
-    }
-
-    private void PlayAnimationThenStop(string animationName)
-    {
-        StartCoroutine(PlayAnimationThenStopMotion(animationName));
-    }
-
-    private IEnumerator PlayAnimationThenStopMotion(string animationName)
-    {
-        _animator.Play(animationName);
-        yield return null; // wait 1 frame for animation to begin
-        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        _rb.linearVelocity = Vector2.zero;
-    }
-
     private void UpdateStateText()
     {
-        _stateName = _birdState switch
+        static string GetStateName(IBirdState state) => state switch
         {
             LandingState => "Landing",
-            FlyingState => "Flying",
+            LowFlyingState => "LowFlying",
             PerchedState => "Perched",
             FleeingState => "Fleeing",
             GroundedState => "Grounded",
             ShelteredState => "Sheltered",
+            HighFlyingState => "HighFlying",
+            HighLandingState => "HighLanding",
             _ => ""
         };
-        _previousStateName = PreviousBirdState switch
-        {
-            LandingState => "Landing",
-            FlyingState => "Flying",
-            PerchedState => "Perched",
-            FleeingState => "Fleeing",
-            GroundedState => "Grounded",
-            ShelteredState => "Sheltered",
-            _ => ""
-        };
+
+        _stateName = GetStateName(_birdState);
+        _previousStateName = GetStateName(_previousBirdState);
     }
 
-    private bool TryFindLandingSpotOfType<T>(Vector2 landingCircleCenter, float landingCircleRadius) where T : IBirdLandingSpot
+    private bool TrySetLandingSpotOfType<T>(Vector2 landingCircleCenter, float landingCircleRadius) where T : IBirdLandingSpot
     {
         List<Collider2D> _collidersInLandingCircle = Physics2D.OverlapCircleAll(landingCircleCenter, landingCircleRadius).ToList();
         List<T> _availableSpots = new();
-        
+
         foreach (var _collider in _collidersInLandingCircle)
             if (_collider.TryGetComponent<T>(out var spot) && (spot is IShelterable || (spot is IPerchable perchable && perchable.IsThereSpace())))
                 _availableSpots.Add(spot);
@@ -317,6 +305,21 @@ public partial class BirdBrain : MonoBehaviour
             perch.ReserveSpace(this);
 
         return true;
+    }
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public Vector2 GetVelocity()
+    {
+        return _rb.linearVelocity;
+    }
+
+    private void OnDrawGizmos()
+    {
+        _birdState?.DrawGizmos(this);
     }
 
 }

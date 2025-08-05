@@ -1,11 +1,20 @@
 using System.Linq;
 using UnityEngine;
 
-public partial class BirdBrain : MonoBehaviour {
+public partial class BirdBrain : MonoBehaviour
+{
     public static class BirdForces
     {
-        public static Vector2 CalculateAvoidanceForce(BirdBrain bird, float circleCastRadius, float circleCastRange, float avoidanceWeight)
+        public static Vector2 CalculateAvoidanceForce(
+            BirdBrain bird,
+            float circleCastRadius,
+            float circleCastRange,
+            LayerMask avoidLayers,
+            float avoidanceWeight,
+            out Vector2 obstaclePosition)
         {
+            obstaclePosition = Vector2.zero;
+
             if (circleCastRange <= 0 || circleCastRadius <= 0)
             {
                 Debug.LogWarning("CircleCast parameters should be greater than zero.");
@@ -16,29 +25,43 @@ public partial class BirdBrain : MonoBehaviour {
                 bird.transform.position,
                 circleCastRadius,
                 bird._rb.linearVelocity.normalized,
-                circleCastRange
+                circleCastRange,
+                avoidLayers
             );
 
-            Vector2 _avoidanceForce = Vector2.zero;
-            if (hit.collider != null)
+            if (hit && !hit.collider.isTrigger)
             {
-                Vector2 _obstaclePosition = hit.point;
-                Vector2 _avoidanceDirection = ((Vector2)bird.transform.position - _obstaclePosition).normalized;
-                float _proximityFactor = 1 - (hit.distance / circleCastRange); // Closer -> stronger
-                _avoidanceForce = _avoidanceDirection * _proximityFactor * avoidanceWeight;
+                float _proximityFactor = 1 - hit.fraction; // Closer -> stronger
+                Vector2 _avoidanceForce = hit.normal *_proximityFactor * avoidanceWeight; // dir is hit collider normal
+                obstaclePosition = hit.point;
+                return _avoidanceForce;
             }
-
-            return _avoidanceForce;
+            else
+            {
+                return Vector2.zero;
+            }
         }
 
-        public static Vector2 CalculateWanderForce(BirdBrain bird, float speedLimit, float steerForceLimit, float wanderRingDistance, float wanderRingRadius)
+        public static Vector2 CalculateWanderForce(
+            BirdBrain bird,
+            float speedLimit,
+            float steerForceLimit,
+            float wanderRingDistance,
+            float wanderRingRadius,
+            out Vector2 ringCenter)
         {
-            Vector2 _ringCenter = (Vector2)bird.transform.position + bird._rb.linearVelocity.normalized * wanderRingDistance;
-            bird.TargetPosition = _ringCenter + wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
+            ringCenter = (Vector2)bird.transform.position + bird._rb.linearVelocity.normalized * wanderRingDistance;
+            bird.TargetPosition = ringCenter + wanderRingRadius * UnityEngine.Random.insideUnitCircle.normalized;
             return Seek(bird, speedLimit, steerForceLimit);
         }
 
-        public static Vector2 CalculateBoidForce(BirdBrain bird, float maxFlockMates, float separationWeight, float alignmentWeight, float cohesionWeight)
+        public static Vector2 CalculateBoidForce(
+            BirdBrain bird,
+            float boidForceWeight,
+            float maxFlockMates,
+            float separationWeight,
+            float alignmentWeight,
+            float cohesionWeight)
         {
             Vector2 _separation = Vector2.zero; // Prevents birds getting too close
             Vector2 _alignment = Vector2.zero; // Urge to match direction of others
@@ -46,7 +69,7 @@ public partial class BirdBrain : MonoBehaviour {
             int _count = 0;
 
             var _nearbyBirds = bird._nearbyBirdsTracker.NearbyBirds
-                .Where(b => bird.FlockableBirdsNames.Contains(b.BirdName))
+                .Where(b => bird.SpeciesData.FlockableSpecies.Contains(b.SpeciesData))
                 .OrderBy(b => Vector2.Distance(bird.transform.position, b.transform.position)); // Sorted so closer birds are selected first
 
             foreach (var _nearbyBird in _nearbyBirds)
@@ -57,6 +80,7 @@ public partial class BirdBrain : MonoBehaviour {
                 _alignment += _nearbyBird.GetVelocity();
                 _cohesion += (Vector2)_nearbyBird.transform.position;
                 _count++;
+
                 if (_count >= maxFlockMates)
                     break;
             }
@@ -67,11 +91,13 @@ public partial class BirdBrain : MonoBehaviour {
                 _alignment /= _count;
                 _cohesion /= _count;
                 _cohesion = (_cohesion - (Vector2)bird.transform.position).normalized;
-                return
+                Vector2 boidForce =
                     (_separation.normalized * separationWeight +
                     _alignment.normalized * alignmentWeight +
                     _cohesion * cohesionWeight).normalized;
+                return boidForce * boidForceWeight;
             }
+
             return Vector2.zero;
         }
 

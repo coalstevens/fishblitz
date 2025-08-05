@@ -36,5 +36,6 @@ public class PlayerData : ScriptableObject
     public int WettingGameMinCounter = 0;
     public int CounterToMatchAmbientGamemins = 0;
     public bool IsPlayerSleeping = false;
+    public int LastPlayerSleepTime = 0;
 }
 

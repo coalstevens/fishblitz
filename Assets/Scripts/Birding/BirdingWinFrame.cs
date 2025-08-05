@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BirdingWinFrame : MonoBehaviour
@@ -7,7 +6,7 @@ public class BirdingWinFrame : MonoBehaviour
     [SerializeField] private Animator _nice;
     [SerializeField] private SpriteRenderer _birdIcon;
 
-    public void PlayWin(Bird _bird) {
+    public void PlayWin(BirdSpeciesData _bird) {
         gameObject.SetActive(true);
         _birdIcon.sprite = _bird.Icon;
         StartCoroutine(WaitForAnimationToEnd("NICE!_Clip"));

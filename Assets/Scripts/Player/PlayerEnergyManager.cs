@@ -27,6 +27,7 @@ public class PlayerEnergyManager : MonoBehaviour
         // However, the player does have to stand around to dry off. Getting into bed wet should be miserable.
         _playerTemperatureManager.TryUpdatePlayerTempInstantly(true);
         _playerData.SceneOnAwake = SceneManager.GetActiveScene().name;
+        _playerData.LastPlayerSleepTime = GameClock.Instance.GameMinutesElapsed;
         LevelChanger.ChangeLevel("SleepMenu");
     }
 

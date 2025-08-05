@@ -1,38 +1,30 @@
-using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public partial class BirdBrain : MonoBehaviour {
-    [Serializable]
+public partial class BirdBrain : MonoBehaviour
+{
     public class LandingState : IBirdState
     {
-        [Range(0f, 1f)][SerializeField] private float _perchPreference = 0.33f;
-        [Range(0f, 1f)][SerializeField] private float _shelterPreference = 0.33f;
-        [Range(0f, 1f)][SerializeField] private float _groundPreference = 0.34f;
-        [SerializeField] private float _targetProximityThreshold = 0.05f;
-        [SerializeField] private float _landingTimeoutTeleport = 5f;
-        [SerializeField] public float FlockLandingCircleRadius = 2f;
-        [SerializeField] private float _speedLimit = 3f;
-        [SerializeField] private float _steerForceLimit = 4f;
         private float _landingStartTime;
         private IBirdState _stateOnTargetReached;
-
-        // The area in which the bird searches for a landing spot
-        private Vector2 _landingCircleCenter;
-        private float _landingCircleRadius;
+        private Vector2 _landingTargetAreaCenter;
+        private float _landingTargetAreaRadius;
         private bool _landingCirclePreset = false;
+        private Vector2 _avoidanceForce;
+        private Vector2 _seekForce;
+        private Vector2 _gizAvoidTarget;
 
         public void Enter(BirdBrain bird)
         {
-            bird._animator.Play("Flying");
-            UpdateLandingCircle(bird);
-            SelectPreferredLandingSpotInLandingCircle(bird); // Fly to a shelter, perch, ground, etc
+            bird._animator.PlayGliding();
+            SetLandingCircle(bird);
+            _stateOnTargetReached = SetPreferredLandingSpotInLandingArea(bird);
             _landingStartTime = Time.time;
 
-            // need to disable collisions sometimes so that bird doesn't hit the object its trying to land on
+            // Disabling collisions in some cases so that bird doesn't run into the object its trying to land on
             bird._birdCollider.isTrigger = (_stateOnTargetReached == bird.Sheltered || _stateOnTargetReached == bird.Perched);
             bird._spriteSorting.enabled = true;
-            bird._renderer.sortingLayerName = "Main";
+            bird._sortingGroup.sortingLayerName = "Main";
         }
 
         public void Exit(BirdBrain bird)
@@ -42,89 +34,110 @@ public partial class BirdBrain : MonoBehaviour {
 
         public void Update(BirdBrain bird)
         {
-            if (_stateOnTargetReached == bird.Flying)
-                bird.TransitionToState(_stateOnTargetReached);
-                
-            // Teleport if landing is taking too long
-            if (Time.time - _landingStartTime >= _landingTimeoutTeleport)
-            {
-                bird.transform.position = bird.TargetPosition;
-            }
+            var parameters = bird.Config.LowLanding;
 
-            // Apply force to approach target 
-            else if (Vector2.Distance(bird.TargetPosition, bird.transform.position) > _targetProximityThreshold)
+            // No need to approach the target if trying to fly
+            if (_stateOnTargetReached == bird.LowFlying)
             {
-                bird._rb.AddForce(BirdForces.Seek(bird, _speedLimit, _steerForceLimit));
+                bird.TransitionToState(_stateOnTargetReached);
                 return;
             }
 
-            bird.TransitionToState(_stateOnTargetReached);
+            // Teleport if landing is taking too long or if the bird is close enough to the target
+            if (Time.time - _landingStartTime >= parameters.LandingTimeoutSecs ||
+                Vector2.Distance(bird.TargetPosition, bird.transform.position) <= parameters.SnapToTargetDistance)
+            {
+                bird.transform.position = bird.TargetPosition;
+                bird._rb.linearVelocity = Vector2.zero;
+                bird.TransitionToState(_stateOnTargetReached);
+                return;
+            }
+
+            if (_stateOnTargetReached is GroundedState)
+            {
+                _avoidanceForce = BirdForces.CalculateAvoidanceForce(
+                    bird,
+                    parameters.CircleCastRadius,
+                    parameters.CircleCastRange,
+                    parameters.AvoidLayers,
+                    parameters.AvoidanceWeight,
+                    out _gizAvoidTarget);
+            }
+            else
+            {
+                _avoidanceForce = Vector2.zero;
+            }
+
+            _seekForce = BirdForces.Seek(bird, parameters.SpeedLimit, parameters.SteerForceLimit);
+
+            bird._rb.AddForce(_avoidanceForce + _seekForce);
         }
 
-        private void UpdateLandingCircle(BirdBrain bird)
+        private void SetLandingCircle(BirdBrain bird)
         {
-            // Landing circle set externally
-            if (_landingCirclePreset) { 
+            // Use the preset landing circle if it exists
+            if (_landingCirclePreset)
+            {
                 _landingCirclePreset = false;
                 return;
             }
-            
-            // Default is to use ViewDistanceCollider
+
+            // Default to use the ViewDistanceCollider
             if (bird.ViewDistance is CircleCollider2D circle)
-                SetLandingCircle(circle.radius, (Vector2) circle.transform.position + circle.offset);
+                SetLandingTargetArea(circle.radius, (Vector2)circle.transform.position + circle.offset);
             else
                 Debug.LogError("ViewDistance on bird must be a circle collider");
         }
 
-        public void SetLandingCircle(float radius, Vector2 center)
+        public void SetLandingTargetArea(float radius, Vector2 center)
         {
             _landingCirclePreset = true;
-            _landingCircleRadius = radius;
-            _landingCircleCenter = center;
+            _landingTargetAreaRadius = radius;
+            _landingTargetAreaCenter = center;
         }
 
-        private void SelectPreferredLandingSpotInLandingCircle(BirdBrain bird)
+        // Fly to a shelter, perch, ground, etc
+        private IBirdState SetPreferredLandingSpotInLandingArea(BirdBrain bird)
         {
-            float _randomValue = UnityEngine.Random.Range(0f, _perchPreference + _shelterPreference + _groundPreference);
-            if (_randomValue < _perchPreference)
+            BirdBehaviourConfig.LowLandingParameters parameters = bird.Config.LowLanding;
+            float _randomValue = UnityEngine.Random.Range(0f, parameters.PerchPreference + parameters.ShelterPreference + parameters.GroundPreference);
+            if (_randomValue < parameters.PerchPreference)
             {
-                if (bird.TryFindLandingSpotOfType<IPerchableLowElevation>(_landingCircleCenter, _landingCircleRadius))
+                if (bird.TrySetLandingSpotOfType<IPerchableLowElevation>(_landingTargetAreaCenter, _landingTargetAreaRadius))
                 {
-                    _stateOnTargetReached = bird.Perched;
-                    return;
+                    return bird.Perched;
                 }
             }
-            else if (_randomValue < _perchPreference + _shelterPreference)
+            else if (_randomValue < parameters.PerchPreference + parameters.ShelterPreference)
             {
-                if (bird.TryFindLandingSpotOfType<IShelterable>(_landingCircleCenter, _landingCircleRadius))
+                if (bird.TrySetLandingSpotOfType<IShelterable>(_landingTargetAreaCenter, _landingTargetAreaRadius))
                 {
-                    _stateOnTargetReached = bird.Sheltered;
-                    return;
+                    return bird.Sheltered;
                 }
             }
-            else if (_randomValue <= _perchPreference + _shelterPreference + _groundPreference)
+            else if (_randomValue <= parameters.PerchPreference + parameters.ShelterPreference + parameters.GroundPreference)
             {
+                // X tries to find a ground spot not over water
                 for (int i = 0; i < 3; i++)
                 {
                     if (!IsTargetOverWater(bird.TargetPosition))
                     {
-                        _stateOnTargetReached = bird.Grounded;
-                        return;
+                        return bird.Grounded;
                     }
                     bird.TargetPosition = GeneratePointInLandingCircle(bird);
                 }
             }
-            _stateOnTargetReached = bird.Flying;
+            return bird.LowFlying;
         }
 
         private Vector2 GeneratePointInLandingCircle(BirdBrain bird)
         {
-            return _landingCircleCenter + UnityEngine.Random.insideUnitCircle * _landingCircleRadius;
+            return _landingTargetAreaCenter + UnityEngine.Random.insideUnitCircle * _landingTargetAreaRadius;
         }
 
         private bool IsTargetOverWater(Vector2 birdPosition)
         {
-            Tilemap[] _tilemaps = UnityEngine.Object.FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
+            Tilemap[] _tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
             foreach (Tilemap _tilemap in _tilemaps)
             {
                 if (IsPositionWithinTilemap(_tilemap, birdPosition))
@@ -141,6 +154,25 @@ public partial class BirdBrain : MonoBehaviour {
         {
             Vector3Int cellPosition = tilemap.WorldToCell(worldPosition);
             return tilemap.GetTile(cellPosition) != null;
+        }
+
+        public void DrawGizmos(BirdBrain bird)
+        {
+            Vector2 origin = bird.transform.position;
+            float dotSize = 0.1f;
+            float visualScaling = 5f;
+
+            // Landing
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(_landingTargetAreaCenter, _landingTargetAreaRadius);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(bird.transform.position, bird.TargetPosition);
+            Gizmos.DrawSphere(bird.TargetPosition, dotSize);
+
+            // Avoid
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(origin, origin + _avoidanceForce * visualScaling);
+            Gizmos.DrawSphere(_gizAvoidTarget, dotSize);
         }
     }
 }

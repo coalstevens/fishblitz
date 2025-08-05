@@ -20,8 +20,8 @@ public class BirdFrightDetector : MonoBehaviour
         (
             _bird.BirdState is not BirdBrain.ShelteredState &&
             _bird.BirdState is not BirdBrain.FleeingState &&
-            _bird.BirdState is not BirdBrain.SoaringState &&
-            _bird.BirdState is not BirdBrain.SoaringLandingState
+            _bird.BirdState is not BirdBrain.HighFlyingState &&
+            _bird.BirdState is not BirdBrain.HighLandingState
         )
         {
             Debug.Log("Bird was frightened");

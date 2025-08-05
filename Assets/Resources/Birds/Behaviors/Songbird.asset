@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18a804eb689b470db9e83b0dbcf22ba, type: 3}
+  m_Name: Songbird
+  m_EditorClassIdentifier: 
+  ReactionCooldownSecs: 2
+  ReactionTimeRangeSecs: {x: 0, y: 0.5}
+  LowFlying:
+    BehaviourDurationRangeSecs: {x: 10, y: 20}
+    SpeedLimit: 2.5
+    LandingPreference: 1
+    HighFlyingPreference: 0
+    WanderRingRadius: 2.5
+    WanderRingDistance: 3
+    WanderForceUpdateIntervalSecs: 0.5
+    SteerForceLimit: 0.5
+    BoidForceWeight: 0.5
+    BoidForceUpdateIntervalSecs: 1
+    MaxFlockMates: 3
+    SeparationWeight: 1
+    AlignmentWeight: 1
+    CohesionWeight: 1
+    AvoidLayers:
+      serializedVersion: 2
+      m_Bits: 1
+    AvoidanceWeight: 0.5
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
+  LowLanding:
+    PerchPreference: 0
+    ShelterPreference: 0
+    GroundPreference: 1
+    SpeedLimit: 2.5
+    SnapToTargetDistance: 0.1
+    LandingTimeoutSecs: 10
+    FlockLandingCircleRadius: 3
+    SteerForceLimit: 1
+    AvoidLayers:
+      serializedVersion: 2
+      m_Bits: 1
+    AvoidanceWeight: 0.5
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
+  Sheltered:
+    BehaviourDurationRangeSecs: {x: 10, y: 20}
+  Perched:
+    BehaviourDurationRangeSecs: {x: 10, y: 20}
+  Grounded:
+    BehaviourDurationRangeSecs: {x: 10, y: 50}
+    TimeTillHopRangeSecs: {x: 4, y: 7}
+    TwoHopForceLimits: {x: 1, y: 3}
+  Fleeing:
+    BehaviourDurationRangeSecs: {x: 0, y: 0}
+    FleeForceMagnitude: 0
+    FleeMaxSpeed: 0
+    AvoidLayers:
+      serializedVersion: 2
+      m_Bits: 1
+    AvoidanceWeight: 0
+    CircleCastRadius: 0
+    CircleCastRange: 0
+  HighFlying:
+    BehaviourDurationRange: {x: 0, y: 0}
+    LowFlyingPreference: 1
+    LandingPreference: 0
+    WanderForceUpdateIntervalSecs: 1
+    SpeedLimit: 2
+    SteerForceLimit: 0.25
+    WanderRingDistance: 3
+    WanderRingRadius: 2
