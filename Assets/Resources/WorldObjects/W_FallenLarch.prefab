@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3174461756675346385}
   - component: {fileID: 8347839937859466531}
   - component: {fileID: 6400350118229307613}
-  m_Layer: 0
+  - component: {fileID: 1754703257106217848}
+  m_Layer: 18
   m_Name: W_FallenLarch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,6 +136,21 @@ MonoBehaviour:
   _spawnArea: {fileID: 2785344821184485068}
   _speed: 3
   _drag: 3
+--- !u!114 &1754703257106217848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3314891073699791436
 GameObject:
   m_ObjectHideFlags: 0

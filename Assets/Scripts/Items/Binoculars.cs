@@ -13,7 +13,6 @@ public class Binoculars : Inventory.Item, UseItemInput.IUsableWithoutTarget, Pla
 
     public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
-        Debug.Log("Using binoculars");
         if (PlayerMovementController.Instance.PlayerState.Value == PlayerMovementController.PlayerStates.Birding)
         {
             return false;

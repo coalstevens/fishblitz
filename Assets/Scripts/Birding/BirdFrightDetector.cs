@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class BirdFrightDetector : MonoBehaviour
@@ -7,8 +8,11 @@ public class BirdFrightDetector : MonoBehaviour
 
     private void Awake()
     {
-        _playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
-        _bird = transform.parent.GetComponent<BirdBrain>();
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        Assert.IsTrue(playerObjects.Length == 1, "More than one (or zero) player objects found in scene");
+        _playerCollider = playerObjects[0].GetComponent<Collider2D>();
+        _bird = transform.GetComponentInParent<BirdBrain>();
+        Assert.IsNotNull(_bird, "Birdbrain not found in parent");
     }
 
     private void OnTriggerStay2D(Collider2D other)

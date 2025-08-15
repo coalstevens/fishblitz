@@ -42,7 +42,6 @@ public class BirdBehaviourConfig : ScriptableObject
         public float CohesionWeight;
 
         [Header("Avoidance Force")]
-        public LayerMask AvoidLayers;
         public float AvoidanceWeight;
         public float CircleCastRadius;
         public float CircleCastRange;
@@ -59,11 +58,11 @@ public class BirdBehaviourConfig : ScriptableObject
         public float SpeedLimit;
         public float SnapToTargetDistance;
         public float LandingTimeoutSecs;
+        public float StuckMovementThreshold;
         public float FlockLandingCircleRadius;
         public float SteerForceLimit;
 
         [Header("Avoidance Force")]
-        public LayerMask AvoidLayers;
         public float AvoidanceWeight;
         public float CircleCastRadius;
         public float CircleCastRange;
@@ -97,7 +96,6 @@ public class BirdBehaviourConfig : ScriptableObject
         public float FleeMaxSpeed;
 
         [Header("Avoidance Force")]
-        public LayerMask AvoidLayers;
         public float AvoidanceWeight;
         public float CircleCastRadius;
         public float CircleCastRange;

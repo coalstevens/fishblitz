@@ -1,11 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class BirdSpawner : MonoBehaviour
 {
-    [SerializeField] private List<BirdSeasonSpawnData> _birdSpawnCalendar; // 0 = Spring, 1 = Summer, 2 = Fall, 3 = Winter
+    [Serializable]
+    private class SpeciesSpawnData
+    {
+        public BirdSpeciesData SpeciesData;
+        public int SpawnCount;
+        public List<Tilemap> SpawnAreas = new();
+    }
+
+    [Serializable]
+    private class WeekData
+    {
+        [Tooltip("Birds that spawn this week.")]
+        public List<SpeciesSpawnData> DailySpawns = new();
+    }
+
+    [Serializable]
+    private class BirdSeasonSpawnData
+    {
+        [SerializeField] public WeekData[] springData = new WeekData[3];
+        [SerializeField] public WeekData[] summerData = new WeekData[3];
+        [SerializeField] public WeekData[] fallData = new WeekData[3];
+        [SerializeField] public WeekData[] winterData = new WeekData[3];
+    }
+
+    [SerializeField] private BirdSeasonSpawnData _allSpawnData;
     [SerializeField] private BirdSceneSaveManager _birdSaveManager;
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private string _birdSpeciesResourcePath = "Birds"; // Path under Resources
@@ -46,43 +72,72 @@ public class BirdSpawner : MonoBehaviour
             Destroy(child.gameObject);
     }
 
+    private WeekData[] GetSeasonData(GameClock.Seasons season)
+    {
+        switch (season)
+        {
+            case GameClock.Seasons.Spring:
+                return _allSpawnData.springData;
+            case GameClock.Seasons.Summer:
+                return _allSpawnData.summerData;
+            case GameClock.Seasons.Fall:
+                return _allSpawnData.fallData;
+            case GameClock.Seasons.Winter:
+                return _allSpawnData.winterData;
+            default:
+                Debug.LogError("Unexpected code path");
+                return null;
+        }
+    }
+
     private void SpawnBirds()
     {
-        int weekIndex = (GameClock.Instance.GameDay - 1) / 5;
-        int seasonIndex = (int)GameClock.Instance.GameSeason;
-        var weekData = _birdSpawnCalendar[seasonIndex].GetWeekData(weekIndex);
+        int currentWeekIndex = (GameClock.Instance.GameDay - 1) / 5;
+        WeekData[] seasonData = GetSeasonData(GameClock.Instance.GameSeason);
+        var weekData = seasonData[currentWeekIndex];
         var savedBirds = _birdSaveManager.LoadBirds();
         bool retainSpawnPositions = GameClock.Instance.GameMinutesElapsed - _birdSaveManager.LastSpawnTime < RespawnAfterGameMinutesAway;
 
-        Assert.IsNotNull(weekData, $"Week data for season {GameClock.Instance.GameSeason} week {weekIndex + 1} is null. Please check your BirdSpawnCalendar setup.");
+        Assert.IsNotNull(weekData, $"Week data for season {GameClock.Instance.GameSeason} week {currentWeekIndex + 1} is null. Please check the BirdSpawnCalendar setup.");
 
         if (!retainSpawnPositions)
         {
             _birdSaveManager.LastSpawnTime = GameClock.Instance.GameMinutesElapsed;
         }
 
-        if (IsSavedBirdDataValid(savedBirds, weekData))
+        // Spawn using saved positions
+        if (IsSavedBirdDataValid(savedBirds, weekData) && retainSpawnPositions)
         {
             foreach (var saveData in savedBirds)
             {
-                Vector2 spawnPoint = retainSpawnPositions ? new Vector2(saveData.xSpawnPosition, saveData.ySpawnPosition) : GetPointWithinWorldAndOutsideCamera();
-                SpawnBird(FindSpeciesByName(saveData.SpeciesName), spawnPoint, saveData);
+                var matchingSpawnData = weekData.DailySpawns
+                    .FirstOrDefault(s => s.SpeciesData.name == saveData.SpeciesName);
+
+                if (matchingSpawnData == null)
+                {
+                    Debug.LogWarning($"No matching spawn data found for species {saveData.SpeciesName}");
+                    continue;
+                }
+
+                Vector2 spawnPoint = new Vector2(saveData.xSpawnPosition, saveData.ySpawnPosition);
+                SpawnBird(matchingSpawnData, spawnPoint, saveData);
             }
         }
-        else 
+        // Spawn new birds
+        else
         {
             foreach (var spawnData in weekData.DailySpawns)
             {
                 for (int i = 0; i < spawnData.SpawnCount; i++)
                 {
-                    Vector2 spawnPoint = GetPointWithinWorldAndOutsideCamera();
-                    SpawnBird(spawnData.SpeciesData, spawnPoint, null);
+                    Vector2 spawnPoint = GetPointInTilemapsAndOutsideCamera(spawnData.SpawnAreas);
+                    SpawnBird(spawnData, spawnPoint, null);
                 }
             }
         }
     }
 
-    private bool IsSavedBirdDataValid(List<BirdSceneSaveManager.BirdSaveData> savedBirds, BirdSeasonSpawnData.WeekData weekData)
+    private bool IsSavedBirdDataValid(List<BirdSceneSaveManager.BirdSaveData> savedBirds, WeekData weekData)
     {
         int expectedTotal = weekData.DailySpawns.Sum(s => s.SpawnCount);
         if (savedBirds.Count != expectedTotal)
@@ -111,9 +166,9 @@ public class BirdSpawner : MonoBehaviour
         return true;
     }
 
-    private void SpawnBird(BirdSpeciesData birdSpecies, Vector2 spawnPoint, BirdSceneSaveManager.BirdSaveData saveData)
+    private void SpawnBird(SpeciesSpawnData spawnData, Vector2 spawnPoint, BirdSceneSaveManager.BirdSaveData saveData)
     {
-        Assert.IsNotNull(_birdPrefab, $"Bird prefab is not set in bird species: {birdSpecies.name}");
+        Assert.IsNotNull(_birdPrefab, $"Bird prefab is not set in bird species: {spawnData.SpeciesData.name}");
         GameObject spawnedBird = Instantiate
         (
             _birdPrefab,
@@ -123,11 +178,14 @@ public class BirdSpawner : MonoBehaviour
         );
 
         BirdBrain _brain = spawnedBird.GetComponent<BirdBrain>();
-        _brain.SpeciesData = birdSpecies;
-        _brain.InstanceData = new BirdBrain.BirdInstanceData();
-        _brain.InstanceData.SeasonSpawned = GameClock.Instance.GameSeason;
-        _brain.InstanceData.PeriodSpawned = GameClock.Instance.GameDayPeriod;
-
+        _brain.SpeciesData = spawnData.SpeciesData;
+        _brain.InstanceData = new BirdBrain.BirdInstanceData
+        {
+            SeasonSpawned = GameClock.Instance.GameSeason,
+            PeriodSpawned = GameClock.Instance.GameDayPeriod
+        };
+        _brain.GetNewSpawnPoint = () => GetPointInTilemapsAndOutsideCamera(spawnData.SpawnAreas);
+        _brain.SetTagListener();
         BirdAnimatorController _animator = spawnedBird.GetComponent<BirdAnimatorController>();
         _animator.Initialize();
 
@@ -138,21 +196,38 @@ public class BirdSpawner : MonoBehaviour
 
     }
 
-    private Vector2 GetPointWithinWorldAndOutsideCamera()
+    private Vector2 GetPointInTilemapsAndOutsideCamera(List<Tilemap> spawnTilemaps)
     {
-        Bounds _cameraBounds = GetCameraFrameBounds();
-        Vector2 _randomPoint;
+        var shuffledTilemaps = spawnTilemaps
+            .Where(tm => tm != null)
+            .OrderBy(_ => UnityEngine.Random.value)
+            .ToList();
 
-        while (true)
+        Bounds cameraBounds = GetCameraFrameBounds();
+
+        foreach (var map in shuffledTilemaps)
         {
-            _randomPoint = new Vector2(
-                Random.Range(_worldBounds.min.x, _worldBounds.max.x),
-                Random.Range(_worldBounds.min.y, _worldBounds.max.y)
-            );
-            if (!_cameraBounds.Contains(_randomPoint)) break;
+            var tilePositions = new List<Vector2>();
+            foreach (var pos in map.cellBounds.allPositionsWithin)
+            {
+                if (map.HasTile(pos))
+                {
+                    Vector2 worldPos = map.CellToWorld(pos) + map.tileAnchor;
+                    tilePositions.Add(worldPos);
+                }
+            }
+
+            if (tilePositions.Count == 0) continue;
+
+            tilePositions = tilePositions.OrderBy(_ => UnityEngine.Random.value).ToList();
+
+            foreach (var position in tilePositions)
+                if (!cameraBounds.Contains(position))
+                    return position;
         }
 
-        return _randomPoint;
+        Debug.LogWarning("Failed to find spawn point outside of camera in any tilemap.");
+        return Vector2.zero;
     }
 
     private Bounds GetCameraFrameBounds()

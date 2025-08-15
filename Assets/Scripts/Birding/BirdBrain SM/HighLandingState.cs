@@ -19,13 +19,17 @@ public partial class BirdBrain : MonoBehaviour {
             SelectPreferredLandingSpotInLandingCircle(bird); // Fly to a shelter, perch, ground, etc
             _landingStartTime = Time.time;
 
-            bird._birdCollider.isTrigger = true;
-            bird._spriteSorting.enabled = false;
+            bird._rb.excludeLayers |= bird._highObstacles;
+            bird._rb.excludeLayers |= bird._people;
+
             bird._sortingGroup.sortingLayerName = "Foreground";
         }
 
         public void Exit(BirdBrain bird)
         {
+            bird._rb.excludeLayers &= ~bird._highObstacles;
+            bird._rb.excludeLayers &= ~bird._people;
+
             bird._rb.linearVelocity = Vector2.zero;
         }
 

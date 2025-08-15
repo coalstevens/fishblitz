@@ -19,8 +19,6 @@ public partial class BirdBrain : MonoBehaviour
             BirdBehaviourConfig.LowFlyingParameters parameters = bird.Config.LowFlying;
             bird._animator.PlayFlying();
             bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRangeSecs.x, parameters.BehaviourDurationRangeSecs.y);
-            bird._birdCollider.isTrigger = false;
-            bird._spriteSorting.enabled = true;
             bird._sortingGroup.sortingLayerName = "Main";
         }
 
@@ -65,11 +63,9 @@ public partial class BirdBrain : MonoBehaviour
                     bird,
                     parameters.CircleCastRadius,
                     parameters.CircleCastRange,
-                    parameters.AvoidLayers,
                     parameters.AvoidanceWeight,
                     out _gizAvoidTarget);
             }
-
             bird._rb.AddForce(_wanderForce + _boidForce + _avoidanceForce);
             bird._rb.linearVelocity = Vector2.ClampMagnitude(bird._rb.linearVelocity, parameters.SpeedLimit);
         }

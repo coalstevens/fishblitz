@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2783626044926418189}
   - component: {fileID: 7137938536419539604}
   - component: {fileID: 7367359823427043910}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: LocalSpriteForAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,8 @@ GameObject:
   - component: {fileID: 6938546424267943343}
   - component: {fileID: 8668301553304406754}
   - component: {fileID: 610692000655363215}
-  m_Layer: 0
+  - component: {fileID: -3056814683851428180}
+  m_Layer: 18
   m_Name: E_FallenSpruce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,3 +236,18 @@ MonoBehaviour:
   _spawnArea: {fileID: 4557808638140897363}
   _speed: 3
   _drag: 3
+--- !u!114 &-3056814683851428180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824272052186368021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

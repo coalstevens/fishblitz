@@ -14,21 +14,21 @@ public partial class BirdBrain : MonoBehaviour
 
         public void Enter(BirdBrain bird)
         {
-            // bird._animator.Play(bird.InstanceData.IsTagged.Value ? "Idle_Tagged" : "Idle");
             bird._animator.PlayIdle();
             var _durationRange = bird.Config.Grounded.BehaviourDurationRangeSecs;
             bird._behaviorDuration = UnityEngine.Random.Range(_durationRange.x, _durationRange.y);
 
-            Physics2D.IgnoreLayerCollision(bird.WaterLayer, bird.BirdsLayer, false);
-            bird._birdCollider.isTrigger = false;
-            bird._spriteSorting.enabled = true;
+            bird._rb.includeLayers |= bird._groundObstacle; 
+            bird._rb.includeLayers |= bird._water; 
+
             bird._sortingGroup.sortingLayerName = "Main";
             ResetHopTimer(bird);
         }
 
         public void Exit(BirdBrain bird)
         {
-            Physics2D.IgnoreLayerCollision(bird.WaterLayer, bird.BirdsLayer, true);
+            bird._rb.includeLayers &= ~bird._groundObstacle; // Disable ground obstacle collision
+            bird._rb.includeLayers &= ~bird._water; // Disable water collision
         }
 
         public void Update(BirdBrain bird)
@@ -39,7 +39,7 @@ public partial class BirdBrain : MonoBehaviour
                 return;
             }
 
-            _timeSinceHop += Time.deltaTime;
+            _timeSinceHop += Time.fixedDeltaTime;
             if (_timeSinceHop < _timeUntilNextHop)
                 return;
             var _hopForceRange = bird.Config.Grounded.TwoHopForceLimits;

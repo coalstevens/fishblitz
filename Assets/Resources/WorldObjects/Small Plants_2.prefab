@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7699380081937534578}
   - component: {fileID: -8168169196600081047}
   - component: {fileID: 1628780099284420957}
+  - component: {fileID: 2344573143178844855}
   m_Layer: 0
   m_Name: Small Plants_2
   m_TagString: Untagged
@@ -117,3 +118,18 @@ MonoBehaviour:
   extraTilesToRight: 0
   extraTilesAbove: 0
   extraTilesBelow: 0
+--- !u!114 &2344573143178844855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5627678770060230064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

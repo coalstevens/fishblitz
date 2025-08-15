@@ -98,7 +98,8 @@ GameObject:
   - component: {fileID: 3722070600755759109}
   - component: {fileID: 4687847930187181539}
   - component: {fileID: 8617494875715250961}
-  m_Layer: 0
+  - component: {fileID: -1327036180699477704}
+  m_Layer: 18
   m_Name: Big Rock 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,3 +274,18 @@ PolygonCollider2D:
       - {x: 1.4923557, y: 0.5565266}
       - {x: 1.0163447, y: 0.6611615}
   m_UseDelaunayMesh: 0
+--- !u!114 &-1327036180699477704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8220889128479125369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

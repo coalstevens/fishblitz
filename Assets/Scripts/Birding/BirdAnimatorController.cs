@@ -56,8 +56,9 @@ public class BirdAnimatorController : MonoBehaviour
         _animator.speed = speed;
         if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(animation))
         {
+            float randomStart = Random.value; // 0.0 to 1.0 normalized time
             _logger.Info($"Playing {animation} animation");
-            _animator.Play(animation);
+            _animator.Play(animation, 0, randomStart);
         }
     }
 

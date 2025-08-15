@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -56,6 +57,16 @@ public partial class BirdBrain : MonoBehaviour
     public interface IPerchableHighElevation : IPerchable { };
 
     [Header("General")]
+    [SerializeField] Animator _TAG;
+
+    [Header("Layers")]
+    [SerializeField] private LayerMask _highObstacles; // High flying birds collide with these
+    [SerializeField] private LayerMask _lowObstacles; // Low flying birds collide with these
+    [SerializeField] private LayerMask _groundObstacle; // Only grounded birds collide with thes 
+    [SerializeField] private LayerMask _water;
+    [SerializeField] private LayerMask _people;
+
+    [Header("Monitor")]
     public BirdSpeciesData SpeciesData;
     public Collider2D ViewDistance;
 
@@ -94,8 +105,7 @@ public partial class BirdBrain : MonoBehaviour
     private HighLandingState HighLanding = new();
 
     // References
-    private Collider2D _birdCollider;
-    private BirdAnimatorController _animator; 
+    private BirdAnimatorController _animator;
     private SortingGroup _sortingGroup;
     private DynamicSpriteSorting _spriteSorting;
     private NearbyBirdTracker _nearbyBirdsTracker;
@@ -103,13 +113,10 @@ public partial class BirdBrain : MonoBehaviour
     private Renderer _leafSplashRenderer;
     private Rigidbody2D _rb;
     private Collider2D _worldCollider;
-    private Bounds _worldBounds;
 
-    private const string WATER_LAYER = "Water";
-    private const string BIRDS_LAYER = "Birds";
-    private int WaterLayer;
-    private int BirdsLayer;
-
+    // Hooks
+    public Func<Vector2> GetNewSpawnPoint;
+    private Action _unsubscribe;
 
     private void Start()
     {
@@ -120,24 +127,28 @@ public partial class BirdBrain : MonoBehaviour
         _nearbyBirdsTracker = GetComponentInChildren<NearbyBirdTracker>();
         _leafSplash = GetComponentInChildren<ParticleSystem>();
         _leafSplashRenderer = _leafSplash.GetComponent<Renderer>();
-        _birdCollider = GetComponent<Collider2D>();
-
-        WaterLayer = LayerMask.NameToLayer(WATER_LAYER);
-        BirdsLayer = LayerMask.NameToLayer(BIRDS_LAYER);
-
         _worldCollider = GameObject.FindGameObjectWithTag("World").GetComponent<Collider2D>();
-        _worldBounds = _worldCollider.bounds;
+
+        Assert.IsNotNull(_worldCollider);
+        Assert.IsNotNull(_rb);
+        Assert.IsNotNull(_animator);
+        Assert.IsNotNull(_sortingGroup);
+        Assert.IsNotNull(_spriteSorting);
+        Assert.IsNotNull(_nearbyBirdsTracker);
+        Assert.IsNotNull(_leafSplash);
+        Assert.IsNotNull(_leafSplashRenderer);
 
         TargetPosition = transform.position;
         TransitionToState(LowFlying);
+
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_isFrightened && _birdState is not FleeingState)
             TransitionToState(Fleeing);
         UpdateStateText();
-        SelfDestructIfWorldExited();
+        CheckWorldExit();
         UpdateFacingDirection();
         _birdState?.Update(this);
     }
@@ -150,6 +161,35 @@ public partial class BirdBrain : MonoBehaviour
     private void OnDisable()
     {
         BirdStateChanged -= ReactToNearbyBirdStateChange;
+        if (_unsubscribe != null)
+        {
+            _unsubscribe();
+            _unsubscribe = null;
+        }
+    }
+
+    public void SetTagListener()
+    {
+        _unsubscribe = InstanceData.IsTagged.OnChange((curr) => PlayTagAnimation(curr));
+    }
+
+    private void PlayTagAnimation(bool isTagged)
+    {
+        if (!isTagged)
+            return;
+        _TAG.gameObject.SetActive(true);
+        _TAG.Play("TAG!");
+        StartCoroutine(WaitForAnimationToEnd());
+    }
+
+    private IEnumerator WaitForAnimationToEnd()
+    {
+        // wait for animation to start
+        yield return null;
+
+        while (_TAG.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.99f)
+            yield return null;
+        _TAG.gameObject.SetActive(false);
     }
 
     private void ReactToNearbyBirdStateChange(BirdBrain thatBird, Vector2 thatBirdTargetPosition, IBirdState thatBirdNewState)
@@ -230,18 +270,19 @@ public partial class BirdBrain : MonoBehaviour
         BirdStateChanged(this, TargetPosition, newState); // this must be after the Enter() call
     }
 
-    private void SelfDestructIfWorldExited()
+    private void CheckWorldExit()
     {
-        if (!_worldBounds.Contains(transform.position))
+        if (!_worldCollider.OverlapPoint(transform.position))
         {
-            BirdDestroyed(this);
-            Destroy(gameObject);
+            transform.position = GetNewSpawnPoint(); // respawn 
+            // BirdDestroyed(this);
+            // Destroy(gameObject);
         }
     }
 
     private bool HasBehaviorTimerElapsed()
     {
-        _behaviorElapsed += Time.deltaTime;
+        _behaviorElapsed += Time.fixedDeltaTime;
         if (_behaviorElapsed >= _behaviorDuration)
         {
             _behaviorElapsed = 0;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public partial class BirdBrain : MonoBehaviour
@@ -18,13 +19,10 @@ public partial class BirdBrain : MonoBehaviour
             }
 
             bird.LandingTargetSpot.OnBirdEntry(bird);
-            bird._animator.PlayFlying();
+            bird._animator.PlayIdle();
             bird._behaviorDuration = UnityEngine.Random.Range(bird.Config.Perched.BehaviourDurationRangeSecs.x, bird.Config.Perched.BehaviourDurationRangeSecs.y);
 
-            bird._birdCollider.isTrigger = true;
-            bird._spriteSorting.enabled = false;
             bird._sortingGroup.sortingLayerName = "Main";
-            bird._sortingGroup.sortingOrder = (bird.LandingTargetSpot as IPerchable).GetSortingOrder() + 2; // +2 to make room for shadow as well, between the two
         }
 
         public void Exit(BirdBrain bird)

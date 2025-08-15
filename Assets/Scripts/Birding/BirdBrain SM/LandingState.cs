@@ -14,6 +14,10 @@ public partial class BirdBrain : MonoBehaviour
         private Vector2 _seekForce;
         private Vector2 _gizAvoidTarget;
 
+        // Stuck check 
+        private Vector2 _lastCheckedPosition;
+        private float _lastPositionCheckTime;
+
         public void Enter(BirdBrain bird)
         {
             bird._animator.PlayGliding();
@@ -21,56 +25,90 @@ public partial class BirdBrain : MonoBehaviour
             _stateOnTargetReached = SetPreferredLandingSpotInLandingArea(bird);
             _landingStartTime = Time.time;
 
-            // Disabling collisions in some cases so that bird doesn't run into the object its trying to land on
-            bird._birdCollider.isTrigger = (_stateOnTargetReached == bird.Sheltered || _stateOnTargetReached == bird.Perched);
+            // Disabling collisions so bird doesn't fly into sheltering object
+            if (_stateOnTargetReached == bird.Sheltered)
+                bird._rb.excludeLayers |= bird._highObstacles | bird._lowObstacles; // this is reversed in sheltered state exit
             bird._spriteSorting.enabled = true;
             bird._sortingGroup.sortingLayerName = "Main";
         }
 
         public void Exit(BirdBrain bird)
         {
-            bird._rb.linearVelocity = Vector2.zero;
+            _landingCirclePreset = false;
         }
 
         public void Update(BirdBrain bird)
         {
             var parameters = bird.Config.LowLanding;
 
-            // No need to approach the target if trying to fly
+            // No need to get to the target if trying to fly
             if (_stateOnTargetReached == bird.LowFlying)
             {
                 bird.TransitionToState(_stateOnTargetReached);
                 return;
             }
 
-            // Teleport if landing is taking too long or if the bird is close enough to the target
-            if (Time.time - _landingStartTime >= parameters.LandingTimeoutSecs ||
-                Vector2.Distance(bird.TargetPosition, bird.transform.position) <= parameters.SnapToTargetDistance)
+            CheckandWarpIfStuck(bird);
+            CheckAndWarpIfNearTarget(bird);
+
+            _avoidanceForce = BirdForces.CalculateAvoidanceForce(
+                bird,
+                parameters.CircleCastRadius,
+                parameters.CircleCastRange,
+                parameters.AvoidanceWeight,
+                out _gizAvoidTarget);
+
+            _seekForce = BirdForces.Seek(bird, parameters.SpeedLimit, parameters.SteerForceLimit);
+
+            bird._rb.AddForce(_avoidanceForce + _seekForce);
+        }
+
+        private void CheckAndWarpIfNearTarget(BirdBrain bird)
+        {
+            var parameters = bird.Config.LowLanding;
+            // Teleport if the bird is close enough to the target
+            if (Vector2.Distance(bird.TargetPosition, bird.transform.position) <= parameters.SnapToTargetDistance)
             {
                 bird.transform.position = bird.TargetPosition;
                 bird._rb.linearVelocity = Vector2.zero;
                 bird.TransitionToState(_stateOnTargetReached);
                 return;
             }
+        }
 
-            if (_stateOnTargetReached is GroundedState)
+        private void CheckandWarpIfStuck(BirdBrain bird)
+        {
+            var parameters = bird.Config.LowLanding;
+            LayerMask obstacles = bird._highObstacles | bird._lowObstacles; // Bird should be clearing ground and water in this state already
+            float clearanceDistance = 0.05f; // small offset to avoid spawning inside  
+            float timeSinceLastMove = Time.time - _lastPositionCheckTime;
+            float distanceMoved = Vector2.Distance(bird.transform.position, _lastCheckedPosition);
+
+            // Bird hasn't moved much for timeout period, consider stuck
+            if (timeSinceLastMove >= parameters.LandingTimeoutSecs && distanceMoved <= parameters.StuckMovementThreshold)
             {
-                _avoidanceForce = BirdForces.CalculateAvoidanceForce(
-                    bird,
-                    parameters.CircleCastRadius,
-                    parameters.CircleCastRange,
-                    parameters.AvoidLayers,
-                    parameters.AvoidanceWeight,
-                    out _gizAvoidTarget);
+                Vector2 origin = bird.transform.position;
+                Vector2 direction = (bird.TargetPosition - origin).normalized;
+                float maxDistance = Vector2.Distance(origin, bird.TargetPosition);
+
+                RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxDistance, obstacles);
+
+                if (hit.collider != null)
+                {
+                    // Warp to the other side of the collider, along the ray direction
+                    Vector2 warpPosition = hit.point + direction * (hit.collider.bounds.extents.magnitude + clearanceDistance);
+
+                    bird.transform.position = warpPosition;
+                    return;
+                }
             }
-            else
+
+            // check if bird moved 
+            if (distanceMoved > parameters.StuckMovementThreshold)
             {
-                _avoidanceForce = Vector2.zero;
+                _lastCheckedPosition = bird.transform.position;
+                _lastPositionCheckTime = Time.time;
             }
-
-            _seekForce = BirdForces.Seek(bird, parameters.SpeedLimit, parameters.SteerForceLimit);
-
-            bird._rb.AddForce(_avoidanceForce + _seekForce);
         }
 
         private void SetLandingCircle(BirdBrain bird)
@@ -117,10 +155,10 @@ public partial class BirdBrain : MonoBehaviour
             }
             else if (_randomValue <= parameters.PerchPreference + parameters.ShelterPreference + parameters.GroundPreference)
             {
-                // X tries to find a ground spot not over water
-                for (int i = 0; i < 3; i++)
+                // X tries to find a valid landing spot 
+                for (int i = 0; i < 5; i++)
                 {
-                    if (!IsTargetOverWater(bird.TargetPosition))
+                    if (!IsTargetOverWater(bird.TargetPosition) && !IsObstacleInTheWay(bird, bird.TargetPosition))
                     {
                         return bird.Grounded;
                     }
@@ -135,12 +173,17 @@ public partial class BirdBrain : MonoBehaviour
             return _landingTargetAreaCenter + UnityEngine.Random.insideUnitCircle * _landingTargetAreaRadius;
         }
 
-        private bool IsTargetOverWater(Vector2 birdPosition)
+        private bool IsObstacleInTheWay(BirdBrain bird, Vector2 targetPosition)
+        {
+            return Physics2D.Linecast(bird.transform.position, targetPosition, bird._lowObstacles | bird._highObstacles);
+        }
+
+        private bool IsTargetOverWater(Vector2 targetPosition)
         {
             Tilemap[] _tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
             foreach (Tilemap _tilemap in _tilemaps)
             {
-                if (IsPositionWithinTilemap(_tilemap, birdPosition))
+                if (IsPositionWithinTilemap(_tilemap, targetPosition))
                 {
                     string _layerName = LayerMask.LayerToName(_tilemap.gameObject.layer);
                     if (_layerName == "Water")

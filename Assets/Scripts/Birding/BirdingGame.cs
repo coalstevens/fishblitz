@@ -1,18 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+
+// NOTE ---------------
+// Methods marked KEEP are to keep functionality for the old method of using the joystick/arrow keys
+// for controller the rotation of the birding UI. The active configuration is for mouse tracking.
 
 public class BirdingGame : MonoBehaviour
 {
     private enum GameStates { CHARGING, TARGETING }
 
     [Header("General")]
-    [SerializeField] private AudioClip _tagSound;
-    [SerializeField] private AudioClip _missedSound;
-    [SerializeField] private float _tagSoundVolume = 1f;
+    [SerializeField] private AudioClip _missedSound; // tag sounds are bird species specific 
     [SerializeField] private float _missedSoundVolume = 1f;
     [SerializeField] private Transform _cursor;
     [SerializeField] private Vector2 _cursorPositionLimits = new Vector2(0f, 1f);
@@ -36,8 +38,9 @@ public class BirdingGame : MonoBehaviour
     private PlayerInput _playerInput;
     private InputAction _useAction;
     private SpriteRenderer _cursorSpriteRenderer;
+    private Collider2D cursorCollider;
     private float _angularVelocity = 0f;
-    private float _frameVelocity;
+    private float _chargeVelocity;
     private float _cursorVelocity;
     private float _frameStopPoint;
     private float _hudRotationSpeedDegreesPerSecond;
@@ -45,13 +48,16 @@ public class BirdingGame : MonoBehaviour
     private bool _bounceComplete = false;
     private float _adjustedCursorEndLimit = 0f;
     private bool _ignoreFirstHandleState = false;
+    private bool _useActionReleasedAfterCharge = false; // Requirement for action release after charging state so targeting state isn't immediately ended
 
     public void Play(Binoculars activeBinoculars)
     {
+        ResetGameState();
         _logger.Info("Birding Game begun");
         ConfigureControls();
         GetParametersFromBinoculars(activeBinoculars);
-        SetHUDInitialRotation();
+        AlignHUDToMousePosition();
+        // SetHUDInitialRotation(); // KEEP
         gameObject.SetActive(true);
     }
 
@@ -59,6 +65,7 @@ public class BirdingGame : MonoBehaviour
     {
         _instance = this;
         _cursorSpriteRenderer = _cursor.GetComponent<SpriteRenderer>();
+        cursorCollider = _cursor.GetComponent<Collider2D>();
 
         var player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
@@ -82,25 +89,32 @@ public class BirdingGame : MonoBehaviour
             case GameStates.CHARGING:
                 if (_useAction.IsPressed())
                 {
-                    _frame.localPosition = new Vector3(_frame.localPosition.x + _frameVelocity * Time.fixedDeltaTime, 0f, 0f);
+                    _frame.localPosition = new Vector3(_frame.localPosition.x + _chargeVelocity * Time.fixedDeltaTime, 0f, 0f);
                     if (_frame.localPosition.x > _framePositionLimits.y)
                     {
+                        _useActionReleasedAfterCharge = false;
                         EnterTargetingState();
                     }
                 }
                 else
                 {
+                    _useActionReleasedAfterCharge = true;
                     EnterTargetingState();
                 }
                 break;
             case GameStates.TARGETING:
                 BounceFrame();
                 MoveCursor();
-                if (_useAction.WasPressedThisFrame())
+                if (_useAction.IsPressed() && _useActionReleasedAfterCharge)
                 {
                     TagAnyBirdsUnderCursor();
                     StartCoroutine(EndGame());
                 }
+                else if (!_useAction.IsPressed())
+                {
+                    _useActionReleasedAfterCharge = true;
+                }
+
                 if (_cursor.localPosition.x >= _adjustedCursorEndLimit)
                 {
                     _cursor.localPosition = new Vector3(_adjustedCursorEndLimit, 0f, 0f);
@@ -117,7 +131,6 @@ public class BirdingGame : MonoBehaviour
     private void TagAnyBirdsUnderCursor()
     {
         _logger.Info("Tag attempted.");
-        Collider2D cursorCollider = _cursor.GetComponent<Collider2D>();
         List<Collider2D> hitColliders = new();
         int numHits = cursorCollider.Overlap(new ContactFilter2D(), hitColliders);
 
@@ -127,7 +140,6 @@ public class BirdingGame : MonoBehaviour
         }
         else
         {
-            AudioManager.Instance.PlaySFX(_tagSound, _tagSoundVolume);
             foreach (var hit in hitColliders)
             {
                 BirdBrain bird = hit.GetComponent<BirdBrain>();
@@ -145,22 +157,23 @@ public class BirdingGame : MonoBehaviour
     {
         _cursor.localPosition = new Vector3(_cursor.localPosition.x + _cursorVelocity * Time.fixedDeltaTime, 0f, 0f);
     }
+
     private void BounceFrame()
     {
         if (!_bounceComplete)
         {
             (float newPosition, float newVelocity) = GetNextBounceMotionValues(
                 _frame.localPosition.x,
-                _frameVelocity,
+                _chargeVelocity,
                 _frameStopPoint,
                 _bounceOmega,
                 Time.fixedDeltaTime
             );
 
-            _frameVelocity = newVelocity;
+            _chargeVelocity = newVelocity;
             _frame.localPosition = new Vector3(newPosition, 0f, 0f);
 
-            if (Mathf.Abs(_frameVelocity) < 0.05f && Mathf.Abs(_frame.localPosition.x - _frameStopPoint) < 0.05f)
+            if (Mathf.Abs(_chargeVelocity) < 0.05f && Mathf.Abs(_frame.localPosition.x - _frameStopPoint) < 0.05f)
             {
                 _frame.localPosition = new Vector3(_frameStopPoint, 0f, 0f);
                 _bounceComplete = true;
@@ -200,15 +213,15 @@ public class BirdingGame : MonoBehaviour
         float _chargeCompletion = _frameStopPoint / (_framePositionLimits.y - _framePositionLimits.x);
         _adjustedCursorEndLimit = _chargeCompletion * (_cursorPositionLimits.y - _cursorPositionLimits.x) + _cursorPositionLimits.x;
         _gameState = GameStates.TARGETING;
-        _logger.Info("Transitioning to BOUNCING state.");
     }
 
     private void FixedUpdate()
     {
-        RotateHUD();
+        AlignHUDToMousePosition();
+        // RotateHUD(); // KEEP
 
         // This ignore fixes a bug with the first input being misread.
-        // I suspect this arises due to the action map
+        // I suspect this arises due to the action map switch
         if (_ignoreFirstHandleState)
         {
             _ignoreFirstHandleState = false;
@@ -216,6 +229,14 @@ public class BirdingGame : MonoBehaviour
         }
 
         HandleState();
+    }
+
+    private void AlignHUDToMousePosition()
+    {
+        Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 dir = mouseWorld - transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.localEulerAngles = new Vector3(0f, 0f, angle);
     }
 
     private void ConfigureControls()
@@ -230,6 +251,7 @@ public class BirdingGame : MonoBehaviour
         _cursorSpriteRenderer.enabled = false;
         _bounceComplete = false;
         _ignoreFirstHandleState = true;
+        _useActionReleasedAfterCharge = false;
         _gameState = GameStates.CHARGING;
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f); // Reset frame position
         _cursor.localPosition = new Vector3(_cursorPositionLimits.x, 0f, 0f); // Reset cursor position
@@ -237,12 +259,14 @@ public class BirdingGame : MonoBehaviour
 
     private void GetParametersFromBinoculars(Binoculars binoculars)
     {
-        _frameVelocity = (_framePositionLimits.y - _framePositionLimits.x) / binoculars.ChargeTimeSecs;
+        _chargeVelocity = (_framePositionLimits.y - _framePositionLimits.x) / binoculars.ChargeTimeSecs;
         _cursorVelocity = (_cursorPositionLimits.y - _cursorPositionLimits.x) / binoculars.CursorTimeSecs;
-        _hudAngularAcceleration = binoculars.BeamAcceleration;
-        _hudRotationSpeedDegreesPerSecond = binoculars.BeamRotationSpeedDegreesPerSecond;
+        // KEEP
+        // _hudAngularAcceleration = binoculars.BeamAcceleration;
+        // _hudRotationSpeedDegreesPerSecond = binoculars.BeamRotationSpeedDegreesPerSecond;
     }
 
+    // KEEP
     private void SetHUDInitialRotation()
     {
         // Set HUD start rotation
@@ -255,9 +279,9 @@ public class BirdingGame : MonoBehaviour
         {
             AlignHUDToFacingDirection();
         }
-
     }
 
+    // KEEP
     private void RotateHUD()
     {
         if (_motionInput == Vector2.zero)
@@ -287,6 +311,7 @@ public class BirdingGame : MonoBehaviour
         }
     }
 
+    // KEEP
     private void AlignHUDToMotionDirection()
     {
         float angle = Mathf.Atan2(_motionInput.y, _motionInput.x) * Mathf.Rad2Deg;
@@ -298,6 +323,7 @@ public class BirdingGame : MonoBehaviour
         );
     }
 
+    // KEEP
     private void AlignHUDToFacingDirection()
     {
         transform.localEulerAngles = new Vector3
@@ -315,10 +341,11 @@ public class BirdingGame : MonoBehaviour
         );
     }
 
-    private void OnRotate(InputValue value)
-    {
-        _motionInput = value.Get<Vector2>();
-    }
+    // KEEP
+    // private void OnRotate(InputValue value)
+    // {
+    //     _motionInput = value.Get<Vector2>();
+    // }
 
     private IEnumerator EndGame()
     {

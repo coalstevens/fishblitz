@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 602916560364616551}
   - component: {fileID: 8069647239064676079}
   - component: {fileID: -1660584814101777133}
-  m_Layer: 0
+  - component: {fileID: -1683634413600605488}
+  m_Layer: 18
   m_Name: FirewoodPile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,3 +171,18 @@ MonoBehaviour:
   - {fileID: 3626857166634918186, guid: 78a092f90be374c49998331920903ff5, type: 3}
   - {fileID: -972769536157864840, guid: 78a092f90be374c49998331920903ff5, type: 3}
   _firewood: {fileID: 11400000, guid: bd6ae0c06e04044c983dc2e37fb5227a, type: 2}
+--- !u!114 &-1683634413600605488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

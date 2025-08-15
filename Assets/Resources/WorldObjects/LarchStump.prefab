@@ -11,11 +11,12 @@ GameObject:
   - component: {fileID: 6812285457286002210}
   - component: {fileID: 8978042134043212749}
   - component: {fileID: -6540250580062709734}
+  - component: {fileID: 8913979788774941405}
   - component: {fileID: 8449496766792482642}
   - component: {fileID: 2785344821184485068}
   - component: {fileID: 8511385586795680102}
   - component: {fileID: -8292236161980585122}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: LarchStump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +106,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8913979788774941405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &8449496766792482642
 Animator:
   serializedVersion: 7

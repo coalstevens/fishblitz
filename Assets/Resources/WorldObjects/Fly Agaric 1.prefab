@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: -274895024528768507}
   - component: {fileID: 7725526395886719176}
   - component: {fileID: 4299195258735511985}
-  m_Layer: 0
+  - component: {fileID: -8611619474554583736}
+  m_Layer: 18
   m_Name: Fly Agaric 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,3 +173,18 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.2942534, y: 0.5841543}
   m_Radius: 0.050201
+--- !u!114 &-8611619474554583736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6827217041812705697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 512

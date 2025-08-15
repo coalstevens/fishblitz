@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 5050959218691326255}
   - component: {fileID: 5186013611789423468}
   - component: {fileID: 8592401369660824388}
-  m_Layer: 0
+  - component: {fileID: -2714012387112873332}
+  m_Layer: 18
   m_Name: Wet Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,3 +180,18 @@ MonoBehaviour:
   extraTilesToRight: 0
   extraTilesAbove: 0
   extraTilesBelow: 0
+--- !u!114 &-2714012387112873332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7660174396687660849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

@@ -12,66 +12,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18a804eb689b470db9e83b0dbcf22ba, type: 3}
   m_Name: Songbird
   m_EditorClassIdentifier: 
-  ReactionCooldownSecs: 2
-  ReactionTimeRangeSecs: {x: 0, y: 0.5}
+  ReactionCooldownSecs: 6
+  ReactionTimeRangeSecs: {x: 0, y: 0.25}
   LowFlying:
-    BehaviourDurationRangeSecs: {x: 10, y: 20}
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
     SpeedLimit: 2.5
-    LandingPreference: 1
-    HighFlyingPreference: 0
+    LandingPreference: 0.9
+    HighFlyingPreference: 0.1
     WanderRingRadius: 2.5
     WanderRingDistance: 3
     WanderForceUpdateIntervalSecs: 0.5
-    SteerForceLimit: 0.5
-    BoidForceWeight: 0.5
+    SteerForceLimit: 1
+    BoidForceWeight: 2
     BoidForceUpdateIntervalSecs: 1
     MaxFlockMates: 3
-    SeparationWeight: 1
+    SeparationWeight: 0.7
     AlignmentWeight: 1
     CohesionWeight: 1
-    AvoidLayers:
-      serializedVersion: 2
-      m_Bits: 1
     AvoidanceWeight: 0.5
     CircleCastRadius: 0.5
     CircleCastRange: 5
   LowLanding:
-    PerchPreference: 0
-    ShelterPreference: 0
+    PerchPreference: 1
+    ShelterPreference: 1
     GroundPreference: 1
     SpeedLimit: 2.5
-    SnapToTargetDistance: 0.1
-    LandingTimeoutSecs: 10
-    FlockLandingCircleRadius: 3
-    SteerForceLimit: 1
-    AvoidLayers:
-      serializedVersion: 2
-      m_Bits: 1
+    SnapToTargetDistance: 0.25
+    LandingTimeoutSecs: 3
+    StuckMovementThreshold: 1
+    FlockLandingCircleRadius: 1.5
+    SteerForceLimit: 2
     AvoidanceWeight: 0.5
     CircleCastRadius: 0.5
     CircleCastRange: 5
   Sheltered:
-    BehaviourDurationRangeSecs: {x: 10, y: 20}
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
   Perched:
-    BehaviourDurationRangeSecs: {x: 10, y: 20}
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
   Grounded:
-    BehaviourDurationRangeSecs: {x: 10, y: 50}
-    TimeTillHopRangeSecs: {x: 4, y: 7}
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
+    TimeTillHopRangeSecs: {x: 2, y: 7}
     TwoHopForceLimits: {x: 1, y: 3}
   Fleeing:
-    BehaviourDurationRangeSecs: {x: 0, y: 0}
-    FleeForceMagnitude: 0
-    FleeMaxSpeed: 0
-    AvoidLayers:
-      serializedVersion: 2
-      m_Bits: 1
-    AvoidanceWeight: 0
-    CircleCastRadius: 0
-    CircleCastRange: 0
+    BehaviourDurationRangeSecs: {x: 2, y: 3}
+    FleeForceMagnitude: 4
+    FleeMaxSpeed: 3.5
+    AvoidanceWeight: 1
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
   HighFlying:
-    BehaviourDurationRange: {x: 0, y: 0}
+    BehaviourDurationRange: {x: 7, y: 15}
     LowFlyingPreference: 1
-    LandingPreference: 0
+    LandingPreference: 1
     WanderForceUpdateIntervalSecs: 1
     SpeedLimit: 2
     SteerForceLimit: 0.25

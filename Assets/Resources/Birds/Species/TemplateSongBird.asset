@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46632a77365134d7395263a9570ed2b3, type: 3}
+  m_Name: TemplateSongBird
+  m_EditorClassIdentifier: 
+  SpeciesName: GreyBird
+  FlockableSpecies:
+  - {fileID: 11400000}
+  Icon: {fileID: 3360255471232182036, guid: 45837b9fe078d48b68581356718e7950, type: 3}
+  SpawnableSeasons: 
+  SpawnablePeriods: 00000000010000000200000003000000
+  BehaviourConfig: {fileID: 11400000, guid: 166b03a7946e44a93ae7514e3d1d9f67, type: 2}
+  BaseAnimatorController: {fileID: 9100000, guid: c54795077461e4c8988a2e1984362b1a, type: 2}
+  AnimationClips:
+  - OriginalName: Flying
+    OverrideClip: {fileID: -4526551656673740845, guid: 45837b9fe078d48b68581356718e7950, type: 3}
+  - OriginalName: Flying_Tagged
+    OverrideClip: {fileID: 3992622223195432659, guid: 45837b9fe078d48b68581356718e7950, type: 3}
+  - OriginalName: Idle
+    OverrideClip: {fileID: -3100369314251171874, guid: 45837b9fe078d48b68581356718e7950, type: 3}
+  - OriginalName: Idle_Tagged
+    OverrideClip: {fileID: 6698945671456392604, guid: 45837b9fe078d48b68581356718e7950, type: 3}
+  CaptureSound: {fileID: 8300000, guid: 7b148410d4cba4c1db1a7e28b91fbd80, type: 3}
+  SoundVolume: 0.5
+  PlayerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}

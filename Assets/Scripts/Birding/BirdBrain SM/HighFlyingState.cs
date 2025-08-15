@@ -14,14 +14,17 @@ public partial class BirdBrain : MonoBehaviour
             var parameters = bird.Config.HighFlying;
             bird._animator.PlayFlying();
             bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRange.x, parameters.BehaviourDurationRange.y);
-            bird._birdCollider.isTrigger = true;
-            bird._spriteSorting.enabled = false;
+
+            bird._rb.excludeLayers |= bird._highObstacles;
+            bird._rb.excludeLayers |= bird._people;
+
             bird._sortingGroup.sortingLayerName = "Foreground";
         }
 
         public void Exit(BirdBrain bird)
         {
-            // do nothing
+            bird._rb.excludeLayers &= ~bird._highObstacles;
+            bird._rb.excludeLayers &= ~bird._people;
         }
 
         public void Update(BirdBrain bird)

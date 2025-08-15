@@ -107,7 +107,8 @@ GameObject:
   - component: {fileID: 4021717091281597496}
   - component: {fileID: 4305620982733036640}
   - component: {fileID: 7185330013688711421}
-  m_Layer: 0
+  - component: {fileID: 7637044236086271774}
+  m_Layer: 18
   m_Name: Boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,3 +290,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7637044236086271774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481940331449367124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

@@ -18,15 +18,17 @@ public partial class BirdBrain : MonoBehaviour {
             bird._leafSplashRenderer.sortingOrder = bird.LandingTargetSpot.GetSortingOrder() + 1;
             bird._leafSplash.Play();
             
+            bird._rb.excludeLayers |= bird._highObstacles;
+            foreach (var renderer in bird._sortingGroup.GetComponentsInChildren<SpriteRenderer>())
+                renderer.enabled = false;
             bird._sortingGroup.enabled = false;
-            bird._birdCollider.isTrigger = true;
-            bird._spriteSorting.enabled = false;
-            bird._sortingGroup.sortingLayerName = "Main";
         }
 
         public void Exit(BirdBrain bird)
         {
-            bird._sortingGroup.enabled = true;
+            bird._rb.excludeLayers &= ~(bird._highObstacles | ~bird._lowObstacles); // this exclusion is set in landing state entry
+            foreach (var renderer in bird._sortingGroup.GetComponentsInChildren<SpriteRenderer>())
+                renderer.enabled = true;
             bird._leafSplash.Play();
             bird.LandingTargetSpot.OnBirdExit(bird);
         }

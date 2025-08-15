@@ -151,7 +151,8 @@ GameObject:
   - component: {fileID: 6672950118773273146}
   - component: {fileID: 2244542770132889659}
   - component: {fileID: -783185881697999641}
-  m_Layer: 0
+  - component: {fileID: 7911016571339521702}
+  m_Layer: 18
   m_Name: Big Rock 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,3 +316,18 @@ MonoBehaviour:
   extraTilesToRight: 1
   extraTilesAbove: 0
   extraTilesBelow: 0
+--- !u!114 &7911016571339521702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7010666426479481961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

@@ -9,7 +9,6 @@ public partial class BirdBrain : MonoBehaviour
             BirdBrain bird,
             float circleCastRadius,
             float circleCastRange,
-            LayerMask avoidLayers,
             float avoidanceWeight,
             out Vector2 obstaclePosition)
         {
@@ -26,13 +25,13 @@ public partial class BirdBrain : MonoBehaviour
                 circleCastRadius,
                 bird._rb.linearVelocity.normalized,
                 circleCastRange,
-                avoidLayers
+                GetBirdInteractionLayers(bird)
             );
 
             if (hit && !hit.collider.isTrigger)
             {
                 float _proximityFactor = 1 - hit.fraction; // Closer -> stronger
-                Vector2 _avoidanceForce = hit.normal *_proximityFactor * avoidanceWeight; // dir is hit collider normal
+                Vector2 _avoidanceForce = _proximityFactor * avoidanceWeight * hit.normal; // dir is hit collider normal
                 obstaclePosition = hit.point;
                 return _avoidanceForce;
             }
@@ -109,6 +108,25 @@ public partial class BirdBrain : MonoBehaviour
                 _steer = _steer.normalized * steerForceLimit;
 
             return _steer;
+        }
+
+        public static LayerMask GetBirdInteractionLayers(BirdBrain bird)
+        {
+            int birdLayer = bird.gameObject.layer;
+            int mask = 0;
+
+            // Build base from layer collision matrix
+            for (int i = 0; i < 32; i++)
+                if (!Physics2D.GetIgnoreLayerCollision(birdLayer, i))
+                    mask |= (1 << i);
+
+            mask &= ~(1 << birdLayer); // Ignore the bird layer (so we don't hit self)
+
+            // Apply per instance overrides
+            mask &= ~(bird._rb.excludeLayers);
+            mask |= bird._rb.includeLayers;
+
+            return mask;
         }
     }
 }

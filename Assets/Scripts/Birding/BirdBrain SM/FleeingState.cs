@@ -1,25 +1,24 @@
 using System;
+using NUnit.Framework;
 using UnityEngine;
 
 public partial class BirdBrain : MonoBehaviour {
     public class FleeingState : IBirdState
     {
         [Header("State Monitoring")]
-        [SerializeField] private Collider2D _playerCollider;
         [SerializeField] private Vector2 _fleeForce;
         [SerializeField] private Vector2 _avoidanceForce;
         [SerializeField] private Vector2 _gizAvoidTarget;
+        private Collider2D _playerCollider;
 
         public void Enter(BirdBrain bird)
         {
             BirdBehaviourConfig.FleeingParameters parameters = bird.Config.Fleeing;
             bird._animator.PlayFlying();
             _playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
+            Assert.IsNotNull(_playerCollider, $"{bird.gameObject.name} couldn't find the player collider in the scene");
             _fleeForce = GetFleeDirection(bird) * parameters.FleeForceMagnitude;
-            bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRangeSecs.x, parameters.BehaviourDurationRangeSecs.y);
-            
-            bird._birdCollider.isTrigger = false;
-            bird._spriteSorting.enabled = true;
+            bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRangeSecs.x, parameters.BehaviourDurationRangeSecs.y); 
             bird._sortingGroup.sortingLayerName = "Main";
         }
 
@@ -33,6 +32,7 @@ public partial class BirdBrain : MonoBehaviour {
             BirdBehaviourConfig.FleeingParameters parameters = bird.Config.Fleeing;
             if (bird.HasBehaviorTimerElapsed())
             {
+                bird._isFrightened = false;
                 bird.TransitionToState(bird.LowFlying);
                 return;
             }
@@ -41,7 +41,6 @@ public partial class BirdBrain : MonoBehaviour {
                 bird,
                 parameters.CircleCastRadius,
                 parameters.CircleCastRange,
-                parameters.AvoidLayers,
                 parameters.AvoidanceWeight,
                 out _gizAvoidTarget);
 

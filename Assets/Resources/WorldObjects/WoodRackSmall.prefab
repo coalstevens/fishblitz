@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: -2464501679165073536}
   - component: {fileID: 8069647239064676079}
   - component: {fileID: 711832440675195216}
-  m_Layer: 0
+  - component: {fileID: 3986122905547901275}
+  m_Layer: 18
   m_Name: WoodRackSmall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,3 +195,18 @@ MonoBehaviour:
   _startingWetLogs: 0
   _startingDryLogs: 0
   _logDryingTimers: []
+--- !u!114 &3986122905547901275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6323635044616395814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  birdLayer:
+    serializedVersion: 2
+    m_Bits: 0

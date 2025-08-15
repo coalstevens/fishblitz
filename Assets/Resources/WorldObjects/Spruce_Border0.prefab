@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2615210879918376788}
   - component: {fileID: 427508967550068635}
   - component: {fileID: 7615401388452710351}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Spruce_Border0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +51,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2138312857
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -4220837440353923788, guid: 3ce024949bd274d45b7fa248a4016311, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
