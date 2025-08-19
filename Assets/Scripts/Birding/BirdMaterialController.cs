@@ -62,7 +62,6 @@ public class BirdMaterialController : MonoBehaviour
 
     private void OnBirdTagged(bool curr)
     {
-        Debug.Log("OnBirdTagged called");
         if (curr)
         {
             StartCoroutine(TagCoroutine());
@@ -105,14 +104,12 @@ public class BirdMaterialController : MonoBehaviour
 
     private void SetOutlineState(OutlineColor state)
     {
-        Debug.Log("Set outline called");
         _currentState = state;
         SetOutlineToColor1(state);
     }
 
     private void WipeToState(OutlineColor targetState)
     {
-        Debug.Log("Wipe called");
         if (_wipeCoroutine != null)
         {
             StopCoroutine(_wipeCoroutine);
@@ -147,7 +144,6 @@ public class BirdMaterialController : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / _wipeDuration);
             float endAngle = _startAngle + Mathf.Lerp(0f, Mathf.PI * 2f, t);
-            // Debug.Log($"Wipe Progress {endAngle}");
             _mat.SetVector("_AngleRange", new Vector4(_startAngle, endAngle, 0f, 0f));
 
             yield return null;

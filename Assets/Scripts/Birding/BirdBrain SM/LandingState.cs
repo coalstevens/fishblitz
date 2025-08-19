@@ -28,6 +28,7 @@ public partial class BirdBrain : MonoBehaviour
             // Disabling collisions so bird doesn't fly into sheltering object
             if (_stateOnTargetReached == bird.Sheltered)
                 bird._rb.excludeLayers |= bird._highObstacles | bird._lowObstacles; // this is reversed in sheltered state exit
+            bird._rb.linearDamping = bird._flyingDrag; 
             bird._spriteSorting.enabled = true;
             bird._sortingGroup.sortingLayerName = "Main";
         }
@@ -37,7 +38,7 @@ public partial class BirdBrain : MonoBehaviour
             _landingCirclePreset = false;
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
             var parameters = bird.Config.LowLanding;
 

@@ -37,7 +37,6 @@ public class BirdSpawner : MonoBehaviour
     [SerializeField] private string _birdSpeciesResourcePath = "Birds"; // Path under Resources
     [SerializeField] Collider2D _world;
     [SerializeField] private int RespawnAfterGameMinutesAway = 60;
-    [SerializeField] private GameObject _birdPrefab;
 
     private Bounds _worldBounds;
     private Camera _mainCamera;
@@ -168,10 +167,10 @@ public class BirdSpawner : MonoBehaviour
 
     private void SpawnBird(SpeciesSpawnData spawnData, Vector2 spawnPoint, BirdSceneSaveManager.BirdSaveData saveData)
     {
-        Assert.IsNotNull(_birdPrefab, $"Bird prefab is not set in bird species: {spawnData.SpeciesData.name}");
+        Assert.IsNotNull(spawnData.SpeciesData.Prefab, $"Bird prefab is not set in bird species: {spawnData.SpeciesData.name}");
         GameObject spawnedBird = Instantiate
         (
-            _birdPrefab,
+            spawnData.SpeciesData.Prefab,
             spawnPoint,
             Quaternion.identity,
             transform

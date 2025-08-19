@@ -20,6 +20,7 @@ public partial class BirdBrain : MonoBehaviour
             bird._animator.PlayFlying();
             bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRangeSecs.x, parameters.BehaviourDurationRangeSecs.y);
             bird._sortingGroup.sortingLayerName = "Main";
+            bird._rb.linearDamping = bird._flyingDrag;
         }
 
         public void Exit(BirdBrain bird)
@@ -27,7 +28,7 @@ public partial class BirdBrain : MonoBehaviour
             // do nothing
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
             BirdBehaviourConfig.LowFlyingParameters parameters = bird.Config.LowFlying;
 

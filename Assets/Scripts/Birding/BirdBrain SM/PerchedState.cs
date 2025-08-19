@@ -6,6 +6,8 @@ public partial class BirdBrain : MonoBehaviour
 {
     public class PerchedState : IBirdState
     {
+        private RigidbodyConstraints2D _originalConstraints;
+
         public void DrawGizmos(BirdBrain bird)
         {
         }
@@ -21,16 +23,19 @@ public partial class BirdBrain : MonoBehaviour
             bird.LandingTargetSpot.OnBirdEntry(bird);
             bird._animator.PlayIdle();
             bird._behaviorDuration = UnityEngine.Random.Range(bird.Config.Perched.BehaviourDurationRangeSecs.x, bird.Config.Perched.BehaviourDurationRangeSecs.y);
+            _originalConstraints = bird._rb.constraints;
+            bird._rb.constraints = RigidbodyConstraints2D.FreezeAll; // lock in place
 
             bird._sortingGroup.sortingLayerName = "Main";
         }
 
         public void Exit(BirdBrain bird)
         {
+            bird._rb.constraints = _originalConstraints;
             bird.LandingTargetSpot.OnBirdExit(bird);
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
             if (bird.HasBehaviorTimerElapsed())
             {

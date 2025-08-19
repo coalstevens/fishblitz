@@ -32,10 +32,25 @@ public class BirdAnimatorController : MonoBehaviour
         Play(_bird.InstanceData.IsTagged.Value ? "Idle_Tagged" : "Idle", 1f);
     }
 
+    public void PlaySwimming()
+    {
+        Play(_bird.InstanceData.IsTagged.Value ? "Swimming_Tagged" : "Swimming", 1f);
+    }
+
+    public void PlayIdleSwimming()
+    {
+        Play(_bird.InstanceData.IsTagged.Value ? "Idle_Swimming_Tagged" : "Idle_Swimming", 1f);
+    }
+
+    public void PlayWalking()
+    {
+        Play(_bird.InstanceData.IsTagged.Value ? "Walking_Tagged" : "Walking", 1f);
+    }
+
     public void PlayTwoHop()
     {
         _logger.Info("Playing two hop animation");
-        StartCoroutine(PlayAnimationThenStopMotion("Two Hop", _bird.GetComponent<Rigidbody2D>()));
+        StartCoroutine(PlayTwoHop(_bird.GetComponent<Rigidbody2D>()));
     }
 
     public void PlayFlapping()
@@ -103,15 +118,18 @@ public class BirdAnimatorController : MonoBehaviour
         animator.runtimeAnimatorController = overrideController;
     }
 
-    private IEnumerator PlayAnimationThenStopMotion(string animationName, Rigidbody2D rb)
+    private IEnumerator PlayTwoHop(Rigidbody2D rb)
     {
+        string baseAnimationName = "Two Hop";
+        string additiveAnimationName = "Idle";
         int returnState = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
-        _animator.Play(animationName, 0, 0f);
+        _animator.Play(baseAnimationName, 0, 0f);
+        _animator.Play(additiveAnimationName, 1, 0f);
 
         bool completed = true;
 
         // Wait until the animation actually starts playing
-        while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(animationName))
+        while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(baseAnimationName))
             yield return null;
 
         // Get the length of the current animation
@@ -122,9 +140,9 @@ public class BirdAnimatorController : MonoBehaviour
         {
             var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-            if (!stateInfo.IsName(animationName))
+            if (!stateInfo.IsName(baseAnimationName))
             {
-                _logger.Info("Animation interrupted");
+                _logger.Info("Two hop animation interrupted");
                 completed = false;
                 break;
             }
@@ -139,7 +157,7 @@ public class BirdAnimatorController : MonoBehaviour
             _animator.Play(returnState);
         }
 
-        rb.linearVelocity = Vector2.zero; // Note: should be `velocity`, not `linearVelocity`
+        rb.linearVelocity = Vector2.zero; 
     }
 
     public void MatchAnimationToFacingDirection(FacingDirection direction)

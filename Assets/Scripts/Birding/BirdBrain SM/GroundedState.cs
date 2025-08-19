@@ -1,12 +1,18 @@
-using System;
 using UnityEngine;
 
 public partial class BirdBrain : MonoBehaviour
 {
+    [System.Serializable]
     public class GroundedState : IBirdState
     {
-        private float _timeUntilNextHop = 0;
-        private float _timeSinceHop = 0;
+        public enum TravelMethod { TWO_HOP, WALK };
+        private enum TravelState { GROUND, WATER }
+        private float _moveDuration = 0f;
+        private float _timeUntilNextMove = 0f;
+        private float _timeSinceMove = 0;
+        private Vector2 _moveForce = Vector2.zero;
+        private TravelState _travelState = TravelState.GROUND;
+        private bool _isIdle = false;
 
         public void DrawGizmos(BirdBrain bird)
         {
@@ -16,13 +22,15 @@ public partial class BirdBrain : MonoBehaviour
         {
             bird._animator.PlayIdle();
             var _durationRange = bird.Config.Grounded.BehaviourDurationRangeSecs;
-            bird._behaviorDuration = UnityEngine.Random.Range(_durationRange.x, _durationRange.y);
+            bird._behaviorDuration = Random.Range(_durationRange.x, _durationRange.y);
 
-            bird._rb.includeLayers |= bird._groundObstacle; 
-            bird._rb.includeLayers |= bird._water; 
-
+            bird._rb.includeLayers |= bird._groundObstacle;
+            if (!bird.Config.Grounded.CanSwim)
+                bird._rb.includeLayers |= bird._water;
+            bird._rb.linearDamping = bird._groundedDrag;
             bird._sortingGroup.sortingLayerName = "Main";
-            ResetHopTimer(bird);
+
+            ResetMoveTimer(bird);
         }
 
         public void Exit(BirdBrain bird)
@@ -31,30 +39,127 @@ public partial class BirdBrain : MonoBehaviour
             bird._rb.includeLayers &= ~bird._water; // Disable water collision
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
+            // Behaviour Timer
             if (bird.HasBehaviorTimerElapsed())
             {
                 bird.TransitionToState(bird.LowFlying);
                 return;
             }
 
-            _timeSinceHop += Time.fixedDeltaTime;
-            if (_timeSinceHop < _timeUntilNextHop)
-                return;
-            var _hopForceRange = bird.Config.Grounded.TwoHopForceLimits;
-            Vector2 _hopForce = UnityEngine.Random.insideUnitCircle.normalized * UnityEngine.Random.Range(_hopForceRange.x, _hopForceRange.y);
-            bird._rb.AddForce(_hopForce, ForceMode2D.Impulse);
-            bird._animator.PlayTwoHop();
-            ResetHopTimer(bird);
+            // Water check
+            if (bird.Config.Grounded.CanSwim)
+                _travelState = IsOnWater(bird) ? TravelState.WATER : TravelState.GROUND;
+            else
+                _travelState = TravelState.GROUND;
+
+            // Movement
+            _timeSinceMove += Time.fixedDeltaTime;
+            if (_timeSinceMove < _moveDuration)
+            {
+                ContinueMoveForState(bird);
+            }
+            else if (_timeSinceMove >= _moveDuration && _timeSinceMove < _timeUntilNextMove)
+            {
+                PlayIdleForState(bird);
+            }
+            else
+            {
+                _isIdle = false;
+                StartNextMovement(bird);
+                ResetMoveTimer(bird);
+            }
         }
 
-        private void ResetHopTimer(BirdBrain bird)
+        private void ContinueMoveForState(BirdBrain bird)
         {
-            _timeSinceHop = 0;
-            var _timeTillHopLimits = bird.Config.Grounded.TimeTillHopRangeSecs;
-            _timeUntilNextHop = UnityEngine.Random.Range(_timeTillHopLimits.x, _timeTillHopLimits.y);
+            if (_travelState == TravelState.GROUND && bird.Config.Grounded.LandTravelType == TravelMethod.TWO_HOP)
+                return;
+
+            bird._rb.AddForce(_moveForce, ForceMode2D.Force);
         }
 
+        private void PlayIdleForState(BirdBrain bird)
+        {
+            if (!_isIdle) bird._rb.linearVelocity = Vector2.zero; // runs once 
+
+            if (_travelState == TravelState.GROUND)
+                bird._animator.PlayIdle();
+            else if (_travelState == TravelState.WATER)
+                bird._animator.PlayIdleSwimming();
+            else
+                Debug.LogError("Unexpected code path. Unhandled state.");
+            _isIdle = true;
+        }
+
+        private void StartNextMovement(BirdBrain bird)
+        {
+            if (_travelState == TravelState.GROUND)
+            {
+                if (bird.Config.Grounded.LandTravelType == TravelMethod.TWO_HOP)
+                    StartTwoHop(bird);
+                else if (bird.Config.Grounded.LandTravelType == TravelMethod.WALK)
+                    StartWalking(bird);
+                else
+                    Debug.LogError("Unexpected code path. Unhandled state.");
+            }
+            else if (_travelState == TravelState.WATER)
+            {
+                StartSwimming(bird);
+            }
+            else
+                Debug.LogError("Unexpected code path. Unhandled state.");
+        }
+
+        private void StartSwimming(BirdBrain bird)
+        {
+            var parameters = bird.Config.Grounded;
+
+            bird._animator.PlaySwimming();
+            _moveDuration = Random.Range(
+                parameters.WalkSwimDurationSecs.x,
+                parameters.WalkSwimDurationSecs.y);
+            _moveForce = Random.insideUnitCircle.normalized * parameters.SwimSpeed;
+        }
+
+        private void StartWalking(BirdBrain bird)
+        {
+            var parameters = bird.Config.Grounded;
+
+            bird._animator.PlayWalking();
+            _moveDuration = Random.Range(
+                parameters.WalkSwimDurationSecs.x,
+                parameters.WalkSwimDurationSecs.y);
+            _moveForce = Random.insideUnitCircle.normalized * parameters.WalkSpeed;
+        }
+
+        private void StartTwoHop(BirdBrain bird)
+        {
+            var _hopForceRange = bird.Config.Grounded.TwoHopForceLimits;
+            _moveDuration = 0; // Two hop is triggered in a single impulse
+
+            bird._animator.PlayTwoHop();
+            Vector2 _hopForce = Random.insideUnitCircle.normalized * Random.Range(_hopForceRange.x, _hopForceRange.y);
+            bird._rb.AddForce(_hopForce, ForceMode2D.Impulse);
+        }
+
+        private void ResetMoveTimer(BirdBrain bird)
+        {
+            _timeSinceMove = 0;
+            var timeTillMoveLimits = bird.Config.Grounded.TimeTillMoveRangeSecs;
+            _timeUntilNextMove = Random.Range(timeTillMoveLimits.x, timeTillMoveLimits.y);
+        }
+
+        private bool IsOnWater(BirdBrain bird)
+        {
+            foreach (var tilemap in bird._waterTilemaps)
+            {
+                Vector3Int birdTilePos = tilemap.WorldToCell(bird.transform.position);
+                if (tilemap.HasTile(birdTilePos))
+                    return true;
+            }
+            return false;
+        }
     }
 }

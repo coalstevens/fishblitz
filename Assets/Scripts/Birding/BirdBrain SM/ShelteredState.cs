@@ -4,6 +4,7 @@ using UnityEngine;
 public partial class BirdBrain : MonoBehaviour {
     public class ShelteredState : IBirdState
     {
+        private RigidbodyConstraints2D _originalConstraints;
         public void DrawGizmos(BirdBrain bird)
         {
         }
@@ -21,20 +22,25 @@ public partial class BirdBrain : MonoBehaviour {
             bird._rb.excludeLayers |= bird._highObstacles;
             foreach (var renderer in bird._sortingGroup.GetComponentsInChildren<SpriteRenderer>())
                 renderer.enabled = false;
+
+            _originalConstraints = bird._rb.constraints;
+            bird._rb.constraints = RigidbodyConstraints2D.FreezeAll; // lock in place
             bird._sortingGroup.enabled = false;
         }
 
         public void Exit(BirdBrain bird)
         {
             bird._rb.excludeLayers &= ~(bird._highObstacles | ~bird._lowObstacles); // this exclusion is set in landing state entry
+            bird._rb.constraints = _originalConstraints;
             foreach (var renderer in bird._sortingGroup.GetComponentsInChildren<SpriteRenderer>())
                 renderer.enabled = true;
             bird._leafSplash.Play();
             bird.LandingTargetSpot.OnBirdExit(bird);
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
+            
             if (bird.HasBehaviorTimerElapsed())
                 bird.TransitionToState(bird.LowFlying);
         }

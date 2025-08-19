@@ -226,6 +226,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _TAG: {fileID: 950968645933642088}
+  _flyingDrag: 2
+  _groundedDrag: 10
   _highObstacles:
     serializedVersion: 2
     m_Bits: 4194304
@@ -237,7 +239,7 @@ MonoBehaviour:
     m_Bits: 262144
   _water:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 524304
   _people:
     serializedVersion: 2
     m_Bits: 0
@@ -495,7 +497,7 @@ Animator:
   m_GameObject: {fileID: 4119929554772199349}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7925d16dcf3e840b3b313044a5c5a287, type: 2}
+  m_Controller: {fileID: 9100000, guid: c54795077461e4c8988a2e1984362b1a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

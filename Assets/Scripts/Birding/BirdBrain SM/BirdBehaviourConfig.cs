@@ -84,8 +84,13 @@ public class BirdBehaviourConfig : ScriptableObject
     public struct GroundedParameters
     {
         public Vector2 BehaviourDurationRangeSecs;
-        public Vector2 TimeTillHopRangeSecs;
+        public Vector2 TimeTillMoveRangeSecs;
         public Vector2 TwoHopForceLimits;
+        public BirdBrain.GroundedState.TravelMethod LandTravelType;
+        public bool CanSwim;
+        public float WalkSpeed;
+        public float SwimSpeed;
+        public Vector2 WalkSwimDurationSecs;
     }
 
     [Serializable]

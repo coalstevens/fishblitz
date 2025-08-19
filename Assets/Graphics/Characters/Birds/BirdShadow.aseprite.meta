@@ -129,7 +129,28 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: BirdShadow
     originalName: 
-    pivot: {x: 0.5, y: 0.33333334}
+    pivot: {x: 0.5555556, y: 0.33333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 15
+      width: 9
+      height: 3
+    spriteID: 5a3d94dfdba874ba9b652c4eb9e8e8cf
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 15}
+  - name: Frame_1
+    originalName: 
+    pivot: {x: 0.47368422, y: 0.33333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +158,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 8
+      width: 19
       height: 3
-    spriteID: 5a3d94dfdba874ba9b652c4eb9e8e8cf
+    spriteID: c96fadab76db84b0cac5f87c40e950d5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -184,15 +205,24 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: BirdShadow
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 12
+        x: 11
         y: 15
-        width: 8
+        width: 9
         height: 3
       spriteId: 5a3d94dfdba874ba9b652c4eb9e8e8cf
+    - name: Frame_1
+      frameIndex: 1
+      additiveSortOrder: 0
+      cellRect:
+        x: 7
+        y: 15
+        width: 19
+        height: 3
+      spriteId: c96fadab76db84b0cac5f87c40e950d5
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -251,4 +281,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 32, y: 32}
-  previousTextureSize: {x: 16, y: 16}
+  previousTextureSize: {x: 32, y: 32}

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d18a804eb689b470db9e83b0dbcf22ba, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  ReactionCooldownSecs: 6
+  ReactionTimeRangeSecs: {x: 0, y: 0.25}
+  LowFlying:
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
+    SpeedLimit: 2.5
+    LandingPreference: 1
+    HighFlyingPreference: 0
+    WanderRingRadius: 2.5
+    WanderRingDistance: 3
+    WanderForceUpdateIntervalSecs: 0.5
+    SteerForceLimit: 1
+    BoidForceWeight: 2
+    BoidForceUpdateIntervalSecs: 1
+    MaxFlockMates: 3
+    SeparationWeight: 0.7
+    AlignmentWeight: 1
+    CohesionWeight: 1
+    AvoidanceWeight: 0.5
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
+  LowLanding:
+    PerchPreference: 0
+    ShelterPreference: 0
+    GroundPreference: 1
+    SpeedLimit: 2.5
+    SnapToTargetDistance: 0.25
+    LandingTimeoutSecs: 3
+    StuckMovementThreshold: 1
+    FlockLandingCircleRadius: 1.5
+    SteerForceLimit: 2
+    AvoidanceWeight: 0.5
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
+  Sheltered:
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
+  Perched:
+    BehaviourDurationRangeSecs: {x: 7, y: 15}
+  Grounded:
+    BehaviourDurationRangeSecs: {x: 100, y: 200}
+    TimeTillHopRangeSecs: {x: 2, y: 7}
+    TwoHopForceLimits: {x: 1, y: 3}
+  Fleeing:
+    BehaviourDurationRangeSecs: {x: 2, y: 3}
+    FleeForceMagnitude: 4
+    FleeMaxSpeed: 3.5
+    AvoidanceWeight: 1
+    CircleCastRadius: 0.5
+    CircleCastRange: 5
+  HighFlying:
+    BehaviourDurationRange: {x: 7, y: 15}
+    LowFlyingPreference: 1
+    LandingPreference: 1
+    WanderForceUpdateIntervalSecs: 1
+    SpeedLimit: 2
+    SteerForceLimit: 0.25
+    WanderRingDistance: 3
+    WanderRingRadius: 2

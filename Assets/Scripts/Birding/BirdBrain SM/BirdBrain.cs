@@ -6,6 +6,7 @@ using NUnit.Framework;
 using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Tilemaps;
 
 // TODOS
 // Water Landing? Ducks?
@@ -33,7 +34,7 @@ public partial class BirdBrain : MonoBehaviour
     public interface IBirdState
     {
         public void Enter(BirdBrain bird);
-        public void Update(BirdBrain bird);
+        public void FixedUpdate(BirdBrain bird);
         public void Exit(BirdBrain bird);
         public void DrawGizmos(BirdBrain bird);
     }
@@ -57,7 +58,9 @@ public partial class BirdBrain : MonoBehaviour
     public interface IPerchableHighElevation : IPerchable { };
 
     [Header("General")]
-    [SerializeField] Animator _TAG;
+    [SerializeField] private Animator _TAG;
+    [SerializeField] private float _flyingDrag = 2f;
+    [SerializeField] private float _groundedDrag = 10f;
 
     [Header("Layers")]
     [SerializeField] private LayerMask _highObstacles; // High flying birds collide with these
@@ -113,6 +116,7 @@ public partial class BirdBrain : MonoBehaviour
     private Renderer _leafSplashRenderer;
     private Rigidbody2D _rb;
     private Collider2D _worldCollider;
+    private List<Tilemap> _waterTilemaps;
 
     // Hooks
     public Func<Vector2> GetNewSpawnPoint;
@@ -128,6 +132,7 @@ public partial class BirdBrain : MonoBehaviour
         _leafSplash = GetComponentInChildren<ParticleSystem>();
         _leafSplashRenderer = _leafSplash.GetComponent<Renderer>();
         _worldCollider = GameObject.FindGameObjectWithTag("World").GetComponent<Collider2D>();
+        _waterTilemaps = GetTilemapsInLayerMask(_water);
 
         Assert.IsNotNull(_worldCollider);
         Assert.IsNotNull(_rb);
@@ -140,7 +145,22 @@ public partial class BirdBrain : MonoBehaviour
 
         TargetPosition = transform.position;
         TransitionToState(LowFlying);
+    }
 
+
+    public List<Tilemap> GetTilemapsInLayerMask(LayerMask mask)
+    {
+        List<Tilemap> results = new List<Tilemap>();
+
+        Tilemap[] allTilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
+        foreach (var tilemap in allTilemaps)
+        {
+            if (((1 << tilemap.gameObject.layer) & mask) != 0)
+            {
+                results.Add(tilemap);
+            }
+        }
+        return results;
     }
 
     private void FixedUpdate()
@@ -150,7 +170,7 @@ public partial class BirdBrain : MonoBehaviour
         UpdateStateText();
         CheckWorldExit();
         UpdateFacingDirection();
-        _birdState?.Update(this);
+        _birdState?.FixedUpdate(this);
     }
 
     private void OnEnable()
@@ -306,6 +326,7 @@ public partial class BirdBrain : MonoBehaviour
 
     public void FrightenBird()
     {
+        return;
         _isFrightened = true;
     }
 

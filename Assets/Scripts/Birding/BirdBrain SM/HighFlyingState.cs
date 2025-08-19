@@ -17,6 +17,7 @@ public partial class BirdBrain : MonoBehaviour
 
             bird._rb.excludeLayers |= bird._highObstacles;
             bird._rb.excludeLayers |= bird._people;
+            bird._rb.linearDamping = bird._flyingDrag; 
 
             bird._sortingGroup.sortingLayerName = "Foreground";
         }
@@ -27,7 +28,7 @@ public partial class BirdBrain : MonoBehaviour
             bird._rb.excludeLayers &= ~bird._people;
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
             var parameters = bird.Config.HighFlying;
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BirdElevationVisualTweaks : MonoBehaviour
@@ -23,7 +24,7 @@ public class BirdElevationVisualTweaks : MonoBehaviour
     [SerializeField] private float _groundedBirdOpacity = 1f;
     [SerializeField] private float _highFlyingBirdOpacity = 0.8f;
     private float _elevation; // Normalized. 0 = grounded. 1 = High Flying
-    private float _targetElevation;
+    private float _previousElevation;
     private enum Elevations { HIGH, LOW, GROUND };
     private Dictionary<Elevations, float> _elevationMap = new Dictionary<Elevations, float>
     {
@@ -31,6 +32,7 @@ public class BirdElevationVisualTweaks : MonoBehaviour
         {Elevations.LOW, 0 }, // determined on init from shadow positions
         {Elevations.HIGH, 1 }
     };
+    private Elevations _targetElevation;
     private bool _atTargetElevation = true;
     private Vector2 _landingBirdStartPosition;
     private float _totalDistanceToLand;
@@ -50,7 +52,6 @@ public class BirdElevationVisualTweaks : MonoBehaviour
 
     private void Update()
     {
-        // Check bird state
         _currentState = _bird.BirdState;
         if (_previousState != _currentState)
         {
@@ -58,49 +59,55 @@ public class BirdElevationVisualTweaks : MonoBehaviour
             TransitionToState(_currentState);
         }
 
-        if (_atTargetElevation)
-            return;
-
         MoveTowardsTargetElevation();
 
-        InterpolateYPositionByElevation(_elevation, _shadow, _groundedShadowYPosition, _highFlyingShadowYPosition);
-        InterpolateOpacityByElevation(_elevation, _shadowRenderer, _groundedShadowOpacity, _highFlyingShadowOpacity);
-        InterpolateOpacityByElevation(_elevation, _birdRenderer, _groundedBirdOpacity, _highFlyingBirdOpacity);
+        if (_previousElevation != _elevation)
+        {
+            _previousElevation = _elevation;
+            InterpolateYPositionByElevation(_elevation, _shadow, _groundedShadowYPosition, _highFlyingShadowYPosition);
+            InterpolateOpacityByElevation(_elevation, _shadowRenderer, _groundedShadowOpacity, _highFlyingShadowOpacity);
+            InterpolateOpacityByElevation(_elevation, _birdRenderer, _groundedBirdOpacity, _highFlyingBirdOpacity);
+        }
     }
 
     private void MoveTowardsTargetElevation()
     {
-        // landing, lerp over landing distance 
-        if (Mathf.Approximately(_targetElevation, _elevationMap[Elevations.GROUND]))
-        {
-            float distanceTravelled = Vector2.Distance(_bird.transform.position, _landingBirdStartPosition);
-            float landingCompletionNormalized = distanceTravelled / _totalDistanceToLand;
-            _elevation = Mathf.Lerp(_elevationMap[Elevations.LOW], _elevationMap[Elevations.GROUND], landingCompletionNormalized);
-            if (Mathf.Approximately(_elevation, _elevationMap[Elevations.GROUND]))
-            {
-                _elevation = _targetElevation;
-                _atTargetElevation = true;
-            }
+        if (_atTargetElevation)
             return;
-        }
 
-        float elevationChangeDelta = _transitionSpeed * Time.deltaTime;
+        // landing, lerp over landing distance 
+            if (_targetElevation == Elevations.GROUND)
+            {
+                float distanceTravelled = Vector2.Distance(_bird.transform.position, _landingBirdStartPosition);
+                float landingCompletionNormalized = Mathf.Clamp01(distanceTravelled / _totalDistanceToLand);
+                _elevation = Mathf.Lerp(_elevationMap[Elevations.LOW], _elevationMap[Elevations.GROUND], landingCompletionNormalized);
+                if (Mathf.Approximately(_elevation, _elevationMap[Elevations.GROUND]))
+                {
+                    _elevation = _elevationMap[_targetElevation];
+                    _atTargetElevation = true;
+                }
+                return;
+            }
+
         // increase or decrease by fixed delta
-        if (Mathf.Approximately(_targetElevation, _elevationMap[Elevations.HIGH]) && _elevation < _elevationMap[Elevations.HIGH] ||
-            Mathf.Approximately(_targetElevation, _elevationMap[Elevations.LOW]) && _elevation < _elevationMap[Elevations.LOW])
+        float elevationChangeDelta = _transitionSpeed * Time.deltaTime;
+        if (_targetElevation == Elevations.HIGH && _elevation < _elevationMap[Elevations.HIGH] ||
+            _targetElevation == Elevations.LOW && _elevation < _elevationMap[Elevations.LOW])
         {
             _elevation += elevationChangeDelta;
 
         }
-        else if (Mathf.Approximately(_targetElevation, _elevationMap[Elevations.HIGH]) && _elevation > _elevationMap[Elevations.HIGH] ||
-                 Mathf.Approximately(_targetElevation, _elevationMap[Elevations.LOW]) && _elevation > _elevationMap[Elevations.LOW])
+        else if (_targetElevation == Elevations.HIGH && _elevation > _elevationMap[Elevations.HIGH] ||
+                 _targetElevation == Elevations.LOW && _elevation > _elevationMap[Elevations.LOW])
         {
             _elevation -= elevationChangeDelta;
         }
 
-        if (Mathf.Abs(_targetElevation - _elevation) <= elevationChangeDelta)
+        _elevation = Mathf.Clamp01(_elevation);
+
+        if (Mathf.Abs(_elevationMap[_targetElevation] - _elevation) <= elevationChangeDelta)
         {
-            _elevation = _targetElevation;
+            _elevation = _elevationMap[_targetElevation];
             _atTargetElevation = true;
             if (_currentState is BirdBrain.HighFlyingState || _currentState is BirdBrain.LowFlyingState)
                 _birdAnimator.PlayFlying();
@@ -137,27 +144,27 @@ public class BirdElevationVisualTweaks : MonoBehaviour
             case BirdBrain.ShelteredState: 
                 _shadowRenderer.enabled = false; // hide the shadow
                 _elevation = _elevationMap[Elevations.LOW];
-                _targetElevation = _elevationMap[Elevations.LOW];
+                _targetElevation = Elevations.LOW;
                 break;
             // grounded states
             case BirdBrain.PerchedState:
             case BirdBrain.GroundedState:
-                _targetElevation = _elevationMap[Elevations.GROUND];
+                _targetElevation = Elevations.GROUND;
                 _elevation = _elevationMap[Elevations.GROUND];
                 break;
             // low flying states
             case BirdBrain.LowFlyingState:
             case BirdBrain.FleeingState:
-                _targetElevation = _elevationMap[Elevations.LOW];
+                _targetElevation = Elevations.LOW;
                 break;
             // high flying states
             case BirdBrain.HighFlyingState:
             case BirdBrain.HighLandingState:
-                _targetElevation = _elevationMap[Elevations.HIGH];
+                _targetElevation = Elevations.HIGH;
                 break;
             // special case, elevation lerped over landing distance
             case BirdBrain.LandingState:
-                _targetElevation = _elevationMap[Elevations.GROUND];
+                _targetElevation = Elevations.GROUND;
                 _landingBirdStartPosition = _bird.transform.position;
                 _totalDistanceToLand = Vector2.Distance(_bird.TargetPosition, _landingBirdStartPosition);
                 break;
@@ -167,18 +174,13 @@ public class BirdElevationVisualTweaks : MonoBehaviour
         }
 
         // Trigger animation if changing elevation
-        _atTargetElevation = Mathf.Approximately(_elevation, _targetElevation);
+        _atTargetElevation = Mathf.Approximately(_elevation, _elevationMap[_targetElevation]);
         if (!_atTargetElevation)
         {
-            if (_elevation < _targetElevation)
+            if (_elevation < _elevationMap[_targetElevation])
                 _birdAnimator.PlayFlapping();
             else
                 _birdAnimator.PlayGliding();
         }
-    }
-
-    private static float Normalize(float value, float min, float max)
-    {
-        return (max == min) ? 0f : (value - min) / (max - min);
     }
 }

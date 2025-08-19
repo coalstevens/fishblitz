@@ -51,8 +51,13 @@ MonoBehaviour:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
   Grounded:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
-    TimeTillHopRangeSecs: {x: 2, y: 7}
+    TimeTillMoveRangeSecs: {x: 5, y: 7}
     TwoHopForceLimits: {x: 1, y: 3}
+    LandTravelType: 0
+    CanSwim: 0
+    WalkSpeed: 0
+    SwimSpeed: 0
+    WalkSwimDurationSecs: {x: 0, y: 0}
   Fleeing:
     BehaviourDurationRangeSecs: {x: 2, y: 3}
     FleeForceMagnitude: 4

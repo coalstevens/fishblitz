@@ -18,6 +18,7 @@ public partial class BirdBrain : MonoBehaviour {
             _playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
             Assert.IsNotNull(_playerCollider, $"{bird.gameObject.name} couldn't find the player collider in the scene");
             _fleeForce = GetFleeDirection(bird) * parameters.FleeForceMagnitude;
+            bird._rb.linearDamping = bird._flyingDrag; 
             bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRangeSecs.x, parameters.BehaviourDurationRangeSecs.y); 
             bird._sortingGroup.sortingLayerName = "Main";
         }
@@ -27,7 +28,7 @@ public partial class BirdBrain : MonoBehaviour {
             // do nothing
         }
 
-        public void Update(BirdBrain bird)
+        public void FixedUpdate(BirdBrain bird)
         {
             BirdBehaviourConfig.FleeingParameters parameters = bird.Config.Fleeing;
             if (bird.HasBehaviorTimerElapsed())

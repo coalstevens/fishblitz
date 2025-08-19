@@ -12,6 +12,7 @@ public class BirdSpeciesData : ScriptableObject
         public AnimationClip OverrideClip;
     }
     public string SpeciesName = "Chickadee";
+    public GameObject Prefab;
     public List<BirdSpeciesData> FlockableSpecies = new();
     public Sprite Icon;
     public List<GameClock.Seasons> SpawnableSeasons = new();
