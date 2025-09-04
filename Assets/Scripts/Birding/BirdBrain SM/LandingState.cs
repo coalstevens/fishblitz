@@ -28,7 +28,7 @@ public partial class BirdBrain : MonoBehaviour
             // Disabling collisions so bird doesn't fly into sheltering object
             if (_stateOnTargetReached == bird.Sheltered)
                 bird._rb.excludeLayers |= bird._highObstacles | bird._lowObstacles; // this is reversed in sheltered state exit
-            bird._rb.linearDamping = bird._flyingDrag; 
+            bird._rb.linearDamping = bird._flyingDrag;
             bird._spriteSorting.enabled = true;
             bird._sortingGroup.sortingLayerName = "Main";
         }
@@ -159,14 +159,20 @@ public partial class BirdBrain : MonoBehaviour
                 // X tries to find a valid landing spot 
                 for (int i = 0; i < 5; i++)
                 {
-                    if (!IsTargetOverWater(bird.TargetPosition) && !IsObstacleInTheWay(bird, bird.TargetPosition))
+                    bool obstacleInWay = bird.IsObstacleInTheWay(bird.TargetPosition);
+                    bool targetOverWater = bird.IsTargetOverWater(bird.TargetPosition);
+                    bool cannotSwim = !bird.Config.Grounded.CanSwim;
+
+                    if (obstacleInWay || (cannotSwim && targetOverWater))
                     {
-                        return bird.Grounded;
+                        bird.TargetPosition = GeneratePointInLandingCircle(bird);
+                        continue;
                     }
-                    bird.TargetPosition = GeneratePointInLandingCircle(bird);
+
+                    return bird.Grounded; // Target is valid
                 }
             }
-            return bird.LowFlying;
+            return bird.LowFlying; 
         }
 
         private Vector2 GeneratePointInLandingCircle(BirdBrain bird)
@@ -174,31 +180,7 @@ public partial class BirdBrain : MonoBehaviour
             return _landingTargetAreaCenter + UnityEngine.Random.insideUnitCircle * _landingTargetAreaRadius;
         }
 
-        private bool IsObstacleInTheWay(BirdBrain bird, Vector2 targetPosition)
-        {
-            return Physics2D.Linecast(bird.transform.position, targetPosition, bird._lowObstacles | bird._highObstacles);
-        }
 
-        private bool IsTargetOverWater(Vector2 targetPosition)
-        {
-            Tilemap[] _tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
-            foreach (Tilemap _tilemap in _tilemaps)
-            {
-                if (IsPositionWithinTilemap(_tilemap, targetPosition))
-                {
-                    string _layerName = LayerMask.LayerToName(_tilemap.gameObject.layer);
-                    if (_layerName == "Water")
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        private bool IsPositionWithinTilemap(Tilemap tilemap, Vector2 worldPosition)
-        {
-            Vector3Int cellPosition = tilemap.WorldToCell(worldPosition);
-            return tilemap.GetTile(cellPosition) != null;
-        }
 
         public void DrawGizmos(BirdBrain bird)
         {

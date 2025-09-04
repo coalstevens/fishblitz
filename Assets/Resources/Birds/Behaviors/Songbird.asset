@@ -16,20 +16,20 @@ MonoBehaviour:
   ReactionTimeRangeSecs: {x: 0, y: 0.25}
   LowFlying:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
-    SpeedLimit: 2.5
+    SpeedLimit: 5
     LandingPreference: 0.9
     HighFlyingPreference: 0.1
     WanderRingRadius: 2.5
     WanderRingDistance: 3
     WanderForceUpdateIntervalSecs: 0.5
-    SteerForceLimit: 1
-    BoidForceWeight: 2
+    SteerForceLimit: 15
+    BoidForceWeight: 6
     BoidForceUpdateIntervalSecs: 1
     MaxFlockMates: 3
     SeparationWeight: 0.7
     AlignmentWeight: 1
     CohesionWeight: 1
-    AvoidanceWeight: 0.5
+    AvoidanceWeight: 2
     CircleCastRadius: 0.5
     CircleCastRange: 5
   LowLanding:

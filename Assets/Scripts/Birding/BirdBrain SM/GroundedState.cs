@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public partial class BirdBrain : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public partial class BirdBrain : MonoBehaviour
             if (!bird.Config.Grounded.CanSwim)
                 bird._rb.includeLayers |= bird._water;
             bird._rb.linearDamping = bird._groundedDrag;
+            bird._rb.totalForce = Vector2.zero;
+            bird._rb.linearVelocity = Vector2.zero;
             bird._sortingGroup.sortingLayerName = "Main";
 
             ResetMoveTimer(bird);
@@ -37,6 +40,7 @@ public partial class BirdBrain : MonoBehaviour
         {
             bird._rb.includeLayers &= ~bird._groundObstacle; // Disable ground obstacle collision
             bird._rb.includeLayers &= ~bird._water; // Disable water collision
+            _moveDuration = 0f;
         }
 
         public void FixedUpdate(BirdBrain bird)
@@ -50,7 +54,7 @@ public partial class BirdBrain : MonoBehaviour
 
             // Water check
             if (bird.Config.Grounded.CanSwim)
-                _travelState = IsOnWater(bird) ? TravelState.WATER : TravelState.GROUND;
+                _travelState = IsInDeepWater(bird) ? TravelState.WATER : TravelState.GROUND;
             else
                 _travelState = TravelState.GROUND;
 
@@ -76,7 +80,10 @@ public partial class BirdBrain : MonoBehaviour
         {
             if (_travelState == TravelState.GROUND && bird.Config.Grounded.LandTravelType == TravelMethod.TWO_HOP)
                 return;
-
+            if (_travelState == TravelState.GROUND)
+                bird._animator.PlayWalking();
+            else
+                bird._animator.PlaySwimming();
             bird._rb.AddForce(_moveForce, ForceMode2D.Force);
         }
 
@@ -151,15 +158,39 @@ public partial class BirdBrain : MonoBehaviour
             _timeUntilNextMove = Random.Range(timeTillMoveLimits.x, timeTillMoveLimits.y);
         }
 
-        private bool IsOnWater(BirdBrain bird)
+        private bool IsInDeepWater(BirdBrain bird)
         {
             foreach (var tilemap in bird._waterTilemaps)
             {
                 Vector3Int birdTilePos = tilemap.WorldToCell(bird.transform.position);
-                if (tilemap.HasTile(birdTilePos))
+                if (tilemap.HasTile(birdTilePos) && !IsEdgeTile(tilemap, birdTilePos))
                     return true;
             }
             return false;
+        }
+
+        public static bool IsEdgeTile(Tilemap tilemap, Vector3Int tilePos)
+        {
+            if (!tilemap.HasTile(tilePos))
+                return false; // no tile at this position
+
+            // Check 4 neighbors (up, down, left, right)
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    // Skip diagonals and the center tile 
+                    if (Mathf.Abs(x) + Mathf.Abs(y) != 1)
+                        continue;
+
+                    Vector3Int neighborPos = tilePos + new Vector3Int(x, y, 0);
+
+                    if (!tilemap.HasTile(neighborPos))
+                        return true; 
+                }
+            }
+
+            return false; 
         }
     }
 }

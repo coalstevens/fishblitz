@@ -368,6 +368,24 @@ public partial class BirdBrain : MonoBehaviour
 
         return true;
     }
+    private bool IsObstacleInTheWay(Vector2 targetPosition)
+    {
+        return Physics2D.Linecast(transform.position, targetPosition, _lowObstacles | _highObstacles);
+    }
+
+    private bool IsTargetOverWater(Vector2 targetPosition)
+    {
+        foreach (Tilemap tilemap in _waterTilemaps)
+            if (IsPositionWithinTilemap(tilemap, targetPosition))
+                return true;
+        return false;
+    }
+
+    private bool IsPositionWithinTilemap(Tilemap tilemap, Vector2 worldPosition)
+    {
+        Vector3Int cellPosition = tilemap.WorldToCell(worldPosition);
+        return tilemap.GetTile(cellPosition) != null;
+    }
 
     private void Awake()
     {

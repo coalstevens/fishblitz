@@ -159,11 +159,11 @@ public class BirdElevationVisualTweaks : MonoBehaviour
                 break;
             // high flying states
             case BirdBrain.HighFlyingState:
-            case BirdBrain.HighLandingState:
                 _targetElevation = Elevations.HIGH;
                 break;
             // special case, elevation lerped over landing distance
             case BirdBrain.LandingState:
+            case BirdBrain.HighLandingState:
                 _targetElevation = Elevations.GROUND;
                 _landingBirdStartPosition = _bird.transform.position;
                 _totalDistanceToLand = Vector2.Distance(_bird.TargetPosition, _landingBirdStartPosition);

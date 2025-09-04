@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46632a77365134d7395263a9570ed2b3, type: 3}
+  m_Name: Raven
+  m_EditorClassIdentifier: 
+  SpeciesName: Raven
+  Prefab: {fileID: 3956817024216338719, guid: eb7f475e212b444e98824c906b26e422, type: 3}
+  FlockableSpecies:
+  - {fileID: 11400000}
+  Icon: {fileID: -3916013967384212665, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  SpawnableSeasons: 
+  SpawnablePeriods: 00000000010000000200000003000000
+  BehaviourConfig: {fileID: 11400000, guid: 8c36598068ecd4eadb8be3d35c35357a, type: 2}
+  BaseAnimatorController: {fileID: 9100000, guid: c54795077461e4c8988a2e1984362b1a, type: 2}
+  AnimationClips:
+  - OriginalName: Flying
+    OverrideClip: {fileID: -4526551656673740845, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  - OriginalName: Flying_Tagged
+    OverrideClip: {fileID: 3992622223195432659, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  - OriginalName: Idle
+    OverrideClip: {fileID: -3100369314251171874, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  - OriginalName: Idle_Tagged
+    OverrideClip: {fileID: 6698945671456392604, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  - OriginalName: Walking
+    OverrideClip: {fileID: -1610863427237328480, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  - OriginalName: Walking_Tagged
+    OverrideClip: {fileID: 5626036159940027710, guid: 88e00594c579a4e879b8456ff3ba6078, type: 3}
+  CaptureSound: {fileID: 8300000, guid: 7b148410d4cba4c1db1a7e28b91fbd80, type: 3}
+  SoundVolume: 0.5
+  PlayerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}

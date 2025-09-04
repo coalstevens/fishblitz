@@ -11,7 +11,7 @@ public partial class BirdBrain : MonoBehaviour
         [SerializeField] private Vector2 _boidForce = Vector2.zero;
         [SerializeField] private Vector2 _wanderForce = Vector2.zero;
         [SerializeField] private Vector2 _avoidanceForce = Vector2.zero;
-        [SerializeField] private Vector2 _gizWanderRingCenter;
+        [SerializeField] private Vector2 _wanderRingCenter;
         [SerializeField] private Vector2 _gizAvoidTarget;
 
         public void Enter(BirdBrain bird)
@@ -46,7 +46,7 @@ public partial class BirdBrain : MonoBehaviour
                         parameters.SteerForceLimit,
                         parameters.WanderRingDistance,
                         parameters.WanderRingRadius,
-                        out _gizWanderRingCenter);
+                        out _wanderRingCenter);
 
                     _lastWanderForceUpdateTime = Time.time;
                 }
@@ -76,6 +76,7 @@ public partial class BirdBrain : MonoBehaviour
             float _randomValue = UnityEngine.Random.Range(0, parameters.LandingPreference + parameters.HighFlyingPreference);
             if (_randomValue < parameters.LandingPreference)
             {
+                bird.Landing.SetLandingTargetArea(parameters.WanderRingRadius, _wanderRingCenter);
                 bird.TransitionToState(bird.Landing);
             }
             else
@@ -94,7 +95,7 @@ public partial class BirdBrain : MonoBehaviour
             // Wander
             Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(bird.TargetPosition, dotSize);
-            Gizmos.DrawWireSphere(_gizWanderRingCenter, parameters.WanderRingRadius);
+            Gizmos.DrawWireSphere(_wanderRingCenter, parameters.WanderRingRadius);
             Gizmos.DrawLine(origin, origin + _wanderForce * visualScaling);
 
             // Avoid

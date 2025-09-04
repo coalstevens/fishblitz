@@ -6,16 +6,16 @@ public partial class BirdBrain : MonoBehaviour
     {
         [Header("State Monitoring")]
         [SerializeField] private Vector2 _wanderForce = Vector2.zero;
-        [SerializeField] private Vector2 _gizWanderRingCenter;
+        [SerializeField] private Vector2 _wanderRingCenter;
         private float _lastWanderForceUpdateTime;
 
         public void Enter(BirdBrain bird)
         {
             var parameters = bird.Config.HighFlying;
             bird._animator.PlayFlying();
-            bird._behaviorDuration = UnityEngine.Random.Range(parameters.BehaviourDurationRange.x, parameters.BehaviourDurationRange.y);
+            bird._behaviorDuration = Random.Range(parameters.BehaviourDurationRange.x, parameters.BehaviourDurationRange.y);
 
-            bird._rb.excludeLayers |= bird._highObstacles;
+            bird._rb.excludeLayers |= bird._lowObstacles;
             bird._rb.excludeLayers |= bird._people;
             bird._rb.linearDamping = bird._flyingDrag; 
 
@@ -24,7 +24,7 @@ public partial class BirdBrain : MonoBehaviour
 
         public void Exit(BirdBrain bird)
         {
-            bird._rb.excludeLayers &= ~bird._highObstacles;
+            bird._rb.excludeLayers &= ~bird._lowObstacles;
             bird._rb.excludeLayers &= ~bird._people;
         }
 
@@ -46,7 +46,7 @@ public partial class BirdBrain : MonoBehaviour
                     parameters.SteerForceLimit,
                     parameters.WanderRingDistance,
                     parameters.WanderRingRadius,
-                    out _gizWanderRingCenter);
+                    out _wanderRingCenter);
 
                 _lastWanderForceUpdateTime = Time.time;
             }
@@ -61,7 +61,10 @@ public partial class BirdBrain : MonoBehaviour
             if (_randomValue < parameters.LowFlyingPreference)
                 bird.TransitionToState(bird.LowFlying);
             else if (_randomValue <= parameters.LowFlyingPreference + parameters.LandingPreference)
+            {
+                bird.Landing.SetLandingTargetArea(parameters.WanderRingRadius, _wanderRingCenter);
                 bird.TransitionToState(bird.HighLanding);
+            }
             else
                 bird.TransitionToState(bird.HighFlying);
         }
@@ -76,7 +79,7 @@ public partial class BirdBrain : MonoBehaviour
             // Wander
             Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(bird.TargetPosition, dotSize);
-            Gizmos.DrawWireSphere(_gizWanderRingCenter, parameters.WanderRingRadius);
+            Gizmos.DrawWireSphere(_wanderRingCenter, parameters.WanderRingRadius);
             Gizmos.DrawLine(origin, origin + _wanderForce * visualScaling);
         }
     }

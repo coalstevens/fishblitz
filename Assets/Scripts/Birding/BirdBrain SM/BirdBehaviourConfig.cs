@@ -120,9 +120,11 @@ public class BirdBehaviourConfig : ScriptableObject
         public float WanderRingRadius;
     }
 
-    [SerializeField]
+    [Serializable]
     public struct HighLandingParameters
     {
+        [Range(0f, 1f)] public float PerchPreference;
+        [Range(0f, 1f)] public float GroundPreference;
         public float SnapToTargetDistance;
         public float LandingTimeoutSecs;
         public float FlockLandingAreaRadius;

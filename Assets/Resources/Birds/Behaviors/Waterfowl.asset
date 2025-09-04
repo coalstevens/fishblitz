@@ -15,33 +15,33 @@ MonoBehaviour:
   ReactionCooldownSecs: 6
   ReactionTimeRangeSecs: {x: 0, y: 0.25}
   LowFlying:
-    BehaviourDurationRangeSecs: {x: 7, y: 15}
-    SpeedLimit: 2.5
-    LandingPreference: 1
-    HighFlyingPreference: 0
-    WanderRingRadius: 2.5
-    WanderRingDistance: 3
+    BehaviourDurationRangeSecs: {x: 1, y: 3}
+    SpeedLimit: 8
+    LandingPreference: 0.9
+    HighFlyingPreference: 0.1
+    WanderRingRadius: 1
+    WanderRingDistance: 5
     WanderForceUpdateIntervalSecs: 0.5
-    SteerForceLimit: 1
+    SteerForceLimit: 10
     BoidForceWeight: 2
     BoidForceUpdateIntervalSecs: 1
     MaxFlockMates: 3
     SeparationWeight: 0.7
     AlignmentWeight: 1
     CohesionWeight: 1
-    AvoidanceWeight: 0.5
-    CircleCastRadius: 0.5
-    CircleCastRange: 5
+    AvoidanceWeight: 5
+    CircleCastRadius: 1
+    CircleCastRange: 10
   LowLanding:
-    PerchPreference: 0
+    PerchPreference: 0.1
     ShelterPreference: 0
-    GroundPreference: 1
-    SpeedLimit: 2.5
+    GroundPreference: 0.9
+    SpeedLimit: 8
     SnapToTargetDistance: 0.25
     LandingTimeoutSecs: 3
     StuckMovementThreshold: 1
-    FlockLandingCircleRadius: 1.5
-    SteerForceLimit: 2
+    FlockLandingCircleRadius: 3
+    SteerForceLimit: 10
     AvoidanceWeight: 0.5
     CircleCastRadius: 0.5
     CircleCastRange: 5
@@ -50,27 +50,27 @@ MonoBehaviour:
   Perched:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
   Grounded:
-    BehaviourDurationRangeSecs: {x: 100, y: 200}
+    BehaviourDurationRangeSecs: {x: 30, y: 120}
     TimeTillMoveRangeSecs: {x: 5, y: 10}
     TwoHopForceLimits: {x: 1, y: 3}
     LandTravelType: 1
     CanSwim: 1
-    WalkSpeed: 2
-    SwimSpeed: 2
-    WalkSwimDurationSecs: {x: 1, y: 3}
+    WalkSpeed: 3
+    SwimSpeed: 3
+    WalkSwimDurationSecs: {x: 2, y: 6}
   Fleeing:
     BehaviourDurationRangeSecs: {x: 2, y: 3}
-    FleeForceMagnitude: 4
-    FleeMaxSpeed: 3.5
-    AvoidanceWeight: 1
-    CircleCastRadius: 0.5
+    FleeForceMagnitude: 10
+    FleeMaxSpeed: 10
+    AvoidanceWeight: 5
+    CircleCastRadius: 1
     CircleCastRange: 5
   HighFlying:
-    BehaviourDurationRange: {x: 7, y: 15}
+    BehaviourDurationRange: {x: 10, y: 60}
     LowFlyingPreference: 1
     LandingPreference: 1
-    WanderForceUpdateIntervalSecs: 1
-    SpeedLimit: 2
-    SteerForceLimit: 0.25
-    WanderRingDistance: 3
-    WanderRingRadius: 2
+    WanderForceUpdateIntervalSecs: 0.5
+    SpeedLimit: 10
+    SteerForceLimit: 10
+    WanderRingDistance: 5
+    WanderRingRadius: 1
