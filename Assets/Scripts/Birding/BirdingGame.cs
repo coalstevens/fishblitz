@@ -332,10 +332,10 @@ public class BirdingGame : MonoBehaviour
             transform.localEulerAngles.y,
             PlayerMovementController.Instance.FacingDirection.Value switch
             {
-                FacingDirection.East => 0f,
-                FacingDirection.North => 90f,
-                FacingDirection.West => 180f,
-                FacingDirection.South => 270f,
+                CompassDirection.East => 0f,
+                CompassDirection.North => 90f,
+                CompassDirection.West => 180f,
+                CompassDirection.South => 270f,
                 _ => transform.localEulerAngles.z
             }
         );

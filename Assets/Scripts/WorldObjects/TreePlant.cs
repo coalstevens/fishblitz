@@ -154,12 +154,12 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     {
         switch (_playerMovementController.FacingDirection.Value)
         {
-            case FacingDirection.West:
+            case CompassDirection.West:
                 return false;
-            case FacingDirection.East:
+            case CompassDirection.East:
                 return true;
-            case FacingDirection.North:
-            case FacingDirection.South:
+            case CompassDirection.North:
+            case CompassDirection.South:
                 return UnityEngine.Random.value < 0.5;
             default:
                 Debug.LogError("DoesTreeFallEast defaulted.");

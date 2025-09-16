@@ -87,7 +87,7 @@ public partial class BirdBrain : MonoBehaviour
     public string _previousStateName;
     private IBirdState _birdState;
     private IBirdState _previousBirdState;
-    private FacingDirection _facingDirection = FacingDirection.West;
+    private CompassDirection _facingDirection = CompassDirection.West;
     public float _behaviorDuration = 0;
     private float _behaviorElapsed = 0;
     public Vector2 TargetPosition = Vector2.zero;
@@ -313,12 +313,12 @@ public partial class BirdBrain : MonoBehaviour
 
     private void UpdateFacingDirection()
     {
-        FacingDirection previousDirection = _facingDirection;
+        CompassDirection previousDirection = _facingDirection;
 
         if (_rb.linearVelocity.x > 0)
-            _facingDirection = FacingDirection.East;
+            _facingDirection = CompassDirection.East;
         else if (_rb.linearVelocity.x < 0)
-            _facingDirection = FacingDirection.West;
+            _facingDirection = CompassDirection.West;
 
         if (previousDirection != _facingDirection)
             _animator.MatchAnimationToFacingDirection(_facingDirection);

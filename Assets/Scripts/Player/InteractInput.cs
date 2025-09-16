@@ -32,7 +32,7 @@ public class InteractInput : MonoBehaviour
     {
         // returns if player is not idle or walking
         if (_playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Idle &&
-            _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Walking)
+            _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Running)
             return;
 
         // Check for an interactable object

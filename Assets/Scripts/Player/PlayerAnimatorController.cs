@@ -31,35 +31,264 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void OnStateChange(PlayerMovementController.PlayerStates curr)
     {
-        FacingDirection _facingDir = _playerMovementController.FacingDirection.Value;
+        CompassDirection _facingDir = _playerMovementController.FacingDirection.Value;
+        if (_facingDir == CompassDirection.SouthEast)
+            transform.localScale = new Vector2(1, 1);
+        else if (_facingDir == CompassDirection.SouthWest)
+            transform.localScale = new Vector2(-1, 1);
 
         switch (curr)
         {
             case PlayerMovementController.PlayerStates.Idle:
                 HandleIdle(_facingDir);
                 break;
-            case PlayerMovementController.PlayerStates.Walking:
-                HandleWalking(_facingDir);
+            case PlayerMovementController.PlayerStates.Running:
+                HandleRunning(_facingDir);
+                break;
+            case PlayerMovementController.PlayerStates.Birding:
+                PlayIdleBinos(_facingDir);
+                break;
+            case PlayerMovementController.PlayerStates.BirdingRunning:
+                PlayRunningBinos(_facingDir);
                 break;
             case PlayerMovementController.PlayerStates.Fishing:
-                HandleFishing(_facingDir);
-                break;
+                throw new NotImplementedException();
+                // HandleFishing(_facingDir);
+                // break;
             case PlayerMovementController.PlayerStates.Catching:
-                HandleCatching(_facingDir);
-                break;
+                throw new NotImplementedException();
+                // HandleCatching(_facingDir);
+                // break;
             case PlayerMovementController.PlayerStates.Axing:
-                HandleChopping(_facingDir);
-                break;
+                throw new NotImplementedException();
+                // HandleChopping(_facingDir);
+                // break;
             case PlayerMovementController.PlayerStates.Celebrating:
-                HandleCelebrating();
-                break;
+                throw new NotImplementedException();
+                // HandleCelebrating();
+                // break;
             case PlayerMovementController.PlayerStates.PickingUp:
-                HandlePickingUp();
-                break;
+                throw new NotImplementedException();
+                // HandlePickingUp();
+                // break;
             case PlayerMovementController.PlayerStates.Crouched:
-                HandleCrouched(_facingDir);
+                throw new NotImplementedException();
+                // HandleCrouched(_facingDir);
+                // break;
+        }
+    }
+
+    private void HandleRunning(CompassDirection facingDir)
+    {
+        if (_playerData.IsHoldingWheelBarrow.Value)
+        {
+            PlayRunningBarrow(facingDir);
+            return;
+        }
+
+        if (_playerData.IsCarrying.Value)
+        {
+            PlayRunningCarry(facingDir);
+            return;
+        }
+
+        if (!_inventory.TryGetActiveItemType(out var _activeItem))
+        {
+            PlayRunning(facingDir);
+            return;
+        }
+
+        switch (_activeItem.ItemLabel)
+        {
+            case "Axe":
+                PlayRunningAxe(facingDir);
                 break;
             default:
+                PlayRunning(facingDir);
+                break;
+        }
+    }
+
+    private void PlayRunning(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Running");
+                break;
+        }
+    }
+
+    private void HandleIdle(CompassDirection facingDir)
+    {
+        // if (_playerData.IsHoldingWheelBarrow.Value)
+        // {
+        //     HandleBarrowIdle(facingDir);
+        //     return;
+        // }
+
+        // if (_playerData.IsCarrying.Value)
+        // {
+        //     HandleCarryIdle(facingDir);
+        //     return;
+        // }
+
+        if (!_inventory.TryGetActiveItemType(out var _activeItem))
+        {
+            PlayIdle(facingDir);
+            return;
+        }
+
+        switch (_activeItem.ItemLabel)
+        {
+            case "Axe":
+                PlayIdleAxe(facingDir);
+                break;
+            default:
+                PlayIdle(facingDir);
+                break;
+        }
+    }
+
+    private void PlayIdle(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Idle");
+                break;
+        }
+    }
+
+    private void PlayIdleAxe(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Idle_Axe");
+                break;
+        }
+    }
+
+    private void PlayRunningAxe(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Running_Axe");
+                break;
+        }
+    }
+
+    private void PlayRunningBinos(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Running_Binos");
+                break;
+        }
+    }
+
+    private void PlayIdleBinos(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Idle_Binos");
+                break;
+        }
+    }
+
+    private void PlayRunningBarrow(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Running_Barrow");
+                break;
+        }
+    }
+
+    private void HandleCarryIdle(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_CarryIdle");
+                break;
+        }
+    }
+
+    private void PlayRunningCarry(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Running_Carry");
+                break;
+        }
+    }
+
+    private void SetPlayerIdle()
+    {
+        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+    }
+
+    private void HandleBarrowIdle(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Idle_Barrow");
+                break;
+        }
+    }
+
+    private void HandleCatching(CompassDirection facingDir)
+    {
+        switch (facingDir)
+        {
+            case CompassDirection.North:
+                _animator.Play("N_Catch");
+                break;
+            case CompassDirection.South:
+                _animator.Play("S_Catch");
+                break;
+            case CompassDirection.East:
+                _animator.Play("E_Catch");
+                break;
+            case CompassDirection.West:
+                _animator.Play("W_Catch");
+                break;
+        }
+    }
+    
+    private void HandleCrouched(CompassDirection facingDir)
+    {
+        switch (_playerMovementController.FacingDirection.Value)
+        {
+            case CompassDirection.North:
+                _animator.Play("N_Crouch");
+                break;
+            case CompassDirection.South:
+                _animator.Play("S_Crouch");
+                break;
+            case CompassDirection.East:
+                _animator.Play("E_Crouch");
+                break;
+            case CompassDirection.West:
+                _animator.Play("W_Crouch");
                 break;
         }
     }
@@ -70,318 +299,38 @@ public class PlayerAnimatorController : MonoBehaviour
         Invoke(nameof(SetPlayerIdle), 1.5f);
     }
 
-    private void HandleCrouched(FacingDirection facingDir)
-    {
-        switch (_playerMovementController.FacingDirection.Value)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_Crouch");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Crouch");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Crouch");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Crouch");
-                break;
-        }
-    }
-
     private void HandlePickingUp()
     {
         switch (_playerMovementController.FacingDirection.Value)
         {
-            case FacingDirection.North:
-                _animator.Play("N_Pickup");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Pickup");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Pickup");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Pickup");
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Lifting");
                 break;
         }
         Invoke(nameof(SetPlayerIdle), 0.501f);
     }
 
-    private void HandleFishing(FacingDirection facingDir)
+    private void HandleFishing(CompassDirection facingDir)
     {
         switch (facingDir)
         {
-            case FacingDirection.North:
-                _animator.Play("N_Fish");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Fish");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Fish");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Fish");
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Fishing");
                 break;
         }
     }
 
-    private void HandleChopping(FacingDirection facingDir)
+    private void HandleChopping(CompassDirection facingDir)
     {
         switch (facingDir)
         {
-            case FacingDirection.North:
-                _animator.Play("N_Chop");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Chop");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Chop");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Chop");
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                _animator.Play("S_Chopping");
                 break;
         }
         Invoke(nameof(SetPlayerIdle), 0.610f);
-    }
-
-    private void HandleCatching(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_Catch");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Catch");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Catch");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Catch");
-                break;
-        }
-
-    }
-    private void HandleWalking(FacingDirection facingDir)
-    {
-        if (_playerData.IsHoldingWheelBarrow.Value)
-        {
-            HandleBarrowWalking(facingDir);
-            return;
-        }
-
-        if (_playerData.IsCarrying.Value)
-        {
-            HandleCarryWalking(facingDir);
-            return;
-        }
-
-        if (!_inventory.TryGetActiveItemType(out var _activeItem))
-        {
-            HandleNoToolWalking(facingDir);
-            return;
-        }
-
-        switch (_activeItem.ItemLabel)
-        {
-            case "Axe":
-                HandleAxeWalking(facingDir);
-                break;
-            default:
-                HandleNoToolWalking(facingDir);
-                break;
-        }
-    }
-
-    private void HandleNoToolWalking(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_Walk", 0, 0.25f);
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Walk", 0, 0.25f);
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Walk", 0, 0.25f);
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Walk", 0, 0.25f);
-                break;
-        }
-    }
-
-    private void HandleAxeWalking(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_AxeWalk", 0, 0.25f);
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_AxeWalk", 0, 0.25f);
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_AxeWalk", 0, 0.25f);
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_AxeWalk", 0, 0.25f);
-                break;
-        }
-    }
-
-    private void HandleBarrowWalking(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_Barrow", 0, 0.25f);
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Barrow", 0, 0.25f);
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Barrow", 0, 0.25f);
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Barrow", 0, 0.25f);
-                break;
-        }
-    }
-
-    private void HandleIdle(FacingDirection facingDir)
-    {
-        if (_playerData.IsHoldingWheelBarrow.Value)
-        {
-            HandleBarrowIdle(facingDir);
-            return;
-        }
-
-        if (_playerData.IsCarrying.Value)
-        {
-            HandleCarryIdle(facingDir);
-            return;
-        }
-
-        if (!_inventory.TryGetActiveItemType(out var _activeItem))
-        {
-            HandleNoToolIdle(facingDir);
-            return;
-        }
-
-        switch (_activeItem.ItemLabel)
-        {
-            case "Axe":
-                HandleAxeIdle(facingDir);
-                break;
-            default:
-                HandleNoToolIdle(facingDir);
-                break;
-        }
-    }
-
-    private void HandleNoToolIdle(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_Idle");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_Idle");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_Idle");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_Idle");
-                break;
-        }
-    }
-
-    private void HandleAxeIdle(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_AxeIdle");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_AxeIdle");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_AxeIdle");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_AxeIdle");
-                break;
-        }
-    }
-
-    private void HandleCarryIdle(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_CarryIdle");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_CarryIdle");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_CarryIdle");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_CarryIdle");
-                break;
-        }
-    }
-    private void HandleCarryWalking(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_CarryWalk");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_CarryWalk");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_CarryWalk");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_CarryWalk");
-                break;
-        }
-    }
-
-    private void HandleBarrowIdle(FacingDirection facingDir)
-    {
-        switch (facingDir)
-        {
-            case FacingDirection.North:
-                _animator.Play("N_BarrowIdle");
-                break;
-            case FacingDirection.South:
-                _animator.Play("S_BarrowIdle");
-                break;
-            case FacingDirection.East:
-                _animator.Play("E_BarrowIdle");
-                break;
-            case FacingDirection.West:
-                _animator.Play("W_BarrowIdle");
-                break;
-        }
-    }
-
-    private void SetPlayerIdle()
-    {
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
     }
 }

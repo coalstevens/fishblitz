@@ -36,7 +36,7 @@ public class PlayerWheelBarrow : MonoBehaviour
         _playerData.IsHoldingWheelBarrow.Value = false;
     }
 
-    private void OnFacingDirectionChange(FacingDirection curr)
+    private void OnFacingDirectionChange(CompassDirection curr)
     {
         if (_playerData.IsHoldingWheelBarrow.Value)
             EnableGameobjectForDirection(curr);
@@ -85,12 +85,12 @@ public class PlayerWheelBarrow : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void EnableGameobjectForDirection(FacingDirection direction)
+    private void EnableGameobjectForDirection(CompassDirection direction)
     {
-        _facingNorth.SetActive(direction == FacingDirection.North);
-        _facingEast.SetActive(direction == FacingDirection.East);
-        _facingSouth.SetActive(direction == FacingDirection.South);
-        _facingWest.SetActive(direction == FacingDirection.West);
+        _facingNorth.SetActive(direction == CompassDirection.North);
+        _facingEast.SetActive(direction == CompassDirection.East);
+        _facingSouth.SetActive(direction == CompassDirection.South);
+        _facingWest.SetActive(direction == CompassDirection.West);
     }
 
     private Vector3 GetActiveWheelBarrowPosition()

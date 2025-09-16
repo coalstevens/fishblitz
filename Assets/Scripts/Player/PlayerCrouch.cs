@@ -56,7 +56,7 @@ public class PlayerCrouch : MonoBehaviour
     private void OnCrouchStarted(InputAction.CallbackContext context)
     {
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Idle ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Walking)
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Running)
         {
             _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Crouched;
             return;

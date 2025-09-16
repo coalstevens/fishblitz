@@ -2,12 +2,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using ReactiveUnity;
 using NUnit.Framework;
-public enum FacingDirection
+using UnityEngine.Playables;
+public enum CompassDirection
 {
     North,
     South,
     West,
     East,
+    NorthEast,
+    NorthWest,
+    SouthEast,
+    SouthWest,
 }
 
 public struct CardinalVector
@@ -29,13 +34,14 @@ public class PlayerMovementController : MonoBehaviour
 {
     public enum PlayerStates
     {
-        Walking,
+        Running,
         Idle,
         Fishing,
         Axing,
         Catching,
         Celebrating,
         Birding,
+        BirdingRunning,
         PickingUp,
         Crouched
     }
@@ -55,7 +61,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 _currentMotion = Vector2.zero;
     public Vector2 CurrentMotion => _currentMotion;
     private Rigidbody2D _rb;
-    public Reactive<FacingDirection> FacingDirection = new Reactive<FacingDirection>(global::FacingDirection.North);
+    public Reactive<CompassDirection> FacingDirection = new Reactive<CompassDirection>(CompassDirection.SouthEast);
     public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(PlayerStates.Idle);
     private CardinalVector _maxMoveSpeeds; // Upper limit of player velocity
     private CardinalVector _moveSpeedsMultiplier; // Can be publicly adjusted to impact player movespeed
@@ -78,31 +84,38 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        // Can only change direction when in Idle or Walking
-        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking)
-        {
+        // Can only change direction 
+        if (PlayerState.Value != PlayerStates.Idle &&
+            PlayerState.Value != PlayerStates.Running &&
+            PlayerState.Value != PlayerStates.Birding &&
+            PlayerState.Value != PlayerStates.BirdingRunning)
             return;
-        }
 
         if (_currentMotion.x > 0)
-            FacingDirection.Value = global::FacingDirection.East;
+            FacingDirection.Value = CompassDirection.SouthEast;
         else if (_currentMotion.x < 0)
-            FacingDirection.Value = global::FacingDirection.West;
-        else if (_currentMotion.y > 0)
-            FacingDirection.Value = global::FacingDirection.North;
-        else if (_currentMotion.y < 0)
-            FacingDirection.Value = global::FacingDirection.South;
+            FacingDirection.Value = CompassDirection.SouthWest;
 
         if (_currentMotion.magnitude > 0)
-            PlayerState.Value = PlayerStates.Walking;
+        {
+            if (PlayerState.Value == PlayerStates.Idle)
+                PlayerState.Value = PlayerStates.Running;
+            if (PlayerState.Value == PlayerStates.Birding)
+                PlayerState.Value = PlayerStates.BirdingRunning;
+        }
         else
-            PlayerState.Value = PlayerStates.Idle;
+        {
+            if (PlayerState.Value == PlayerStates.Running)
+                PlayerState.Value = PlayerStates.Idle;
+            if (PlayerState.Value == PlayerStates.BirdingRunning)
+                PlayerState.Value = PlayerStates.Birding;
+        }
     }
 
     private void FixedUpdate()
     {
         // Can only move when in Idle or Walking
-        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Walking)
+        if (PlayerState.Value != PlayerStates.Idle && PlayerState.Value != PlayerStates.Running)
         {
             _rb.linearVelocity = Vector2.zero;
             return;

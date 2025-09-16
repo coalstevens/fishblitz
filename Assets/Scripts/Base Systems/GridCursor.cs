@@ -38,20 +38,20 @@ public class GridCursor : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void SetPlayerCursorToFacingDirection(FacingDirection curr)
+    private void SetPlayerCursorToFacingDirection(CompassDirection curr)
     {
         switch (curr)
         {
-            case FacingDirection.North:
+            case CompassDirection.North:
                 _activeCursor = _cursorN;
                 return;
-            case FacingDirection.East:
+            case CompassDirection.East:
                 _activeCursor = _cursorE;
                 return;
-            case FacingDirection.South:
+            case CompassDirection.South:
                 _activeCursor = _cursorS;
                 return;
-            case FacingDirection.West:
+            case CompassDirection.West:
                 _activeCursor = _cursorW;
                 return;
         }

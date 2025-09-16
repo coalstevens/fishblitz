@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 public class WheelBarrowContainedRenderers : MonoBehaviour
 {
     [SerializeField] private WeightyObjectStackData _wheelBarrowStack;
-    [SerializeField] private FacingDirection _facingDirection = FacingDirection.North;
+    [SerializeField] private CompassDirection _facingDirection = CompassDirection.North;
     List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()
@@ -32,7 +32,7 @@ public class WheelBarrowContainedRenderers : MonoBehaviour
         {
             Transform _child = transform.GetChild(i);
             _child.gameObject.SetActive(true);
-            if (_facingDirection == FacingDirection.North || _facingDirection == FacingDirection.South)
+            if (_facingDirection == CompassDirection.North || _facingDirection == CompassDirection.South)
                 _child.GetComponent<SpriteRenderer>().sprite = _carriedObject.Type.NSCarry;
             else
                 _child.GetComponent<SpriteRenderer>().sprite = _carriedObject.Type.EWCarry;

@@ -14,7 +14,7 @@ using UnityEngine.Rendering;
 public class PlayerCursor : MonoBehaviour
 {
     [SerializeField] public Transform _renderedTransform;
-    [SerializeField] private FacingDirection _cursorActiveDirection;
+    [SerializeField] private CompassDirection _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private SortingGroup _playerSpriteSortingGroup;
     [SerializeField] private Collider2D _collider;
@@ -53,7 +53,7 @@ public class PlayerCursor : MonoBehaviour
     private void TryHideCursor(PlayerMovementController.PlayerStates playerState)
     {
         // If player is in an Acting State, hide the cursor
-        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Walking)
+        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Running)
         {
             _spriteRenderer.enabled = false;
             return;
@@ -64,7 +64,7 @@ public class PlayerCursor : MonoBehaviour
             _spriteRenderer.enabled = playerFacingCursor;
     }
 
-    private void OnDirectionChange(FacingDirection currentDirection)
+    private void OnDirectionChange(CompassDirection currentDirection)
     {
         if (_cursorVisible)
             _spriteRenderer.enabled = currentDirection == _cursorActiveDirection;

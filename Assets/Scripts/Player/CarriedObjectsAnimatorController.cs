@@ -14,15 +14,15 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
     [SerializeField] private WeightyObjectStackData _playerCarriedObjects;
     List<Action> _unsubscribeHooks = new();
     private PlayerMovementController _playerMovementController;
-    private Dictionary<FacingDirection, GameObject> _facingObjects;
+    private Dictionary<CompassDirection, GameObject> _facingObjects;
 
     private void OnEnable()
     {
         _facingObjects = new() {
-            { FacingDirection.North, _facingNorth },
-            { FacingDirection.East, _facingEast },
-            { FacingDirection.South, _facingSouth },
-            { FacingDirection.West, _facingWest }
+            { CompassDirection.North, _facingNorth },
+            { CompassDirection.East, _facingEast },
+            { CompassDirection.South, _facingSouth },
+            { CompassDirection.West, _facingWest }
         };
 
         _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
@@ -45,7 +45,7 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void OnFacingDirectionChange(FacingDirection curr)
+    private void OnFacingDirectionChange(CompassDirection curr)
     {
         if (_playerData.IsCarrying.Value)
             EnableGameobjectForDirection(curr);
@@ -66,7 +66,7 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
 
     private void UpdateStackItemRenderers()
     {
-        FacingDirection _currentDirection = _playerMovementController.FacingDirection.Value;
+        CompassDirection _currentDirection = _playerMovementController.FacingDirection.Value;
         Transform _activeObject = _facingObjects[_currentDirection].transform;
 
         Assert.IsTrue(_activeObject.childCount > _playerCarriedObjects.StoredObjects.Count, "There are not enough child objects to display the carried objects");
@@ -76,7 +76,7 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
         {
             Transform _child = _activeObject.GetChild(i);
             _child.gameObject.SetActive(true);
-            if (_currentDirection == FacingDirection.North || _currentDirection == FacingDirection.South)
+            if (_currentDirection == CompassDirection.North || _currentDirection == CompassDirection.South)
                 _child.GetComponent<SpriteRenderer>().sprite = _carriedObject.Type.NSCarry;
             else
                 _child.GetComponent<SpriteRenderer>().sprite = _carriedObject.Type.EWCarry;
@@ -90,12 +90,12 @@ public class CarriedObjectsAnimatorController : MonoBehaviour
         }
     }
 
-    private void EnableGameobjectForDirection(FacingDirection direction)
+    private void EnableGameobjectForDirection(CompassDirection direction)
     {
-        _facingNorth.SetActive(direction == FacingDirection.North);
-        _facingEast.SetActive(direction == FacingDirection.East);
-        _facingSouth.SetActive(direction == FacingDirection.South);
-        _facingWest.SetActive(direction == FacingDirection.West);
+        _facingNorth.SetActive(direction == CompassDirection.North);
+        _facingEast.SetActive(direction == CompassDirection.East);
+        _facingSouth.SetActive(direction == CompassDirection.South);
+        _facingWest.SetActive(direction == CompassDirection.West);
         UpdateStackItemRenderers();
     }
 }

@@ -160,11 +160,11 @@ public class BirdAnimatorController : MonoBehaviour
         rb.linearVelocity = Vector2.zero; 
     }
 
-    public void MatchAnimationToFacingDirection(FacingDirection direction)
+    public void MatchAnimationToFacingDirection(CompassDirection direction)
     {
         transform.localScale = new Vector3
         (
-            direction == FacingDirection.West ?
+            direction == CompassDirection.West ?
                 Mathf.Abs(transform.localScale.x) :
                 -Mathf.Abs(transform.localScale.x),
             transform.localScale.y,

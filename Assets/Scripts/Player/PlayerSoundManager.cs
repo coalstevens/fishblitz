@@ -25,7 +25,7 @@ public class PlayerSoundManager : MonoBehaviour
     {
         switch (current)
         {
-            case PlayerMovementController.PlayerStates.Walking:
+            case PlayerMovementController.PlayerStates.Running:
                 _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, _walkingSFXVolume);
                 break;
             default:
