@@ -84,8 +84,15 @@ public class UseItemInput : MonoBehaviour
         if (!_playerData.IsCarrying.Value)
             return false;
 
-        // to use a carried object is to put it down or put it in a container
-        if (targetWorldObject is IWeightyObjectContainer _weightyObjectContainer &&
+        if (targetWorldObject is Box box)
+        {
+            if (box.TryAddToBox(_playerCarry.Peek()))
+            {
+                _playerCarry.Pop();
+                return true;
+            }
+        }
+        else if (targetWorldObject is IWeightyObjectContainer _weightyObjectContainer &&
             _weightyObjectContainer.WeightyStack.HasEnoughSpace(_playerCarry.Peek().Type.Weight))
         {
             _weightyObjectContainer.WeightyStack.Push(_playerCarry.Pop());
