@@ -12,6 +12,10 @@ public class GridCursor : MonoBehaviour
     [SerializeField] private PlayerCursor _cursorE;
     [SerializeField] private PlayerCursor _cursorS;
     [SerializeField] private PlayerCursor _cursorW;
+    [SerializeField] private PlayerCursor _cursorNE;
+    [SerializeField] private PlayerCursor _cursorNW;
+    [SerializeField] private PlayerCursor _cursorSE;
+    [SerializeField] private PlayerCursor _cursorSW;
     private PlayerCursor _activeCursor;
     private Grid _grid;
     private List<Action> _unsubscribeHooks = new();
@@ -27,7 +31,7 @@ public class GridCursor : MonoBehaviour
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_grid);
 
-        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => SetPlayerCursorToFacingDirection(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange((prev, curr) => SetCursorForPlayerDirection(curr)));
     }
 
     private void OnDisable()
@@ -38,7 +42,7 @@ public class GridCursor : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void SetPlayerCursorToFacingDirection(CompassDirection curr)
+    private void SetCursorForPlayerDirection(CompassDirection curr)
     {
         switch (curr)
         {
@@ -54,6 +58,18 @@ public class GridCursor : MonoBehaviour
             case CompassDirection.West:
                 _activeCursor = _cursorW;
                 return;
+            case CompassDirection.NorthWest:
+                _activeCursor = _cursorNW;
+                return;
+            case CompassDirection.NorthEast:
+                _activeCursor = _cursorNE;
+                return;
+            case CompassDirection.SouthWest:
+                _activeCursor = _cursorSW;
+                return;
+            case CompassDirection.SouthEast:
+                _activeCursor = _cursorSE;
+                return;
         }
     }
 
@@ -62,19 +78,29 @@ public class GridCursor : MonoBehaviour
         List<Collider2D> _results = new List<Collider2D>();
         List<T> _foundObjects = new List<T>();
 
-        Physics2D.OverlapCollider(Collider, new ContactFilter2D().NoFilter(), _results);
+        Physics2D.OverlapCollider(Collider, ContactFilter2D.noFilter, _results);
 
         foreach (var _result in _results)
         {
-            T _currentObject = _result.GetComponent<T>();
-            if (_currentObject != null)
-                _foundObjects.Add(_currentObject);
+            T currentObject = _result.GetComponent<T>();
+            if (currentObject != null)
+            {
+                _foundObjects.Add(currentObject);
+                // if (currentObject is MonoBehaviour mb)
+                // {
+                //     Debug.Log($"Found {typeof(T).Name} on GameObject: {mb.gameObject.name}");
+                // }
+            }
         }
 
         if (_foundObjects.Count == 0)
+        {
             return null;
+        }
         if (_foundObjects.Count > 1)
+        {
             Debug.LogWarning($"There are {_foundObjects.Count} objects of type {typeof(T).Name} on this cursor location.");
+        }
 
         return _foundObjects[0];
     }

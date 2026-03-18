@@ -90,7 +90,7 @@ public abstract class FallenTree : MonoBehaviour, InteractInput.IInteractable, A
         _spriteRenderer.transform.localRotation = Quaternion.identity;
 
         // Requires enabling because it was disabled to make the falling animation look good.  
-        GetComponentInChildren<StaticSpriteSorting>().enabled = true;
+        GetComponentInChildren<YDepthSorter>().enabled = true;
     }
 
     public bool CursorInteract(Vector3 cursorLocation)

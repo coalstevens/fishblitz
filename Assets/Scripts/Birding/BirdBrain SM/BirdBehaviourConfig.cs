@@ -6,8 +6,12 @@ using UnityEngine;
 public class BirdBehaviourConfig : ScriptableObject
 {
     [Header("Flocking")]
-    public float ReactionCooldownSecs = 2f; // Bird can only react to a flock mate once every X seconds
-    public Vector2 ReactionTimeRangeSecs = new Vector2(0f, 0.5f); // Range of time it takes to react to a flock mate
+    public float ReactionCooldownSecs = 2f;
+    public Vector2 ReactionTimeRangeSecs = new Vector2(0f, 0.5f);
+
+    [Header("Avoidance Force")]
+    public float CircleCastRadius;
+    public float CircleCastRange;
 
     [Header("States")]
     public LowFlyingParameters LowFlying = new();
@@ -43,8 +47,6 @@ public class BirdBehaviourConfig : ScriptableObject
 
         [Header("Avoidance Force")]
         public float AvoidanceWeight;
-        public float CircleCastRadius;
-        public float CircleCastRange;
     }
 
     [Serializable]
@@ -55,17 +57,13 @@ public class BirdBehaviourConfig : ScriptableObject
         [Range(0f, 1f)] public float GroundPreference;
 
         [Header("Landing")]
-        public float SpeedLimit;
         public float SnapToTargetDistance;
         public float LandingTimeoutSecs;
         public float StuckMovementThreshold;
         public float FlockLandingCircleRadius;
-        public float SteerForceLimit;
 
         [Header("Avoidance Force")]
         public float AvoidanceWeight;
-        public float CircleCastRadius;
-        public float CircleCastRange;
     }
 
     [Serializable]
@@ -102,8 +100,6 @@ public class BirdBehaviourConfig : ScriptableObject
 
         [Header("Avoidance Force")]
         public float AvoidanceWeight;
-        public float CircleCastRadius;
-        public float CircleCastRange;
     }
     [Serializable]
     public struct HighFlyingParameters
@@ -128,7 +124,5 @@ public class BirdBehaviourConfig : ScriptableObject
         public float SnapToTargetDistance;
         public float LandingTimeoutSecs;
         public float FlockLandingAreaRadius;
-        public float SpeedLimit;
-        public float SteerForceLimit;
     }
 }

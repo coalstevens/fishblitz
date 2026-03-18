@@ -10,6 +10,7 @@ public class BirdAnimatorController : MonoBehaviour
     [SerializeField, UnityEngine.Range(0, 1f)] private float _glideFrameInNormalizedTime = 0.435f;
     [SerializeField] private Logger _logger = new();
     private BirdBrain _bird;
+    private Coroutine _twoHopCoroutine;
 
     public void Initialize()
     {
@@ -50,7 +51,18 @@ public class BirdAnimatorController : MonoBehaviour
     public void PlayTwoHop()
     {
         _logger.Info("Playing two hop animation");
-        StartCoroutine(PlayTwoHop(_bird.GetComponent<Rigidbody2D>()));
+        _twoHopCoroutine = StartCoroutine(PlayTwoHop(_bird.GetComponent<Rigidbody2D>()));
+    }
+
+    public void StopTwoHop()
+    {
+        if (_twoHopCoroutine != null)
+        {
+            StopCoroutine(_twoHopCoroutine);
+            _twoHopCoroutine = null;
+        }
+        _animator.Play("Idle", 0, 0f);
+        _animator.SetLayerWeight(1, 0f);
     }
 
     public void PlayFlapping()
@@ -62,19 +74,31 @@ public class BirdAnimatorController : MonoBehaviour
     {
         _logger.Info("Playing gliding animation");
         string stateName = _bird.InstanceData.IsTagged.Value ? "Flying_Tagged" : "Flying";
+        Assert.IsTrue(HasAnimation(stateName), $"Animation '{stateName}' not found on bird {gameObject.name}");
         _animator.Play(stateName, 0, _glideFrameInNormalizedTime);
         _animator.speed = 0f;
     }
 
     private void Play(string animation, float speed)
     {
+        Assert.IsTrue(HasAnimation(animation), $"Animation '{animation}' not found on bird {gameObject.name}");
+
         _animator.speed = speed;
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(animation))
+        var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.IsName(animation) && !_animator.IsInTransition(0))
         {
-            float randomStart = Random.value; // 0.0 to 1.0 normalized time
-            _logger.Info($"Playing {animation} animation");
-            _animator.Play(animation, 0, randomStart);
+            return;
         }
+
+        float randomStart = Random.value;
+        _logger.Info($"Playing {animation} animation");
+        _animator.Play(animation, 0, randomStart);
+    }
+
+    private bool HasAnimation(string animationName)
+    {
+        return _animator.HasState(0, Animator.StringToHash(animationName));
     }
 
     private void OverrideBirdAnimatorClips(Animator animator, BirdSpeciesData speciesData)
@@ -122,6 +146,9 @@ public class BirdAnimatorController : MonoBehaviour
     {
         string baseAnimationName = "Two Hop";
         string additiveAnimationName = "Idle";
+        Assert.IsTrue(HasAnimation(baseAnimationName), $"Animation '{baseAnimationName}' not found on bird {gameObject.name}");
+        Assert.IsTrue(HasAnimation(additiveAnimationName), $"Animation '{additiveAnimationName}' not found on bird {gameObject.name}");
+        
         int returnState = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
         _animator.Play(baseAnimationName, 0, 0f);
         _animator.Play(additiveAnimationName, 1, 0f);
@@ -151,12 +178,13 @@ public class BirdAnimatorController : MonoBehaviour
             yield return null;
         }
 
-        if (completed)
+        if (completed && _twoHopCoroutine != null)
         {
             _logger.Info("Animation completed. Returning to state");
             _animator.Play(returnState);
         }
 
+        _twoHopCoroutine = null;
         rb.linearVelocity = Vector2.zero; 
     }
 

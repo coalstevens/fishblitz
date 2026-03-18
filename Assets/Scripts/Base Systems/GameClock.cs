@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReactiveUnity;
 
-public class GameClock : Singleton<GameClock>
+public class GameClock : MonoBehaviour
 {
+    public static GameClock Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public enum Seasons { Spring, Summer, Fall, Winter }
     public enum DayPeriods { Sunrise, Day, Sunset, Night }
     public interface ITickable

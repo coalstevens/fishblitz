@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8821769514425670109}
   - component: {fileID: 1333971643200717708}
-  - component: {fileID: -7752157224786461886}
   - component: {fileID: -274895024528768507}
   - component: {fileID: -6851900717661522450}
   - component: {fileID: 8423464672206032430}
-  - component: {fileID: -5621142128258517817}
+  - component: {fileID: 3723926100136587181}
+  - component: {fileID: 4734949445392329103}
   m_Layer: 18
   m_Name: Larch Bolette 2
   m_TagString: Untagged
@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1333971643200717708
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -57,6 +58,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -78,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2138312857
   m_SortingLayer: 4
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 3503495968258220155, guid: 638a93903d8674913a9f00907757bc62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -90,20 +95,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-7752157224786461886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6827217041812705697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-274895024528768507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,9 +163,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.1412968, y: 0.5486731}
-  m_Radius: 0.04794365
---- !u!114 &-5621142128258517817
+  m_Offset: {x: 0.022143394, y: 0.16284311}
+  m_Radius: 0.15574905
+--- !u!114 &3723926100136587181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,9 +174,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6827217041812705697}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d9ef4322580a4524a9fa2c95092baab, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  birdLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnOffset
+  _offset: {x: 0.125, y: 0.5}
+--- !u!114 &4734949445392329103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6827217041812705697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8557d4d66e6e5463abac94a951400c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StaticSpriteSorting
+  _enableDynamicSorting: 0
+  _yPrecision: 100
+  _groundOffset: 0
+  _lowOffset: 0
+  _highOffset: 0
+  _birdOffset: 75

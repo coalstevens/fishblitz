@@ -2,8 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldStateCalendar : Singleton<WorldStateCalendar>
+public class WorldStateCalendar : MonoBehaviour
 {
+    public static WorldStateCalendar Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     [Serializable]
     public class DayState
     {

@@ -142,7 +142,7 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
 
         // Want falling tree to appear infront of stump.
         // FallingTree.cs re-enables sprite sorting after falling
-        _fallenTree.GetComponentInChildren<StaticSpriteSorting>().enabled = false;
+        _fallenTree.GetComponentInChildren<YDepthSorter>().enabled = false;
         _fallenTree.GetComponentInChildren<SpriteRenderer>().sortingOrder = _spriteRenderer.sortingOrder + 1;
         Destroy(gameObject);
     }
@@ -152,11 +152,15 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     /// </summary>
     private bool WillTreeFallEast()
     {
-        switch (_playerMovementController.FacingDirection.Value)
+        switch (_playerMovementController.Direction.Value)
         {
             case CompassDirection.West:
+            case CompassDirection.NorthWest:
+            case CompassDirection.SouthWest:
                 return false;
             case CompassDirection.East:
+            case CompassDirection.NorthEast:
+            case CompassDirection.SouthEast:
                 return true;
             case CompassDirection.North:
             case CompassDirection.South:

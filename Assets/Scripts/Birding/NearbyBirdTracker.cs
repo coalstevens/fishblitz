@@ -28,7 +28,7 @@ public class NearbyBirdTracker : MonoBehaviour
     private void InitializeNearbyBirds()
     {
         var _overlappingColliders = new List<Collider2D>();
-        _viewRange.Overlap(new ContactFilter2D().NoFilter(), _overlappingColliders);
+        _viewRange.Overlap(ContactFilter2D.noFilter, _overlappingColliders);
 
         foreach (var _collider in _overlappingColliders)
             if (_collider.TryGetComponent<BirdBrain>(out var _bird) && _bird != _thisBird)

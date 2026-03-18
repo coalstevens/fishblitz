@@ -84,9 +84,9 @@ public class SceneSpawner : MonoBehaviour
                 while (_numToSpawn > 0 && _validSpawnPositions.Count > 0)
                 {
                     Vector3Int _tilePos = _validSpawnPositions[0];
-                    Vector3 _worldPos = _area.CellToWorld(_tilePos) + new Vector3(0.5f, 0, 0);
-                    
+
                     var _variant = _spawnObject.PrefabVariants[UnityEngine.Random.Range(0, _spawnObject.PrefabVariants.Count)];
+                    Vector3 _worldPos = CalculateWorldPosition(_area, _tilePos, _variant);
                     GameObject _spawnedObj = Instantiate(_variant, _worldPos, Quaternion.identity, _impermanentContainer);
                     
                     if (!_spawnedObjects.ContainsKey(_variant))
@@ -304,5 +304,33 @@ public class SceneSpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static Vector3 CalculateWorldPosition(Grid grid, Vector3Int cellPosition, GameObject prefab = null)
+    {
+        Vector3 position = grid.CellToWorld(cellPosition) + new Vector3(0.5f, 0, 0);
+
+        if (prefab != null)
+        {
+            SpawnOffset offset = prefab.GetComponent<SpawnOffset>();
+            if (offset != null)
+                position += (Vector3)offset.Offset;
+        }
+
+        return position;
+    }
+
+    public static Vector3 CalculateWorldPosition(Tilemap tilemap, Vector3Int cellPosition, GameObject prefab = null)
+    {
+        Vector3 position = tilemap.CellToWorld(cellPosition) + new Vector3(0.5f, 0, 0);
+
+        if (prefab != null)
+        {
+            SpawnOffset offset = prefab.GetComponent<SpawnOffset>();
+            if (offset != null)
+                position += (Vector3)offset.Offset;
+        }
+
+        return position;
     }
 }

@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 103559618}
   - component: {fileID: 103559617}
   - component: {fileID: 103559620}
+  - component: {fileID: 103559621}
   m_Layer: 5
   m_Name: Narrator
   m_TagString: Untagged
@@ -188,12 +189,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 32
-  m_ScaleFactor: 0.674
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScaleFactor: 1.40625
+  m_ReferenceResolution: {x: 960, y: 540}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -208,7 +209,7 @@ Canvas:
   m_GameObject: {fileID: 103559615}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -241,6 +242,19 @@ MonoBehaviour:
   _sidePadding: 40
   _lineSpacing: 40
   _postMessageDelaySeconds: 4
+--- !u!114 &103559621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103559615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 089ebee2056644a66bcde44e6094e62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdditiveUIScaler
+  pixelsPerUnit: 32
 --- !u!1 &566183261
 GameObject:
   m_ObjectHideFlags: 0

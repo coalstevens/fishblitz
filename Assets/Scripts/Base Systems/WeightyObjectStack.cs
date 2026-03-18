@@ -21,7 +21,7 @@ public class WeightyObjectStack : MonoBehaviour
         _data.CurrentWeight += storedObject.Type.Weight;
         _data.StoredObjects.Push(storedObject);
         if (_data.InsertSound != null)
-            AudioManager.Instance.PlaySFX(_data.InsertSound, _data.InsertSoundVolume);
+            AudioManager.Instance.PlaySFXWithVariation(_data.InsertSound, _data.InsertSoundVolume);
         return true;
     }
 
@@ -47,6 +47,8 @@ public class WeightyObjectStack : MonoBehaviour
         }
         return false;
     }
+
+    public int StoredCount => _data.StoredObjects.Count;
 
     public bool HasEnoughSpace(int weight)
     {

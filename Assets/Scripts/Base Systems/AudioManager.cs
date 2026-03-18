@@ -4,12 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     [SerializeField] AudioSource _musicPlayer; // Dedicated audiosource for playing music
     [SerializeField] private Transform _loopingSFXPlayerContainer; // Container for looping SFX audio sources, like rain
     [SerializeField] private Transform _SFXContainer; // Container for one-shot SFX audio sources
     [SerializeField] private Logger _logger = new();
+    [Header("SFX Variation")]
+    [SerializeField] private float _pitchVariation = 0.02f;
+    [SerializeField] private float _volumeVariation = 0.1f;
     private Stack<AudioSource> _SFXPool = new();
     private Stack<AudioSource> _loopingSFXPool = new();
     private const float FADE_DURATION_SECS = 2f;
@@ -131,6 +141,31 @@ public class AudioManager : Singleton<AudioManager>
 
         _source.clip = clip;
         _source.volume = volume;
+        _source.loop = false;
+        _source.Play();
+        StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));
+    }
+
+    public void PlaySFXWithVariation(AudioClip clip, float volume)
+    {
+        if (clip == null)
+        {
+            _logger.Warning("The SFX clip is null.");
+            return;
+        }
+        AudioSource _source = GetPlayerFromPool(_SFXPool);
+        if (_source == null)
+        {
+            _logger.Warning("There are no more SFX audio sources available.");
+            return;
+        }
+
+        _logger.Info($"Playing SFX with variation: {clip.name} with source: {_source.GetInstanceID()}");
+
+        _source.clip = clip;
+        float volumeVariation = UnityEngine.Random.Range(-_volumeVariation, _volumeVariation);
+        _source.volume = Mathf.Clamp01(volume + volumeVariation);
+        _source.pitch = 1f + UnityEngine.Random.Range(-_pitchVariation, _pitchVariation);
         _source.loop = false;
         _source.Play();
         StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));

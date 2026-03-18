@@ -8,19 +8,16 @@ using UnityEngine.InputSystem;
 public class PlayerWheelBarrow : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private GameObject _facingNorth;
-    [SerializeField] private GameObject _facingEast;
-    [SerializeField] private GameObject _facingSouth;
-    [SerializeField] private GameObject _facingWest;
-    private PlayerMovementController _playerMovementController;
+    [SerializeField] private GameObject _playerWheelBarrow;
+    [SerializeField] private GameObject _staticWheelBarrowPrefab;
     List<Action> _unsubscribeHooks = new();
     private PlayerInput _playerInput;
+    private Rigidbody2D _rb;
 
     void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _rb = GetComponent<Rigidbody2D>();
         _unsubscribeHooks.Add(_playerData.IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
-        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange(curr => OnFacingDirectionChange(curr)));
         var player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
             _playerInput = player.GetComponent<PlayerInput>();
@@ -36,44 +33,40 @@ public class PlayerWheelBarrow : MonoBehaviour
         _playerData.IsHoldingWheelBarrow.Value = false;
     }
 
-    private void OnFacingDirectionChange(CompassDirection curr)
-    {
-        if (_playerData.IsHoldingWheelBarrow.Value)
-            EnableGameobjectForDirection(curr);
-    }
 
     private void OnWheelBarrowingChange(bool isWheelBarrowing)
     {
         if (isWheelBarrowing)
         {
+            Debug.Log($"Player position change {Time.frameCount}");
             _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
-            EnableGameobjectForDirection(_playerMovementController.FacingDirection.Value);
         }
         else
         {
             _playerInput?.SwitchCurrentActionMap("Player");
             StaticWheelBarrowSelector _staticWheelBarrow = InstantiateStaticWheelBarrow();
-            _staticWheelBarrow.SetFacingDirection(_playerMovementController.FacingDirection.Value);
-            foreach (Transform child in _facingNorth.transform.parent)
-                child.gameObject.SetActive(false);
+            _staticWheelBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
         }
     }
 
     private StaticWheelBarrowSelector InstantiateStaticWheelBarrow()
     {
-        GameObject _staticWheelBarrowPrefab = Resources.Load<GameObject>("WorldObjects/StaticWheelBarrow");
         if (_staticWheelBarrowPrefab != null)
         {
-            Transform _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
-            GameObject _staticWheelBarrow = Instantiate(_staticWheelBarrowPrefab, GetActiveWheelBarrowPosition() ,quaternion.identity, _impermanentContainer);
-            StaticWheelBarrowSelector _wheelBarrow = _staticWheelBarrow.GetComponent<StaticWheelBarrowSelector>();
-            if (_wheelBarrow == null)
+            Transform impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
+            GameObject newStaticWheelBarrow = Instantiate(
+                _staticWheelBarrowPrefab, 
+                _playerWheelBarrow.transform.position,
+                quaternion.identity, 
+                impermanentContainer);
+            StaticWheelBarrowSelector newBarrow = newStaticWheelBarrow.GetComponent<StaticWheelBarrowSelector>();
+            if (_playerWheelBarrow == null)
                 Debug.LogError("Static wheel barrow is missing its wheelbarrow component");
-            return _wheelBarrow;
+            return newBarrow;
         }
         else
         {
-            Debug.LogError("StaticWheelBarrow prefab not found in Resources/WorldObjects");
+            Debug.LogError("StaticWheelBarrow prefab not set in inspector.");
             return null;
         }
     }
@@ -85,25 +78,4 @@ public class PlayerWheelBarrow : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
-    private void EnableGameobjectForDirection(CompassDirection direction)
-    {
-        _facingNorth.SetActive(direction == CompassDirection.North);
-        _facingEast.SetActive(direction == CompassDirection.East);
-        _facingSouth.SetActive(direction == CompassDirection.South);
-        _facingWest.SetActive(direction == CompassDirection.West);
-    }
-
-    private Vector3 GetActiveWheelBarrowPosition()
-    {
-        if (_facingNorth.activeSelf)
-            return _facingNorth.transform.position;
-        else if (_facingEast.activeSelf)
-            return _facingEast.transform.position;
-        else if (_facingSouth.activeSelf)
-            return _facingSouth.transform.position;
-        else if (_facingWest.activeSelf)
-            return _facingWest.transform.position;
-        else
-            throw new Exception("No active wheelbarrow found");
-    }
 }

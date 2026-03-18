@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 3181539490558953375}
   - component: {fileID: 8329695729413677778}
   - component: {fileID: 8285493887203200181}
-  - component: {fileID: 1476991956587530937}
   - component: {fileID: 3870323548341523562}
   - component: {fileID: -5547276281100106692}
-  - component: {fileID: 174720876656423907}
+  - component: {fileID: 344122535340454500}
   m_Layer: 18
   m_Name: Big Rock 2
   m_TagString: Untagged
@@ -40,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8329695729413677778
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -58,6 +58,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2138312857
   m_SortingLayer: 4
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 475892228737558885, guid: 1caadfab8204247419f91aa180044f98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,7 +95,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!60 &8285493887203200181
 PolygonCollider2D:
@@ -148,18 +151,6 @@ PolygonCollider2D:
       - {x: 0.6750536, y: 0.35778582}
       - {x: 1.0081592, y: 0.50184584}
   m_UseDelaunayMesh: 0
---- !u!114 &1476991956587530937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6221756347476409415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3870323548341523562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,7 +179,7 @@ MonoBehaviour:
   extraTilesToRight: 1
   extraTilesAbove: 0
   extraTilesBelow: 0
---- !u!114 &174720876656423907
+--- !u!114 &344122535340454500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -197,12 +188,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6221756347476409415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8557d4d66e6e5463abac94a951400c8a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  birdLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_EditorClassIdentifier: Assembly-CSharp::StaticSpriteSorting
+  _enableDynamicSorting: 0
+  _yPrecision: 100
+  _groundOffset: 0
+  _lowOffset: 0
+  _highOffset: 0
+  _birdOffset: 75
 --- !u!1 &8825151242290672157
 GameObject:
   m_ObjectHideFlags: 0

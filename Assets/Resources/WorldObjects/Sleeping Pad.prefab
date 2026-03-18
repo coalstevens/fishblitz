@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 708354322087097661}
   - component: {fileID: 5903206854158117970}
   - component: {fileID: 8012392822028559149}
-  - component: {fileID: -846184135654108168}
+  - component: {fileID: 4182469298373974437}
   m_Layer: 18
   m_Name: Sleeping Pad
   m_TagString: Untagged
@@ -38,6 +38,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &544128924290945887
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +57,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +80,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -908687739
   m_SortingLayer: 2
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -3253458474642139431, guid: 89d75a0f94f084d2ba761d8ce9c2e320, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,7 +94,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &708354322087097661
 BoxCollider2D:
@@ -165,7 +169,7 @@ MonoBehaviour:
   extraTilesToRight: 0
   extraTilesAbove: 1
   extraTilesBelow: 0
---- !u!114 &-846184135654108168
+--- !u!114 &4182469298373974437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,9 +178,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5174600067490694918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8557d4d66e6e5463abac94a951400c8a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  birdLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_EditorClassIdentifier: Assembly-CSharp::StaticSpriteSorting
+  _enableDynamicSorting: 0
+  _yPrecision: 100
+  _groundOffset: 0
+  _lowOffset: 0
+  _highOffset: 0
+  _birdOffset: 75

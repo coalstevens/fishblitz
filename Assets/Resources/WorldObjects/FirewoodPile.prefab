@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 6498670202926265411}
   - component: {fileID: 373529382752263082}
   - component: {fileID: 602916560364616551}
-  - component: {fileID: 8069647239064676079}
   - component: {fileID: -1660584814101777133}
-  - component: {fileID: -1683634413600605488}
+  - component: {fileID: 2720015236827634359}
   m_Layer: 18
   m_Name: FirewoodPile
   m_TagString: Untagged
@@ -38,6 +37,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &373529382752263082
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +56,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +79,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2138312857
   m_SortingLayer: 4
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -972769536157864840, guid: 78a092f90be374c49998331920903ff5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,7 +93,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &602916560364616551
 BoxCollider2D:
@@ -137,18 +140,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.58809304, y: 0.42939758}
   m_EdgeRadius: 0
---- !u!114 &8069647239064676079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6323635044616395814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-1660584814101777133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +162,7 @@ MonoBehaviour:
   - {fileID: 3626857166634918186, guid: 78a092f90be374c49998331920903ff5, type: 3}
   - {fileID: -972769536157864840, guid: 78a092f90be374c49998331920903ff5, type: 3}
   _firewood: {fileID: 11400000, guid: bd6ae0c06e04044c983dc2e37fb5227a, type: 2}
---- !u!114 &-1683634413600605488
+--- !u!114 &2720015236827634359
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,9 +171,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6323635044616395814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8557d4d66e6e5463abac94a951400c8a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  birdLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  m_EditorClassIdentifier: Assembly-CSharp::StaticSpriteSorting
+  _enableDynamicSorting: 0
+  _yPrecision: 100
+  _groundOffset: 0
+  _lowOffset: 0
+  _highOffset: 0
+  _birdOffset: 75

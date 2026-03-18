@@ -27,7 +27,7 @@ public partial class BirdBrain : MonoBehaviour
         {
             IsTagged.Value = true;
             AudioManager.Instance.PlaySFX(SpeciesData.CaptureSound, SpeciesData.SoundVolume);
-            SpeciesData.PlayerData.BirdingLog.AddToLog(SpeciesData.SpeciesName, SeasonSpawned, PeriodSpawned);
+            SpeciesData.PlayerData.BirdingLog.AddToLog(SpeciesData.SpeciesName);
         }
     }
 
@@ -332,21 +332,8 @@ public partial class BirdBrain : MonoBehaviour
 
     private void UpdateStateText()
     {
-        static string GetStateName(IBirdState state) => state switch
-        {
-            LandingState => "Landing",
-            LowFlyingState => "LowFlying",
-            PerchedState => "Perched",
-            FleeingState => "Fleeing",
-            GroundedState => "Grounded",
-            ShelteredState => "Sheltered",
-            HighFlyingState => "HighFlying",
-            HighLandingState => "HighLanding",
-            _ => ""
-        };
-
-        _stateName = GetStateName(_birdState);
-        _previousStateName = GetStateName(_previousBirdState);
+        _stateName = _birdState?.GetType().Name.Replace("State", "") ?? "";
+        _previousStateName = _previousBirdState?.GetType().Name.Replace("State", "") ?? "";
     }
 
     private bool TrySetLandingSpotOfType<T>(Vector2 landingCircleCenter, float landingCircleRadius) where T : IBirdLandingSpot

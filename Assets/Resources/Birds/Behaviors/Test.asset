@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ReactionCooldownSecs: 6
   ReactionTimeRangeSecs: {x: 0, y: 0.25}
+  CircleCastRadius: 0.5
+  CircleCastRange: 5
   LowFlying:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
     SpeedLimit: 2.5
@@ -30,36 +32,33 @@ MonoBehaviour:
     AlignmentWeight: 1
     CohesionWeight: 1
     AvoidanceWeight: 0.5
-    CircleCastRadius: 0.5
-    CircleCastRange: 5
   LowLanding:
     PerchPreference: 0
     ShelterPreference: 0
     GroundPreference: 1
-    SpeedLimit: 2.5
     SnapToTargetDistance: 0.25
     LandingTimeoutSecs: 3
     StuckMovementThreshold: 1
     FlockLandingCircleRadius: 1.5
-    SteerForceLimit: 2
     AvoidanceWeight: 0.5
-    CircleCastRadius: 0.5
-    CircleCastRange: 5
   Sheltered:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
   Perched:
     BehaviourDurationRangeSecs: {x: 7, y: 15}
   Grounded:
     BehaviourDurationRangeSecs: {x: 100, y: 200}
-    TimeTillHopRangeSecs: {x: 2, y: 7}
+    TimeTillMoveRangeSecs: {x: 0, y: 0}
     TwoHopForceLimits: {x: 1, y: 3}
+    LandTravelType: 0
+    CanSwim: 0
+    WalkSpeed: 0
+    SwimSpeed: 0
+    WalkSwimDurationSecs: {x: 0, y: 0}
   Fleeing:
     BehaviourDurationRangeSecs: {x: 2, y: 3}
     FleeForceMagnitude: 4
     FleeMaxSpeed: 3.5
     AvoidanceWeight: 1
-    CircleCastRadius: 0.5
-    CircleCastRange: 5
   HighFlying:
     BehaviourDurationRange: {x: 7, y: 15}
     LowFlyingPreference: 1
@@ -69,3 +68,9 @@ MonoBehaviour:
     SteerForceLimit: 0.25
     WanderRingDistance: 3
     WanderRingRadius: 2
+  HighLanding:
+    PerchPreference: 0
+    GroundPreference: 0
+    SnapToTargetDistance: 0
+    LandingTimeoutSecs: 0
+    FlockLandingAreaRadius: 0

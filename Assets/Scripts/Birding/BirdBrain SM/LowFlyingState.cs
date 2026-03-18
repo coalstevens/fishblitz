@@ -62,8 +62,8 @@ public partial class BirdBrain : MonoBehaviour
                 }
                 _avoidanceForce = BirdForces.CalculateAvoidanceForce(
                     bird,
-                    parameters.CircleCastRadius,
-                    parameters.CircleCastRange,
+                    bird.Config.CircleCastRadius,
+                    bird.Config.CircleCastRange,
                     parameters.AvoidanceWeight,
                     out _gizAvoidTarget);
             }
@@ -73,6 +73,14 @@ public partial class BirdBrain : MonoBehaviour
 
         private void TransitionToPreferredState(BirdBrain bird, BirdBehaviourConfig.LowFlyingParameters parameters)
         {
+            _wanderForce = BirdForces.CalculateWanderForce(
+                bird,
+                parameters.SpeedLimit,
+                parameters.SteerForceLimit,
+                parameters.WanderRingDistance,
+                parameters.WanderRingRadius,
+                out _wanderRingCenter);
+
             float _randomValue = UnityEngine.Random.Range(0, parameters.LandingPreference + parameters.HighFlyingPreference);
             if (_randomValue < parameters.LandingPreference)
             {

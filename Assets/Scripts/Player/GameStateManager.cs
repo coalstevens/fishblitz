@@ -43,6 +43,7 @@ public static class GameStateManager
             "Boot" => _narratorOnBlack,
             "SleepMenu" => _narratorOnBlack,
             "Outside" => _playingState,
+            "WheelBarrow_Test" => _playingState,
             "Abandoned Shed" => _playingState,
             "Waterfall Cave" => _playingState,
             "River0" => _playingState,

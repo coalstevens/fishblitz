@@ -183,7 +183,7 @@ public class FishingGame : MonoBehaviour
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
         AudioManager.Instance.PlaySFX(_caughtSFX);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
-        _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel, _gameStartSeason, _gameStartPeriod);
+        _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel);
         _stopReelingSFXCB();
         _stopReelingSFXCB = null;
         EndGame();
@@ -237,7 +237,7 @@ public class FishingGame : MonoBehaviour
         // Check for hit or miss
         // Checks for unfulfilled triggers under game cursor
         List<Collider2D> _results = new List<Collider2D>();
-        _gameCursorCollider.Overlap(new ContactFilter2D().NoFilter(), _results);
+        _gameCursorCollider.Overlap(ContactFilter2D.noFilter, _results);
         List<FishBarTrigger> _overlappedTriggers = _results
             .Select(collider => collider.GetComponent<FishBarTrigger>())
             .Where(trigger => trigger != null)

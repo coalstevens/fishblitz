@@ -12,7 +12,7 @@ public static class SleepQuality
     {
         [Temperature.Freezing] = 0.3f,
         [Temperature.Cold] = 0.5f,
-        [Temperature.Neutral] = 0.70f,
+        [Temperature.Normal] = 0.70f,
         [Temperature.Warm] = 1f,
         [Temperature.Hot] = 0.5f
     };
@@ -21,7 +21,7 @@ public static class SleepQuality
     {
         [Temperature.Freezing] = 5,
         [Temperature.Cold] = 6,
-        [Temperature.Neutral] = 7,
+        [Temperature.Normal] = 7,
         [Temperature.Warm] = 7,
         [Temperature.Hot] = 6
     };
@@ -30,7 +30,7 @@ public static class SleepQuality
     {
         [Temperature.Freezing] = "the night was freezing. you barely slept.",
         [Temperature.Cold] = "the night was cold, you slept lightly.",
-        [Temperature.Neutral] = "the night was comfortable. you slept soundly.",
+        [Temperature.Normal] = "the night was comfortable. you slept soundly.",
         [Temperature.Warm] = "the night was warm. you slept deeply.",
         [Temperature.Hot] = "the night was stifling. you tossed and turned."
     };

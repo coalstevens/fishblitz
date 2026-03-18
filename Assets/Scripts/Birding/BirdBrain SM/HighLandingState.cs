@@ -38,14 +38,15 @@ public partial class BirdBrain : MonoBehaviour
 
         public void FixedUpdate(BirdBrain bird)
         {
-            var parameters = bird.Config.HighLanding;
+            var landingParams = bird.Config.HighLanding;
+            var flyingParams = bird.Config.HighFlying;
 
             if (_stateOnTargetReached == bird.HighFlying)
                 bird.TransitionToState(_stateOnTargetReached);
 
             // Teleport if landing is taking too long or if the bird is close enough to the target
-            if (Time.time - _landingStartTime >= parameters.LandingTimeoutSecs ||
-                Vector2.Distance(bird.TargetPosition, bird.transform.position) <= parameters.SnapToTargetDistance)
+            if (Time.time - _landingStartTime >= landingParams.LandingTimeoutSecs ||
+                Vector2.Distance(bird.TargetPosition, bird.transform.position) <= landingParams.SnapToTargetDistance)
             {
                 bird.transform.position = bird.TargetPosition;
                 bird._rb.linearVelocity = Vector2.zero;
@@ -53,7 +54,7 @@ public partial class BirdBrain : MonoBehaviour
                 return;
             }
             // Apply force to approach target
-            bird._rb.AddForce(BirdForces.Seek(bird, parameters.SpeedLimit, parameters.SteerForceLimit));
+            bird._rb.AddForce(BirdForces.Seek(bird, flyingParams.SpeedLimit, flyingParams.SteerForceLimit));
         }
 
         private void UpdateLandingCircle(BirdBrain bird)

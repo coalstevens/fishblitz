@@ -1,8 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class OutsideTemperature : Singleton<OutsideTemperature>, IHeatSource
+public class OutsideTemperature : MonoBehaviour, IHeatSource
 {
+    public static OutsideTemperature Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private Grid _sceneGrid;
     private PlayerTemperatureManager _playerTemperatureManager;
     [SerializeField] private Logger _logger = new();

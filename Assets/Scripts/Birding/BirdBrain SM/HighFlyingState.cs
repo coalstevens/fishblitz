@@ -57,6 +57,14 @@ public partial class BirdBrain : MonoBehaviour
 
         private void TransitionToPreferredState(BirdBrain bird, BirdBehaviourConfig.HighFlyingParameters parameters)
         {
+            _wanderForce = BirdForces.CalculateWanderForce(
+                bird,
+                parameters.SpeedLimit,
+                parameters.SteerForceLimit,
+                parameters.WanderRingDistance,
+                parameters.WanderRingRadius,
+                out _wanderRingCenter);
+
             float _randomValue = Random.Range(0, parameters.LowFlyingPreference + parameters.LandingPreference);
             if (_randomValue < parameters.LowFlyingPreference)
                 bird.TransitionToState(bird.LowFlying);

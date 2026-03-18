@@ -104,10 +104,9 @@ GameObject:
   - component: {fileID: 726476656595360288}
   - component: {fileID: 1176865753775964615}
   - component: {fileID: 6894888461956774537}
-  - component: {fileID: 4376363565514777744}
   - component: {fileID: 8210332570735657596}
   - component: {fileID: 7883547758918523186}
-  - component: {fileID: -3110118212691219353}
+  - component: {fileID: -6822030909377818480}
   m_Layer: 18
   m_Name: Barrel
   m_TagString: Untagged
@@ -151,6 +150,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -172,6 +173,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2138312857
   m_SortingLayer: 4
   m_SortingOrder: 0
@@ -223,18 +225,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0000015153136, y: 0.21136996}
   m_Size: {x: 0.86430466, y: 0.4130212}
   m_Direction: 1
---- !u!114 &4376363565514777744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103181429623164641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca1d4d228d2a14572b70684db8fd9b66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8210332570735657596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +256,7 @@ MonoBehaviour:
   _identifier: Barrel
   _barrel: {fileID: 4848980649828379681, guid: 12237f816773d43338f19c84da378add, type: 3}
   _barrelWithBinos: {fileID: 4129067698974313995, guid: 12237f816773d43338f19c84da378add, type: 3}
---- !u!114 &-3110118212691219353
+--- !u!114 &-6822030909377818480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,9 +265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2103181429623164641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92153e2484d504f15b7a3c06948e1b1f, type: 3}
+  m_Script: {fileID: 11500000, guid: d1762d59fc76c4d6ea378ec77f30147c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  birdLayer:
-    serializedVersion: 2
-    m_Bits: 512
+  m_EditorClassIdentifier: Assembly-CSharp::StaticSpriteSorting
+  enableDynamicSorting: 0

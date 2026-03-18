@@ -1,35 +1,33 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class StaticWheelBarrowSelector : MonoBehaviour
 {
     [SerializeField] public CompassDirection FacingDirection;
-    [SerializeField] private GameObject _facingNorth;
-    [SerializeField] private GameObject _facingEast;
-    [SerializeField] private GameObject _facingSouth;
-    [SerializeField] private GameObject _facingWest;
 
     private void Start()
     {
-        Assert.IsNotNull(_facingNorth);
-        Assert.IsNotNull(_facingEast);
-        Assert.IsNotNull(_facingSouth);
-        Assert.IsNotNull(_facingWest);
-        
-        SetDirection(FacingDirection);
+        SetDirection();
     }
 
     public void SetFacingDirection(CompassDirection direction)
     {
-        SetDirection(direction);
+        FacingDirection = direction;
+        SetDirection();
     }
 
-    private void SetDirection(CompassDirection direction)
+    private void SetDirection()
     {
-        FacingDirection = direction;
-        _facingNorth.SetActive(direction == CompassDirection.North);
-        _facingEast.SetActive(direction == CompassDirection.East);
-        _facingSouth.SetActive(direction == CompassDirection.South);
-        _facingWest.SetActive(direction == CompassDirection.West);
+        switch (FacingDirection)
+        {
+            case CompassDirection.SouthWest:
+                transform.localScale = new Vector3(-1, 1, 1);
+                break;
+            case CompassDirection.SouthEast:
+                transform.localScale = new Vector3(1, 1, 1);
+                break;
+            default:
+                Debug.LogError("Wheelbarrow direction not handled.");
+                break;
+        }
     }
 }

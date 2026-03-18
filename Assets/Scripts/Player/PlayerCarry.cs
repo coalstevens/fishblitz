@@ -52,7 +52,7 @@ public class PlayerCarry : MonoBehaviour
             Push(objectToStore);
         }
 
-        StartCoroutine(DelayedPush(_objectToStore, 0.167f));
+        StartCoroutine(DelayedPush(_objectToStore, 0.06f * 4)); // duration is half the pick up animation
 
         return true;
     }
@@ -95,9 +95,12 @@ public class PlayerCarry : MonoBehaviour
         return _carriedObjects.Peek();
     }
 
+    public int CarriedCount => _carriedObjects.StoredCount;
+
     private void InstantiateWeightyObject(StoredWeightyObject carriedObject, Vector3Int spawnPosition)
     {
-        Vector3 _worldPos = _grid.CellToWorld(spawnPosition) + new Vector3(0.5f, 0, 0);
+        GameObject prefab = Resources.Load<GameObject>("WorldObjects/" + carriedObject.SavedData.Identifier);
+        Vector3 _worldPos = SceneSpawner.CalculateWorldPosition(_grid, spawnPosition, prefab);
         carriedObject.SavedData.Position = new SaveData.SimpleVector3(_worldPos);
 
         IWeighty _spawnedObject = carriedObject.SavedData.InstantiateGameObjectFromSaveData(_impermanent.transform).GetComponent<IWeighty>();

@@ -40,7 +40,8 @@ public partial class BirdBrain : MonoBehaviour
 
         public void FixedUpdate(BirdBrain bird)
         {
-            var parameters = bird.Config.LowLanding;
+            var landingParams = bird.Config.LowLanding;
+            var flyingParams = bird.Config.LowFlying;
 
             // No need to get to the target if trying to fly
             if (_stateOnTargetReached == bird.LowFlying)
@@ -54,21 +55,21 @@ public partial class BirdBrain : MonoBehaviour
 
             _avoidanceForce = BirdForces.CalculateAvoidanceForce(
                 bird,
-                parameters.CircleCastRadius,
-                parameters.CircleCastRange,
-                parameters.AvoidanceWeight,
+                bird.Config.CircleCastRadius,
+                bird.Config.CircleCastRange,
+                landingParams.AvoidanceWeight,
                 out _gizAvoidTarget);
 
-            _seekForce = BirdForces.Seek(bird, parameters.SpeedLimit, parameters.SteerForceLimit);
+            _seekForce = BirdForces.Seek(bird, flyingParams.SpeedLimit, flyingParams.SteerForceLimit);
 
             bird._rb.AddForce(_avoidanceForce + _seekForce);
         }
 
         private void CheckAndWarpIfNearTarget(BirdBrain bird)
         {
-            var parameters = bird.Config.LowLanding;
+            var landingParams = bird.Config.LowLanding;
             // Teleport if the bird is close enough to the target
-            if (Vector2.Distance(bird.TargetPosition, bird.transform.position) <= parameters.SnapToTargetDistance)
+            if (Vector2.Distance(bird.TargetPosition, bird.transform.position) <= landingParams.SnapToTargetDistance)
             {
                 bird.transform.position = bird.TargetPosition;
                 bird._rb.linearVelocity = Vector2.zero;
@@ -79,14 +80,14 @@ public partial class BirdBrain : MonoBehaviour
 
         private void CheckandWarpIfStuck(BirdBrain bird)
         {
-            var parameters = bird.Config.LowLanding;
+            var landingParams = bird.Config.LowLanding;
             LayerMask obstacles = bird._highObstacles | bird._lowObstacles; // Bird should be clearing ground and water in this state already
             float clearanceDistance = 0.05f; // small offset to avoid spawning inside  
             float timeSinceLastMove = Time.time - _lastPositionCheckTime;
             float distanceMoved = Vector2.Distance(bird.transform.position, _lastCheckedPosition);
 
             // Bird hasn't moved much for timeout period, consider stuck
-            if (timeSinceLastMove >= parameters.LandingTimeoutSecs && distanceMoved <= parameters.StuckMovementThreshold)
+            if (timeSinceLastMove >= landingParams.LandingTimeoutSecs && distanceMoved <= landingParams.StuckMovementThreshold)
             {
                 Vector2 origin = bird.transform.position;
                 Vector2 direction = (bird.TargetPosition - origin).normalized;
@@ -105,7 +106,7 @@ public partial class BirdBrain : MonoBehaviour
             }
 
             // check if bird moved 
-            if (distanceMoved > parameters.StuckMovementThreshold)
+            if (distanceMoved > landingParams.StuckMovementThreshold)
             {
                 _lastCheckedPosition = bird.transform.position;
                 _lastPositionCheckTime = Time.time;

@@ -449,7 +449,7 @@ RectTransform:
   m_GameObject: {fileID: 397850931}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2048502238}
@@ -458,7 +458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -415}
+  m_AnchoredPosition: {x: 0, y: -103}
   m_SizeDelta: {x: 348, y: 151}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &397850934
@@ -738,7 +738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 82.9, y: -26.900002}
+  m_AnchoredPosition: {x: 89.58, y: -27.015625}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &602090997
@@ -761,7 +761,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The 15th
+  m_text: 15th
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
   m_sharedMaterial: {fileID: 1910066642137800704, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
@@ -868,7 +868,7 @@ RectTransform:
   m_GameObject: {fileID: 704250409}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1433155678}
@@ -878,7 +878,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -5, y: -5}
-  m_SizeDelta: {x: 78, y: 41}
+  m_SizeDelta: {x: 70, y: 41}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &704250411
 MonoBehaviour:
@@ -894,10 +894,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clockText: {fileID: 1433155679}
   _dateText: {fileID: 602090997}
-  _springFrame: {fileID: -3996658763502365568, guid: 06887d7cf47d64b469113425e6999294, type: 3}
-  _summerFrame: {fileID: 561677640130516173, guid: 06887d7cf47d64b469113425e6999294, type: 3}
-  _fallFrame: {fileID: 5893950391347945490, guid: 06887d7cf47d64b469113425e6999294, type: 3}
-  _winterFrame: {fileID: 5214898494134016912, guid: 06887d7cf47d64b469113425e6999294, type: 3}
+  _springFrame: {fileID: 8024346386830549978, guid: 558ee495eb40348ada422c7f0445db89, type: 3}
+  _summerFrame: {fileID: -704246433689896899, guid: 558ee495eb40348ada422c7f0445db89, type: 3}
+  _fallFrame: {fileID: 4339501630852736017, guid: 558ee495eb40348ada422c7f0445db89, type: 3}
+  _winterFrame: {fileID: -3565445769078171934, guid: 558ee495eb40348ada422c7f0445db89, type: 3}
 --- !u!114 &704250412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,7 +918,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3996658763502365568, guid: 06887d7cf47d64b469113425e6999294, type: 3}
+  m_Sprite: {fileID: 8024346386830549978, guid: 558ee495eb40348ada422c7f0445db89, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1631,7 +1631,7 @@ RectTransform:
   m_GameObject: {fileID: 1738398623}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 567587344}
@@ -1823,8 +1823,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1800205922}
   - component: {fileID: 1800205921}
-  - component: {fileID: 1800205920}
+  - component: {fileID: 1800205924}
   - component: {fileID: 1800205919}
+  - component: {fileID: 1800205925}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
@@ -1849,29 +1850,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1800205920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800205918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 32
-  m_ScaleFactor: 0.674
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!223 &1800205921
 Canvas:
   m_ObjectHideFlags: 0
@@ -1917,6 +1895,42 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1800205924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800205918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 32
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 960, y: 540}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 1
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &1800205925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800205918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 089ebee2056644a66bcde44e6094e62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdditiveUIScaler
+  pixelsPerUnit: 32
 --- !u!1 &1889738656
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,8 +2265,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Firewood
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
-  m_sharedMaterial: {fileID: 1910066642137800704, guid: 062996f2000044102b5d1b19f2f0e83c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ad358a2cab7b14085bbe1e5982b10595, type: 2}
+  m_sharedMaterial: {fileID: -8078904370269545906, guid: ad358a2cab7b14085bbe1e5982b10595, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -14,7 +14,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable
     {
         [Temperature.Hot] = 15,
         [Temperature.Warm] = 30,
-        [Temperature.Neutral] = 2 * 60,
+        [Temperature.Normal] = 2 * 60,
         [Temperature.Cold] = 6 * 60,
         [Temperature.Freezing] = 12 * 60 // 720
     };

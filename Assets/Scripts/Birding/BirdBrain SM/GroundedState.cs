@@ -41,6 +41,7 @@ public partial class BirdBrain : MonoBehaviour
             bird._rb.includeLayers &= ~bird._groundObstacle; // Disable ground obstacle collision
             bird._rb.includeLayers &= ~bird._water; // Disable water collision
             _moveDuration = 0f;
+            bird._animator.StopTwoHop();
         }
 
         public void FixedUpdate(BirdBrain bird)

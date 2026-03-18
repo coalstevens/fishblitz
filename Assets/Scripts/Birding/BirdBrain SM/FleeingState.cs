@@ -40,8 +40,8 @@ public partial class BirdBrain : MonoBehaviour {
 
             _avoidanceForce = BirdForces.CalculateAvoidanceForce(
                 bird,
-                parameters.CircleCastRadius,
-                parameters.CircleCastRange,
+                bird.Config.CircleCastRadius,
+                bird.Config.CircleCastRange,
                 parameters.AvoidanceWeight,
                 out _gizAvoidTarget);
 

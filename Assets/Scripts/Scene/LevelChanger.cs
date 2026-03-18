@@ -39,6 +39,11 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
         SmoothSceneManager.LoadScene(sceneName);
     }
 
+    public static void ChangeLevel(SceneNames scene)
+    {
+        ChangeLevel(scene.ToString());
+    }
+
     private void PlaySound()
     {
         if (_sound != null)

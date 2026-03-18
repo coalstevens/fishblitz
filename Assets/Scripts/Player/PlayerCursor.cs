@@ -16,7 +16,7 @@ public class PlayerCursor : MonoBehaviour
     [SerializeField] public Transform _renderedTransform;
     [SerializeField] private CompassDirection _cursorActiveDirection;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private SortingGroup _playerSpriteSortingGroup;
+    // [SerializeField] private SortingGroup _playerSpriteSortingGroup;
     [SerializeField] private Collider2D _collider;
     [SerializeField] private bool _cursorVisible = false;
     public Collider2D Collider
@@ -32,10 +32,10 @@ public class PlayerCursor : MonoBehaviour
         _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-        _unsubscribeHooks.Add(_playerMovementController.FacingDirection.OnChange((prev, curr) => OnDirectionChange(curr)));
+        _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange((prev, curr) => OnDirectionChange(curr)));
         _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange((prev, curr) => TryHideCursor(curr)));
 
-        OnDirectionChange(_playerMovementController.FacingDirection.Value);
+        OnDirectionChange(_playerMovementController.Direction.Value);
     }
 
     private void OnDisable()
@@ -59,7 +59,7 @@ public class PlayerCursor : MonoBehaviour
             return;
         }
 
-        bool playerFacingCursor = _playerMovementController.FacingDirection.Value == _cursorActiveDirection;
+        bool playerFacingCursor = _playerMovementController.Direction.Value == _cursorActiveDirection;
         if (_cursorVisible)
             _spriteRenderer.enabled = playerFacingCursor;
     }
@@ -78,7 +78,10 @@ public class PlayerCursor : MonoBehaviour
         if (_grid != null)
         {
             _renderedTransform.position = _grid.WorldToCell(transform.position);
-            _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteSortingGroup.sortingOrder;
+            // TODO? The player sprite was split into multiple sprites (default, barrow, etc) 
+            // so its not so easy to make the cursors render at the same sorting order.
+            // but does it matter?
+            // _renderedTransform.GetComponent<SpriteRenderer>().sortingOrder = _playerSpriteSortingGroup.sortingOrder;
         }
     }
 }

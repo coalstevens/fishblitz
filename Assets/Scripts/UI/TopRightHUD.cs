@@ -66,8 +66,8 @@ public class TopRightHUD : MonoBehaviour
     {
         int _gameDay = GameClock.Instance.GameDay;
 
-        // "1st" thru "15th" 
-        _dateText.text = $"The {_gameDay}";
+        // "1st" thru "15th"  
+        _dateText.text = $"{_gameDay}";
         _dateText.text += _gameDay switch
         {
             1 => "st",

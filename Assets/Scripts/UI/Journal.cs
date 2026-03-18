@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using ReactiveUnity;
 using TMPro;
 using UnityEngine;
@@ -32,14 +33,13 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
 
     [Header("Notebook")]
     [SerializeField] private TextMeshProUGUI _noteBookTitle;
-    [SerializeField] private List<Image> _seasonIcons = new();
-    [SerializeField] private List<Image> _dayPeriodIcons = new();
+    [SerializeField] private TextMeshProUGUI _tagText;
+    [SerializeField] private Transform _dateDotsContainer;
+    [SerializeField] private Image _notebookImage;
     [SerializeField] private Image _numerator;
     [SerializeField] private Image _denominator;
     [SerializeField] private List<Sprite> _numbersTo24RightJustified = new();
     [SerializeField] private List<Sprite> _numbersTo24LeftJustified = new();
-    [Range(0f, 1f)][SerializeField] private float _solidOpacity = 1.0f;
-    [Range(0f, 1f)][SerializeField] private float _fadedOpacity = 0.3f;
 
     private Reactive<JournalCursors> _activeJournalCursor = new Reactive<JournalCursors>(JournalCursors.TABS);
     private Reactive<int> _journalTabCursorIndex = new Reactive<int>(0);
@@ -118,6 +118,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         MoveEntryCursor();
         _journalTabCursor.gameObject.SetActive(false);
         _journalEntryCursor.gameObject.SetActive(true);
+        UpdateNotebookDisplay(_journalPages[_currentJournalPageIndex.Value]);
     }
 
     private void LoadJournalPage(JournalPage previousPage, JournalPage currentPage)
@@ -129,21 +130,21 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         currentPage.RightPage.gameObject.SetActive(true);
 
         _frame.sprite = currentPage.FrameSprite;
-        _numerator.sprite = _numbersTo24RightJustified[currentPage.Log.CaughtCreatures.Count];
+        _numerator.sprite = _numbersTo24RightJustified[currentPage.Log.GetUniqueCaptureCount()];
         _denominator.sprite = _numbersTo24LeftJustified[currentPage.NumberOfEntries];
 
-        foreach (Transform _child in currentPage.LeftPage)
+        foreach (Transform child in currentPage.LeftPage)
         {
-            bool _isNameInLog = currentPage.Log.CaughtCreatures.ContainsKey(_child.gameObject.name);
-            _child.GetChild(0).gameObject.SetActive(!_isNameInLog); // Set ? Icon
-            _child.GetChild(1).gameObject.SetActive(_isNameInLog); // Set bird Icon
+            bool _isNameInLog = currentPage.Log.HasBeenCaught(child.gameObject.name);
+            child.GetChild(0).gameObject.SetActive(!_isNameInLog); // Set ? icon
+            child.GetChild(1).gameObject.SetActive(_isNameInLog); // Set bird icon
         }
 
-        foreach (Transform _child in currentPage.RightPage)
+        foreach (Transform child in currentPage.RightPage)
         {
-            bool isNameInLog = currentPage.Log.CaughtCreatures.ContainsKey(_child.gameObject.name);
-            _child.GetChild(0).gameObject.SetActive(!isNameInLog); // Set ? Icon
-            _child.GetChild(1).gameObject.SetActive(isNameInLog); // Set bird Icon
+            bool isNameInLog = currentPage.Log.HasBeenCaught(child.gameObject.name);
+            child.GetChild(0).gameObject.SetActive(!isNameInLog); // Set ? icon
+            child.GetChild(1).gameObject.SetActive(isNameInLog); // Set bird icon
         }
 
         InitializeEntryCursor(_journalPages[_currentJournalPageIndex.Value]);
@@ -154,18 +155,18 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
 
     public void Select()
     {
-        switch (_activeJournalCursor.Value)
-        {
-            case JournalCursors.TABS:
-                _logger.Info("Journal tab selected");
-                if (_journalTabCursorIndex.Value != _currentJournalPageIndex.Value)
-                    _currentJournalPageIndex.Value = _journalTabCursorIndex.Value;
-                break;
-            case JournalCursors.ENTRIES:
-                _logger.Info("Journal entry selected");
-                // do nothing
-                break;
-        }
+        // switch (_activeJournalCursor.Value)
+        // {
+        //     case JournalCursors.TABS:
+        //         _logger.Info("Journal tab selected");
+        //         if (_journalTabCursorIndex.Value != _currentJournalPageIndex.Value)
+        //             _currentJournalPageIndex.Value = _journalTabCursorIndex.Value;
+        //         break;
+        //     case JournalCursors.ENTRIES:
+        //         _logger.Info("Journal entry selected");
+        //         // do nothing
+        //         break;
+        // }
     }
 
     public bool MoveCursor(Vector2 inputDirection)
@@ -201,6 +202,11 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         }
         else if ((int)inputDirection.y == -1)
             _activeJournalCursor.Value = JournalCursors.ENTRIES;
+
+        if (_journalTabCursorIndex.Value != _currentJournalPageIndex.Value)
+        {
+            _currentJournalPageIndex.Value = _journalTabCursorIndex.Value;
+        }
         return true;
     }
 
@@ -243,7 +249,7 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         return true;
     }
 
-    private void MoveEntryCursor() 
+    private void MoveEntryCursor()
     {
         _journalEntryCursor.position = _entryLookupTable[_entryPointer.i][_entryPointer.j].GetChild(1).position;
     }
@@ -315,43 +321,29 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
 
     private void UpdateNotebookDisplay(JournalPage page)
     {
-        string _title = _entryLookupTable[_entryPointer.i][_entryPointer.j].gameObject.name;
-        _title = page.Log.CaughtCreatures.ContainsKey(_title) ? _title : null;
+        GameObject entry = _entryLookupTable[_entryPointer.i][_entryPointer.j].gameObject;
+        string titleText = entry.name;
+        bool hasBeenCaught = page.Log.HasBeenCaught(titleText);
 
-        if (_title == null)
-        {
-            _noteBookTitle.text = "???";
-            // Dim all icons
-            for (int i = 0; i < 4; i++)
-            {
-                SetIconOpacity(_seasonIcons[i], true);
-                SetIconOpacity(_dayPeriodIcons[i], true);
-            }
-            return;
-        }
+        titleText = hasBeenCaught ? titleText : "???";
+        int caughtThisWeek = page.Log.GetCaptureCountForNameThisWeek(titleText); 
+        int caughtAllTime = page.Log.GetCaptureCountForName(titleText);
 
-        _noteBookTitle.text = _title;
-        CaptureLog.CapturePeriod _capturePeriod = page.Log.CaughtCreatures[_title];
+        _notebookImage.sprite = entry.transform.GetChild(1).GetComponent<NotebookSprite>().sprite;
+        _notebookImage.enabled = hasBeenCaught;
 
-        SetIconOpacity(_seasonIcons[0], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Spring));
-        SetIconOpacity(_seasonIcons[1], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Summer));
-        SetIconOpacity(_seasonIcons[2], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Fall));
-        SetIconOpacity(_seasonIcons[3], !_capturePeriod.CaughtSeasons.Contains(GameClock.Seasons.Winter));
-
-        SetIconOpacity(_dayPeriodIcons[0], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Sunrise));
-        SetIconOpacity(_dayPeriodIcons[1], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Day));
-        SetIconOpacity(_dayPeriodIcons[2], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Sunset));
-        SetIconOpacity(_dayPeriodIcons[3], !_capturePeriod.CaughtDayPeriods.Contains(GameClock.DayPeriods.Night));
+        _noteBookTitle.text = titleText;
+        _tagText.text = $"{caughtThisWeek} tagged this week\n{caughtAllTime} tagged all time";
+        UpdateDateDots(page, titleText);
     }
 
-    private void SetIconOpacity(Image icon, bool isDim)
+    private void UpdateDateDots(JournalPage page, string name)
     {
-        icon.color = new Color
-        (
-            icon.color.r,
-            icon.color.g,
-            icon.color.b,
-            isDim ? _fadedOpacity : _solidOpacity
-        );
+        bool[,] seasonWeekTable = page.Log.GetSeasonWeekTable(name);
+
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 3; j++)
+                _dateDotsContainer.GetChild(i * 3 + j).GetComponent<Image>().enabled = seasonWeekTable[i, j];
     }
+
 }
