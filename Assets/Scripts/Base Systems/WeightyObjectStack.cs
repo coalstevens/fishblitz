@@ -8,51 +8,51 @@ public interface IWeightyObjectContainer : InteractInput.IInteractable
 
 public class WeightyObjectStack : MonoBehaviour
 {
-    [SerializeField] WeightyObjectStackData _data;
+    [SerializeField] public WeightyObjectStackData Data;
 
     private void Awake()
     {
-        Assert.IsNotNull(_data);
+        Assert.IsNotNull(Data);
     }
 
     public bool Push(StoredWeightyObject storedObject)
     {
         Assert.IsNotNull(storedObject);
-        _data.CurrentWeight += storedObject.Type.Weight;
-        _data.StoredObjects.Push(storedObject);
-        if (_data.InsertSound != null)
-            AudioManager.Instance.PlaySFXWithVariation(_data.InsertSound, _data.InsertSoundVolume);
+        Data.CurrentWeight += storedObject.Type.Weight;
+        Data.StoredObjects.Push(storedObject);
+        if (Data.InsertSound != null)
+            AudioManager.Instance.PlaySFXWithVariation(Data.InsertSound, Data.InsertSoundVolume);
         return true;
     }
 
     public StoredWeightyObject Pop()
     {
-        Assert.IsTrue(_data.StoredObjects.Count > 0);
-        _data.CurrentWeight -= _data.StoredObjects.Peek().Type.Weight;
-        return _data.StoredObjects.Pop();
+        Assert.IsTrue(Data.StoredObjects.Count > 0);
+        Data.CurrentWeight -= Data.StoredObjects.Peek().Type.Weight;
+        return Data.StoredObjects.Pop();
     }
 
     public StoredWeightyObject Peek()
     {
         Assert.IsFalse(IsEmpty());
-        return _data.StoredObjects.Peek();
+        return Data.StoredObjects.Peek();
     }
 
     public bool IsEmpty()
     {
-        if (_data.StoredObjects.Count == 0)
+        if (Data.StoredObjects.Count == 0)
         {
-            Assert.IsTrue(_data.CurrentWeight == 0);
+            Assert.IsTrue(Data.CurrentWeight == 0);
             return true;
         }
         return false;
     }
 
-    public int StoredCount => _data.StoredObjects.Count;
+    public int StoredCount => Data.StoredObjects.Count;
 
     public bool HasEnoughSpace(int weight)
     {
         Assert.IsTrue(weight > 0);
-        return weight + _data.CurrentWeight <= _data.WeightCapacity;
+        return weight + Data.CurrentWeight <= Data.WeightCapacity;
     }
 }

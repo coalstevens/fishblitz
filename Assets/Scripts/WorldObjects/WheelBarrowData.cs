@@ -9,5 +9,9 @@ public class WeightyObjectStackData : ScriptableObject
     public int CurrentWeight = 0;
     public AudioClip InsertSound;
     public float InsertSoundVolume = 1f;
+    public AudioClip LiftBarrowSound;
+    public float LiftBarrowVolume = 1f;
+    public AudioClip PlaceBarrowSound;
+    public float PlaceBarrowVolume = 1f;
     public ReactiveStack<StoredWeightyObject> StoredObjects = new ReactiveStack<StoredWeightyObject>();
 }

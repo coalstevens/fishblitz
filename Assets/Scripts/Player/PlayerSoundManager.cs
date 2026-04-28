@@ -5,6 +5,11 @@ public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] AudioClip _walkingSFX;
     [SerializeField] float _walkingSFXVolume = 0.25f;
+    [Header("Variation Settings")]
+    [SerializeField] private float _pitchVariation = 0.005f;
+    [SerializeField] private float _volumeVariation = 0.02f;
+    [SerializeField] private float _startTimeVariation = 0f;
+    [SerializeField] private float _loopSpacing = 0f;
     private PlayerMovementController _playerMovementController;
     private Action _stopSoundCB;
     private Action _unsubscribeCB;
@@ -26,7 +31,14 @@ public class PlayerSoundManager : MonoBehaviour
         switch (current)
         {
             case PlayerMovementController.PlayerStates.Running:
-                _stopSoundCB = AudioManager.Instance.PlayLoopingSFX(_walkingSFX, _walkingSFXVolume);
+                _stopSoundCB = AudioManager.Instance.PlayLoopingSFXWithVariation(
+                    _walkingSFX, 
+                    _walkingSFXVolume, 
+                    pitchVariation: _pitchVariation, 
+                    volumeVariation: _volumeVariation,
+                    startTimeVariation: _startTimeVariation,
+                    loopSpacing: _loopSpacing
+                );
                 break;
             default:
                 StopSound();

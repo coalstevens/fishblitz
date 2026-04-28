@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Mathematics;
@@ -44,8 +45,9 @@ public class PlayerWheelBarrow : MonoBehaviour
         else
         {
             _playerInput?.SwitchCurrentActionMap("Player");
-            StaticWheelBarrowSelector _staticWheelBarrow = InstantiateStaticWheelBarrow();
-            _staticWheelBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
+            StaticWheelBarrowSelector staticWheelBarrow = InstantiateStaticWheelBarrow();
+            staticWheelBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
+            staticWheelBarrow.GetComponent<StaticWheelBarrow>()?.PlayBarrowPlaceSound();
         }
     }
 

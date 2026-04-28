@@ -111,6 +111,82 @@ public class AudioManager : MonoBehaviour
         return deactivateAction;
     }
 
+    public Action PlayLoopingSFXWithVariation(AudioClip clip, float volume = 1, bool fadeIn = false, bool fadeOut = false, float fadeDurationSecs = FADE_DURATION_SECS, float pitchVariation = 0.02f, float volumeVariation = 0.1f, float startTimeVariation = 0f, float loopSpacing = 0f)
+    {
+        if (clip == null)
+        {
+            _logger.Warning("The attached looping SFX clip is null.");
+            return null;
+        }
+
+        AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
+        if (_source == null)
+        {
+            _logger.Warning("There are no more looping SFX audio sources available.");
+            return null;
+        }
+
+        _logger.Info($"Playing looping SFX with variation: {clip.name} with source: {_source.GetInstanceID()}");
+
+        float loopEndBuffer = 0.05f;
+
+        float GetVariedPitch() => 1f + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
+        float GetVariedVolume() => Mathf.Clamp01(volume + UnityEngine.Random.Range(-volumeVariation, volumeVariation));
+
+        _source.clip = clip;
+        _source.loop = false;
+        _source.pitch = GetVariedPitch();
+        _source.volume = fadeIn ? 0 : GetVariedVolume();
+
+        float initialDelay = UnityEngine.Random.Range(-startTimeVariation, startTimeVariation);
+
+        if (fadeIn)
+        {
+            _source.PlayScheduled(AudioSettings.dspTime + initialDelay);
+            StartCoroutine(FadeInAudio(_source, fadeDurationSecs, GetVariedVolume()));
+        }
+        else
+        {
+            _source.PlayScheduled(AudioSettings.dspTime + initialDelay);
+        }
+
+        Coroutine loopCoroutine = StartCoroutine(LoopWithVariation(_source, GetVariedPitch, GetVariedVolume, loopSpacing, loopEndBuffer));
+
+        Action deactivateAction = () => 
+        {
+            _logger.Info($"Deactivating looping SFX with variation source: {_source.GetInstanceID()}");
+            StopCoroutine(loopCoroutine);
+            if (fadeOut)
+            {
+                StartCoroutine(FadeOutAndDeactivateAudioSource(_source, fadeDurationSecs, _loopingSFXPool));
+            }
+            else
+            {
+                _source.Stop();
+                DeactivateAudioSource(_source, _loopingSFXPool);
+            }
+        };
+
+        return deactivateAction;
+    }
+
+    private IEnumerator LoopWithVariation(AudioSource source, Func<float> getVariedPitch, Func<float> getVariedVolume, float loopSpacing, float loopEndBuffer)
+    {
+        float clipLength = source.clip.length;
+
+        while (source != null && source.isPlaying)
+        {
+            if (source.time >= clipLength - loopEndBuffer)
+            {
+                yield return new WaitForSeconds(loopSpacing);
+                source.pitch = getVariedPitch();
+                source.volume = getVariedVolume();
+                source.PlayScheduled(AudioSettings.dspTime);
+            }
+            yield return null;
+        }
+    }
+
     private void DeactivateAudioSource(AudioSource source, Stack<AudioSource> pool)
     {
         if (pool.Contains(source)) {
@@ -146,7 +222,7 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));
     }
 
-    public void PlaySFXWithVariation(AudioClip clip, float volume)
+    public void PlaySFXWithVariation(AudioClip clip, float volume, float pitchVariation = 0.02f, float volumeVariation = 0.1f)
     {
         if (clip == null)
         {
@@ -163,9 +239,9 @@ public class AudioManager : MonoBehaviour
         _logger.Info($"Playing SFX with variation: {clip.name} with source: {_source.GetInstanceID()}");
 
         _source.clip = clip;
-        float volumeVariation = UnityEngine.Random.Range(-_volumeVariation, _volumeVariation);
-        _source.volume = Mathf.Clamp01(volume + volumeVariation);
-        _source.pitch = 1f + UnityEngine.Random.Range(-_pitchVariation, _pitchVariation);
+        float variedVolume = UnityEngine.Random.Range(-volumeVariation, volumeVariation);
+        _source.volume = Mathf.Clamp01(volume + variedVolume);
+        _source.pitch = 1f + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
         _source.loop = false;
         _source.Play();
         StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));

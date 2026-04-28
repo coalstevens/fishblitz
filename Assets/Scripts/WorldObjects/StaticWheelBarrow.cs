@@ -59,6 +59,14 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         return acceptedDirections.Contains(playerDirection);
     }
 
+    public void PlayBarrowPlaceSound() 
+    {
+        if (_weightyContainer.Data.PlaceBarrowSound)
+        {
+            AudioManager.Instance.PlaySFX(_weightyContainer.Data.PlaceBarrowSound, _weightyContainer.Data.PlaceBarrowVolume);
+        }
+    }
+
     public bool CursorInteract(Vector3 cursorLocation)
     {
         Debug.Log("Interacted w/ wheelbarrow");
@@ -73,6 +81,7 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         {
             Debug.Log("Tried to take wheelbarrow");
             Debug.Log($"Wheelbarrow aquired {Time.frameCount}");
+            AudioManager.Instance.PlaySFX(_weightyContainer.Data.LiftBarrowSound, _weightyContainer.Data.LiftBarrowVolume);
             _playerData.IsHoldingWheelBarrow.Value = true;
             Destroy(transform.gameObject);
             return true;
