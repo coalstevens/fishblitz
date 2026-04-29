@@ -6,6 +6,8 @@ using System.Collections;
 public class PlayerCarry : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private SoundData _putDownSound;
+    [SerializeField] private AudioSource _audioSource;
     private WorldObjectOccupancyMap _worldObjectOccupancyMap;
     private WeightyObjectStack _carriedObjects;  
     private PlayerMovementController _playermovementController;
@@ -77,6 +79,7 @@ public class PlayerCarry : MonoBehaviour
             return;
 
         InstantiateWeightyObject(_carriedObjects.Pop(), _spawnPosition);
+        AudioManager.PlaySFX(_audioSource, _putDownSound);
         _playerData.IsCarrying.Value = !_carriedObjects.IsEmpty();
 
         return;

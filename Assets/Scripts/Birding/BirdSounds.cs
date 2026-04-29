@@ -5,16 +5,16 @@ using UnityEngine;
 public class BirdSounds : MonoBehaviour
 {
     [System.Serializable]
-    private class BirdSound
+    private class BirdSoundData
     {
-        public AudioClip Sound;
-        public float Volume;
+        public SoundData SoundData;
     }
 
-    [SerializeField] private List<BirdSound> _birdSounds = new();
+    [SerializeField] private List<BirdSoundData> _birdSounds = new();
     [SerializeField] private Vector2 _soundPlayInterval = new(5f, 15f);
     [SerializeField] private float _silenceRadius = 20f;
     [SerializeField] private float _fullVolumeRadius = 5f;
+    [SerializeField] private AudioSource _audioSource;
 
     private float _timeSinceLastSound;
     private float _nextSoundDelay;
@@ -53,24 +53,22 @@ public class BirdSounds : MonoBehaviour
         float _distance = Vector3.Distance(transform.position, _player.position);
         if (_distance >= _silenceRadius) return;
 
-        BirdSound _selectedSound = _birdSounds[Random.Range(0, _birdSounds.Count)];
-        float _volume = _selectedSound.Volume;
+        BirdSoundData _selectedSound = _birdSounds[Random.Range(0, _birdSounds.Count)];
+        float _volume = _selectedSound.SoundData.Volume;
 
         if (_distance > _fullVolumeRadius)
         {
             float t = (_distance - _fullVolumeRadius) / (_silenceRadius - _fullVolumeRadius);
-            _volume = Mathf.Lerp(_selectedSound.Volume, 0f, Mathf.Pow(t, 0.5f)); // Quadratic distance falloff
+            _volume = Mathf.Lerp(_selectedSound.SoundData.Volume, 0f, Mathf.Pow(t, 0.5f));
         }
 
-        AudioManager.Instance.PlaySFX(_selectedSound.Sound, _volume);
-        // StartCoroutine(EnlargeTemporarily());
+        AudioManager.PlaySFX(_audioSource, _selectedSound.SoundData);
     }
 
-    // FOR DEBUGGING
     private IEnumerator EnlargeTemporarily()
     {
-        transform.localScale *= 2f; // Double the size
+        transform.localScale *= 2f;
         yield return new WaitForSeconds(3f);
-        transform.localScale /= 2f; // Reset to original size
+        transform.localScale /= 2f;
     }
 }

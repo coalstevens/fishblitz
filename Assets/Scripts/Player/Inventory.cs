@@ -47,8 +47,8 @@ public class Inventory : ScriptableObject
     [SerializeField] private List<ItemStack> _startingItemStacks = new();
     [SerializeField] private Logger _logger = new();
     [SerializeField] private bool _newInventoryOnLoad = true;
-    [SerializeField] private AudioClip _addItemSFX;
-    [SerializeField] private float _addItemVolume = 1f;
+    [SerializeField] private SoundData _addItemSound;
+    [SerializeField] private AudioSource _audioSource;
 
     public delegate void SlotUpdateHandler(Inventory inventory, int slotNumber);
     public event SlotUpdateHandler SlotUpdated;
@@ -96,7 +96,7 @@ public class Inventory : ScriptableObject
 
         _logger.Info($"Adding {quantity} of {itemType} to inventory");
         if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX(_addItemSFX, _addItemVolume);
+            AudioManager.PlaySFX(_audioSource, _addItemSound);
 
         int _residual = quantity;
         foreach (var _slot in SlotAssignments.Where(slot => slot.Value.Item.name == itemType.name))

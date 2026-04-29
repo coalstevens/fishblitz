@@ -26,7 +26,8 @@ public partial class BirdBrain : MonoBehaviour
         public void Tag(BirdSpeciesData SpeciesData)
         {
             IsTagged.Value = true;
-            AudioManager.Instance.PlaySFX(SpeciesData.CaptureSound, SpeciesData.SoundVolume);
+            if (SpeciesData.CaptureSoundData != null)
+                AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), SpeciesData.CaptureSoundData);
             SpeciesData.PlayerData.BirdingLog.AddToLog(SpeciesData.SpeciesName);
         }
     }

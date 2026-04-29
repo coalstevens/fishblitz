@@ -23,10 +23,11 @@ public class FishingGame : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     
     [Header("Sound Effects")]
-    [SerializeField] private AudioClip _missedSFX;
-    [SerializeField] private AudioClip _caughtSFX;
-    [SerializeField] private AudioClip _hitTriggerSFX;
-    [SerializeField] private AudioClip _reelingInSFX;
+    [SerializeField] private SoundData _missedSound;
+    [SerializeField] private SoundData _caughtSound;
+    [SerializeField] private SoundData _hitTriggerSound;
+    [SerializeField] private SoundData _reelingInSound;
+    [SerializeField] private AudioSource _audioSource;
 
     private System.Action _stopReelingSFXCB;
 
@@ -104,7 +105,7 @@ public class FishingGame : MonoBehaviour
     private void InitializeNewGame()
     {
         _logger.Info("New game started.");
-        _stopReelingSFXCB = AudioManager.Instance.PlayLoopingSFX(_reelingInSFX, 0.2f);
+        _stopReelingSFXCB = AudioManager.PlayLoopingSFX(_audioSource, _reelingInSound);
         PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
         _fishType = GetRandomValidFishType();
         _gameStartPeriod = GameClock.Instance.GameDayPeriod;
@@ -180,8 +181,8 @@ public class FishingGame : MonoBehaviour
     }
 
     private void HandleGameWin() {
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating; // controller will auto leave state after some itme
-        AudioManager.Instance.PlaySFX(_caughtSFX);
+        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating;
+        AudioManager.PlaySFX(_audioSource, _caughtSound);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
         _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel);
         _stopReelingSFXCB();
@@ -249,7 +250,7 @@ public class FishingGame : MonoBehaviour
                 continue;
             // Yay, a hit!
             trigger.Fulfilled = true;
-            AudioManager.Instance.PlaySFX(_hitTriggerSFX);
+            AudioManager.PlaySFX(_audioSource, _hitTriggerSound);
             return;
         }
 
@@ -270,7 +271,7 @@ public class FishingGame : MonoBehaviour
 
         Vector2 randomForce = new Vector2(Random.Range(-_forceStrength, _forceStrength), Random.Range(_forceStrength - 1, _forceStrength));
         _gameCursorRB.AddForceAtPosition(randomForce, (Vector2)_fishCursor.transform.position + (Random.insideUnitCircle * _positionRadius), ForceMode2D.Impulse);
-        AudioManager.Instance.PlaySFX(_missedSFX);
+        AudioManager.PlaySFX(_audioSource, _missedSound);
     }
 
     /// <summary>

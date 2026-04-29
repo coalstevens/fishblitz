@@ -27,8 +27,8 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [SerializeField] private BoxData _boxData;
 
     [Header("Sound Effects")]
-    [SerializeField] private AudioClip _winChime;
-    [SerializeField] private float _winChimeVolume;
+    [SerializeField] private SoundData _winChimeSound;
+    [SerializeField] private AudioSource _audioSource;
 
     private WeightyObjectStack _weightyContainer;
     private Dictionary<WeightyObjectType, int> _fulfilledQuantities = new();
@@ -172,7 +172,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     private void Win()
     {
-        AudioManager.Instance.PlaySFX(_winChime, _winChimeVolume);
+        AudioManager.PlaySFX(_audioSource, _winChimeSound);
         Debug.Log("Quest complete!");
     }
 }

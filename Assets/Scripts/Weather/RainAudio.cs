@@ -13,10 +13,10 @@ public class RainAudio : ScriptableObject
     private class SoundEffect
     {
         public SoundType _type;
-        public AudioClip _sfxClip;
-        public float _volume;
+        public SoundData _soundData;
     }
     [SerializeField] List<SoundEffect> _rainSounds = new();
+    [SerializeField] private AudioSource _audioSource;
     private Action _stopAudio;
     private List<Action> _unsubscribe = new();
     private Reactive<SoundType> _currentSoundType = new Reactive<SoundType>(SoundType.HeavyExterior);
@@ -57,7 +57,7 @@ public class RainAudio : ScriptableObject
             return;
         }
 
-        _stopAudio = AudioManager.Instance.PlayLoopingSFX(_sfx._sfxClip, _sfx._volume);
+        _stopAudio = AudioManager.PlayLoopingSFX(_audioSource, _sfx._soundData);
     }
 
     private void StopRainAudio()

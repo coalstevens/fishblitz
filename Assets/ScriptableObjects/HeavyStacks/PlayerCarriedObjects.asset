@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aebe14f05065475b8741e291ff5233f, type: 3}
+  m_Name: PlayerCarriedObjects
+  m_EditorClassIdentifier: 
+  WeightCapacity: 5
+  CurrentWeight: 0
+  InsertSound: {fileID: 11400000, guid: 23cdb1205be7348d6b5fe7831d70f44e, type: 2}
+  RemoveSound: {fileID: 11400000, guid: 84bcd1f257bbc4efaad4bcc0d4e2629f, type: 2}
+  LiftBarrowSound: {fileID: 0}
+  PlaceBarrowSound: {fileID: 0}

@@ -11,6 +11,9 @@ public class PlayerWheelBarrow : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private GameObject _playerWheelBarrow;
     [SerializeField] private GameObject _staticWheelBarrowPrefab;
+    [SerializeField] private SoundData _liftBarrowSound;
+    [SerializeField] private SoundData _placeBarrowSound;
+    [SerializeField] private AudioSource _audioSource;
     List<Action> _unsubscribeHooks = new();
     private PlayerInput _playerInput;
     private Rigidbody2D _rb;
@@ -41,13 +44,13 @@ public class PlayerWheelBarrow : MonoBehaviour
         {
             Debug.Log($"Player position change {Time.frameCount}");
             _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
+            AudioManager.PlaySFX(_audioSource, _liftBarrowSound);
         }
         else
         {
             _playerInput?.SwitchCurrentActionMap("Player");
-            StaticWheelBarrowSelector staticWheelBarrow = InstantiateStaticWheelBarrow();
-            staticWheelBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
-            staticWheelBarrow.GetComponent<StaticWheelBarrow>()?.PlayBarrowPlaceSound();
+            InstantiateStaticWheelBarrow().SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
+            AudioManager.PlaySFX(_audioSource, _placeBarrowSound);
         }
     }
 

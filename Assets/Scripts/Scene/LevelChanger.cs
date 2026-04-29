@@ -9,8 +9,8 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private AudioClip _sound;
-    [SerializeField] private float _soundVolume = 1;
+    [SerializeField] private SoundData _sound;
+    [SerializeField] private AudioSource _audioSource;
     private Scene test;
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -47,7 +47,7 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
     private void PlaySound()
     {
         if (_sound != null)
-            AudioManager.Instance.PlaySFX(_sound, _soundVolume);
+            AudioManager.PlaySFX(_audioSource, _sound);
     }
 
 }

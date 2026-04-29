@@ -24,8 +24,7 @@ public class BirdSpeciesData : ScriptableObject
     public List<ClipOverride> AnimationClips = new();
 
     [Header("Birding Game")]
-    public AudioClip CaptureSound;
-    public float SoundVolume;
+    public SoundData CaptureSoundData;
     public PlayerData PlayerData;
 }
 

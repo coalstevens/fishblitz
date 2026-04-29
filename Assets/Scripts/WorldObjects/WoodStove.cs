@@ -17,8 +17,8 @@ public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInpu
     private Reactive<FireStates> _stoveState = new Reactive<FireStates>(FireStates.Dead);
     private PulseLight _fireLight;
     public int _fireDurationCounterGameMinutes;
-    [SerializeField] private AudioClip _fireSFX;
-    [SerializeField] private float _fireVolume = 1f;
+    [SerializeField] private SoundData _fireSound;
+    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Inventory.Item _firewood;
     [SerializeField] private Inventory.Item _dryWood;
@@ -217,7 +217,7 @@ public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInpu
 
     private void StartFireSFX()
     {
-        if (_fireSFX != null && _stopAudio == null)
-            _stopAudio = AudioManager.Instance.PlayLoopingSFX(_fireSFX, _fireVolume);
+        if (_fireSound != null && _stopAudio == null)
+            _stopAudio = AudioManager.PlayLoopingSFX(_audioSource, _fireSound);
     }
 }

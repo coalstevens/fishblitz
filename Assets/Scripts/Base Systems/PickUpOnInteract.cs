@@ -2,19 +2,18 @@ using UnityEngine;
 
 public class PickUpOnInteract : MonoBehaviour, InteractInput.IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private Inventory.Item _item;
     [SerializeField] private int _itemQuantity;
-    [SerializeField] private AudioClip _pickUpSFX;
-    [SerializeField] private float _SFXVolume = 0.5f;
+    [SerializeField] private SoundData _pickUpSound;
+    [SerializeField] private AudioSource _audioSource;
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
         if (_playerInventory.TryAddItem(_item, _itemQuantity))
         {
-            if (_pickUpSFX != null)
-                AudioManager.Instance.PlaySFX(_pickUpSFX, _SFXVolume);
+            if (_pickUpSound != null)
+                AudioManager.PlaySFX(_audioSource, _pickUpSound);
             Destroy(gameObject);
         }
         else

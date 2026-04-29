@@ -9,8 +9,7 @@ public class Axe : Inventory.Item, UseItemInput.IUsableOnWorldObject, UseItemInp
         void OnUseAxe();
     }
 
-    [SerializeField] protected AudioClip _chopSFX;
-    [SerializeField] protected float _chopVolume = 1f;
+    [SerializeField] private SoundData _chopSound;
 
     public int EnergyCost => _energyCost;
 
@@ -22,7 +21,7 @@ public class Axe : Inventory.Item, UseItemInput.IUsableOnWorldObject, UseItemInp
 
     public void PlayHitSound(Inventory.ItemInstanceData instanceData)
     {
-        AudioManager.Instance.PlaySFX(_chopSFX, 1f);
+        AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), _chopSound);
     }
 
     public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)

@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
@@ -13,312 +12,202 @@ public class AudioManager : MonoBehaviour
         Instance = this;
     }
 
-    [SerializeField] AudioSource _musicPlayer; // Dedicated audiosource for playing music
-    [SerializeField] private Transform _loopingSFXPlayerContainer; // Container for looping SFX audio sources, like rain
-    [SerializeField] private Transform _SFXContainer; // Container for one-shot SFX audio sources
+    [SerializeField] private AudioSource _musicPlayer;
+    [SerializeField] private AudioSource _oneShotSource;
     [SerializeField] private Logger _logger = new();
-    [Header("SFX Variation")]
-    [SerializeField] private float _pitchVariation = 0.02f;
-    [SerializeField] private float _volumeVariation = 0.1f;
-    private Stack<AudioSource> _SFXPool = new();
-    private Stack<AudioSource> _loopingSFXPool = new();
     private const float FADE_DURATION_SECS = 2f;
 
-    private void OnEnable()
-    {
-        foreach (var _source in _SFXContainer.GetComponentsInChildren<AudioSource>(true))
-            _SFXPool.Push(_source);
-
-        foreach (var _source in _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>(true))
-            _loopingSFXPool.Push(_source);
-
-        _logger.Info($"SFX pool count: {_SFXPool.Count}    Looping pool count: {_loopingSFXPool.Count}");
-    }
-
-    public Action PlayMusic(AudioClip clip, float volume, bool fadeIn)
+    public static Action PlayMusic(AudioClip clip, float volume, bool fadeIn)
     {
         if (clip == null)
         {
-            _logger.Warning("The music clip is null.");
+            Instance._logger.Warning("The music clip is null.");
             return null;
         }
 
-        _musicPlayer.clip = clip;
-        _musicPlayer.loop = true;
+        var source = Instance._musicPlayer;
+        source.clip = clip;
+        source.loop = true;
 
         if (fadeIn)
         {
-            _musicPlayer.volume = 0;
-            _musicPlayer.Play();
-            StartCoroutine(FadeInAudio(_musicPlayer, FADE_DURATION_SECS, volume));
+            source.volume = 0;
+            source.Play();
+            Instance.StartCoroutine(FadeInAudio(source, FADE_DURATION_SECS, volume));
         }
         else
         {
-            _musicPlayer.volume = volume;
-            _musicPlayer.Play();
+            source.volume = volume;
+            source.Play();
         }
-        return () => DeactivateAudioSource(_musicPlayer, _loopingSFXPool);
+        return () => source.Stop();
     }
 
-    /// <summary>
-    /// Plays a looping SFX clip with optional fade in and fade out effects.
-    /// </summary>
-    public Action PlayLoopingSFX(AudioClip clip, float volume = 1, bool fadeIn = false, bool fadeOut = false, float fadeDurationSecs = FADE_DURATION_SECS)
+    public static void PlaySFX(AudioSource source, SoundData sound)
     {
-        if (clip == null)
+        if (source == null)
         {
-            _logger.Warning("The attached looping SFX clip is null.");
-            return null;
+            Instance._logger.Warning("The AudioSource is null.");
+            return;
+        }
+        if (sound == null || sound.Clip == null)
+        {
+            Instance._logger.Warning("The SoundData or clip is null.");
+            return;
         }
 
-        AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
-        if (_source == null)
+        Instance._logger.Info($"Playing SFX: {sound.Clip.name}");
+
+        source.clip = sound.Clip;
+        source.loop = false;
+
+        float volume = sound.Volume;
+        if (sound.UseVolumeVariation)
         {
-            _logger.Warning("There are no more looping SFX audio sources available.");
-            return null;
+            volume = Mathf.Clamp01(sound.Volume + UnityEngine.Random.Range(-sound.VolumeVariationAmount, sound.VolumeVariationAmount));
         }
+        source.volume = volume;
 
-        _logger.Info($"Playing looping SFX: {clip.name} with source: {_source.GetInstanceID()}");
-
-        _source.clip = clip;
-        _source.loop = true;
-
-        if (fadeIn)
+        if (sound.UsePitchVariation)
         {
-            _source.volume = 0;
-            _source.Play();
-            StartCoroutine(FadeInAudio(_source, fadeDurationSecs, volume));
+            source.pitch = 1f + UnityEngine.Random.Range(-sound.PitchVariationAmount, sound.PitchVariationAmount);
         }
         else
         {
-            _source.volume = volume;
-            _source.Play();
+            source.pitch = 1f;
         }
 
-        Action deactivateAction = () => 
+        source.Play();
+    }
+
+    public static Action PlayLoopingSFX(AudioSource source, SoundData sound)
+    {
+        if (source == null)
         {
-            _logger.Info($"Deactivating looping SFX source: {_source.GetInstanceID()}");
-            if (fadeOut)
+            Instance._logger.Warning("The AudioSource is null.");
+            return null;
+        }
+        if (sound == null || sound.Clip == null)
+        {
+            Instance._logger.Warning("The SoundData or clip is null.");
+            return null;
+        }
+
+        Instance._logger.Info($"Playing looping SFX: {sound.Clip.name}");
+
+        source.clip = sound.Clip;
+        source.loop = sound.LoopSpacing <= 0;
+
+        float volume = sound.Volume;
+        if (sound.UseVolumeVariation)
+        {
+            volume = Mathf.Clamp01(sound.Volume + UnityEngine.Random.Range(-sound.VolumeVariationAmount, sound.VolumeVariationAmount));
+        }
+        source.volume = volume;
+
+        if (sound.UsePitchVariation)
+        {
+            source.pitch = 1f + UnityEngine.Random.Range(-sound.PitchVariationAmount, sound.PitchVariationAmount);
+        }
+        else
+        {
+            source.pitch = 1f;
+        }
+
+        float baseVolume = volume;
+
+        if (sound.FadeIn)
+        {
+            source.volume = 0;
+            source.Play();
+            Instance.StartCoroutine(FadeInAudio(source, sound.FadeDuration, baseVolume));
+        }
+        else
+        {
+            source.Play();
+        }
+
+        Coroutine organicLoopCoroutine = null;
+        if (sound.LoopSpacing > 0)
+        {
+            organicLoopCoroutine = Instance.StartCoroutine(LoopWithOrganicVariation(source, sound, baseVolume));
+        }
+
+        Action stopAction = () =>
+        {
+            Instance._logger.Info($"Stopping looping SFX: {sound.Clip.name}");
+            if (organicLoopCoroutine != null)
             {
-                StartCoroutine(FadeOutAndDeactivateAudioSource(_source, fadeDurationSecs, _loopingSFXPool));
+                Instance.StopCoroutine(organicLoopCoroutine);
+            }
+            if (sound.FadeOut)
+            {
+                Instance.StartCoroutine(FadeOutAudio(source, sound.FadeDuration));
             }
             else
             {
-                DeactivateAudioSource(_source, _loopingSFXPool);
+                source.Stop();
             }
         };
 
-        return deactivateAction;
+        return stopAction;
     }
 
-    public Action PlayLoopingSFXWithVariation(AudioClip clip, float volume = 1, bool fadeIn = false, bool fadeOut = false, float fadeDurationSecs = FADE_DURATION_SECS, float pitchVariation = 0.02f, float volumeVariation = 0.1f, float startTimeVariation = 0f, float loopSpacing = 0f)
-    {
-        if (clip == null)
-        {
-            _logger.Warning("The attached looping SFX clip is null.");
-            return null;
-        }
-
-        AudioSource _source = GetPlayerFromPool(_loopingSFXPool);
-        if (_source == null)
-        {
-            _logger.Warning("There are no more looping SFX audio sources available.");
-            return null;
-        }
-
-        _logger.Info($"Playing looping SFX with variation: {clip.name} with source: {_source.GetInstanceID()}");
-
-        float loopEndBuffer = 0.05f;
-
-        float GetVariedPitch() => 1f + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
-        float GetVariedVolume() => Mathf.Clamp01(volume + UnityEngine.Random.Range(-volumeVariation, volumeVariation));
-
-        _source.clip = clip;
-        _source.loop = false;
-        _source.pitch = GetVariedPitch();
-        _source.volume = fadeIn ? 0 : GetVariedVolume();
-
-        float initialDelay = UnityEngine.Random.Range(-startTimeVariation, startTimeVariation);
-
-        if (fadeIn)
-        {
-            _source.PlayScheduled(AudioSettings.dspTime + initialDelay);
-            StartCoroutine(FadeInAudio(_source, fadeDurationSecs, GetVariedVolume()));
-        }
-        else
-        {
-            _source.PlayScheduled(AudioSettings.dspTime + initialDelay);
-        }
-
-        Coroutine loopCoroutine = StartCoroutine(LoopWithVariation(_source, GetVariedPitch, GetVariedVolume, loopSpacing, loopEndBuffer));
-
-        Action deactivateAction = () => 
-        {
-            _logger.Info($"Deactivating looping SFX with variation source: {_source.GetInstanceID()}");
-            StopCoroutine(loopCoroutine);
-            if (fadeOut)
-            {
-                StartCoroutine(FadeOutAndDeactivateAudioSource(_source, fadeDurationSecs, _loopingSFXPool));
-            }
-            else
-            {
-                _source.Stop();
-                DeactivateAudioSource(_source, _loopingSFXPool);
-            }
-        };
-
-        return deactivateAction;
-    }
-
-    private IEnumerator LoopWithVariation(AudioSource source, Func<float> getVariedPitch, Func<float> getVariedVolume, float loopSpacing, float loopEndBuffer)
+    private static IEnumerator LoopWithOrganicVariation(AudioSource source, SoundData sound, float baseVolume)
     {
         float clipLength = source.clip.length;
+        float loopEndBuffer = 0.05f;
+        float baseSpacing = sound.LoopSpacing;
+        float variationPct = sound.LoopVariationPct;
 
         while (source != null && source.isPlaying)
         {
             if (source.time >= clipLength - loopEndBuffer)
             {
-                yield return new WaitForSeconds(loopSpacing);
-                source.pitch = getVariedPitch();
-                source.volume = getVariedVolume();
+                float waitTime = baseSpacing * UnityEngine.Random.Range(1 - variationPct, 1 + variationPct);
+                yield return new WaitForSeconds(waitTime);
+
+                if (sound.UsePitchVariation)
+                {
+                    source.pitch = 1f + UnityEngine.Random.Range(-sound.PitchVariationAmount, sound.PitchVariationAmount);
+                }
+                if (sound.UseVolumeVariation)
+                {
+                    source.volume = Mathf.Clamp01(baseVolume + UnityEngine.Random.Range(-sound.VolumeVariationAmount, sound.VolumeVariationAmount));
+                }
+
                 source.PlayScheduled(AudioSettings.dspTime);
             }
             yield return null;
         }
     }
 
-    private void DeactivateAudioSource(AudioSource source, Stack<AudioSource> pool)
+    private static IEnumerator FadeInAudio(AudioSource source, float duration, float targetVolume)
     {
-        if (pool.Contains(source)) {
-            _logger.Warning("You must make the deactivate audio source callback null after use.");
-            return;
-        }
-        source.Stop();
-        source.gameObject.SetActive(false);
-        pool.Push(source);
-        _logger.Info($"Deactivated and returned source: {source.GetInstanceID()} to pool. Pool count: {pool.Count}");
-    }
-
-    public void PlaySFX(AudioClip clip, float volume = 1)
-    {
-        if (clip == null)
-        {
-            _logger.Warning("The SFX clip is null.");
-            return;
-        }
-        AudioSource _source = GetPlayerFromPool(_SFXPool);
-        if (_source == null)
-        {
-            _logger.Warning("There are no more SFX audio sources available.");
-            return;
-        }
-
-        _logger.Info($"Playing SFX: {clip.name} with source: {_source.GetInstanceID()}");
-
-        _source.clip = clip;
-        _source.volume = volume;
-        _source.loop = false;
-        _source.Play();
-        StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));
-    }
-
-    public void PlaySFXWithVariation(AudioClip clip, float volume, float pitchVariation = 0.02f, float volumeVariation = 0.1f)
-    {
-        if (clip == null)
-        {
-            _logger.Warning("The SFX clip is null.");
-            return;
-        }
-        AudioSource _source = GetPlayerFromPool(_SFXPool);
-        if (_source == null)
-        {
-            _logger.Warning("There are no more SFX audio sources available.");
-            return;
-        }
-
-        _logger.Info($"Playing SFX with variation: {clip.name} with source: {_source.GetInstanceID()}");
-
-        _source.clip = clip;
-        float variedVolume = UnityEngine.Random.Range(-volumeVariation, volumeVariation);
-        _source.volume = Mathf.Clamp01(volume + variedVolume);
-        _source.pitch = 1f + UnityEngine.Random.Range(-pitchVariation, pitchVariation);
-        _source.loop = false;
-        _source.Play();
-        StartCoroutine(DisableAudioSourceAfterSound(_source, _SFXPool));
-    }
-
-    private AudioSource GetPlayerFromPool(Stack<AudioSource> pool)
-    {
-        if (pool.Count == 0)
-            return null;
-        AudioSource _source = pool.Pop();
-        _source.gameObject.SetActive(true);
-        _logger.Info($"Retrieved source: {_source.GetInstanceID()} from pool. Pool count: {pool.Count}");
-        return _source;
-    }
-
-    private IEnumerator DisableAudioSourceAfterSound(AudioSource source, Stack<AudioSource> sourcePool)
-    {
-        yield return new WaitForSeconds(source.clip.length);
-        sourcePool.Push(source);
-        source.gameObject.SetActive(false);
-        _logger.Info($"Disabled and returned source: {source.GetInstanceID()} to pool after playing. Pool count: {sourcePool.Count}");
-    }
-
-    private IEnumerator FadeInAudio(AudioSource source, float duration, float targetVolume)
-    {
-        float _startTime = Time.time;
+        float startTime = Time.time;
 
         while (source.volume < targetVolume)
         {
-            float elapsed = Time.time - _startTime;
+            float elapsed = Time.time - startTime;
             source.volume = Mathf.Lerp(0, targetVolume, elapsed / duration);
             yield return null;
         }
         source.volume = targetVolume;
     }
 
-    private IEnumerator FadeOutAndDeactivateAudioSource(AudioSource source, float duration, Stack<AudioSource> pool)
+    private static IEnumerator FadeOutAudio(AudioSource source, float duration)
     {
-        float _startTime = Time.time;
-        float _startVolume = source.volume;
+        float startTime = Time.time;
+        float startVolume = source.volume;
 
         while (source.volume > 0)
         {
-            float elapsed = Time.time - _startTime;
-            source.volume = math.lerp(_startVolume, 0, elapsed / duration);
+            float elapsed = Time.time - startTime;
+            source.volume = math.lerp(startVolume, 0, elapsed / duration);
             yield return null;
         }
 
         source.volume = 0;
-        DeactivateAudioSource(source, pool);
-    }
-
-    // this function is kinda shit
-    // there should be a more direct way for the caller to change the volume
-    public bool TryAdjustVolume(AudioClip clip, float volume, float rampDuration) {
-        // Combine all audio sources into one list
-        var allSources = _loopingSFXPlayerContainer.GetComponentsInChildren<AudioSource>()
-            .Concat(_SFXContainer.GetComponentsInChildren<AudioSource>());
-        allSources = allSources.Append<AudioSource>(_musicPlayer);
-
-        // Find the audio source with the matching clip
-        AudioSource _sourcePlayingClip = allSources.FirstOrDefault(s => s.clip == clip);
-        if (_sourcePlayingClip != null) {
-            StartCoroutine(RampAudio(_sourcePlayingClip, volume, rampDuration));
-            return true;
-        }
-        return false;
-    }
-
-    private IEnumerator RampAudio(AudioSource source, float volume, float rampDuration) {
-        float _elapsed = 0;
-        float _startVolume = source.volume;
-        while (_elapsed < rampDuration) {
-            source.volume = Mathf.Lerp(_startVolume, volume, _elapsed / rampDuration);
-            _elapsed += Time.deltaTime;
-            yield return null;
-        }
-        source.volume = volume;
+        source.Stop();
     }
 }

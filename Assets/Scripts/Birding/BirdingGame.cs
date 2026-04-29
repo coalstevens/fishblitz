@@ -14,8 +14,8 @@ public class BirdingGame : MonoBehaviour
     private enum GameStates { CHARGING, TARGETING }
 
     [Header("General")]
-    [SerializeField] private AudioClip _missedSound; // tag sounds are bird species specific 
-    [SerializeField] private float _missedSoundVolume = 1f;
+    [SerializeField] private SoundData _missedSound;
+    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Transform _cursor;
     [SerializeField] private Vector2 _cursorPositionLimits = new Vector2(0f, 1f);
     [SerializeField] private Transform _frame;
@@ -136,7 +136,7 @@ public class BirdingGame : MonoBehaviour
 
         if (numHits == 0)
         {
-            AudioManager.Instance.PlaySFX(_missedSound, _missedSoundVolume);
+            AudioManager.PlaySFX(_audioSource, _missedSound);
         }
         else
         {

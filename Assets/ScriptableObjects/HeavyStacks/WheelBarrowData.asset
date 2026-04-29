@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aebe14f05065475b8741e291ff5233f, type: 3}
+  m_Name: WheelBarrowData
+  m_EditorClassIdentifier: 
+  WeightCapacity: 20
+  CurrentWeight: 7
+  InsertSound: {fileID: 11400000, guid: cd0d5a874ef75488490d22544c887500, type: 2}
+  RemoveSound: {fileID: 0}
+  LiftBarrowSound: {fileID: 11400000, guid: 9e3309294633f4613a9c2c9cfcb6248a, type: 2}
+  PlaceBarrowSound: {fileID: 11400000, guid: 90d30aa82587f4505a4d4b487b38dfdf, type: 2}

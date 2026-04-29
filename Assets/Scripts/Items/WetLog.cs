@@ -3,9 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewWetLog", menuName = "Items/WetLog")]
 public class WetLog : Inventory.Item, UseItemInput.IUsableOnWorldObject
 {
-    [SerializeField] Inventory _inventory;
-    [SerializeField] private AudioClip _placeItemSFX;
-    [SerializeField] private float _placeItemVolume = 1f;
+    [SerializeField] private Inventory _inventory;
+    [SerializeField] private SoundData _placeItemSound;
 
     public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
@@ -19,7 +18,7 @@ public class WetLog : Inventory.Item, UseItemInput.IUsableOnWorldObject
             if (_rack.TryAddWetLog())
             {
                 _inventory.TryRemoveActiveItem(1);
-                AudioManager.Instance.PlaySFX(_placeItemSFX, _placeItemVolume);
+                AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), _placeItemSound);
             }
             return true;
         }

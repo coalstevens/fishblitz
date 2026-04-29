@@ -4,8 +4,7 @@ using UnityEngine;
 public class Firewood : Inventory.Item, UseItemInput.IUsableOnWorldObject
 {
     [SerializeField] private Inventory _playerInventory;
-    [SerializeField] private AudioClip _placeItemSFX;
-    [SerializeField] private float _placeItemVolume = 1f;
+    [SerializeField] private SoundData _placeItemSound;
 
     public bool UseOnWorldObject(Inventory.ItemInstanceData instanceData, UseItemInput.IUsableTarget interactableWorldObject, Vector3Int cursorLocation)
     {
@@ -14,7 +13,7 @@ public class Firewood : Inventory.Item, UseItemInput.IUsableOnWorldObject
             if (_stove.AddFirewood())
             {
                 _playerInventory.TryRemoveActiveItem(1);
-                AudioManager.Instance.PlaySFX(_placeItemSFX, _placeItemVolume);
+                AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), _placeItemSound);
             }
             return true;
         }
@@ -23,7 +22,7 @@ public class Firewood : Inventory.Item, UseItemInput.IUsableOnWorldObject
             if (_campfire.AddFirewood())
             {
                 _playerInventory.TryRemoveActiveItem(1);
-                AudioManager.Instance.PlaySFX(_placeItemSFX, _placeItemVolume);
+                AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), _placeItemSound);
             }
             return true;
         }

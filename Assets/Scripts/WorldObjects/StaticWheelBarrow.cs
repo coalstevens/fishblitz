@@ -59,36 +59,18 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         return acceptedDirections.Contains(playerDirection);
     }
 
-    public void PlayBarrowPlaceSound() 
-    {
-        if (_weightyContainer.Data.PlaceBarrowSound)
-        {
-            AudioManager.Instance.PlaySFX(_weightyContainer.Data.PlaceBarrowSound, _weightyContainer.Data.PlaceBarrowVolume);
-        }
-    }
-
     public bool CursorInteract(Vector3 cursorLocation)
     {
-        Debug.Log("Interacted w/ wheelbarrow");
-        // pick up wheelbarrow
-        Debug.Log($" Player Direction {_playerMovementController.Direction.Value}");
-        Debug.Log($" Barrow Direction {_staticWheelBarrow.FacingDirection}");
-        Debug.Log($" Is Holding Barrow {_playerData.IsHoldingWheelBarrow}");
-        Debug.Log($" Is Carrying {_playerData.IsCarrying.Value}");
         if (IsFacingDirectionForWheelbarrowPickup() &&
             _playerData.IsHoldingWheelBarrow.Value == false &&
             _playerData.IsCarrying.Value == false)
         {
-            Debug.Log("Tried to take wheelbarrow");
-            Debug.Log($"Wheelbarrow aquired {Time.frameCount}");
-            AudioManager.Instance.PlaySFX(_weightyContainer.Data.LiftBarrowSound, _weightyContainer.Data.LiftBarrowVolume);
             _playerData.IsHoldingWheelBarrow.Value = true;
             Destroy(transform.gameObject);
             return true;
         }
-        else // try to take from wheelbarrow
+        else
         {
-            Debug.Log("Tried to take item from wheelbarrow");
             if (_weightyContainer.IsEmpty())
                 return false;
             StoredWeightyObject _storedObject = _weightyContainer.Peek();
