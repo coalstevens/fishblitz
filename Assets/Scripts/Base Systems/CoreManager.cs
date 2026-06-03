@@ -29,8 +29,12 @@ public class CoreManager : Singleton<CoreManager>
 
         GameStateManager.Initialize();
         InitializePlayerState();
-        WorldStateCalendar.Instance.UpdateWorldState();
         _config.RainManager.UpdateRainAudio();
+    }
+
+    private void Start()
+    {
+        WorldStateCalendar.Instance.UpdateWorldState();
     }
 
     private void ResolveSpawnPosition()

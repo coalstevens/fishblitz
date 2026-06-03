@@ -18,6 +18,7 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
 
     private Camera _camera;
     private Transform _player;
+    private Collider2D _worldCollider;
     private int _lastWidth;
     private int _lastHeight;
     private List<Action> _unsubscribeHooks = new();
@@ -39,6 +40,10 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
         {
             _player = playerObj.transform;
         }
+
+        GameObject worldObj = GameObject.FindGameObjectWithTag("World");
+        if (worldObj != null)
+            _worldCollider = worldObj.GetComponent<Collider2D>();
     }
 
     private void OnDisable()
@@ -52,7 +57,19 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
     {
         if (_player != null)
         {
-            transform.position = new Vector3(_player.position.x, _player.position.y, transform.position.z);
+            Vector3 targetPos = new Vector3(_player.position.x, _player.position.y, transform.position.z);
+
+            if (_worldCollider != null)
+            {
+                Bounds b = _worldCollider.bounds;
+                float vertExtent = _camera.orthographicSize;
+                float horzExtent = vertExtent * _camera.aspect;
+
+                targetPos.x = Mathf.Clamp(targetPos.x, b.min.x + horzExtent, b.max.x - horzExtent);
+                targetPos.y = Mathf.Clamp(targetPos.y, b.min.y + vertExtent, b.max.y - vertExtent);
+            }
+
+            transform.position = targetPos;
         }
     }
 

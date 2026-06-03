@@ -10,5 +10,9 @@ public enum SceneNames
     SleepMenu,
     HUD,
     Narrator,
-    Win
+    Win,
+    CanyonStart,
+    Canyon1,
+    Canyon2,
+    CanyonFork
 }
