@@ -28,16 +28,16 @@ public class CanyonManager : Store
 
     [SerializeField] private Logger _logger = new();
 
-    [System.NonSerialized] private List<SceneNames> _visitedScenes = new();
+    [System.NonSerialized] private List<SceneNames> _scenePath = new();
     [System.NonSerialized] private int _currentSceneIndex = -1;
     [System.NonSerialized] private Dictionary<string, Queue<SceneNames>> _sceneQueues = new();
     [System.NonSerialized] private Dictionary<string, string> _exitToEntrance = new();
     [System.NonSerialized] private Dictionary<string, string> _entranceToExit = new();
     [System.NonSerialized] private bool _isActive;
 
-    private static string _pendingNodeId;
+    private static string _pendingTargetId;
     private static string _pendingSpawnLabel;
-    private static string _pendingSourceKey;
+    private static string _pendingSourceLink;
 
     private void OnEnable()
     {
@@ -54,7 +54,7 @@ public class CanyonManager : Store
         if (!_isActive && scene.name == CanyonStart.ToString())
         {
             StartRun();
-            LogNetwork();
+            LogNetworkState();
         }
     }
 
@@ -69,7 +69,7 @@ public class CanyonManager : Store
         if (!_isActive)
             StartRun();
 
-        string currentScene = _visitedScenes[_currentSceneIndex].ToString();
+        string currentScene = _scenePath[_currentSceneIndex].ToString();
         string key = $"{currentScene}|{exitId}";
 
         if (_exitToEntrance.TryGetValue(key, out string target))
@@ -79,29 +79,29 @@ public class CanyonManager : Store
             string entranceId = parts[1];
 
             SceneNames targetScene = ParseSceneName(targetSceneName);
-            _currentSceneIndex = _visitedScenes.IndexOf(targetScene);
+            _currentSceneIndex = _scenePath.IndexOf(targetScene);
 
             _logger.Info($"{currentScene}|{exitId}:{transitionLabel} → {targetSceneName} (entrance:{entranceId} spawn:{transitionLabel})");
-            LogNetwork();
+            LogNetworkState();
 
-            _pendingNodeId = entranceId;
+            _pendingTargetId = entranceId;
             _pendingSpawnLabel = transitionLabel;
-            SceneManager.sceneLoaded += OnSpawnResolve;
+            SceneManager.sceneLoaded += ResolvePlayerSpawn;
             SmoothSceneManager.LoadScene(targetSceneName);
         }
         else
         {
             SceneNames newScene = PickNextScene(targetBiome);
 
-            _visitedScenes.Add(newScene);
-            _currentSceneIndex = _visitedScenes.Count - 1;
+            _scenePath.Add(newScene);
+            _currentSceneIndex = _scenePath.Count - 1;
 
             _logger.Info($"Generated {newScene} from biome '{targetBiome}' ({currentScene}|{exitId}:{transitionLabel})");
-            LogNetwork();
+            LogNetworkState();
 
-            _pendingSourceKey = key;
+            _pendingSourceLink = key;
             _pendingSpawnLabel = transitionLabel;
-            SceneManager.sceneLoaded += OnSpawnResolve;
+            SceneManager.sceneLoaded += ResolvePlayerSpawn;
             SmoothSceneManager.LoadScene(newScene.ToString());
         }
     }
@@ -110,7 +110,7 @@ public class CanyonManager : Store
     {
         if (!_isActive) return;
 
-        string currentScene = _visitedScenes[_currentSceneIndex].ToString();
+        string currentScene = _scenePath[_currentSceneIndex].ToString();
         string key = $"{currentScene}|{entranceId}";
 
         if (!_entranceToExit.TryGetValue(key, out string source))
@@ -124,28 +124,28 @@ public class CanyonManager : Store
         string exitId = parts[1];
 
         SceneNames sourceScene = ParseSceneName(sourceSceneName);
-        _currentSceneIndex = _visitedScenes.IndexOf(sourceScene);
+        _currentSceneIndex = _scenePath.IndexOf(sourceScene);
 
         if (sourceScene == CanyonStart)
             _isActive = false;
 
         _logger.Info($"{currentScene}|{entranceId}:{transitionLabel} ← {sourceSceneName} (exit:{exitId} spawn:{transitionLabel})");
-        LogNetwork();
+        LogNetworkState();
 
-        _pendingNodeId = exitId;
+        _pendingTargetId = exitId;
         _pendingSpawnLabel = transitionLabel;
-        SceneManager.sceneLoaded += OnSpawnResolve;
+        SceneManager.sceneLoaded += ResolvePlayerSpawn;
         SmoothSceneManager.LoadScene(sourceSceneName);
     }
 
     private void StartRun()
     {
-        _visitedScenes.Clear();
+        _scenePath.Clear();
         _exitToEntrance.Clear();
         _entranceToExit.Clear();
         _sceneQueues.Clear();
 
-        _visitedScenes.Add(CanyonStart);
+        _scenePath.Add(CanyonStart);
         _currentSceneIndex = 0;
 
         foreach (var biome in Biomes)
@@ -184,35 +184,24 @@ public class CanyonManager : Store
         if (_sceneQueues.TryGetValue(biomeName, out var queue) && queue.Count > 0)
             return queue.Dequeue();
 
-        ReplenishQueue(config, biomeName);
-        return _sceneQueues[biomeName].Dequeue();
+        Debug.LogError($"PickNextScene: Queue for biome '{biomeName}' is exhausted — no more unique scenes available");
+        return CanyonStart;
     }
 
-    private void ReplenishQueue(BiomeConfig config, string biomeName)
+    private static void ResolvePlayerSpawn(Scene scene, LoadSceneMode mode)
     {
-        var shuffled = new List<SceneNames>(config.ScenePool);
-        Shuffle(shuffled);
-        var queue = new Queue<SceneNames>();
-        foreach (var scene in shuffled)
-            queue.Enqueue(scene);
-        _sceneQueues[biomeName] = queue;
-    }
-
-    private static void OnSpawnResolve(Scene scene, LoadSceneMode mode)
-    {
-        SceneManager.sceneLoaded -= OnSpawnResolve;
-        string targetId = _pendingNodeId;
+        SceneManager.sceneLoaded -= ResolvePlayerSpawn;
+        string targetId = _pendingTargetId;
         string label = _pendingSpawnLabel;
-        string sourceKey = _pendingSourceKey;
-        _pendingNodeId = null;
+        string sourceLink = _pendingSourceLink;
+        _pendingTargetId = null;
         _pendingSpawnLabel = null;
-        _pendingSourceKey = null;
+        _pendingSourceLink = null;
 
         CanyonManager mgr = Get<CanyonManager>();
+        if (string.IsNullOrEmpty(targetId) && string.IsNullOrEmpty(sourceLink)) return;
 
-        if (string.IsNullOrEmpty(targetId) && string.IsNullOrEmpty(sourceKey)) return;
-
-        if (!string.IsNullOrEmpty(sourceKey))
+        if (!string.IsNullOrEmpty(sourceLink))
         {
             foreach (var entrance in FindObjectsByType<CanyonEntrance>(FindObjectsSortMode.None))
             {
@@ -220,14 +209,8 @@ public class CanyonManager : Store
                 if (spawn == null) continue;
 
                 string sceneKey = $"{scene.name}|{entrance.EntranceId}";
-                mgr._exitToEntrance[sourceKey] = sceneKey;
-                mgr._entranceToExit[sceneKey] = sourceKey;
-
-                mgr.PlayerData.SceneSpawnPosition = spawn.transform.position;
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                    player.transform.position = spawn.transform.position;
-                mgr._logger.Info($"Arrived at spawn '{label}' in '{scene.name}'");
+                mgr.RecordLink(sourceLink, sceneKey);
+                PlacePlayer(spawn.transform.position, scene.name, label);
                 return;
             }
             Debug.LogError($"No Entrance with spawn '{label}' found in '{scene.name}'");
@@ -239,11 +222,7 @@ public class CanyonManager : Store
             if (entrance.EntranceId != targetId) continue;
             CanyonSpawn spawn = entrance.GetSpawn(label);
             Vector3 pos = spawn != null ? spawn.transform.position : entrance.transform.position;
-            mgr.PlayerData.SceneSpawnPosition = pos;
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-                player.transform.position = pos;
-            mgr._logger.Info($"Arrived at spawn '{label}' in '{scene.name}'");
+            PlacePlayer(pos, scene.name, label);
             return;
         }
 
@@ -252,20 +231,32 @@ public class CanyonManager : Store
             if (exit.ExitId != targetId) continue;
             CanyonSpawn spawn = exit.GetSpawn(label);
             Vector3 pos = spawn != null ? spawn.transform.position : exit.transform.position;
-            mgr.PlayerData.SceneSpawnPosition = pos;
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-                player.transform.position = pos;
-            mgr._logger.Info($"Arrived at spawn '{label}' in '{scene.name}'");
+            PlacePlayer(pos, scene.name, label);
             return;
         }
     }
 
-    private void LogNetwork()
+    private static void PlacePlayer(Vector3 pos, string sceneName, string label)
     {
-        string path = string.Join(" → ", _visitedScenes);
-        string current = _currentSceneIndex >= 0 && _currentSceneIndex < _visitedScenes.Count
-            ? _visitedScenes[_currentSceneIndex].ToString()
+        CanyonManager mgr = Get<CanyonManager>();
+        mgr.PlayerData.SceneSpawnPosition = pos;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+            player.transform.position = pos;
+        mgr._logger.Info($"Arrived at spawn '{label}' in '{sceneName}'");
+    }
+
+    private void RecordLink(string from, string to)
+    {
+        _exitToEntrance[from] = to;
+        _entranceToExit[to] = from;
+    }
+
+    private void LogNetworkState()
+    {
+        string path = string.Join(" → ", _scenePath);
+        string current = _currentSceneIndex >= 0 && _currentSceneIndex < _scenePath.Count
+            ? _scenePath[_currentSceneIndex].ToString()
             : "none";
         _logger.Info($"=== Canyon Network ===");
         _logger.Info($"Path: [{path}] (current: {current})");
