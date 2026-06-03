@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6639e1a2b3543bca5cddb5f10d591e, type: 3}
+  m_Name: CanyonManager
+  m_EditorClassIdentifier: Assembly-CSharp::CanyonManager
+  CanyonStart: 11
+  PlayerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  Biomes:
+  - BiomeName: Canyon
+    ScenePool: 0c0000000d000000
+    SpecialScenes:
+    - Scene: 14
+      Weight: 33.333332
+  _logger:
+    _info: 1
+    _verbose: 0
+    _prefix: 
+    _color: green
