@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget
 {
     [Header("UI References")]
-    [SerializeField] private CanvasGroup _canvasCanvasGroup;
     [SerializeField] private CanvasGroup _blurbCanvasGroup;
     [SerializeField] private GameObject _alert;
     [SerializeField] private Image _itemImage;
@@ -48,7 +47,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         _weightyContainer = GetComponent<WeightyObjectStack>();
         Assert.IsNotNull(_weightyContainer);
-        Assert.IsNotNull(_canvasCanvasGroup);
         Assert.IsNotNull(_blurbCanvasGroup);
         Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
@@ -82,6 +80,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         {
             _hasInteracted = true;
             _alert.SetActive(false);
+            OnPlayerProximityEnter();
         }
 
         StartFadeTimer();
@@ -219,7 +218,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     public void OnPlayerProximityEnter()
     {
-        if (_isComplete) return;
+        if (_isComplete || !_hasInteracted) return;
 
         if (_animState == BoxAnimState.Closed || _animState == BoxAnimState.Closing)
         {
@@ -231,7 +230,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     public void OnPlayerProximityExit()
     {
-        if (_isComplete) return;
+        if (_isComplete || !_hasInteracted) return;
 
         if (_animState == BoxAnimState.Open)
         {
