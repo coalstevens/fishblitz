@@ -51,6 +51,7 @@ public static class GameStateManager
             "Canyon1" => _playingState,
             "Canyon2" => _playingState,
             "CanyonFork" => _playingState,
+            "Lobby" => _playingState,
             _ => throw new System.IndexOutOfRangeException("Scene not recognized")
         };
     }

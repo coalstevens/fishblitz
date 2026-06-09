@@ -14,8 +14,10 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
     private Scene test;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!OnInteract && other == GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>())
+        Debug.Log("Player seen");
+        if (!OnInteract && other.transform.root.CompareTag("Player"))
         {
+            Debug.Log("Player confirmed");
             _playerData.SceneSpawnPosition = _spawnLocation;
             PlaySound();
             ChangeLevel(_toScene);

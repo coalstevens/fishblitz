@@ -35,6 +35,7 @@ public class CanyonManager : Store
     [System.NonSerialized] private Dictionary<string, string> _entranceToExit = new();
     [System.NonSerialized] private bool _isActive;
 
+    private bool _isCanyonTransition;
     private static string _pendingTargetId;
     private static string _pendingSpawnLabel;
     private static string _pendingSourceLink;
@@ -51,11 +52,12 @@ public class CanyonManager : Store
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!_isActive && scene.name == CanyonStart.ToString())
+        if (scene.name == CanyonStart.ToString() && !_isCanyonTransition)
         {
             StartRun();
             LogNetworkState();
         }
+        _isCanyonTransition = false;
     }
 
     public void TakeExit(string exitId, string transitionLabel, string targetBiome)
@@ -87,6 +89,7 @@ public class CanyonManager : Store
             _pendingTargetId = entranceId;
             _pendingSpawnLabel = transitionLabel;
             SceneManager.sceneLoaded += ResolvePlayerSpawn;
+            _isCanyonTransition = true;
             SmoothSceneManager.LoadScene(targetSceneName);
         }
         else
@@ -102,6 +105,7 @@ public class CanyonManager : Store
             _pendingSourceLink = key;
             _pendingSpawnLabel = transitionLabel;
             SceneManager.sceneLoaded += ResolvePlayerSpawn;
+            _isCanyonTransition = true;
             SmoothSceneManager.LoadScene(newScene.ToString());
         }
     }
@@ -126,15 +130,13 @@ public class CanyonManager : Store
         SceneNames sourceScene = ParseSceneName(sourceSceneName);
         _currentSceneIndex = _scenePath.IndexOf(sourceScene);
 
-        if (sourceScene == CanyonStart)
-            _isActive = false;
-
         _logger.Info($"{currentScene}|{entranceId}:{transitionLabel} ← {sourceSceneName} (exit:{exitId} spawn:{transitionLabel})");
         LogNetworkState();
 
         _pendingTargetId = exitId;
         _pendingSpawnLabel = transitionLabel;
         SceneManager.sceneLoaded += ResolvePlayerSpawn;
+        _isCanyonTransition = true;
         SmoothSceneManager.LoadScene(sourceSceneName);
     }
 

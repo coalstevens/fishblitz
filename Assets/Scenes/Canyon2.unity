@@ -1325,7 +1325,7 @@ GameObject:
   - component: {fileID: 409657882}
   - component: {fileID: 409657881}
   - component: {fileID: 409657880}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Cliffs Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1345,7 +1345,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 864908274}
+  m_Father: {fileID: 937870849}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &409657880
 TilemapCollider2D:
@@ -2475,7 +2475,7 @@ GameObject:
   - component: {fileID: 534588286}
   - component: {fileID: 534588285}
   - component: {fileID: 534588284}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Cliffs Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2495,7 +2495,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 864908274}
+  m_Father: {fileID: 937870849}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &534588284
 TilemapCollider2D:
@@ -7645,8 +7645,6 @@ Transform:
   m_Children:
   - {fileID: 895335647}
   - {fileID: 2037465889}
-  - {fileID: 534588283}
-  - {fileID: 409657879}
   - {fileID: 1567624530}
   - {fileID: 1198359308}
   - {fileID: 717208348}
@@ -48445,6 +48443,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 880359141}
+  - {fileID: 534588283}
+  - {fileID: 409657879}
   - {fileID: 864908274}
   m_Father: {fileID: 542403488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
