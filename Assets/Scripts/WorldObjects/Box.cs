@@ -26,6 +26,9 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [Header("Quest Data")]
     [SerializeField] private BoxData _boxData;
 
+    [Header("Animation")]
+    [SerializeField] private Animator _animator;
+
     [Header("Sound Effects")]
     [SerializeField] private SoundData _winChimeSound;
     [SerializeField] private AudioSource _audioSource;
@@ -33,7 +36,11 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     private WeightyObjectStack _weightyContainer;
     private Dictionary<WeightyObjectType, int> _fulfilledQuantities = new();
     private bool _hasInteracted = false;
+    private bool _isComplete = false;
     private Coroutine _fadeRoutine;
+
+    private enum BoxAnimState { Closed, Opening, Open, Closing }
+    private BoxAnimState _animState = BoxAnimState.Closed;
 
     public WeightyObjectStack WeightyStack => _weightyContainer;
 
@@ -55,10 +62,13 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
         _blurbCanvasGroup.alpha = 0;
         _alert.SetActive(true);
+
+        _animator?.Play("Closed");
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
     {
+        if (_isComplete) return false;
         UpdateUI();
         ShowBlurb();
         return true;
@@ -96,6 +106,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     public bool TryAddToBox(StoredWeightyObject item)
     {
+        if (_isComplete) return false;
         UpdateUI();
         ShowBlurb();
 
@@ -106,6 +117,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         }
 
         Debug.Log("Added " + item.Type);
+
         _weightyContainer.Push(item);
         _fulfilledQuantities[item.Type]++;
         UpdateUI();
@@ -172,7 +184,68 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     private void Win()
     {
+        _isComplete = true;
+
         AudioManager.PlaySFX(_audioSource, _winChimeSound);
-        Debug.Log("Quest complete!");
+
+        if (_animator != null)
+            _animator.Play("Win");
+
+        StartCoroutine(DeliverPrize());
+    }
+
+    private IEnumerator DeliverPrize()
+    {
+        yield return new WaitForSeconds(_animator.GetClipLength("Win"));
+
+        if (_boxData.PrizePrefab != null)
+        {
+            Vector3 spawnPos = transform.position + _boxData.PrizeSpawnOffset;
+            GameObject prize = Instantiate(_boxData.PrizePrefab, spawnPos, Quaternion.identity);
+            if (prize.TryGetComponent<BoxData.IBoxPrize>(out var prizeComponent))
+                prizeComponent.AwardPrize();
+        }
+
+        Destroy(gameObject);
+    }
+
+    private IEnumerator OnOpeningFinished()
+    {
+        yield return new WaitForSeconds(_animator.GetClipLength("Opening"));
+        if (_isComplete) yield break;
+        _animator?.Play("Open");
+        _animState = BoxAnimState.Open;
+    }
+
+    public void OnPlayerProximityEnter()
+    {
+        if (_isComplete) return;
+
+        if (_animState == BoxAnimState.Closed || _animState == BoxAnimState.Closing)
+        {
+            _animator?.Play("Opening");
+            _animState = BoxAnimState.Opening;
+            StartCoroutine(OnOpeningFinished());
+        }
+    }
+
+    public void OnPlayerProximityExit()
+    {
+        if (_isComplete) return;
+
+        if (_animState == BoxAnimState.Open)
+        {
+            _animator?.Play("Closing");
+            _animState = BoxAnimState.Closing;
+            StartCoroutine(OnClosingFinished());
+        }
+    }
+
+    private IEnumerator OnClosingFinished()
+    {
+        yield return new WaitForSeconds(_animator.GetClipLength("Closing"));
+        if (_isComplete) yield break;
+        _animator?.Play("Closed");
+        _animState = BoxAnimState.Closed;
     }
 }

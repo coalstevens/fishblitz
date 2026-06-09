@@ -2,9 +2,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget
+public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, BoxData.IBoxPrize
 {
     [SerializeField] private PlayerData _playerData;
+    [SerializeField] private Animator _animator;
     private PlayerMovementController _playerMovementController;
     private StaticWheelBarrowSelector _staticWheelBarrow;
     private WeightyObjectStack _weightyContainer;
@@ -79,5 +80,11 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
             _playerCarry.Push(_weightyContainer.Pop());
         }
         return false;
+    }
+
+    public void AwardPrize()
+    {
+        if (_animator != null)
+            _animator.SetTrigger("Spawn");
     }
 }

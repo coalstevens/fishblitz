@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 1645002115926865317}
   - component: {fileID: 8637061064077191128}
   - component: {fileID: 2503861928769645009}
+  - component: {fileID: 8285742991350128326}
   m_Layer: 21
   m_Name: MetalWheelBarrow
   m_TagString: Untagged
@@ -525,6 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticWheelBarrow
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _animator: {fileID: 0}
 --- !u!114 &7162082824941278695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,6 +706,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &8285742991350128326
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780039278160430161}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: -1988688903969353418, guid: 449086fc6f9bc4e76a9502fdf3c2d3ea, type: 3}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &3119186999881725347
 PrefabInstance:
   m_ObjectHideFlags: 0
