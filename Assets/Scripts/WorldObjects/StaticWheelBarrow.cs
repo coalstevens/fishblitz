@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -5,7 +6,7 @@ using UnityEngine.Assertions;
 public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, BoxData.IBoxPrize
 {
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
     private PlayerMovementController _playerMovementController;
     private StaticWheelBarrowSelector _staticWheelBarrow;
     private WeightyObjectStack _weightyContainer;
@@ -21,11 +22,13 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         _playerMovementController = _player.GetComponent<PlayerMovementController>();
         _playerCarry = _player.GetComponent<PlayerCarry>();
         _weightyContainer = GetComponent<WeightyObjectStack>();
+        _animator = GetComponent<Animator>();
 
         Assert.IsNotNull(_playerCarry);
         Assert.IsNotNull(_weightyContainer);
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_staticWheelBarrow);
+        Assert.IsNotNull(_animator);
         Assert.IsNotNull(_playerData);
     }
     private bool IsFacingDirectionForWheelbarrowPickup()
@@ -85,6 +88,13 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
     public void AwardPrize()
     {
         if (_animator != null)
-            _animator.SetTrigger("Spawn");
+            StartCoroutine(PlaySpawnThenIdle());
+    }
+
+    private IEnumerator PlaySpawnThenIdle()
+    {
+        _animator.Play("Spawn");
+        yield return new WaitForSeconds(_animator.GetClipLength("Spawn"));
+        _animator.Play("Idle");
     }
 }

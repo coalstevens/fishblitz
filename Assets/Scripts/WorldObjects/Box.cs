@@ -185,6 +185,12 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         _isComplete = true;
 
+        ReduceOpacityWhenPlayerBehind opacityScript = _blurbCanvasGroup.GetComponent<ReduceOpacityWhenPlayerBehind>();
+        if (opacityScript != null)
+            opacityScript.enabled = false;
+
+        _blurbCanvasGroup.DOFade(0f, 0.5f);
+
         AudioManager.PlaySFX(_audioSource, _winChimeSound);
 
         if (_animator != null)
@@ -236,7 +242,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         {
             _animator?.Play("Closing");
             _animState = BoxAnimState.Closing;
-            StartCoroutine(OnClosingFinished());
+        StartCoroutine(OnClosingFinished());
         }
     }
 
