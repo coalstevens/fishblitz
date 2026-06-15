@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8978042134043212749}
   - component: {fileID: 7569370801600691855}
   - component: {fileID: 8493757039195060757}
+  - component: {fileID: -5677306241690713412}
   m_Layer: 18
   m_Name: Larch_Border1
   m_TagString: Untagged
@@ -129,3 +130,19 @@ MonoBehaviour:
   _lowOffset: 0
   _highOffset: 0
   _birdOffset: 75
+--- !u!114 &-5677306241690713412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb6ec90b8ef74a50a6b91415c3d78be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OccupyWorldObjectSpace
+  extraTilesToLeft: 0
+  extraTilesToRight: 0
+  extraTilesAbove: 0
+  extraTilesBelow: 0

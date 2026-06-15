@@ -1,37 +1,20 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class SceneSpawner : MonoBehaviour
 {
-    [Serializable]
-    private class SpawnObjectInfo
-    {
-        public List<GameObject> PrefabVariants;
-        public List<Tilemap> SpawnAreas = new();
-        public List<TileBase> ValidTileTypes = new();
-        public float Density = 0.05f;
-        public bool SpawnNearbyOtherTypes = false;
-        public int NearbyAdjacentDistance = 1;
-        public List<GameObject> NearbyTypes = new();
-        public bool UsePerlinNoise = false;
-        public float PerlinNoiseScale = 0.1f;
-        public float PerlinThreshold = 0.5f;
-    }
-
-    [SerializeField] private List<SpawnObjectInfo> ObjectsToSpawn = new();
+    [SerializeField] private List<SpawnObjectInfo> SpawnConfigs = new();
     [SerializeField] private Logger _logger = new();
+    private Tilemap _tilemap;
+    private List<Tilemap> _worldTilemaps;
     private Dictionary<GameObject, List<Vector3Int>> _spawnedObjects = new();
     private Transform _impermanentContainer;
     private WorldObjectOccupancyMap _occupancyMap;
-    private List<Tilemap> _allTilemaps;
 
     private void OnEnable()
     {
         SceneSaveLoadManager.FirstVisitToScene += SpawnObjects;
-        foreach (var child in transform)
-            (child as GameObject)?.SetActive(false);
     }
 
     private void OnDisable()
@@ -41,77 +24,153 @@ public class SceneSpawner : MonoBehaviour
 
     void InitializeSpawner()
     {
+        if (_tilemap == null)
+            _tilemap = GetComponent<Tilemap>();
+
+        GameObject tilemapsContainer = GameObject.FindGameObjectWithTag("Tilemaps");
+        if (tilemapsContainer != null)
+            _worldTilemaps = new List<Tilemap>(tilemapsContainer.GetComponentsInChildren<Tilemap>());
+        else
+            _logger.Warning("No GameObject with 'Tilemaps' tag found!");
+
+        BoundsInt bounds = _tilemap.cellBounds;
+        _logger.Info($"Marker tilemap: {_tilemap.name}, bounds: ({bounds.xMin},{bounds.yMin})-({bounds.xMax},{bounds.yMax})");
+        _logger.Info($"World tilemaps found: {(_worldTilemaps?.Count ?? 0)}");
+
+        Dictionary<string, int> tileCounts = new();
+        if (_worldTilemaps != null)
+        {
+            foreach (var wt in _worldTilemaps)
+            {
+                foreach (Vector3Int pos in wt.cellBounds.allPositionsWithin)
+                {
+                    if (!wt.HasTile(pos)) continue;
+                    TileBase tile = wt.GetTile(pos);
+                    if (tile == null) continue;
+                    string key = $"{tile.name} ({tile.GetType().Name}) on {wt.name}";
+                    tileCounts.TryGetValue(key, out int c);
+                    tileCounts[key] = c + 1;
+                }
+            }
+        }
+        List<string> tileSummary = new();
+        foreach (var kv in tileCounts)
+            tileSummary.Add($"{kv.Value}×{kv.Key}");
+        _logger.Verbose($"World tiles: {string.Join(", ", tileSummary)}");
+
+        int markerCount = 0;
+        Dictionary<string, int> markerTileHits = new();
+        foreach (Vector3Int pos in _tilemap.cellBounds.allPositionsWithin)
+        {
+            if (!_tilemap.HasTile(pos)) continue;
+            markerCount++;
+            bool found = false;
+            if (_worldTilemaps != null)
+            {
+                foreach (var wt in _worldTilemaps)
+                {
+                    TileBase tile = wt.GetTile(pos);
+                    if (tile == null) continue;
+                    string key = $"{tile.name} on {wt.name}";
+                    markerTileHits.TryGetValue(key, out int c);
+                    markerTileHits[key] = c + 1;
+                    found = true;
+                }
+            }
+            if (!found)
+            {
+                string key = "(no world tile)";
+                markerTileHits.TryGetValue(key, out int c);
+                markerTileHits[key] = c + 1;
+            }
+        }
+        List<string> markerSummary = new();
+        foreach (var kv in markerTileHits)
+            markerSummary.Add($"{kv.Value} {kv.Key}");
+        _logger.Verbose($"Markers: {markerCount} — {string.Join(", ", markerSummary)}");
+
+        foreach (var config in SpawnConfigs)
+        {
+            string names = "";
+            foreach (var t in config.ValidTileTypes)
+                names += (names.Length > 0 ? ", " : "") + (t != null ? t.name : "null");
+            _logger.Verbose($"Config '{config.name}' looking for: [{names}]");
+        }
+
         _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent")?.transform;
         if (_impermanentContainer == null)
             Debug.LogError("Impermanent container not found!");
         _occupancyMap = _impermanentContainer.GetComponent<WorldObjectOccupancyMap>();
         if (_occupancyMap == null)
             Debug.LogError("Occupancy map not found!");
-        _allTilemaps = new List<Tilemap>(FindObjectsByType<Tilemap>(FindObjectsSortMode.None));
-        foreach (var child in transform)
-            (child as GameObject)?.SetActive(true);
         VerifyVariantsAreSameSize();
     }
 
     private void SpawnObjects(string sceneName)
     {
-        _logger.Info("Spawn start");
+        _logger.Verbose("Spawn start");
         InitializeSpawner();
 
-        foreach (var spawnObject in ObjectsToSpawn)
+        foreach (var spawnConfig in SpawnConfigs)
         {
-            OccupyWorldObjectSpace spaceOccupiedByObject = spawnObject.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
+            OccupyWorldObjectSpace spaceOccupiedByObject = spawnConfig.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
 
-            foreach (var area in spawnObject.SpawnAreas)
+            List<Vector3Int> validSpawnPositions = GetPositionsOfValidTilesInArea(_tilemap, spawnConfig.ValidTileTypes);
+            int numToSpawn = Mathf.CeilToInt(validSpawnPositions.Count * spawnConfig.Density);
+
+            string filterLog = $"'{spawnConfig.name}': {validSpawnPositions.Count} tile-valid";
+            validSpawnPositions = RemovePositionsThatAreOccupied(validSpawnPositions);
+            filterLog += $" → {validSpawnPositions.Count} unoccupied";
+            validSpawnPositions = RemovePositionsThatAreTooSmall(validSpawnPositions, spaceOccupiedByObject);
+            filterLog += $" → {validSpawnPositions.Count} size-ok";
+            if (spawnConfig.UsePerlinNoise)
             {
-                List<Vector3Int> validSpawnPositions = GetPositionsOfValidTilesInArea(area, spawnObject.ValidTileTypes);
-                int numToSpawn = Mathf.CeilToInt(validSpawnPositions.Count * spawnObject.Density);
-                _logger.Info($"Attempting to spawn {numToSpawn} of variants of {spawnObject.PrefabVariants[0].name}");
+                validSpawnPositions = ApplyPerlinNoiseToPositions(validSpawnPositions, spawnConfig);
+                filterLog += $" → {validSpawnPositions.Count} noise-pass";
+            }
+            if (spawnConfig.SpawnNearbyOtherTypes)
+            {
+                validSpawnPositions = RemovePositionsNotNearTypes(validSpawnPositions, spawnConfig.NearbyTypes, _tilemap, spawnConfig.NearbyAdjacentDistance);
+                filterLog += $" → {validSpawnPositions.Count} near-match";
+            }
 
-                validSpawnPositions = RemovePositionsThatAreOccupied(validSpawnPositions);
-                validSpawnPositions = RemovePositionsThatAreTooSmall(validSpawnPositions, spaceOccupiedByObject);
-                if (spawnObject.UsePerlinNoise)
-                    validSpawnPositions = ApplyPerlinNoiseToPositions(validSpawnPositions, area, spawnObject);
-                if (spawnObject.SpawnNearbyOtherTypes)
-                    validSpawnPositions = RemovePositionsNotNearTypes(validSpawnPositions, spawnObject.NearbyTypes, area, spawnObject.NearbyAdjacentDistance);
+            validSpawnPositions = Shuffle(validSpawnPositions);
+            _logger.Info($"{filterLog} → spawning {numToSpawn}");
+            while (numToSpawn > 0 && validSpawnPositions.Count > 0)
+            {
+                Vector3Int tilePos = validSpawnPositions[0];
 
-                validSpawnPositions = Shuffle(validSpawnPositions);
-                while (numToSpawn > 0 && validSpawnPositions.Count > 0)
+                var variant = spawnConfig.PrefabVariants[UnityEngine.Random.Range(0, spawnConfig.PrefabVariants.Count)];
+                Vector3 worldPos = CalculateWorldPosition(_tilemap, tilePos, variant);
+                Instantiate(variant, worldPos, Quaternion.identity, _impermanentContainer);
+
+                if (!_spawnedObjects.TryGetValue(variant, out var positions))
                 {
-                    Vector3Int tilePos = validSpawnPositions[0];
-
-                    var variant = spawnObject.PrefabVariants[UnityEngine.Random.Range(0, spawnObject.PrefabVariants.Count)];
-                    Vector3 worldPos = CalculateWorldPosition(area, tilePos, variant);
-                    GameObject spawnedObj = Instantiate(variant, worldPos, Quaternion.identity, _impermanentContainer);
-
-                    if (!_spawnedObjects.TryGetValue(variant, out var positions))
-                    {
-                        positions = new List<Vector3Int>();
-                        _spawnedObjects[variant] = positions;
-                    }
-                    positions.Add(tilePos);
-
-                    validSpawnPositions = RemovePositionsOccupiedByNewObject(validSpawnPositions, tilePos, spaceOccupiedByObject);
-                    numToSpawn--;
+                    positions = new List<Vector3Int>();
+                    _spawnedObjects[variant] = positions;
                 }
+                positions.Add(tilePos);
+
+                validSpawnPositions = RemovePositionsOccupiedByNewObject(validSpawnPositions, tilePos, spaceOccupiedByObject);
+                numToSpawn--;
             }
         }
         gameObject.SetActive(false);
     }
 
-    private List<Vector3Int> ApplyPerlinNoiseToPositions(List<Vector3Int> positions, Tilemap area, SpawnObjectInfo spawnObject)
+    private List<Vector3Int> ApplyPerlinNoiseToPositions(List<Vector3Int> positions, SpawnObjectInfo spawnConfig)
     {
         List<Vector3Int> sortedPositions = new List<Vector3Int>();
 
         foreach (var pos in positions)
         {
-            float perlinValue = Mathf.PerlinNoise(pos.x * spawnObject.PerlinNoiseScale, pos.y * spawnObject.PerlinNoiseScale);
+            float perlinValue = Mathf.PerlinNoise(pos.x * spawnConfig.PerlinNoiseScale, pos.y * spawnConfig.PerlinNoiseScale);
 
-            if (perlinValue > spawnObject.PerlinThreshold)
+            if (perlinValue > spawnConfig.PerlinThreshold)
                 sortedPositions.Add(pos);
         }
 
-        _logger.Info($"Valid positions after Perlin noise filtering: {sortedPositions.Count}");
+        _logger.Verbose($"Valid positions after Perlin noise filtering: {sortedPositions.Count}");
         return sortedPositions;
     }
 
@@ -147,7 +206,7 @@ public class SceneSpawner : MonoBehaviour
             if (!_occupancyMap.CheckOccupied(pos))
                 filteredTiles.Add(pos);
 
-        _logger.Info($"Number of spawn positions after removing occupied spaces: {filteredTiles.Count}");
+        _logger.Verbose($"Number of spawn positions after removing occupied spaces: {filteredTiles.Count}");
         return filteredTiles;
     }
 
@@ -183,37 +242,50 @@ public class SceneSpawner : MonoBehaviour
             if (hasSpace)
                 filteredTiles.Add(pos);
         }
-        _logger.Info($"Number of spawn positions after filtering by object size: {filteredTiles.Count}");
+        _logger.Verbose($"Number of spawn positions after filtering by object size: {filteredTiles.Count}");
         return filteredTiles;
     }
 
-    private List<Vector3Int> GetPositionsOfValidTilesInArea(Tilemap targetTilemap, List<TileBase> validTiles)
+    private List<Vector3Int> GetPositionsOfValidTilesInArea(Tilemap markerTilemap, List<TileBase> validTiles)
     {
         List<Vector3Int> validPositions = new List<Vector3Int>();
-        BoundsInt bounds = targetTilemap.cellBounds;
-        HashSet<TileBase> validTileSet = new HashSet<TileBase>(validTiles);
+        BoundsInt bounds = markerTilemap.cellBounds;
+        HashSet<string> validTileNames = new HashSet<string>();
+        bool allowNoTile = false;
+        foreach (var t in validTiles)
+        {
+            if (t != null)
+                validTileNames.Add(t.name);
+            else
+                allowNoTile = true;
+        }
 
         foreach (Vector3Int position in bounds.allPositionsWithin)
         {
-            if (!targetTilemap.HasTile(position))
+            if (!markerTilemap.HasTile(position))
                 continue;
 
-            bool isValid = false;
-            foreach (var tilemap in _allTilemaps)
+            bool anyWorldTile = false;
+            if (_worldTilemaps != null)
             {
-                TileBase tile = tilemap.GetTile(position);
-                if (tile != null && validTileSet.Contains(tile))
+                foreach (var wt in _worldTilemaps)
                 {
-                    isValid = true;
-                    break;
+                    TileBase tile = wt.GetTile(position);
+                    if (tile == null) continue;
+                    anyWorldTile = true;
+                    if (validTileNames.Contains(tile.name))
+                    {
+                        validPositions.Add(position);
+                        break;
+                    }
                 }
             }
 
-            if (isValid)
+            if (!anyWorldTile && allowNoTile)
                 validPositions.Add(position);
         }
 
-        _logger.Info($"Valid tiles in area: {validPositions.Count}");
+        _logger.Verbose($"Valid tiles in area: {validPositions.Count}");
         return validPositions;
     }
 
@@ -264,7 +336,7 @@ public class SceneSpawner : MonoBehaviour
                 filteredPositions.Add(pos);
         }
 
-        _logger.Info($"Number of spawn positions after proximity filtering: {filteredPositions.Count}");
+        _logger.Verbose($"Number of spawn positions after proximity filtering: {filteredPositions.Count}");
         return filteredPositions;
     }
 
@@ -280,17 +352,17 @@ public class SceneSpawner : MonoBehaviour
 
     private void VerifyVariantsAreSameSize()
     {
-        if (ObjectsToSpawn == null || ObjectsToSpawn.Count <= 1)
+        if (SpawnConfigs == null || SpawnConfigs.Count <= 1)
             return;
 
-        foreach (var spawnObject in ObjectsToSpawn)
+        foreach (var spawnConfig in SpawnConfigs)
         {
-            if (spawnObject.PrefabVariants == null || spawnObject.PrefabVariants.Count == 0)
+            if (spawnConfig.PrefabVariants == null || spawnConfig.PrefabVariants.Count == 0)
                 continue;
 
-            OccupyWorldObjectSpace initialSpaceOccupied = spawnObject.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
+            OccupyWorldObjectSpace initialSpaceOccupied = spawnConfig.PrefabVariants[0].GetComponent<OccupyWorldObjectSpace>();
 
-            foreach (var variant in spawnObject.PrefabVariants)
+            foreach (var variant in spawnConfig.PrefabVariants)
             {
                 OccupyWorldObjectSpace variantSpace = variant.GetComponent<OccupyWorldObjectSpace>();
 

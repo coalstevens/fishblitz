@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f56fa715b03346698e7e5a463ab7a37, type: 3}
+  m_Name: BigRocks
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnObjectInfo
+  PrefabVariants:
+  - {fileID: 1432519779560262536, guid: a42c348118fe54aaf858979d545f313a, type: 3}
+  - {fileID: 6221756347476409415, guid: e04b2285b278f46868ea62ae9c9b4a5e, type: 3}
+  - {fileID: 2724734600843755973, guid: fbc70a0dde00d4406b4dc70674eb9186, type: 3}
+  ValidTileTypes:
+  - {fileID: 11400000, guid: 9dd9a360dc42a4a60a0614b3f6824138, type: 2}
+  Density: 0.0025
+  SpawnNearbyOtherTypes: 0
+  NearbyAdjacentDistance: 1
+  NearbyTypes: []
+  UsePerlinNoise: 0
+  PerlinNoiseScale: 0.1
+  PerlinThreshold: 0.5

@@ -98,8 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 822d62c15895340be9275a41de1e7ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadedOpacity: 0.5
-  fadeDuration: 0.5
+  _fadedOpacity: 0.5
+  _fadeDuration: 0.5
+  _searchOnParent: 1
 --- !u!1 &4680636305652429274
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb6ec90b8ef74a50a6b91415c3d78be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  extraTilesToLeft: 0
-  extraTilesToRight: 0
-  extraTilesAbove: 0
-  extraTilesBelow: 0
+  extraTilesToLeft: 1
+  extraTilesToRight: 1
+  extraTilesAbove: 1
+  extraTilesBelow: 1

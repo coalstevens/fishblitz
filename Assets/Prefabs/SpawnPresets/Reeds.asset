@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f56fa715b03346698e7e5a463ab7a37, type: 3}
+  m_Name: Reeds
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnObjectInfo
+  PrefabVariants:
+  - {fileID: 6827217041812705697, guid: 43bb9548cea7a460ba429865a08fff1a, type: 3}
+  - {fileID: 6827217041812705697, guid: cd68986aa98da46b49c3dec7dad93ce6, type: 3}
+  - {fileID: 6827217041812705697, guid: 749f96afc80f444078778277f85debe7, type: 3}
+  - {fileID: 6827217041812705697, guid: 63a31394dc9664d2ea62104266a1bba6, type: 3}
+  ValidTileTypes:
+  - {fileID: 11400000, guid: 9dd9a360dc42a4a60a0614b3f6824138, type: 2}
+  Density: 0.7
+  SpawnNearbyOtherTypes: 0
+  NearbyAdjacentDistance: 1
+  NearbyTypes: []
+  UsePerlinNoise: 1
+  PerlinNoiseScale: 0.2
+  PerlinThreshold: 0.3
