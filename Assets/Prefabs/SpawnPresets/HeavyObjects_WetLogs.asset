@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f56fa715b03346698e7e5a463ab7a37, type: 3}
-  m_Name: Spruce
+  m_Name: HeavyObjects_WetLogs
   m_EditorClassIdentifier: Assembly-CSharp::SpawnObjectInfo
   PrefabVariants:
-  - {fileID: 3277752044887270403, guid: 5834f62d332c1486b8eb62f140cf2ecb, type: 3}
+  - {fileID: 1667917436774412631, guid: 1007c5c0a6f8e4af9bf64599a9edda1f, type: 3}
+  - {fileID: 1667917436774412631, guid: e76509c62b69f40d082053d462c8b6c3, type: 3}
   ValidTileTypes:
   - {fileID: 11400000, guid: 9dd9a360dc42a4a60a0614b3f6824138, type: 2}
-  Density: 0.05
+  - {fileID: 11400000, guid: 09aeec488df924edbb023d04dfcefbd5, type: 2}
+  Density: 0.2
   SpawnNearbyOtherTypes: 0
   NearbyAdjacentDistance: 1
   NearbyTypes: []

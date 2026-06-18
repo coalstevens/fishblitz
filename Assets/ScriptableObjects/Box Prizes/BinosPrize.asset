@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f25d42dbb6c9a4a6b9c96f76960e3e49, type: 3}
+  m_Name: BinosPrize
+  m_EditorClassIdentifier: Assembly-CSharp::BoxData
+  RequiredObjects:
+  - Type: {fileID: 11400000, guid: 1508fe3d5bacf4c96826207d9dc130d0, type: 2}
+    Quantity: 2
+  PrizePrefab: {fileID: 2103181429623164641, guid: 5a6756bc4e2424778a311d9a774cdc8b, type: 3}
+  PrizeSpawnOffset: {x: 0, y: 0, z: 0}

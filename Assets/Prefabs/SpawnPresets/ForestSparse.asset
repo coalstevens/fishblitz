@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f56fa715b03346698e7e5a463ab7a37, type: 3}
+  m_Name: ForestSparse
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnObjectInfo
+  PrefabVariants:
+  - {fileID: 1667917436774412631, guid: a3d2c41f6f455443588bfaf0701e189f, type: 3}
+  - {fileID: 4737805772135044970, guid: 5834f62d332c1486b8eb62f140cf2ecb, type: 3}
+  ValidTileTypes:
+  - {fileID: 11400000, guid: 9dd9a360dc42a4a60a0614b3f6824138, type: 2}
+  - {fileID: 0}
+  Density: 0.025
+  SpawnNearbyOtherTypes: 0
+  NearbyAdjacentDistance: 1
+  NearbyTypes: []
+  UsePerlinNoise: 1
+  PerlinNoiseScale: 0.1
+  PerlinThreshold: 0.4

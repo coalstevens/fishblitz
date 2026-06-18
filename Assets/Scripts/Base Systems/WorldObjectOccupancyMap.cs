@@ -10,11 +10,17 @@ public class WorldObjectOccupancyMap : MonoBehaviour
 
     public bool CheckOccupied(Vector2 worldPosition)
     {
+        if (_tileMap == null)
+            _tileMap = GetComponent<Tilemap>();
+
         Vector3Int tilePosition = _tileMap.WorldToCell(worldPosition);
         return _tileMap.GetTile(tilePosition) != null;
     }
     public bool CheckOccupied(Vector3Int tilePosition)
     {
+        if (_tileMap == null)
+            _tileMap = GetComponent<Tilemap>();
+
         return _tileMap.GetTile(tilePosition) != null;
     }
 
