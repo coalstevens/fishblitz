@@ -122,8 +122,8 @@ public class Wind : MonoBehaviour
 
         _windForceField.directionX = _windXVector;
         // Add some slight rotation to the raindrops
-        var rot = _rain.rotationOverLifetime;
-        rot.z = new ParticleSystem.MinMaxCurve(-1 * _windXVector * _rainParticleRotationScalar);
+        if (_rain != null)
+            _rain.transform.localRotation = Quaternion.Euler(0, 0, -1 * _windXVector * _rainParticleRotationScalar);
 
         // Update player speed limits
         if (WindState.Value != WindStates.Fluctating)

@@ -41,16 +41,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BendDirection: -0.0382481
-    - _BendScaler: 1.5
-    - _BendSpeed: 0.4
+    - _BendDirection: -0.027468665
+    - _BendScaler: 0.5
+    - _BendSpeed: 7.74
+    - _Pixelate: 0
     - _Pixelization: 32
-    - _WindBalance: 0.5
-    - _WindDensity: 0.3
-    - _WindStrength: 0.5
+    - _StaticDepth: 0.1
+    - _TurbulenceDensity: 0.5
+    - _TurbulenceStrength: 0.4
+    - _WindBalance: 0
+    - _WindDensity: 1.45
+    - _WindStrength: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _WindSpeed: {r: 0.4, g: 0, b: 0, a: 0}
+    - _TilingScaler: {r: -0.14, g: 0.65, b: 0, a: 0}
+    - _TurbulenceScale: {r: 1, g: 1, b: 0, a: 0}
+    - _TurbulenceSpeed: {r: 1, g: 0, b: 0, a: 0}
+    - _WindSpeed: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6029574502540758022

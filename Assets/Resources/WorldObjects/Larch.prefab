@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7044165579182886953}
   - component: {fileID: 2785344821184485068}
   - component: {fileID: 6990470256918873548}
+  - component: {fileID: 2274933248901916220}
   m_Layer: 21
   m_Name: Larch
   m_TagString: Untagged
@@ -198,6 +199,21 @@ MonoBehaviour:
   extraTilesToRight: 1
   extraTilesAbove: 1
   extraTilesBelow: 1
+--- !u!114 &2274933248901916220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667917436774412631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c3812f6aa2445d1bff701c9a942938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSubdivider
+  _horizontalSegments: 8
+  _verticalSegments: 8
+  _cloneSprite: 1
 --- !u!1 &3816888741146370826
 GameObject:
   m_ObjectHideFlags: 0

@@ -87,6 +87,7 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
                 Debug.LogError("TreePlant state machine defaulted");
                 break;
         }
+        GetComponent<SpriteSubdivider>()?.Regenerate();
     }
 
     public void OnUseAxe()
