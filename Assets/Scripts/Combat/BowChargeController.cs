@@ -8,6 +8,7 @@ public class BowChargeController : MonoBehaviour
     [Header("Frame Visual")]
     [SerializeField] private Transform _rotationPivot;
     [SerializeField] private Transform _frame;
+    [SerializeField] private Transform _HUD;
     [SerializeField] private Vector2 _framePositionLimits = new Vector2(0f, 1f);
     [SerializeField] private float _chargeTimeSecs = 1.5f;
 
@@ -42,8 +43,9 @@ public class BowChargeController : MonoBehaviour
         Assert.IsNotNull(_playerInput);
         Assert.IsNotNull(_playerEnergyManager);
         Assert.IsNotNull(_frame, "Frame transform is not set on BowChargeController.");
+        Assert.IsNotNull(_HUD, "HUD transform is not set on BowChargeController.");
 
-        _frame.gameObject.SetActive(false);
+        _HUD.gameObject.SetActive(false);
     }
 
     public bool StartCharge(Bow bow, RangedWeaponItem.InstanceData weaponData)
@@ -62,7 +64,7 @@ public class BowChargeController : MonoBehaviour
         _chargeVelocity = (_framePositionLimits.y - _framePositionLimits.x) / _chargeTimeSecs;
 
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
-        _frame.gameObject.SetActive(true);
+        _HUD.gameObject.SetActive(true);
 
         if (!_activeBow.AllowMovementWhileCharging)
         {
@@ -149,7 +151,7 @@ public class BowChargeController : MonoBehaviour
 
     private void EndCharge()
     {
-        _frame.gameObject.SetActive(false);
+        _HUD.gameObject.SetActive(false);
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
 
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging ||

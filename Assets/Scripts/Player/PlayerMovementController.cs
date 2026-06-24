@@ -151,6 +151,15 @@ public class PlayerMovementController : MonoBehaviour
             if (PlayerState.Value == PlayerStates.BowChargingRunning)
                 PlayerState.Value = PlayerStates.BowCharging;
         }
+
+        if (_currentMotion.magnitude == 0 &&
+            (PlayerState.Value == PlayerStates.BowCharging || PlayerState.Value == PlayerStates.BowChargingRunning))
+        {
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Direction.Value = mouseWorld.x > transform.position.x
+                ? CompassDirection.SouthEast
+                : CompassDirection.SouthWest;
+        }
     }
 
     private void FixedUpdate()
