@@ -4,6 +4,7 @@
 
 ### Combat — Bow & Arrow
 - [ ] Bow with knockback, hold to charge power (like birding net)
+- [ ] When the wheelbarrow gets hit by an enemy projectile, it drops an item; arrows pass right over it when empty
 - [ ] More accurate when standing still; early bows require standing still
 - [ ] Tool that blasts nearby projectiles away
 - [ ] Magnet that deflects steel bullets (defense-only, saves arrows)

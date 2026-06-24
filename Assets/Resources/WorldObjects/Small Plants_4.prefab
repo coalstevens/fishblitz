@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7620490667574045521}
   - component: {fileID: -4526484989529986270}
   - component: {fileID: -8543803766642722872}
+  - component: {fileID: -5704049528794908551}
   m_Layer: 0
   m_Name: Small Plants_4
   m_TagString: Untagged
@@ -60,7 +61,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 766192215f1744094bae7ac3d43d782c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,3 +128,18 @@ MonoBehaviour:
   extraTilesToRight: 0
   extraTilesAbove: 0
   extraTilesBelow: 0
+--- !u!114 &-5704049528794908551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8417582889741890823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c3812f6aa2445d1bff701c9a942938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSubdivider
+  _horizontalSegments: 3
+  _verticalSegments: 5
+  _cloneSprite: 1

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Larch
+  m_Name: ShortGrass
   m_Shader: {fileID: -6465566751694194690, guid: 8f83edbf8a9804a0aa570af394fd9130, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: -8328923581568760697, guid: a9761fae31f0148ef8093e72b1db6b4f, type: 3}
+        m_Texture: {fileID: -8328923581568760697, guid: e1d4095b312464dd786d62ad0118e7f7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -41,16 +41,16 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BendDirection: -0.16826095
-    - _BendScaler: 0.6
+    - _BendDirection: -0.22
+    - _BendScaler: 0.1
     - _BendSpeed: 7.74
     - _Pixelate: 0
     - _Pixelization: 32
-    - _SpeedWindMultiplier: 0.1
+    - _SpeedWindMultiplier: 0.2
     - _StaticDepth: 0
     - _StrengthWindMultiplier: 0
     - _TurbulenceDensity: 0.5
-    - _TurbulenceStrength: 0.3
+    - _TurbulenceStrength: 0.1
     - _TurbulenceWindAmplifier: 0
     - _WindBalance: 0
     - _WindDensity: 1.45

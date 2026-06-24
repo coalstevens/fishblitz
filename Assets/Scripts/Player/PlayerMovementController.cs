@@ -43,7 +43,8 @@ public class PlayerMovementController : MonoBehaviour
         Birding,
         BirdingRunning,
         PickingUp,
-        Crouched
+        Crouched,
+        BowCharging
     }
 
     private static PlayerMovementController _instance;
@@ -109,7 +110,8 @@ public class PlayerMovementController : MonoBehaviour
         if (PlayerState.Value != PlayerStates.Idle &&
             PlayerState.Value != PlayerStates.Running &&
             PlayerState.Value != PlayerStates.Birding &&
-            PlayerState.Value != PlayerStates.BirdingRunning)
+            PlayerState.Value != PlayerStates.BirdingRunning &&
+            PlayerState.Value != PlayerStates.BowCharging)
             return;
 
         if (_currentMotion.x > 0 && _currentMotion.y > 0)
@@ -151,7 +153,8 @@ public class PlayerMovementController : MonoBehaviour
         if (PlayerState.Value != PlayerStates.Idle &&
             PlayerState.Value != PlayerStates.Running &&
             PlayerState.Value != PlayerStates.Birding &&
-            PlayerState.Value != PlayerStates.BirdingRunning)
+            PlayerState.Value != PlayerStates.BirdingRunning &&
+            PlayerState.Value != PlayerStates.BowCharging)
         {
             _rb.linearVelocity = Vector2.zero;
             _currentVelocity = Vector2.zero;

@@ -78,13 +78,13 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void Launch(Vector2 direction, bool isEnemyProjectile)
+    public void Launch(Vector2 direction, bool isEnemyProjectile, float speedMultiplier = 1f)
     {
         IsEnemyProjectile = isEnemyProjectile;
         _lifespanTimeoutCoroutine = StartCoroutine(DisableProjectileAfterLifespan());
         if (_rb != null)
         {
-            _rb.linearVelocity = direction.normalized * _speed;
+            _rb.linearVelocity = direction.normalized * _speed * speedMultiplier;
         }
     }
 

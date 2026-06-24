@@ -7,7 +7,6 @@
 - [ ] Finish CanyonStart spawner
 
 ## This Week
-- [ ] Create border region generator
 
 ## Blockers
 - [ ]
