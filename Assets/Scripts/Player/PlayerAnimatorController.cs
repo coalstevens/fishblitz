@@ -132,6 +132,12 @@ public class PlayerAnimatorController : MonoBehaviour
             case PlayerMovementController.PlayerStates.Crouched:
                 HandleCrouched();
                 break;
+            case PlayerMovementController.PlayerStates.BowCharging:
+                PlayIdleBow();
+                break;
+            case PlayerMovementController.PlayerStates.BowChargingRunning:
+                PlayRunningBow();
+                break;
         }
     }
 
@@ -389,5 +395,29 @@ public class PlayerAnimatorController : MonoBehaviour
                 break;
         }
         Invoke(nameof(SetPlayerIdle), 0.610f);
+    }
+
+    private void PlayIdleBow()
+    {
+        ShowDefaultSprite();
+        switch (AnimationDirection)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                CurrentAnimator.Play("SE_Idle_Bow_Charging");
+                break;
+        }
+    }
+
+    private void PlayRunningBow()
+    {
+        ShowDefaultSprite();
+        switch (AnimationDirection)
+        {
+            case CompassDirection.SouthEast:
+            case CompassDirection.SouthWest:
+                CurrentAnimator.Play("SE_Running_Bow_Charging");
+                break;
+        }
     }
 }

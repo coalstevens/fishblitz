@@ -44,7 +44,8 @@ public class PlayerMovementController : MonoBehaviour
         BirdingRunning,
         PickingUp,
         Crouched,
-        BowCharging
+        BowCharging,
+        BowChargingRunning
     }
 
     private static PlayerMovementController _instance;
@@ -111,7 +112,8 @@ public class PlayerMovementController : MonoBehaviour
             PlayerState.Value != PlayerStates.Running &&
             PlayerState.Value != PlayerStates.Birding &&
             PlayerState.Value != PlayerStates.BirdingRunning &&
-            PlayerState.Value != PlayerStates.BowCharging)
+            PlayerState.Value != PlayerStates.BowCharging &&
+            PlayerState.Value != PlayerStates.BowChargingRunning)
             return;
 
         if (_currentMotion.x > 0 && _currentMotion.y > 0)
@@ -137,6 +139,8 @@ public class PlayerMovementController : MonoBehaviour
                 PlayerState.Value = PlayerStates.Running;
             if (PlayerState.Value == PlayerStates.Birding)
                 PlayerState.Value = PlayerStates.BirdingRunning;
+            if (PlayerState.Value == PlayerStates.BowCharging)
+                PlayerState.Value = PlayerStates.BowChargingRunning;
         }
         else
         {
@@ -144,6 +148,8 @@ public class PlayerMovementController : MonoBehaviour
                 PlayerState.Value = PlayerStates.Idle;
             if (PlayerState.Value == PlayerStates.BirdingRunning)
                 PlayerState.Value = PlayerStates.Birding;
+            if (PlayerState.Value == PlayerStates.BowChargingRunning)
+                PlayerState.Value = PlayerStates.BowCharging;
         }
     }
 
@@ -154,7 +160,8 @@ public class PlayerMovementController : MonoBehaviour
             PlayerState.Value != PlayerStates.Running &&
             PlayerState.Value != PlayerStates.Birding &&
             PlayerState.Value != PlayerStates.BirdingRunning &&
-            PlayerState.Value != PlayerStates.BowCharging)
+            PlayerState.Value != PlayerStates.BowCharging &&
+            PlayerState.Value != PlayerStates.BowChargingRunning)
         {
             _rb.linearVelocity = Vector2.zero;
             _currentVelocity = Vector2.zero;

@@ -152,7 +152,8 @@ public class BowChargeController : MonoBehaviour
         _frame.gameObject.SetActive(false);
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
 
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging)
+        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging ||
+            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowChargingRunning)
         {
             _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
         }
