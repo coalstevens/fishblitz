@@ -11,6 +11,7 @@ public class PlayerCarry : MonoBehaviour
     private WorldObjectOccupancyMap _worldObjectOccupancyMap;
     private WeightyObjectStack _carriedObjects;  
     private PlayerMovementController _playermovementController;
+    private PlayerStrength _playerStrength;
     private GameObject _impermanent;
     private Grid _grid;
     private PlayerInput _playerInput;
@@ -37,6 +38,8 @@ public class PlayerCarry : MonoBehaviour
 
         _carriedObjects = GetComponent<WeightyObjectStack>();
         Assert.IsNotNull(_carriedObjects);
+        _playerStrength = GetComponent<PlayerStrength>();
+        Assert.IsNotNull(_playerStrength);
         Assert.IsNotNull(_playerData);
     }
 
@@ -69,6 +72,7 @@ public class PlayerCarry : MonoBehaviour
         Assert.IsTrue(_carriedObjects.HasEnoughSpace(objectToStore.Type.Weight));
         _playerData.IsCarrying.Value = true;
         _carriedObjects.Push(objectToStore);
+        _playerStrength.RegisterPickup(objectToStore.SavedData.PersistentID);
     }
 
     public void PutDown(Vector3Int cursorLocationGrid)

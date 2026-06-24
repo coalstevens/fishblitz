@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67dde15aa86f54a308894cd082261e18, type: 3}
+  m_Name: StrengthData
+  m_EditorClassIdentifier: Assembly-CSharp::StrengthData
+  _levels:
+  - PickupsRequired: 0
+    CarryCapacity: 1
+    LevelUpMessage: 
+  - PickupsRequired: 10
+    CarryCapacity: 2
+    LevelUpMessage: the weight doesn't feel as heavy...
+  - PickupsRequired: 40
+    CarryCapacity: 3
+    LevelUpMessage: you're getting used to the load...
+  - PickupsRequired: 100
+    CarryCapacity: 4
+    LevelUpMessage: your back isn't complaining as much...
+  - PickupsRequired: 200
+    CarryCapacity: 5
+    LevelUpMessage: you're lifting with your legs now...
+  - PickupsRequired: 1000
+    CarryCapacity: 5
+    LevelUpMessage: the rocks are definitely getting lighter...

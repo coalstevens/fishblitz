@@ -12,6 +12,7 @@ public class SaveData {
     }
 
     public string Identifier;
+    public string PersistentID;
     public SimpleVector3 Position;
     public string ExtendedData;
 

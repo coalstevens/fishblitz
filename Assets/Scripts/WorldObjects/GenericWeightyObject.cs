@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -6,6 +7,7 @@ public class GenericWeightyObject : MonoBehaviour, IWeighty
 {
     [SerializeField] WeightyObjectType _weightyObjectType;
     [SerializeField] private string _identifier = "Log";
+    private string _persistentID;
     private PlayerCarry _playerCarry;
     public WeightyObjectType WeightyObject => _weightyObjectType;
 
@@ -40,7 +42,11 @@ public class GenericWeightyObject : MonoBehaviour, IWeighty
 
     public SaveData Save()
     {
+        if (string.IsNullOrEmpty(_persistentID))
+            _persistentID = System.Guid.NewGuid().ToString();
+
         var _saveData = new SaveData();
+        _saveData.PersistentID = _persistentID;
         _saveData.AddIdentifier(_identifier);
         _saveData.AddTransformPosition(transform.position);
         return _saveData;
@@ -48,6 +54,6 @@ public class GenericWeightyObject : MonoBehaviour, IWeighty
 
     public void Load(SaveData saveData)
     {
-        // nothing to load
+        _persistentID = saveData.PersistentID;
     }
 }

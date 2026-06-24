@@ -22,6 +22,8 @@ MonoBehaviour:
   TodaysProtein: 0
   TodaysCarbs: 0
   TodaysNutrients: 0
+  _strengthData: {fileID: 11400000, guid: 1539dd1ffee5b4b8d9b4332279e51783, type: 2}
+  TotalPickupCount: 0
   PlayerIsWet:
     _val: 0
   ActualPlayerTemperature:
@@ -30,7 +32,12 @@ MonoBehaviour:
     _val: 0
   WetnessState:
     _val: 1
+  IsHoldingWheelBarrow:
+    _val: 0
+  IsCarrying:
+    _val: 0
   DryingPointsCounter: 0
   WettingGameMinCounter: 0
   CounterToMatchAmbientGamemins: 0
   IsPlayerSleeping: 0
+  LastPlayerSleepTime: 0

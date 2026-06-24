@@ -25,6 +25,11 @@ public class PlayerData : ScriptableObject
     public const float CARBS_REQUIRED_DAILY = 100;
     public const float NUTRIENTS_REQUIRED_DAILY = 100;
 
+    [Header("Strength")]
+    [SerializeField] private StrengthData _strengthData;
+    public StrengthData StrengthData => _strengthData;
+    public int TotalPickupCount = 0;
+
     [Header("Dryness")] 
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
     public Reactive<Temperature> ActualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
