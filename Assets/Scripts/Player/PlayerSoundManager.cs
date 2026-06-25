@@ -4,21 +4,27 @@ using UnityEngine;
 public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] private SoundData _walkingSound;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private SoundData _wheelbarrowRollingSound;
+    [SerializeField] private PlayerData _playerData;
     private PlayerMovementController _playerMovementController;
-    private Action _stopSoundCB;
-    private Action _unsubscribeCB;
+    private Action _stopFootstepSoundCB;
+    private Action _stopWheelbarrowSoundCB;
+    private Action _unsubscribeStateCB;
+    private Action _unsubscribeWheelbarrowCB;
 
     private void OnEnable()
     {
         _playerMovementController = GetComponent<PlayerMovementController>();
-        _unsubscribeCB = _playerMovementController.PlayerState.OnChange((prev, curr) => OnPlayerStateChange(prev, curr));
+        _unsubscribeStateCB = _playerMovementController.PlayerState.OnChange((prev, curr) => OnPlayerStateChange(prev, curr));
+        _unsubscribeWheelbarrowCB = _playerData.IsHoldingWheelBarrow.OnChange(_ => OnWheelbarrowStateChange());
     }
 
     private void OnDisable()
     {
-        StopSound();
-        _unsubscribeCB();
+        StopFootstepSound();
+        StopWheelbarrowSound();
+        _unsubscribeStateCB();
+        _unsubscribeWheelbarrowCB();
     }
 
     private void OnPlayerStateChange(PlayerMovementController.PlayerStates previous, PlayerMovementController.PlayerStates current)
@@ -26,20 +32,41 @@ public class PlayerSoundManager : MonoBehaviour
         switch (current)
         {
             case PlayerMovementController.PlayerStates.Running:
-                _stopSoundCB = AudioManager.PlayLoopingSFX(_audioSource, _walkingSound);
+                _stopFootstepSoundCB = PlayerAudioManager.Instance.PlayLooping(_walkingSound);
                 break;
             default:
-                StopSound();
+                StopFootstepSound();
                 break;
+        }
+        OnWheelbarrowStateChange();
+    }
+
+    private void OnWheelbarrowStateChange()
+    {
+        bool shouldRoll = _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Running
+                       && _playerData.IsHoldingWheelBarrow.Value;
+
+        if (shouldRoll && _stopWheelbarrowSoundCB == null)
+            _stopWheelbarrowSoundCB = PlayerAudioManager.Instance.PlayLooping(_wheelbarrowRollingSound);
+        else if (!shouldRoll)
+            StopWheelbarrowSound();
+    }
+
+    private void StopFootstepSound()
+    {
+        if (_stopFootstepSoundCB != null)
+        {
+            _stopFootstepSoundCB();
+            _stopFootstepSoundCB = null;
         }
     }
 
-    private void StopSound()
+    private void StopWheelbarrowSound()
     {
-        if (_stopSoundCB != null)
+        if (_stopWheelbarrowSoundCB != null)
         {
-            _stopSoundCB();
-            _stopSoundCB = null;
+            _stopWheelbarrowSoundCB();
+            _stopWheelbarrowSoundCB = null;
         }
     }
 }

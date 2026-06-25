@@ -9,7 +9,6 @@ public interface IWeightyObjectContainer : InteractInput.IInteractable
 public class WeightyObjectStack : MonoBehaviour
 {
     [SerializeField] public WeightyObjectStackData Data;
-    [SerializeField] private AudioSource _audioSource;
 
     private void Awake()
     {
@@ -22,7 +21,7 @@ public class WeightyObjectStack : MonoBehaviour
         Data.CurrentWeight += storedObject.Type.Weight;
         Data.StoredObjects.Push(storedObject);
         if (Data.InsertSound != null)
-            AudioManager.PlaySFX(_audioSource, Data.InsertSound);
+            PlayerAudioManager.Instance.PlayOneShot(Data.InsertSound);
         return true;
     }
 
@@ -31,7 +30,7 @@ public class WeightyObjectStack : MonoBehaviour
         Assert.IsTrue(Data.StoredObjects.Count > 0);
         Data.CurrentWeight -= Data.StoredObjects.Peek().Type.Weight;
         if (Data.RemoveSound != null)
-            AudioManager.PlaySFX(_audioSource, Data.RemoveSound);
+            PlayerAudioManager.Instance.PlayOneShot(Data.RemoveSound);
         return Data.StoredObjects.Pop();
     }
 

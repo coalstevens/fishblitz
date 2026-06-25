@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b08f8b11b24e4fda933f44abc5c9ddf, type: 3}
-  m_Name: BarrowLift
+  m_Name: BarrowRolling
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  Clip: {fileID: 8300000, guid: 9ddc191eead814729a8d09ca25035454, type: 3}
-  Volume: 0.174
-  IsLooping: 0
+  Clip: {fileID: 8300000, guid: 07a4e944945f346acadeb861233e4c1e, type: 3}
+  Volume: 0.116
+  IsLooping: 1
   UsePitchVariation: 0
   PitchVariationAmount: 0.036
   UseVolumeVariation: 0
   VolumeVariationAmount: 0.05
-  FadeIn: 0
+  FadeIn: 1
   FadeOut: 0
-  FadeDuration: 2
-  LoopSpacing: 0.25
-  LoopVariationPct: 0.098
+  FadeDuration: 0.5
+  LoopSpacing: 0
+  LoopVariationPct: 0
