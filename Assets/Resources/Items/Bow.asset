@@ -20,4 +20,10 @@ MonoBehaviour:
   ReloadTime: 1
   ClipSize: 3
   ProjectilePrefab: {fileID: 4808849940970867615, guid: 54b4ea13ccdf446bc82905344b725469, type: 3}
+  IsEnemyProjectile: 0
   _energyCost: 0
+  _allowMovementWhileCharging: 0
+  _chargeTimeSecs: 1.5
+  _minSpeedMultiplier: 0.2
+  _minChargeNormalized: 0.3
+  _critShotCharge: {x: 0.85, y: 0.9}

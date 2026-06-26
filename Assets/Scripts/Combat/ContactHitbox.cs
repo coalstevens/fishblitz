@@ -12,6 +12,9 @@ public class ContactHitbox : MonoBehaviour
     public event Action<IHurtBox> OnHit;
 
     private Rigidbody2D _parentRb;
+    public float Damage => _damage;
+    public void SetDamage(float damage) => _damage = damage;
+
     private int _friendlyHurtboxLayer;
     private int _enemyHurtboxLayer;
     private int _friendlyHitboxLayer;

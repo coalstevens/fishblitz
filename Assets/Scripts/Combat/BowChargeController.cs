@@ -26,6 +26,8 @@ public class BowChargeController : MonoBehaviour
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerMovementController _playerMovementController;
     private SpriteRenderer[] _frameRenderers;
+    private static readonly int _overrideColorProp = Shader.PropertyToID("_OverrideColor");
+    private static readonly int _overridePercentProp = Shader.PropertyToID("_OverridePercent");
     [SerializeField] private PlayerData _playerData;
 
     private void Awake()
@@ -91,6 +93,7 @@ public class BowChargeController : MonoBehaviour
                 _frame.localPosition = new Vector3(_framePositionLimits.y, 0f, 0f);
                 _chargeNormalized = 1f;
                 Fire();
+                return;
             }
             else
             {
@@ -101,13 +104,20 @@ public class BowChargeController : MonoBehaviour
         else if (_chargeNormalized > 0f)
         {
             if (_chargeNormalized >= _activeBow.MinChargeNormalized)
+            {
                 Fire();
+                return;
+            }
             else
+            {
                 EndCharge();
+                return;
+            }
         }
 
         float t = Mathf.Clamp01(_chargeNormalized / _activeBow.MinChargeNormalized);
         SetFrameAlpha(t * t);
+        UpdateOverrideColor();
     }
 
     private void Fire()
@@ -139,6 +149,10 @@ public class BowChargeController : MonoBehaviour
         Projectile projectile = projectileObj.GetComponent<Projectile>();
         projectile.Launch(direction, speedMultiplier);
 
+        bool isCrit = _chargeNormalized >= _activeBow.CritShotCharge.x
+                   && _chargeNormalized < _activeBow.CritShotCharge.y;
+        if (isCrit) projectile.SetCrit(true);
+
         if (_playerEnergyManager != null && _activeBow is PlayerEnergyManager.IEnergyDepleting deplete)
         {
             _playerEnergyManager.DepleteEnergy(deplete.EnergyCost);
@@ -160,6 +174,7 @@ public class BowChargeController : MonoBehaviour
         _HUD.gameObject.SetActive(false);
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
         SetFrameAlpha(0f);
+        ClearOverride();
 
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowChargingRunning)
@@ -194,6 +209,48 @@ public class BowChargeController : MonoBehaviour
             Color c = sr.color;
             c.a = alpha;
             sr.color = c;
+        }
+    }
+
+    private void SetOverride(Color color, float value)
+    {
+        var block = new MaterialPropertyBlock();
+        block.SetColor(_overrideColorProp, color);
+        block.SetFloat(_overridePercentProp, value);
+        foreach (var sr in _frameRenderers)
+        {
+            sr.SetPropertyBlock(block);
+        }
+    }
+
+    private void ClearOverride()
+    {
+        foreach (var sr in _frameRenderers)
+        {
+            sr.SetPropertyBlock(null);
+        }
+    }
+
+    private void UpdateOverrideColor()
+    {
+        if (_activeBow == null) return;
+
+        float minCharge = _activeBow.MinChargeNormalized;
+        Vector2 critShot = _activeBow.CritShotCharge;
+
+        if (_chargeNormalized < critShot.x)
+        {
+            float t = Mathf.InverseLerp(minCharge, critShot.x, _chargeNormalized);
+            t = Mathf.Clamp01(t);
+            SetOverride(Color.white, t);
+        }
+        else if (_chargeNormalized < critShot.y)
+        {
+            SetOverride(Color.yellow, 1f);
+        }
+        else
+        {
+            ClearOverride();
         }
     }
 
