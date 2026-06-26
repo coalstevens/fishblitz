@@ -129,15 +129,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Frame
     originalName: 
-    pivot: {x: 1, y: 0.5}
+    pivot: {x: 1.020747, y: 0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
-      width: 246
+      y: 41
+      width: 241
       height: 29
     spriteID: 9267cd2622cc5406aa52fd00a0bde240
     spriteBone: []
@@ -147,7 +147,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 4, y: 41}
   - name: Cursor
     originalName: 
     pivot: {x: 208, y: 0.49999997}
@@ -156,8 +156,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 111
+      x: 251
+      y: 78
       width: 1
       height: 25
     spriteID: fcf3aa38958c044d68afbc0f082fdb2c
@@ -168,10 +168,10 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 111}
+    uvTransform: {x: 251, y: 78}
   - name: Mask
     originalName: 
-    pivot: {x: 1.016529, y: 0.49999997}
+    pivot: {x: 1.0292886, y: 0.49999997}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -179,7 +179,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 78
-      width: 242
+      width: 239
       height: 25
     spriteID: 66de4cc50bc204bc7b9065057b7520ab
     spriteBone: []
@@ -199,7 +199,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 41
+      y: 4
       width: 246
       height: 29
     spriteID: 80ed3051abbbf4d428f02780fd00a672
@@ -210,7 +210,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 41}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
@@ -232,7 +232,7 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 0
-        width: 246
+        width: 241
         height: 29
       spriteId: 9267cd2622cc5406aa52fd00a0bde240
     linkedCells:
@@ -290,7 +290,7 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 2
-        width: 242
+        width: 239
         height: 25
       spriteId: 66de4cc50bc204bc7b9065057b7520ab
     linkedCells:
@@ -366,4 +366,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 246, y: 29}
-  previousTextureSize: {x: 256, y: 256}
+  previousTextureSize: {x: 256, y: 128}

@@ -1,62 +1,20 @@
-using System;
-using System.Collections.Generic;
-using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public class EnemyHurtbox : MonoBehaviour, IHurtBox
 {
-    public Reactive<bool> IsCovered = new Reactive<bool>(false);
-    [SerializeField] private Reactive<bool> _isInCoveredArea = new Reactive<bool>(false);
-    [SerializeField] private Reactive<bool> _isCrouched = new Reactive<bool>(false);
     private EnemyHealth _combatStatus;
-    private List<Action> _unsubscribeCBs = new();
-    public bool IsVulnerable => IsCovered.Value;
+
+    public bool IsVulnerable => !_combatStatus.IsInvulnerable.Value;
 
     private void OnEnable()
     {
-        _combatStatus = transform.parent.GetComponent<EnemyHealth>();
+        _combatStatus = GetComponentInParent<EnemyHealth>();
         Assert.IsNotNull(_combatStatus);
-
-        _unsubscribeCBs.Add(_isCrouched.OnChange(_ => CheckIfCovered()));
-        _unsubscribeCBs.Add(_isInCoveredArea.OnChange(_ => CheckIfCovered()));
-    }
-
-    private void OnDisable()
-    {
-        foreach (var cb in _unsubscribeCBs)
-            cb();
-        _unsubscribeCBs.Clear();
-    }
-
-    private void CheckIfCovered()
-    {
-        IsCovered.Value = _isInCoveredArea.Value && _isCrouched.Value;
-    }
-
-    private void CheckIfCrouched(PlayerMovementController.PlayerStates curr)
-    {
-        throw new NotImplementedException();
     }
 
     public void TakeDamage(float damage)
     {
         _combatStatus.TakeDamage(damage);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Cover"))
-        {
-            _isInCoveredArea.Value = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Cover"))
-        {
-            _isInCoveredArea.Value = false;
-        }
     }
 }

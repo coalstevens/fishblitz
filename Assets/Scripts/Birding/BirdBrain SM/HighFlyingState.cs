@@ -40,12 +40,14 @@ public partial class BirdBrain : MonoBehaviour
 
             if (Time.time - _lastWanderForceUpdateTime >= parameters.WanderForceUpdateIntervalSecs)
             {
-                _wanderForce = BirdForces.CalculateWanderForce(
-                    bird,
+                _wanderForce = SteeringForces.CalculateWanderForce(
+                    bird.transform.position,
+                    bird._rb.linearVelocity,
                     parameters.SpeedLimit,
                     parameters.SteerForceLimit,
                     parameters.WanderRingDistance,
                     parameters.WanderRingRadius,
+                    ref bird.TargetPosition,
                     out _wanderRingCenter);
 
                 _lastWanderForceUpdateTime = Time.time;
@@ -57,12 +59,14 @@ public partial class BirdBrain : MonoBehaviour
 
         private void TransitionToPreferredState(BirdBrain bird, BirdBehaviourConfig.HighFlyingParameters parameters)
         {
-            _wanderForce = BirdForces.CalculateWanderForce(
-                bird,
+            _wanderForce = SteeringForces.CalculateWanderForce(
+                bird.transform.position,
+                bird._rb.linearVelocity,
                 parameters.SpeedLimit,
                 parameters.SteerForceLimit,
                 parameters.WanderRingDistance,
                 parameters.WanderRingRadius,
+                ref bird.TargetPosition,
                 out _wanderRingCenter);
 
             float _randomValue = Random.Range(0, parameters.LowFlyingPreference + parameters.LandingPreference);

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public partial class BirdBrain : MonoBehaviour
@@ -40,31 +41,40 @@ public partial class BirdBrain : MonoBehaviour
             {
                 if (Time.time - _lastWanderForceUpdateTime >= parameters.WanderForceUpdateIntervalSecs)
                 {
-                    _wanderForce = BirdForces.CalculateWanderForce(
-                        bird,
+                    _wanderForce = SteeringForces.CalculateWanderForce(
+                        bird.transform.position,
+                        bird._rb.linearVelocity,
                         parameters.SpeedLimit,
                         parameters.SteerForceLimit,
                         parameters.WanderRingDistance,
                         parameters.WanderRingRadius,
+                        ref bird.TargetPosition,
                         out _wanderRingCenter);
 
                     _lastWanderForceUpdateTime = Time.time;
                 }
                 if (Time.time - _lastBoidForceUpdateTime >= parameters.BoidForceUpdateIntervalSecs)
                 {
-                    _boidForce = BirdForces.CalculateBoidForce(
-                        bird,
+                    var flockMates = bird._nearbyBirdsTracker.NearbyBirds
+                        .Where(b => bird.SpeciesData.FlockableSpecies.Contains(b.SpeciesData));
+                    _boidForce = SteeringForces.CalculateBoidForce(
+                        bird.transform.position,
+                        bird._rb.linearVelocity,
+                        flockMates,
                         parameters.BoidForceWeight,
-                        parameters.MaxFlockMates, parameters.SeparationWeight,
+                        parameters.MaxFlockMates,
+                        parameters.SeparationWeight,
                         parameters.AlignmentWeight,
                         parameters.CohesionWeight);
                     _lastBoidForceUpdateTime = Time.time;
                 }
-                _avoidanceForce = BirdForces.CalculateAvoidanceForce(
-                    bird,
+                _avoidanceForce = SteeringForces.CalculateAvoidanceForce(
+                    bird.transform.position,
+                    bird._rb.linearVelocity,
                     bird.Config.CircleCastRadius,
                     bird.Config.CircleCastRange,
                     parameters.AvoidanceWeight,
+                    SteeringForces.GetInteractionLayers(bird.gameObject, bird._rb),
                     out _gizAvoidTarget);
             }
             bird._rb.AddForce(_wanderForce + _boidForce + _avoidanceForce);
@@ -73,12 +83,14 @@ public partial class BirdBrain : MonoBehaviour
 
         private void TransitionToPreferredState(BirdBrain bird, BirdBehaviourConfig.LowFlyingParameters parameters)
         {
-            _wanderForce = BirdForces.CalculateWanderForce(
-                bird,
+            _wanderForce = SteeringForces.CalculateWanderForce(
+                bird.transform.position,
+                bird._rb.linearVelocity,
                 parameters.SpeedLimit,
                 parameters.SteerForceLimit,
                 parameters.WanderRingDistance,
                 parameters.WanderRingRadius,
+                ref bird.TargetPosition,
                 out _wanderRingCenter);
 
             float _randomValue = UnityEngine.Random.Range(0, parameters.LandingPreference + parameters.HighFlyingPreference);

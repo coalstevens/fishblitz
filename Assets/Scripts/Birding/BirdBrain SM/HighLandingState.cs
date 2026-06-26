@@ -54,7 +54,12 @@ public partial class BirdBrain : MonoBehaviour
                 return;
             }
             // Apply force to approach target
-            bird._rb.AddForce(BirdForces.Seek(bird, flyingParams.SpeedLimit, flyingParams.SteerForceLimit));
+            bird._rb.AddForce(SteeringForces.Seek(
+                bird.transform.position,
+                bird._rb.linearVelocity,
+                bird.TargetPosition,
+                flyingParams.SpeedLimit,
+                flyingParams.SteerForceLimit));
         }
 
         private void UpdateLandingCircle(BirdBrain bird)

@@ -2,90 +2,50 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public interface IHurtBox
-{
-    public void TakeDamage(float damage);
-    public bool IsVulnerable { get; }
-}
-
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _lifespan;
     [SerializeField] private float _speed;
-    [SerializeField] private float _damage;
-    [SerializeField] private Logger _logger = new();
+
     private Rigidbody2D _rb;
-    private bool _crossedCover = false;
-    public bool IsEnemyProjectile = false;
+    private ContactHitbox _hitbox;
     private Coroutine _lifespanTimeoutCoroutine;
 
     private void Awake()
     {
-        Assert.IsTrue(_damage > 0);
         Assert.IsTrue(_lifespan > 0);
+
         _rb = GetComponent<Rigidbody2D>();
         Assert.IsNotNull(_rb);
+
+        _hitbox = GetComponentInChildren<ContactHitbox>();
+        Assert.IsNotNull(_hitbox);
+        _hitbox.OnHit += OnHitTarget;
+    }
+
+    private void OnDestroy()
+    {
+        if (_hitbox != null)
+            _hitbox.OnHit -= OnHitTarget;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _logger.Info($"Projectile entered: {collision.gameObject.name}");
-        
-        if (IsColliderInLayer(collision, "Default"))
-        {
-            _logger.Info("  Contacted default object. Disabling projectile.");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
             DisableProjectile();
-            return;
-        }
-
-        if (IsColliderInLayer(collision, "Cover"))
-        {
-            _logger.Info("  Entered cover effective area.");
-            if (!collision.isTrigger)
-            {
-                _crossedCover = true;
-            }
-            return;
-        }
-
-        if (IsColliderInLayer(collision, "FriendlyHurtbox") && IsEnemyProjectile ||
-            IsColliderInLayer(collision, "EnemyHurtbox") && !IsEnemyProjectile)
-        {
-            _logger.Info("  Entered friendly hurtbox.");
-            IHurtBox _hurtbox = collision.transform.GetComponent<IHurtBox>();
-            if (!_hurtbox.IsVulnerable || !_crossedCover)
-            {
-                _logger.Info("  Hurtbox is not covered. Inflicting damage.");
-                _hurtbox.TakeDamage(_damage);
-                DisableProjectile();
-            }
-            return;
-        }
     }
 
-    private bool IsColliderInLayer(Collider2D collider, string layerName)
+    public void Launch(Vector2 direction, float speedMultiplier = 1f)
     {
-        return collider.gameObject.layer == LayerMask.NameToLayer(layerName);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Cover") && collision.isTrigger)
-        {
-            // left effective area of cover
-            if (_crossedCover)
-                _crossedCover = false;
-        }
-    }
-
-    public void Launch(Vector2 direction, bool isEnemyProjectile, float speedMultiplier = 1f)
-    {
-        IsEnemyProjectile = isEnemyProjectile;
         _lifespanTimeoutCoroutine = StartCoroutine(DisableProjectileAfterLifespan());
+
         if (_rb != null)
-        {
             _rb.linearVelocity = direction.normalized * _speed * speedMultiplier;
-        }
+    }
+
+    private void OnHitTarget(IHurtBox _)
+    {
+        DisableProjectile();
     }
 
     private IEnumerator DisableProjectileAfterLifespan()
@@ -101,8 +61,10 @@ public class Projectile : MonoBehaviour
             StopCoroutine(_lifespanTimeoutCoroutine);
             _lifespanTimeoutCoroutine = null;
         }
-        _rb.linearVelocity = Vector2.zero;
-        ObjectPooling.ReturnObjectToPool(this.gameObject);
-    }
 
+        if (_rb != null)
+            _rb.linearVelocity = Vector2.zero;
+
+        ObjectPooling.ReturnObjectToPool(gameObject);
+    }
 }

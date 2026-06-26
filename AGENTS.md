@@ -13,6 +13,7 @@ Assets/
 │   ├── WorldObjects/    # Trees, stumps, campfires, etc.
 │   ├── Items/           # Item definitions (tools, fish, mushrooms)
 │   ├── Birding/         # Birding mini-game
+│   ├── Combat/          # Combat systems (projectiles, steering, health, knockback)
 │   ├── Fishing/         # Fishing mini-game
 │   ├── Weather/         # Weather systems
 │   ├── UI/              # UI components
@@ -183,3 +184,38 @@ public interface ITickable
 - Custom shaders in Assets/Shaders/
 - Audio in Assets/Sound/
 - Save system uses JSON persistence via BlueOyster package
+
+## Prefab Setup: FlyingChaser
+
+Create the prefab at `Assets/Prefabs/Combat/FlyingChaser.prefab` with the following structure:
+
+### Root GameObject ("FlyingChaser")
+
+| Component | Settings |
+|---|---|
+| `FlyingChaser` | Configure wander speeds, chase speed (5), view radius (8), contact damage (1), self-knockback force (15) |
+| `Rigidbody2D` | Body Type: Dynamic, Linear Drag: 2, Gravity Scale: 0, Sleeping Mode: Never Sleep |
+| `CircleCollider2D` (body) | Is Trigger: false, used for world collision |
+| `CircleCollider2D` (hitbox) | Is Trigger: true, slightly smaller than body, for contact damage detection |
+| `SpriteRenderer` | Assign your flying enemy sprite |
+| `EnemyHealth` | Assign `_maxHealth` in Inspector |
+
+### Child "Hurtbox"
+
+| Component | Settings |
+|---|---|
+| `Collider2D` | Is Trigger: true, layer: `EnemyHurtbox` |
+| `EnemyHurtbox` | — |
+
+### Child "ViewRange" (optional, for gizmo visualization)
+
+| Component | Settings |
+|---|---|
+| `CircleCollider2D` | Is Trigger: true, Radius: matching `_viewRadius` setting |
+
+### Layer setup
+- Root GameObject layer: add a new layer like "FlyingChaser" or use existing non-player layer (must not collide with FriendlyHurtbox via collision matrix so that the hitbox trigger handles contact instead)
+- Ensure `FlyingChaser._obstacleLayers` in the Inspector includes the layers the chaser should avoid (e.g., Default, Ground, Cover)
+
+### Player setup
+- `PlayerHealth` component must be added to the Player root GameObject (alongside PlayerMovementController)

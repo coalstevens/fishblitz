@@ -53,14 +53,21 @@ public partial class BirdBrain : MonoBehaviour
             CheckandWarpIfStuck(bird);
             CheckAndWarpIfNearTarget(bird);
 
-            _avoidanceForce = BirdForces.CalculateAvoidanceForce(
-                bird,
+            _avoidanceForce = SteeringForces.CalculateAvoidanceForce(
+                bird.transform.position,
+                bird._rb.linearVelocity,
                 bird.Config.CircleCastRadius,
                 bird.Config.CircleCastRange,
                 landingParams.AvoidanceWeight,
+                SteeringForces.GetInteractionLayers(bird.gameObject, bird._rb),
                 out _gizAvoidTarget);
 
-            _seekForce = BirdForces.Seek(bird, flyingParams.SpeedLimit, flyingParams.SteerForceLimit);
+            _seekForce = SteeringForces.Seek(
+                bird.transform.position,
+                bird._rb.linearVelocity,
+                bird.TargetPosition,
+                flyingParams.SpeedLimit,
+                flyingParams.SteerForceLimit);
 
             bird._rb.AddForce(_avoidanceForce + _seekForce);
         }

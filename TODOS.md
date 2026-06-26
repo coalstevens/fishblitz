@@ -1,12 +1,17 @@
 # Immediate TODOs
 
 ## Today / This Session
-- [ ] Create wheelbarrow rolling sound effect
+- [x] Create wheelbarrow rolling sound effect
+- [ ] Add bow sound effect
+- [ ] Add arrow sound effect
 - [ ] Add SFX to box win
 - [ ] Add VFX to wheelbarrow spawn
-- [ ] Finish CanyonStart spawner
+- [x] Finish CanyonStart spawner
 
 ## This Week
+
+## Rendering
+- [ ] Add task to try fixing text by auto-generating sprites based on a letter character set
 
 ## Blockers
 - [ ]

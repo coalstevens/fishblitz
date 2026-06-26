@@ -38,11 +38,13 @@ public partial class BirdBrain : MonoBehaviour {
                 return;
             }
 
-            _avoidanceForce = BirdForces.CalculateAvoidanceForce(
-                bird,
+            _avoidanceForce = SteeringForces.CalculateAvoidanceForce(
+                bird.transform.position,
+                bird._rb.linearVelocity,
                 bird.Config.CircleCastRadius,
                 bird.Config.CircleCastRange,
                 parameters.AvoidanceWeight,
+                SteeringForces.GetInteractionLayers(bird.gameObject, bird._rb),
                 out _gizAvoidTarget);
 
             bird._rb.AddForce(_fleeForce + _avoidanceForce);

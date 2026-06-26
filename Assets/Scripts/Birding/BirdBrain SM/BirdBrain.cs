@@ -14,7 +14,7 @@ using UnityEngine.Tilemaps;
 // ^ does this make the bird slide along the ground in idle positon?
 
 [Serializable]
-public partial class BirdBrain : MonoBehaviour
+public partial class BirdBrain : MonoBehaviour, IFlockMate
 {
     public class BirdInstanceData
     {
@@ -380,10 +380,8 @@ public partial class BirdBrain : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    public Vector2 GetVelocity()
-    {
-        return _rb.linearVelocity;
-    }
+    public Vector2 Position => transform.position;
+    public Vector2 Velocity => _rb.linearVelocity;
 
     private void OnDrawGizmos()
     {

@@ -131,7 +131,7 @@ public class BowChargeController : MonoBehaviour
         projectileObj.transform.localRotation = Quaternion.FromToRotation(Vector2.left, direction);
 
         Projectile projectile = projectileObj.GetComponent<Projectile>();
-        projectile.Launch(direction, _activeBow.IsEnemyProjectile, speedMultiplier);
+        projectile.Launch(direction, speedMultiplier);
 
         if (_playerEnergyManager != null && _activeBow is PlayerEnergyManager.IEnergyDepleting deplete)
         {
