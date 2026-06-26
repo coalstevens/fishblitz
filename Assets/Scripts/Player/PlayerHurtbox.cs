@@ -18,3 +18,4 @@ public class PlayerHurtbox : MonoBehaviour, IHurtBox
         _playerHealth.TakeDamage(damage);
     }
 }
+

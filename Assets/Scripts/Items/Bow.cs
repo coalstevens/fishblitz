@@ -6,8 +6,14 @@ public class Bow : RangedWeaponItem, UseItemInput.IUsableWithoutTarget, PlayerEn
     [Header("Additional")]
     [SerializeField] private int _energyCost;
     [SerializeField] private bool _allowMovementWhileCharging = false;
+    [SerializeField] private float _chargeTimeSecs = 1.5f;
+    [SerializeField] private float _minSpeedMultiplier = 0.3f;
+    [SerializeField] private float _minChargeNormalized = 0.2f;
     public int EnergyCost => _energyCost;
     public bool AllowMovementWhileCharging => _allowMovementWhileCharging;
+    public float ChargeTimeSecs => _chargeTimeSecs;
+    public float MinSpeedMultiplier => _minSpeedMultiplier;
+    public float MinChargeNormalized => _minChargeNormalized;
 
     public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {

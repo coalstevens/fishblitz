@@ -10,10 +10,6 @@ public class BowChargeController : MonoBehaviour
     [SerializeField] private Transform _frame;
     [SerializeField] private Transform _HUD;
     [SerializeField] private Vector2 _framePositionLimits = new Vector2(0f, 1f);
-    [SerializeField] private float _chargeTimeSecs = 1.5f;
-
-    [Header("Projectile")]
-    [SerializeField] private float _minSpeedMultiplier = 0.3f;
 
     [Header("References")]
     [SerializeField] private Logger _logger = new();
@@ -29,6 +25,7 @@ public class BowChargeController : MonoBehaviour
     private bool _blockNextCharge = false;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerMovementController _playerMovementController;
+    private SpriteRenderer[] _frameRenderers;
     [SerializeField] private PlayerData _playerData;
 
     private void Awake()
@@ -45,6 +42,7 @@ public class BowChargeController : MonoBehaviour
         Assert.IsNotNull(_frame, "Frame transform is not set on BowChargeController.");
         Assert.IsNotNull(_HUD, "HUD transform is not set on BowChargeController.");
 
+        _frameRenderers = _frame.GetComponentsInChildren<SpriteRenderer>();
         _HUD.gameObject.SetActive(false);
     }
 
@@ -61,9 +59,10 @@ public class BowChargeController : MonoBehaviour
         _chargeAction = _playerInput.actions["UseTool"];
         Assert.IsNotNull(_chargeAction, "UseTool action not found in Combat map.");
 
-        _chargeVelocity = (_framePositionLimits.y - _framePositionLimits.x) / _chargeTimeSecs;
+        _chargeVelocity = (_framePositionLimits.y - _framePositionLimits.x) / _activeBow.ChargeTimeSecs;
 
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
+        SetFrameAlpha(0f);
         _HUD.gameObject.SetActive(true);
 
         if (!_activeBow.AllowMovementWhileCharging)
@@ -101,8 +100,14 @@ public class BowChargeController : MonoBehaviour
         }
         else if (_chargeNormalized > 0f)
         {
-            Fire();
+            if (_chargeNormalized >= _activeBow.MinChargeNormalized)
+                Fire();
+            else
+                EndCharge();
         }
+
+        float t = Mathf.Clamp01(_chargeNormalized / _activeBow.MinChargeNormalized);
+        SetFrameAlpha(t * t);
     }
 
     private void Fire()
@@ -118,7 +123,8 @@ public class BowChargeController : MonoBehaviour
             }
         }
 
-        float speedMultiplier = _minSpeedMultiplier + (1f - _minSpeedMultiplier) * _chargeNormalized;
+        float t = Mathf.InverseLerp(_activeBow.MinChargeNormalized, 1f, _chargeNormalized);
+        float speedMultiplier = Mathf.Lerp(_activeBow.MinSpeedMultiplier, 1f, t);
 
         Vector2 spawnCenter = _activeWeaponData.ProjectileSpawnCenter.position;
         float spawnRadius = _activeWeaponData.ProjectileSpawnRadius;
@@ -153,6 +159,7 @@ public class BowChargeController : MonoBehaviour
     {
         _HUD.gameObject.SetActive(false);
         _frame.localPosition = new Vector3(_framePositionLimits.x, 0f, 0f);
+        SetFrameAlpha(0f);
 
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowChargingRunning)
@@ -178,6 +185,16 @@ public class BowChargeController : MonoBehaviour
         _blockNextCharge = true;
         yield return null;
         _blockNextCharge = false;
+    }
+
+    private void SetFrameAlpha(float alpha)
+    {
+        foreach (var sr in _frameRenderers)
+        {
+            Color c = sr.color;
+            c.a = alpha;
+            sr.color = c;
+        }
     }
 
     private void AlignPivotToMouse()
