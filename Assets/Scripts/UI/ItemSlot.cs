@@ -1,5 +1,3 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +7,12 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Sprite _filledSlotSprite;
     [SerializeField] private int _slotIndex;
     [SerializeField] private Inventory _playerInventory;
-    TextMeshProUGUI _quantityText;
+    PixelTextRenderer _quantityText;
     Image _itemSprite, _slotSprite;
 
     private void OnEnable()
     {
-        _quantityText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        _quantityText = transform.GetChild(1).GetComponent<PixelTextRenderer>();
         _itemSprite = transform.GetChild(0).GetComponent<Image>();
         _slotSprite = GetComponent<Image>();
 
@@ -52,7 +50,7 @@ public class ItemSlot : MonoBehaviour
 
     private void SetQuantityText(int quantity)
     {
-        _quantityText.text = quantity > 1 ? quantity.ToString() : "";
+        _quantityText.Text = quantity > 1 ? quantity.ToString() : "";
     }
 }
 

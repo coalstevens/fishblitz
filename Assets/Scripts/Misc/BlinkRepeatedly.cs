@@ -1,25 +1,24 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class BlinkRepeatedly : MonoBehaviour
 {
     [SerializeField] private float _invisibleInterval = 0.2f;
     [SerializeField] private float _visibleInterval = 0.6f;
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private PixelTextRenderer _text;
 
     private string _originalText;
 
     private IEnumerator Start()
     {
-        _originalText = _text.text;
+        _originalText = _text.Text;
 
         while (true)
         {
             yield return new WaitForSeconds(_visibleInterval);
-            _text.text = "";
+            _text.Text = "";
             yield return new WaitForSeconds(_invisibleInterval);
-            _text.text = _originalText;
+            _text.Text = _originalText;
         }
     }
 }

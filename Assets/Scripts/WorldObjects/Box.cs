@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
 
@@ -13,7 +12,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [SerializeField] private CanvasGroup _blurbCanvasGroup;
     [SerializeField] private GameObject _alert;
     [SerializeField] private Image _itemImage;
-    [SerializeField] private TextMeshProUGUI _quantityText;
+    [SerializeField] private PixelTextRenderer _quantityText;
     [SerializeField] private float _fadeDelaySeconds = 3f;
 
     [Header("Shake Properties")]
@@ -140,7 +139,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         _itemImage.sprite = targetObject.Type.NSCarry;
 
         int remaining = targetObject.Quantity - _fulfilledQuantities[targetObject.Type];
-        _quantityText.text = remaining.ToString();
+        _quantityText.Text = remaining.ToString();
     }
 
     private void StartFadeTimer()

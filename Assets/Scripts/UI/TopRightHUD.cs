@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TopRightHUD : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _clockText;
-    [SerializeField] private TextMeshProUGUI _dateText;
+    [SerializeField] private PixelTextRenderer _clockText;
+    [SerializeField] private PixelTextRenderer _dateText;
 
     [SerializeField] private Sprite _springFrame;
     [SerializeField] private Sprite _summerFrame;
@@ -57,9 +54,9 @@ public class TopRightHUD : MonoBehaviour
     void UpdateClockText()
     {
         // 24h clock
-        _clockText.text = GameClock.Instance.GameHour.ToString() + ":";
-        _clockText.text += GameClock.Instance.GameMinute < 10 ? "0" : ""; // add a leading zero for <10 min
-        _clockText.text += GameClock.Instance.GameMinute.ToString();
+        _clockText.Text = GameClock.Instance.GameHour.ToString() + ":";
+        _clockText.Text += GameClock.Instance.GameMinute < 10 ? "0" : "";
+        _clockText.Text += GameClock.Instance.GameMinute.ToString();
     }
 
     void UpdateDateText()
@@ -67,8 +64,8 @@ public class TopRightHUD : MonoBehaviour
         int _gameDay = GameClock.Instance.GameDay;
 
         // "1st" thru "15th"  
-        _dateText.text = $"{_gameDay}";
-        _dateText.text += _gameDay switch
+        _dateText.Text = $"{_gameDay}";
+        _dateText.Text += _gameDay switch
         {
             1 => "st",
             2 => "nd",

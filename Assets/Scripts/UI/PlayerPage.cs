@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +7,9 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
     [SerializeField] private Image _carbsBar;
     [SerializeField] private Image _nutrientsBar;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private TextMeshProUGUI _healthText;
-    [SerializeField] private TextMeshProUGUI _wetnessText;
-    [SerializeField] private TextMeshProUGUI _temperatureText;
+    [SerializeField] private PixelTextRenderer _healthText;
+    [SerializeField] private PixelTextRenderer _wetnessText;
+    [SerializeField] private PixelTextRenderer _temperatureText;
     [SerializeField] private float _maxBarWidth; // max width is currently the starting width of the sprite 
 
     public void DisableCursor()
@@ -32,8 +31,8 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
 
     private void UpdatePlayerStatus()
     {
-        _healthText.text = "Healthy";
-        _wetnessText.text = _playerData.WetnessState.Value switch
+        _healthText.Text = "Healthy";
+        _wetnessText.Text = _playerData.WetnessState.Value switch
         {
             PlayerData.WetnessStates.Wet => "Wet",
             PlayerData.WetnessStates.Dry => "Dry",
@@ -41,7 +40,7 @@ public class PlayerPage : MonoBehaviour, GameMenuManager.IGameMenuPage
             PlayerData.WetnessStates.Wetting => "Wetting",
             _ => "Unknown"
         };
-        _temperatureText.text = _playerData.ActualPlayerTemperature.Value.ToString();
+        _temperatureText.Text = _playerData.ActualPlayerTemperature.Value.ToString();
     }
 
     private void UpdateDietBars()

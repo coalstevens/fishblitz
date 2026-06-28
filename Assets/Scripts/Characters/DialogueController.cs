@@ -1,9 +1,8 @@
-using TMPro;
 using UnityEngine;
 
 public class DialogueController : MonoBehaviour
 {
-    private TextMeshProUGUI _textBox;
+    private PixelTextRenderer _textBox;
     private Transform _followTransform;
     private float _postedTime;
     [SerializeField] private float _messageDurationSecs = 5f;
@@ -11,11 +10,11 @@ public class DialogueController : MonoBehaviour
 
     private void Start()
     {
-        _textBox = GetComponentInChildren<TextMeshProUGUI>();
+        _textBox = GetComponentInChildren<PixelTextRenderer>();
 
         if (_textBox == null)
         {
-            Debug.LogError("TextMeshProUGUI component is missing from CharacterDialogueController.");
+            Debug.LogError("PixelTextRenderer component is missing from CharacterDialogueController.");
             return;
         }
 
@@ -27,7 +26,7 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (_textBox == null || string.IsNullOrEmpty(_textBox.text))
+        if (_textBox == null || string.IsNullOrEmpty(_textBox.Text))
             return;
 
         // Hold message for the duration
@@ -35,16 +34,16 @@ public class DialogueController : MonoBehaviour
             return;
 
         // Fade message
-        Color textColor = _textBox.color;
+        Color textColor = _textBox.Color;
         if (textColor.a > _fadeRateAlphaPerFrame)
         {
             textColor.a -= _fadeRateAlphaPerFrame;
-            _textBox.color = textColor;
+            _textBox.Color = textColor;
         }
         else
         {
-            _textBox.color = new Color(textColor.r, textColor.g, textColor.b, 0f);
-            _textBox.text = "";
+            _textBox.Color = new Color(textColor.r, textColor.g, textColor.b, 0f);
+            _textBox.Text = "";
         }
     }
 
@@ -52,12 +51,12 @@ public class DialogueController : MonoBehaviour
     {
         if (_textBox == null)
         {
-            Debug.LogError("Cannot post message: TextMeshProUGUI is not assigned.");
+            Debug.LogError("Cannot post message: PixelTextRenderer is not assigned.");
             return;
         }
 
-        _textBox.text = message;
-        _textBox.color = new Color(_textBox.color.r, _textBox.color.g, _textBox.color.b, 1f);
+        _textBox.Text = message;
+        _textBox.Color = new Color(_textBox.Color.r, _textBox.Color.g, _textBox.Color.b, 1f);
         _postedTime = Time.time;
     }
 }

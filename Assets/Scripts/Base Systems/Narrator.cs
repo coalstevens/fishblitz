@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 // Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
 public class Narrator : MonoBehaviour
 {
-    private List<TextMeshProUGUI> _postedMessages = new();
+    private List<PixelTextRenderer> _postedMessages = new();
     private Queue<string> _messageQueue = new();
     private List<float> _messageStartTimes = new();
     [SerializeField] private GameObject _messagePrefab;
@@ -77,17 +76,17 @@ public class Narrator : MonoBehaviour
         // move existing messages up, if any
         for (int i = 0; i < _postedMessages.Count; i++)
         {
-            var _pos = _postedMessages[i].rectTransform.position;
+            var _pos = _postedMessages[i].transform.position;
             _pos.y += _lineSpacing;
-            _postedMessages[i].rectTransform.position = _pos;
+            _postedMessages[i].transform.position = _pos;
         }
         // create and position new message object
         var _newMessagePosition = _narratorMessageContainer.position;
         _newMessagePosition.y += _bottomPadding;
         _newMessagePosition.x += _sidePadding;
         var _newMessageObj = Instantiate(_messagePrefab, _newMessagePosition, Quaternion.identity, _narratorMessageContainer);
-        var _newMessage = _newMessageObj.GetComponent<TextMeshProUGUI>();
-        _newMessage.text = message;
+        var _newMessage = _newMessageObj.GetComponent<PixelTextRenderer>();
+        _newMessage.Text = message;
 
         // log details
         _postedMessages.Add(_newMessage);
@@ -103,9 +102,9 @@ public class Narrator : MonoBehaviour
                 continue;
             }
             //fade message
-            if (_postedMessages[i].alpha > _fadeRateAlphaPerFrame)
+            if (_postedMessages[i].Alpha > _fadeRateAlphaPerFrame)
             {
-                _postedMessages[i].alpha -= _fadeRateAlphaPerFrame;
+                _postedMessages[i].Alpha -= _fadeRateAlphaPerFrame;
                 continue;
             }
             //destroy message once faded

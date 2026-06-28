@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using ReactiveUnity;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,8 +31,8 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
     [SerializeField] private Transform _journalEntryCursor;
 
     [Header("Notebook")]
-    [SerializeField] private TextMeshProUGUI _noteBookTitle;
-    [SerializeField] private TextMeshProUGUI _tagText;
+    [SerializeField] private PixelTextRenderer _noteBookTitle;
+    [SerializeField] private PixelTextRenderer _tagText;
     [SerializeField] private Transform _dateDotsContainer;
     [SerializeField] private Image _notebookImage;
     [SerializeField] private Image _numerator;
@@ -332,8 +331,8 @@ public class Journal : MonoBehaviour, GameMenuManager.IGameMenuPage
         _notebookImage.sprite = entry.transform.GetChild(1).GetComponent<NotebookSprite>().sprite;
         _notebookImage.enabled = hasBeenCaught;
 
-        _noteBookTitle.text = titleText;
-        _tagText.text = $"{caughtThisWeek} tagged this week\n{caughtAllTime} tagged all time";
+        _noteBookTitle.Text = titleText;
+        _tagText.Text = $"{caughtThisWeek} tagged this week\n{caughtAllTime} tagged all time";
         UpdateDateDots(page, titleText);
     }
 

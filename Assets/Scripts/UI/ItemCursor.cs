@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 
 public class ItemCursor : MonoBehaviour
@@ -9,7 +8,7 @@ public class ItemCursor : MonoBehaviour
     [SerializeField] private Transform _itemSlotContainer;
     [Header("Label")]
     [SerializeField] private RectTransform _fill;
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private PixelTextRenderer _text;
     [SerializeField] private float _sidePadding;
     [SerializeField] private float _fadeAfterDurationSecs = 2f;
     [SerializeField] private float _fadeDurationSecs = 2f;
@@ -62,15 +61,13 @@ public class ItemCursor : MonoBehaviour
         if (_itemType == null || string.IsNullOrEmpty(_itemType.ItemLabel))
             return false;
 
-        _text.text = _itemType.ItemLabel;
+        _text.Text = _itemType.ItemLabel;
         return true;
     }
 
     private void ResizeLabel()
     {
-        _text.ForceMeshUpdate(); // required??
-        float _preferredWidth = _text.preferredWidth;
-        _text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _preferredWidth);
+        float _preferredWidth = _text.TotalWidth;
         _fill.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _preferredWidth + _sidePadding * 2);
     }
 
