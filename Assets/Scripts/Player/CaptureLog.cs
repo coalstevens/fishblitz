@@ -90,6 +90,9 @@ public class CaptureLog : ScriptableObject
     public int GetCaptureCountForNameThisWeek(string name)
     {
         int count = 0;
+        if (GameClock.Instance == null)
+            return 0;
+
         int currentSeason = (int)GameClock.Instance.GameSeason;
         int currentWeek = (GameClock.Instance.GameDay - 1) / 5;
 
