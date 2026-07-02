@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Sprite _emptySlotSprite;
     [SerializeField] private Sprite _filledSlotSprite;
@@ -18,24 +18,22 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     [SerializeField] private PixelCanvasTextRenderer _itemLabel;
     [SerializeField] private Image _activeHighlight;
 
-    [Header("Label Settings")]
     [SerializeField] private float _sidePadding = 6f;
-    [SerializeField] private float _fadeAfterDurationSecs = 1f;
-    [SerializeField] private float _fadeDurationSecs = 0.5f;
 
     private Image _slotSprite;
     private CanvasGroup _labelCanvasGroup;
-    private Coroutine _labelFadeRoutine;
     private Action _unsubscribe;
 
     private static int _draggedFromSlotIndex = -1;
     private static bool _isDragging = false;
     [SerializeField] private Image _dragGhost;
+    private bool _isHovered;
 
     private void Awake()
     {
         _slotSprite = GetComponent<Image>();
         _labelCanvasGroup = _labelFill.GetComponent<CanvasGroup>();
+        _labelCanvasGroup.alpha = 0;
     }
 
     private void OnEnable()
@@ -50,11 +48,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         _playerInventory.SlotUpdated -= OnSlotUpdated;
         _unsubscribe?.Invoke();
-        if (_labelFadeRoutine != null)
-        {
-            StopCoroutine(_labelFadeRoutine);
-            _labelFadeRoutine = null;
-        }
     }
 
     private void OnSlotUpdated(Inventory inventory, int slotIndex)
@@ -74,24 +67,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             StartCoroutine(DelayedNativeSize());
         }
 
-        if (_slotIndex == _playerInventory.ActiveItemSlot.Value)
-            UpdateLabelForSlot(hasItem ? slotItem : null);
     }
 
     private void OnActiveSlotChanged(int newSlot)
     {
-        bool isActive = _slotIndex == newSlot;
-        _activeHighlight.enabled = isActive;
-
-        if (isActive)
-        {
-            var slotItem = _playerInventory.SlotAssignments.TryGetValue(_slotIndex, out var stack) ? stack : null;
-            UpdateLabelForSlot(slotItem);
-        }
-        else
-        {
-            HideLabelInstantly();
-        }
+        UpdateHighlight();
     }
 
     private void UpdateLabelForSlot(Inventory.ItemStack slotItem)
@@ -99,7 +79,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         if (slotItem != null && !string.IsNullOrEmpty(slotItem.Item.ItemLabel))
         {
             SetLabelText(slotItem.Item.ItemLabel);
-            StartLabelFade();
+            _labelCanvasGroup.alpha = 1;
         }
         else
         {
@@ -119,34 +99,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         _labelFill.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, preferredWidth + _sidePadding * 2);
     }
 
-    private void StartLabelFade()
-    {
-        if (_labelFadeRoutine != null)
-            StopCoroutine(_labelFadeRoutine);
-        _labelFadeRoutine = StartCoroutine(LabelFadeRoutine());
-    }
-
     private void HideLabelInstantly()
     {
-        if (_labelFadeRoutine != null)
-        {
-            StopCoroutine(_labelFadeRoutine);
-            _labelFadeRoutine = null;
-        }
-        _labelCanvasGroup.alpha = 0;
-    }
-
-    private IEnumerator LabelFadeRoutine()
-    {
-        _labelCanvasGroup.alpha = 1;
-        yield return new WaitForSeconds(_fadeAfterDurationSecs);
-        float time = 0;
-        while (time < _fadeDurationSecs)
-        {
-            time += Time.deltaTime;
-            _labelCanvasGroup.alpha = Mathf.Lerp(1, 0, time / _fadeDurationSecs);
-            yield return null;
-        }
         _labelCanvasGroup.alpha = 0;
     }
 
@@ -154,6 +108,27 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         yield return null;
         _itemSprite.SetNativeSize();
+    }
+
+    private void UpdateHighlight()
+    {
+        _activeHighlight.enabled = _slotIndex == _playerInventory.ActiveItemSlot.Value || _isHovered;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _isHovered = true;
+        UpdateHighlight();
+
+        var slotItem = _playerInventory.SlotAssignments.TryGetValue(_slotIndex, out var stack) ? stack : null;
+        UpdateLabelForSlot(slotItem);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _isHovered = false;
+        UpdateHighlight();
+        HideLabelInstantly();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -175,6 +150,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         Vector3 localPoint;
         RectTransformUtility.ScreenPointToWorldPointInRectangle(rt, eventData.position, eventData.pressEventCamera, out localPoint);
         _dragGhost.rectTransform.position = localPoint;
+
+        _itemSprite.enabled = false;
+        _slotSprite.sprite = _emptySlotSprite;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -191,6 +169,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         _dragGhost.gameObject.SetActive(false);
         _isDragging = false;
         _draggedFromSlotIndex = -1;
+        OnSlotUpdated(_playerInventory, _slotIndex);
     }
 
     public void OnDrop(PointerEventData eventData)
