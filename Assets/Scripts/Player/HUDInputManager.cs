@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class HUDInputManager : MonoBehaviour
 {
     [SerializeField] private Inventory _inventory;
@@ -45,20 +46,22 @@ public class HUDInputManager : MonoBehaviour
         SetActiveSlot(9);
     }
 
-    private void OnMoveItemCursorRight()
+    private void OnMoveItemCursorRight(InputValue value)
     {
-        int _current = _inventory.ActiveItemSlot.Value;
-        _current++;
-        _inventory.ActiveItemSlot.Value = _current % 10;
+        int steps = Mathf.CeilToInt(value.Get<float>());
+        int current = _inventory.ActiveItemSlot.Value;
+        current = (current + steps) % 10;
+        _inventory.ActiveItemSlot.Value = current;
     }
 
-    private void OnMoveItemCursorLeft()
+    private void OnMoveItemCursorLeft(InputValue value)
     {
-        int _current = _inventory.ActiveItemSlot.Value;
-        _current--;
-        if (_current < 0)
-            _current = 9;
-        _inventory.ActiveItemSlot.Value = _current;
+        int steps = Mathf.CeilToInt(value.Get<float>());
+        int current = _inventory.ActiveItemSlot.Value;
+        current = (current - steps) % 10;
+        if (current < 0)
+            current += 10;
+        _inventory.ActiveItemSlot.Value = current;
     }
 
     public void SetActiveSlot(int slotIndex)

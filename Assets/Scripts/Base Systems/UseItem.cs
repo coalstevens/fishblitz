@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 public class UseItemInput : MonoBehaviour
 {
@@ -61,6 +62,8 @@ public class UseItemInput : MonoBehaviour
 
     private void OnUseItem()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         // can't interrupt these
         if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
             _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||

@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "fish blitz",
     "maps": [
         {
@@ -133,21 +134,21 @@
                 },
                 {
                     "name": "MoveItemCursorRight",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "e068ef3d-ebb8-42d2-b256-43a38a0af8b6",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "MoveItemCursorLeft",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "53144c3a-a7ac-4fac-83a3-3158df27890e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "OnClick",
@@ -510,8 +511,30 @@
                 },
                 {
                     "name": "",
+                    "id": "aa6d320e-a27b-4dd1-8130-7d9a665a7878",
+                    "path": "<Mouse>/scroll/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveItemCursorRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c02f5537-f14b-49fe-8f9e-f6adb26a6b18",
                     "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveItemCursorLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d18a3cb-eed6-4b36-b469-0b4550417baa",
+                    "path": "<Mouse>/scroll/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
