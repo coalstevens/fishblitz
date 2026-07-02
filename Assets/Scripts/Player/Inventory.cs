@@ -177,6 +177,28 @@ public class Inventory : ScriptableObject
         return true;
     }
 
+    public void SwapSlots(int slotA, int slotB)
+    {
+        if (slotA == slotB) return;
+
+        SlotAssignments.TryGetValue(slotA, out ItemStack itemA);
+        SlotAssignments.TryGetValue(slotB, out ItemStack itemB);
+
+        if (itemB != null)
+            SlotAssignments[slotA] = itemB;
+        else
+            SlotAssignments.Remove(slotA);
+
+        if (itemA != null)
+            SlotAssignments[slotB] = itemA;
+        else
+            SlotAssignments.Remove(slotB);
+
+        SlotUpdated?.Invoke(this, slotA);
+        SlotUpdated?.Invoke(this, slotB);
+        SaveInventory();
+    }
+
     /// <summary>
     /// Creates a new object in an empty inventory slot(s)
     /// </summary>

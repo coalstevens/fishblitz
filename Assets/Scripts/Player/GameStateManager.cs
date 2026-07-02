@@ -103,13 +103,13 @@ public static class GameStateManager
         {
             _playerInput?.SwitchCurrentActionMap("Player");
             SceneManager.LoadScene("Narrator", LoadSceneMode.Additive);
-            SceneManager.LoadScene("HUD", LoadSceneMode.Additive);
+            // SceneManager.LoadScene("HUD", LoadSceneMode.Additive);
         }
 
         public void Exit()
         {
             SceneManager.UnloadSceneAsync("Narrator");
-            SceneManager.UnloadSceneAsync("HUD");
+            // SceneManager.UnloadSceneAsync("HUD");
         }
     }
 
