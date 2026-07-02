@@ -81,6 +81,11 @@ public class PixelCanvasTextRenderer : MonoBehaviour, IPointerEnterHandler, IPoi
         Rebuild();
     }
 
+    private void Start()
+    {
+        Rebuild();
+    }
+
     private void OnDestroy()
     {
         DestroyAllGlyphs();

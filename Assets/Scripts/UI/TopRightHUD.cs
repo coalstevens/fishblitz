@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class TopRightHUD : MonoBehaviour
 {
-    [SerializeField] private PixelTextRenderer _clockText;
-    [SerializeField] private PixelTextRenderer _dateText;
+    [SerializeField] private PixelCanvasTextRenderer _clockText;
+    [SerializeField] private PixelCanvasTextRenderer _dateText;
 
     [SerializeField] private Sprite _springFrame;
     [SerializeField] private Sprite _summerFrame;

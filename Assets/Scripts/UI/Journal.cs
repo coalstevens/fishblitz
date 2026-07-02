@@ -67,8 +67,6 @@ public class Journal : MonoBehaviour
         {
             bool active = i == pageIndex;
             _journalPages[i].LeftPage.parent.gameObject.SetActive(active);
-            // _journalPages[i].LeftPage.gameObject.SetActive(active);
-            // _journalPages[i].RightPage.gameObject.SetActive(active);
         }
 
         var page = _journalPages[pageIndex];
