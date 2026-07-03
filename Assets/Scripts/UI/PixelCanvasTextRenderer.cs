@@ -90,17 +90,22 @@ public class PixelCanvasTextRenderer : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         DestroyAllGlyphs();
     }
-
     private void OnValidate()
     {
         if (Application.isPlaying)
             return;
 
 #if UNITY_EDITOR
+        if (UnityEditor.PrefabUtility.IsPartOfPrefabAsset(gameObject))
+            return; // don't touch children while editing the asset directly (Project window)
+
         UnityEditor.EditorApplication.delayCall += () =>
         {
-            if (this != null)
-                Rebuild();
+            if (this == null)
+                return;
+            if (UnityEditor.PrefabUtility.IsPartOfPrefabAsset(gameObject))
+                return; // re-check: state may have changed by the time delayCall runs
+            Rebuild();
         };
 #endif
     }
