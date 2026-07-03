@@ -112,7 +112,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 83, y: -0}
   m_SizeDelta: {x: 3.125, y: 31.25}
-  m_Pivot: {x: 0, y: 0.25}
+  m_Pivot: {x: 0, y: 0.2}
 --- !u!222 &4084121222322250497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -253,8 +253,7 @@ MonoBehaviour:
   _itemLabel: {fileID: 3706859785970213162}
   _activeHighlight: {fileID: 121512911973979709}
   _sidePadding: 6
-  _fadeAfterDurationSecs: 1
-  _fadeDurationSecs: 0.5
+  _dragGhost: {fileID: 0}
 --- !u!1 &1924777609386594153
 GameObject:
   m_ObjectHideFlags: 0

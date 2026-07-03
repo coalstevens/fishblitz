@@ -33,7 +33,6 @@ public class IntroManager : MonoBehaviour
 
     private void Awake()
     {
-        GameStateManager.Initialize();
         SetInitialPlayerState();
         ClearAllFilesInPersistentDataPath();
         StartCoroutine(OpeningDialogue());

@@ -27,7 +27,6 @@ public class CoreManager : Singleton<CoreManager>
         ResolveSpawnPosition();
         _hasLoadedFirstScene = true;
 
-        GameStateManager.Initialize();
         InitializePlayerState();
         _config.RainManager.UpdateRainAudio();
     }

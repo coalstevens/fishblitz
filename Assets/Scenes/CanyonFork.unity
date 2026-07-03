@@ -2025,8 +2025,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 1, y: 0.5}
-    oldSize: {x: 7.6875, y: 0.90625}
+    pivot: {x: 1.020747, y: 0.5}
+    oldSize: {x: 7.53125, y: 0.90625}
     newSize: {x: 7.65625, y: 0.90625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -83492,7 +83492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968fd3638ce5942f2b2f5285d9a59a87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectsToSpawn: []
+  SpawnConfigs: []
   _logger:
     _info: 0
     _verbose: 0
@@ -90412,7 +90412,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 373e1c06f12254beba3d2de134df42ea, type: 2}
-  _audioSource: {fileID: 9008586620626439159}
 --- !u!58 &328107949130991346
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -96733,7 +96732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _walkingSound: {fileID: 11400000, guid: b208653fd95e5424ba506235c28ab50f, type: 2}
-  _audioSource: {fileID: 9008586620626439160}
+  _wheelbarrowRollingSound: {fileID: 0}
+  _playerData: {fileID: 0}
 --- !u!1 &3153988306746483747
 GameObject:
   m_ObjectHideFlags: 0
@@ -97329,7 +97329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _putDownSound: {fileID: 11400000, guid: 84bcd1f257bbc4efaad4bcc0d4e2629f, type: 2}
-  _audioSource: {fileID: 9008586620626439159}
 --- !u!50 &3897407101987496407
 Rigidbody2D:
   serializedVersion: 5
@@ -107754,12 +107753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9200d5dd7f9436ba9003f97c1033e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsCovered:
-    _val: 0
-  _isInCoveredArea:
-    _val: 0
-  _isCrouched:
-    _val: 0
 --- !u!1 &6893766037046313691
 GameObject:
   m_ObjectHideFlags: 0
@@ -113254,9 +113247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69998d48a93004230add194feb1a4045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerSpriteContainer: {fileID: 0}
-  _playerHurtbox: {fileID: 6824085871802866590}
-  _coveredColor: {r: 0.4627451, g: 0.4627451, b: 0.4627451, a: 1}
 --- !u!1 &8458443492191305362
 GameObject:
   m_ObjectHideFlags: 0
@@ -113466,7 +113456,6 @@ MonoBehaviour:
   _staticWheelBarrowPrefab: {fileID: 6780039278160430161, guid: 356dcffb41fda406eb5f28a1da49a892, type: 3}
   _liftBarrowSound: {fileID: 11400000, guid: 9e3309294633f4613a9c2c9cfcb6248a, type: 2}
   _placeBarrowSound: {fileID: 11400000, guid: 90d30aa82587f4505a4d4b487b38dfdf, type: 2}
-  _audioSource: {fileID: 9008586620626439159}
 --- !u!82 &9008586620626439159
 AudioSource:
   m_ObjectHideFlags: 0
