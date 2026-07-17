@@ -1948,7 +1948,7 @@
                     "name": "ToggleMenu",
                     "type": "Button",
                     "id": "296f3079-d3c1-4de2-a033-0d9952d5dd71",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -2100,6 +2100,17 @@
                     "name": "",
                     "id": "764126e1-4d37-49b1-9cff-22cfb5e93fef",
                     "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ef30883-5e57-46ca-8d0c-7ea0e5ba8c45",
+                    "path": "<Keyboard>/m",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

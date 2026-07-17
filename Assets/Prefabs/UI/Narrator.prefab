@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8699385661252045248}
   - component: {fileID: 5874710054505793804}
   - component: {fileID: 7981275453309873069}
-  - component: {fileID: 1276435508559218630}
   m_Layer: 5
   m_Name: Narrator
   m_TagString: Untagged
@@ -123,19 +122,6 @@ MonoBehaviour:
   _sidePadding: 40
   _lineSpacing: 40
   _postMessageDelaySeconds: 4
---- !u!114 &1276435508559218630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7007871484771686070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 089ebee2056644a66bcde44e6094e62a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AdditiveUIScaler
-  pixelsPerUnit: 32
 --- !u!1 &9049833909692674786
 GameObject:
   m_ObjectHideFlags: 0

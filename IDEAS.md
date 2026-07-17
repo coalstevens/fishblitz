@@ -64,6 +64,14 @@
 - **The Forest Presence**: burned trees sprouting strangely, deer avoiding a specific grove, ash falling in patterns, people claiming the woods "noticed"
 - **The Winter Presence**: frost appearing on sheltered ground, tracks that vanish overnight, a distant figure seen in blizzards, old songs about the cold "taking stock"
 
+### Story Telling
+- I don't like when story telling interrupts the primary act of playing. I tend to skip through the chat in face to face conversations, even often in a game like Hades, even though it's well written and voice acted.
+- I like audio overlay dialogue, you can listen to it while continuing to play. 
+- Environment should reinforce the story.
+- Ludonarrative story telling?
+- Keep direct dialogue very brief. "Thanks for fixing the bridge. I owe you one."
+- Longer dialogue though voice notes/memos?
+
 ### Progression Arc
 - **Early game:** Survival — just trying to survive the seasons
 - **Mid game:** Build a civilization — people arrive and help build a community
@@ -101,6 +109,9 @@ The Way North follows the river north through the region, the only route deeper 
 - Maron ferries players along The Way North
 
 #### Combat — Bow & Arrow
+- You have to make arrows, favour evasive strategies early game. Arrows are costly
+- Only one type of arrow, don't complicate things.
+- Eventually you just get infinite arrows.
 - Bow with knockback, hold to charge power (like birding net)
 - When the wheelbarrow gets hit by an enemy projectile, it drops an item; arrows pass right over it when empty
 - More accurate when standing still; early bows require standing still

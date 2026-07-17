@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Narrator : MonoBehaviour
 {
-    private List<PixelTextRenderer> _postedMessages = new();
+    private List<PixelCanvasTextRenderer> _postedMessages = new();
     private Queue<string> _messageQueue = new();
     private List<float> _messageStartTimes = new();
     [SerializeField] private GameObject _messagePrefab;
@@ -85,7 +85,7 @@ public class Narrator : MonoBehaviour
         _newMessagePosition.y += _bottomPadding;
         _newMessagePosition.x += _sidePadding;
         var _newMessageObj = Instantiate(_messagePrefab, _newMessagePosition, Quaternion.identity, _narratorMessageContainer);
-        var _newMessage = _newMessageObj.GetComponent<PixelTextRenderer>();
+        var _newMessage = _newMessageObj.GetComponent<PixelCanvasTextRenderer>();
         _newMessage.Text = message;
 
         // log details

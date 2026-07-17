@@ -12,7 +12,7 @@ public class TopRightHUD : MonoBehaviour
     [SerializeField] private Sprite _winterFrame;
     private Image _frame;
 
-    void OnEnable()
+    void Start()
     {
         _frame = GetComponent<Image>();
         GameClock.Instance.OnGameMinuteTick += UpdateClockTextEveryFiveMinutes;

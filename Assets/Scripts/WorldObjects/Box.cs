@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using DG.Tweening;
-using UnityEngine.UI;
 
 public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget
 {
-    [Header("UI References")]
-    [SerializeField] private CanvasGroup _blurbCanvasGroup;
+    [Header("References")]
+    [SerializeField] private GameObject _blurb;
     [SerializeField] private GameObject _alert;
-    [SerializeField] private Image _itemImage;
+    [SerializeField] private SpriteRenderer _itemImage;
     [SerializeField] private PixelTextRenderer _quantityText;
     [SerializeField] private float _fadeDelaySeconds = 3f;
 
@@ -46,7 +45,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         _weightyContainer = GetComponent<WeightyObjectStack>();
         Assert.IsNotNull(_weightyContainer);
-        Assert.IsNotNull(_blurbCanvasGroup);
+        Assert.IsNotNull(_blurb);
         Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
         Assert.IsNotNull(_quantityText);
@@ -57,9 +56,12 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             _fulfilledQuantities[required.Type] = 0;
         }
 
-        _blurbCanvasGroup.alpha = 0;
-        _alert.SetActive(true);
+    }
 
+    private void Start()
+    {
+        SetBlurbVisible(false);
+        _alert.SetActive(true);
         _animator?.Play("Closed");
     }
 
@@ -73,7 +75,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     private void ShowBlurb()
     {
-        _blurbCanvasGroup.alpha = 1;
+        SetBlurbVisible(true);
 
         if (!_hasInteracted)
         {
@@ -153,19 +155,49 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     private IEnumerator FadeOutBlurb()
     {
         yield return new WaitForSeconds(_fadeDelaySeconds);
+        yield return FadeRenderersToZero(0.5f);
+    }
 
-        float startAlpha = _blurbCanvasGroup.alpha;
+    private IEnumerator FadeRenderersToZero(float duration)
+    {
+        var renderers = _blurb.GetComponentsInChildren<SpriteRenderer>(true);
+        Color[] originalColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+            if (renderers[i] != null)
+                originalColors[i] = renderers[i].color;
+
         float time = 0f;
-        float fadeDuration = 0.5f;
 
-        while (time < fadeDuration)
+        while (time < duration)
         {
             time += Time.deltaTime;
-            _blurbCanvasGroup.alpha = Mathf.Lerp(startAlpha, 0, time / fadeDuration);
+            float t = time / duration;
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] == null) continue;
+                Color c = originalColors[i];
+                renderers[i].color = new Color(c.r, c.g, c.b, Mathf.Lerp(c.a, 0f, t));
+            }
             yield return null;
         }
 
-        _blurbCanvasGroup.alpha = 0;
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null) continue;
+            Color c = originalColors[i];
+            renderers[i].color = new Color(c.r, c.g, c.b, 0f);
+        }
+    }
+
+    private void SetBlurbVisible(bool visible)
+    {
+        var renderers = _blurb.GetComponentsInChildren<SpriteRenderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null) continue;
+            Color c = renderers[i].color;
+            renderers[i].color = new Color(c.r, c.g, c.b, visible ? 1f : 0f);
+        }
     }
 
     private void CheckWinCondition()
@@ -184,11 +216,14 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         _isComplete = true;
 
-        ReduceOpacityWhenPlayerBehind opacityScript = _blurbCanvasGroup.GetComponent<ReduceOpacityWhenPlayerBehind>();
+        ReduceOpacityWhenPlayerBehind opacityScript = _blurb.GetComponent<ReduceOpacityWhenPlayerBehind>();
         if (opacityScript != null)
             opacityScript.enabled = false;
 
-        _blurbCanvasGroup.DOFade(0f, 0.5f);
+        if (_fadeRoutine != null)
+            StopCoroutine(_fadeRoutine);
+
+        StartCoroutine(FadeRenderersToZero(0.5f));
 
         AudioManager.PlaySFX(_audioSource, _winChimeSound);
 
