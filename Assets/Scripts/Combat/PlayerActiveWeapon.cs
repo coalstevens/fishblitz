@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Reloader))]
 public class PlayerActiveWeapon : MonoBehaviour
 {
     [SerializeField] private Inventory _playerInventory;
@@ -18,7 +19,6 @@ public class PlayerActiveWeapon : MonoBehaviour
         _unsubscribeHooks.Add(_playerInventory.ActiveItemSlot.OnChange(_ => SetActiveWeapon()));
 
         Assert.IsNotNull(_playerInventory);
-        Assert.IsNotNull(_reloader);
         SetActiveWeapon();
     }
 

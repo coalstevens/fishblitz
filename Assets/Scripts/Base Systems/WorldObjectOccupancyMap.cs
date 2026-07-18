@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(Tilemap), typeof(TilemapRenderer))]
 public class WorldObjectOccupancyMap : MonoBehaviour
 {
     [SerializeField] private Tile _marker;

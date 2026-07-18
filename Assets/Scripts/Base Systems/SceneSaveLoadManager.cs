@@ -1,6 +1,6 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using ColePersistence;
 using System.Collections.Generic;
 
@@ -13,22 +13,57 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     [SerializeField] private Logger _logger = new();
 
-    Transform _impermanentContainer;
-    public delegate void FirstVisitToSceneHandler(string sceneName);
-    public static event FirstVisitToSceneHandler FirstVisitToScene;
+    private Transform _impermanentContainer;
+    private Transform ImpermanentContainer {
+        get {
+            if (_impermanentContainer == null) {
+                _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
+                if (!_impermanentContainer.TryGetComponent<WorldObjectOccupancyMap>(out _))
+                    Debug.LogError("Impermanent container is missing WorldObjectOccupancyMap.");
+                if (!_impermanentContainer.TryGetComponent<Tilemap>(out _))
+                    Debug.LogError("Impermanent container is missing Tilemap.");
+                if (!_impermanentContainer.TryGetComponent<TilemapRenderer>(out _))
+                    Debug.LogError("Impermanent container is missing TilemapRenderer.");
+            }
+            return _impermanentContainer;
+        }
+    }
+
+    private static SceneSaveLoadManager _instance;
+    private static bool? _isFirstVisit = null;
+    public static bool IsFirstVisit {
+        get {
+            if (_instance == null) {
+                Debug.LogError("No SceneSaveLoadManager in scene — cannot determine IsFirstVisit.");
+                return false;
+            }
+            if (_isFirstVisit == null) {
+                string sceneName = SceneManager.GetActiveScene().name;
+                string fileName = sceneName + "_savedData.json";
+                _isFirstVisit = !JsonPersistence.JsonExists(fileName);
+            }
+            return _isFirstVisit.Value;
+        }
+    }
+
     private class SceneSaveData {
         public List<SaveData> SaveDatas = new();
         public int SceneExitGameTime;
     }
 
     private void Awake() {
-        _impermanentContainer = GameObject.FindGameObjectWithTag("Impermanent").transform;
+        _instance = this;
+        _isFirstVisit = null;
         LoadScene();
+    }
+
+    private void OnDestroy() {
+        _instance = null;
     }
 
     public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
-        _sceneSaveData.SaveDatas = GatherChildSaveData(_impermanentContainer);
+        _sceneSaveData.SaveDatas = GatherChildSaveData(ImpermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.Instance.GameMinutesElapsed;
 
         JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
@@ -41,25 +76,17 @@ public class SceneSaveLoadManager : MonoBehaviour {
         // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
             _logger.Info($"{_sceneName} initial scene visit.");
-            StartCoroutine(InvokeFirstVisitToSceneAfterFrame(_sceneName));
             return;
         }
 
         // destroy defaults 
-        DestroyChildren(_impermanentContainer);
+        DestroyChildren(ImpermanentContainer);
 
         // load from save
         var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
-        InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, _impermanentContainer);
-        ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, _impermanentContainer);
+        InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, ImpermanentContainer);
+        ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, ImpermanentContainer);
         _logger.Info($"{_sceneName} loaded from save.");
-    }
-
-    // hack so that the additive scenes (narrator, hud, etc) have time to load in
-    private System.Collections.IEnumerator InvokeFirstVisitToSceneAfterFrame(string sceneName)
-    {
-        yield return null; // wait for the next frame
-        FirstVisitToScene?.Invoke(sceneName);
     }
 
     // dang
@@ -70,18 +97,25 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private List<SaveData> GatherChildSaveData(Transform parent) {
         List<SaveData> _saveDatas = new();
-        foreach (Transform _child in parent)
-            if (_child.TryGetComponent<SaveData.ISaveable>(out var _saveable) ) {
-                SaveData _savedata = _saveable.Save();
-                _saveDatas.Add(_savedata);
+        foreach (Transform _child in parent) {
+            SaveData _saveData;
+            if (_child.TryGetComponent<SaveData.ISaveable>(out var _saveable)) {
+                _saveData = _saveable.Save();
+            } else {
+                _saveData = new SaveData();
+                _saveData.AddIdentifier(_child.gameObject.name.Replace("(Clone)", ""));
+                _saveData.AddTransformPosition(_child.position);
             }
-        return _saveDatas; 
+            _saveDatas.Add(_saveData);
+        }
+        return _saveDatas;
     }
 
     private void InstantiateAndLoadSavedObjects(List<SaveData> saveDatas, Transform container) {
         foreach (var _saveData in saveDatas) {
-            var newObject = _saveData.InstantiateGameObjectFromSaveData(container).GetComponent<SaveData.ISaveable>();
-            newObject.Load(_saveData);
+            var newObject = _saveData.InstantiateGameObjectFromSaveData(container);
+            if (newObject.TryGetComponent<SaveData.ISaveable>(out var _saveable))
+                _saveable.Load(_saveData);
         }
     }
 

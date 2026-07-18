@@ -44,6 +44,7 @@ public class UseItemInput : MonoBehaviour
     private PlayerMovementController _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
+    private bool _useItemQueued;
     private static readonly List<string> INTERACTABLE_TILEMAP_LAYERS = new List<string> { "Water" };
 
     private void OnEnable()
@@ -60,8 +61,11 @@ public class UseItemInput : MonoBehaviour
         Assert.IsNotNull(_inventory);
     }
 
-    private void OnUseItem()
+    private void Update()
     {
+        if (!_useItemQueued) return;
+        _useItemQueued = false;
+
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
         // can't interrupt these
@@ -79,6 +83,11 @@ public class UseItemInput : MonoBehaviour
 
         if (TryUseCarriedObject(_cursorLocation, _targetWorldObject)) return;
         if (TryUseInventoryItem(_cursorLocation, _targetTileMapTag, _targetWorldObject)) return;
+    }
+
+    private void OnUseItem()
+    {
+        _useItemQueued = true;
     }
 
     private bool TryUseCarriedObject(Vector3Int cursorLocation, IUsableTarget targetWorldObject)

@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+
+[RequireComponent(typeof(PlayerMovementController), typeof(PlayerEnergyManager), typeof(PlayerCarry))]
 public class InteractInput : MonoBehaviour
 {
     public interface IInteractable
@@ -23,10 +25,6 @@ public class InteractInput : MonoBehaviour
         _playerMovementController = GetComponent<PlayerMovementController>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
-
-        Assert.IsNotNull(_playerMovementController);
-        Assert.IsNotNull(_playerEnergyManager);
-        Assert.IsNotNull(_playerCarry);
     }
 
     private void OnInteract()

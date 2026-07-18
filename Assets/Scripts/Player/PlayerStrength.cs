@@ -5,15 +5,16 @@ using UnityEngine.Assertions;
 public class PlayerStrength : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStackData _carryData;
 
+    private WeightyObjectStack _carryStack;
     private int _currentLevel;
     private HashSet<string> _seenObjectIDs = new();
 
     private void Start()
     {
         Assert.IsNotNull(_playerData);
-        Assert.IsNotNull(_carryData);
+        _carryStack = GetComponent<WeightyObjectStack>();
+        Assert.IsNotNull(_carryStack);
 
         _currentLevel = _playerData.StrengthData.GetLevel(_playerData.TotalPickupCount);
         ApplyCarryCapacity();
@@ -38,6 +39,6 @@ public class PlayerStrength : MonoBehaviour
 
     private void ApplyCarryCapacity()
     {
-        _carryData.WeightCapacity = _playerData.StrengthData.GetLevelConfig(_currentLevel).CarryCapacity;
+        _carryStack.SetWeightCapacity(_playerData.StrengthData.GetLevelConfig(_currentLevel).CarryCapacity);
     }
 }

@@ -70,7 +70,8 @@
 - Environment should reinforce the story.
 - Ludonarrative story telling?
 - Keep direct dialogue very brief. "Thanks for fixing the bridge. I owe you one."
-- Longer dialogue though voice notes/memos?
+- Longer dialogue though voice notes/memos? Can an imbalance of this make NOCs feel absent?
+
 
 ### Progression Arc
 - **Early game:** Survival — just trying to survive the seasons

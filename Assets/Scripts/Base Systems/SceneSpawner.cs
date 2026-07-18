@@ -12,14 +12,12 @@ public class SceneSpawner : MonoBehaviour
     private Transform _impermanentContainer;
     private WorldObjectOccupancyMap _occupancyMap;
 
-    private void OnEnable()
+    private void Start()
     {
-        SceneSaveLoadManager.FirstVisitToScene += SpawnObjects;
-    }
-
-    private void OnDisable()
-    {
-        SceneSaveLoadManager.FirstVisitToScene -= SpawnObjects;
+        if (SceneSaveLoadManager.IsFirstVisit)
+            SpawnObjects();
+        else
+            gameObject.SetActive(false);
     }
 
     void InitializeSpawner()
@@ -106,7 +104,7 @@ public class SceneSpawner : MonoBehaviour
         VerifyVariantsAreSameSize();
     }
 
-    private void SpawnObjects(string sceneName)
+    private void SpawnObjects()
     {
         _logger.Verbose("Spawn start");
         InitializeSpawner();

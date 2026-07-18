@@ -70,7 +70,7 @@ public class ReduceOpacityWhenPlayerBehind : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("ontriggerenter");
-        if (other.CompareTag("Player"))
+        if (other.transform.root.CompareTag("Player"))
         {
             Debug.Log("fade me");
             if (_fadeCoroutine != null)
@@ -83,7 +83,7 @@ public class ReduceOpacityWhenPlayerBehind : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.transform.root.CompareTag("Player"))
         {
             if (_fadeCoroutine != null)
             {

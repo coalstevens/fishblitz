@@ -17,7 +17,6 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
     public int ScaleFactor => scaleFactor;
 
     private Camera _camera;
-    private Transform _player;
     private Collider2D _worldCollider;
     private int _lastWidth;
     private int _lastHeight;
@@ -35,12 +34,6 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
         UpdateOrthoSize();
         Screen.fullScreen = true;
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            _player = playerObj.transform;
-        }
-
         GameObject worldObj = GameObject.FindGameObjectWithTag("World");
         if (worldObj != null)
             _worldCollider = worldObj.GetComponent<Collider2D>();
@@ -55,9 +48,9 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_player != null)
+        if (_tracked != null)
         {
-            Vector3 targetPos = new Vector3(_player.position.x, _player.position.y, transform.position.z);
+            Vector3 targetPos = new Vector3(_tracked.position.x, _tracked.position.y, transform.position.z);
 
             if (_worldCollider != null)
             {

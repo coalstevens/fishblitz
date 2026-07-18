@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Animator))]
 public class AsepriteEventListener : MonoBehaviour
 {
     [Serializable]
@@ -37,7 +38,6 @@ public class AsepriteEventListener : MonoBehaviour
     private void OnEnable()
     {
         _animator = GetComponent<Animator>();
-        Assert.IsNotNull(_animator);
         foreach (var _effect in _effects)
             _originals.Add(new TransformLocalData(_effect.Affected.transform));
     }

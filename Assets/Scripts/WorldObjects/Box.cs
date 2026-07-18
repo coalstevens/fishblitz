@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using DG.Tweening;
 
-public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget
+[RequireComponent(typeof(WeightyObjectStack))]
+public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, SaveData.ISaveable
 {
     [Header("References")]
     [SerializeField] private GameObject _blurb;
@@ -39,12 +40,57 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     private enum BoxAnimState { Closed, Opening, Open, Closing }
     private BoxAnimState _animState = BoxAnimState.Closed;
 
+    private class BoxSaveData
+    {
+        public string BoxDataName;
+        public Dictionary<string, int> FulfilledQuantities = new();
+        public bool HasInteracted;
+        public bool IsComplete;
+    }
+
+    public SaveData Save()
+    {
+        var extended = new BoxSaveData
+        {
+            BoxDataName = _boxData.name,
+            HasInteracted = _hasInteracted,
+            IsComplete = _isComplete
+        };
+        foreach (var kv in _fulfilledQuantities)
+            extended.FulfilledQuantities[kv.Key.name] = kv.Value;
+
+        var saveData = new SaveData();
+        saveData.AddIdentifier("Box");
+        saveData.AddTransformPosition(transform.position);
+        saveData.AddExtendedSaveData(extended);
+        return saveData;
+    }
+
+    public void Load(SaveData saveData)
+    {
+        var extended = saveData.GetExtendedSaveData<BoxSaveData>();
+        _boxData = Resources.Load<BoxData>("BoxPrizes/" + extended.BoxDataName);
+        _hasInteracted = extended.HasInteracted;
+        _isComplete = extended.IsComplete;
+
+        foreach (var kv in extended.FulfilledQuantities)
+            foreach (var required in _boxData.RequiredObjects)
+                if (required.Type.name == kv.Key)
+                    _fulfilledQuantities[required.Type] = kv.Value;
+
+        if (_isComplete)
+        {
+            SetBlurbVisible(false);
+            _animator?.Play("Closed");
+        }
+        UpdateUI();
+    }
+
     public WeightyObjectStack WeightyStack => _weightyContainer;
 
     private void Awake()
     {
         _weightyContainer = GetComponent<WeightyObjectStack>();
-        Assert.IsNotNull(_weightyContainer);
         Assert.IsNotNull(_blurb);
         Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
@@ -70,6 +116,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         if (_isComplete) return false;
         UpdateUI();
         ShowBlurb();
+        _alert.SetActive(false);
         return true;
     }
 

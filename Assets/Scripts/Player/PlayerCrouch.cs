@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput), typeof(PlayerMovementController))]
 public class PlayerCrouch : MonoBehaviour
 {
     private InputAction _crouchAction;
@@ -10,10 +11,7 @@ public class PlayerCrouch : MonoBehaviour
     private void OnEnable()
     {
         PlayerInput _inputController = GetComponent<PlayerInput>();
-        Assert.IsNotNull(_inputController);
-
         _playerMovementController = GetComponent<PlayerMovementController>();
-        Assert.IsNotNull(_playerMovementController);
 
         _crouchAction = _inputController.actions["Crouch"];
         Assert.IsNotNull(_crouchAction);

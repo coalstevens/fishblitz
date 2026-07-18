@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 public class CarriedObjectsAnimatorController : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStackData _playerCarriedObjects;
+    [SerializeField] private WeightyObjectStack _playerCarriedObjects;
     List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()

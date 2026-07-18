@@ -6,7 +6,6 @@ public class CoreManagerConfig : ScriptableObject
     [Header("Shared References")]
     public PlayerData PlayerData;
     public Inventory PlayerInventory;
-    public WeightyObjectStackData PlayerCarriedObjects;
     public RainAudio RainManager;
     public SceneSpawnConfig SceneSpawnConfig;
 

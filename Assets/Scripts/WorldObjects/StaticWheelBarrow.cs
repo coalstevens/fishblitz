@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(WeightyObjectStack), typeof(Animator))]
 public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, BoxData.IBoxPrize
 {
     [SerializeField] private PlayerData _playerData;
@@ -25,10 +26,8 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         _animator = GetComponent<Animator>();
 
         Assert.IsNotNull(_playerCarry);
-        Assert.IsNotNull(_weightyContainer);
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_staticWheelBarrow);
-        Assert.IsNotNull(_animator);
         Assert.IsNotNull(_playerData);
     }
     private bool IsFacingDirectionForWheelbarrowPickup()

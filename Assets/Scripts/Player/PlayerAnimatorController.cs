@@ -20,7 +20,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private Animator _carryAnimator;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStackData _carriedObjects;
+    [SerializeField] private WeightyObjectStack _carriedObjects;
     [SerializeField] private GameObject _DefaultSprite;
     [SerializeField] private GameObject _BarrowingSprite;
     [SerializeField] private GameObject _CarryingSprite;

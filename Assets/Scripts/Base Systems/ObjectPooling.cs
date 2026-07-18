@@ -12,6 +12,7 @@ public class ObjectPooling : MonoBehaviour
     public class PooledObjectInfo
     {
         public string LookupString;
+        public GameObject Prefab;
         public List<GameObject> InactiveObjects = new();
     }
 
@@ -22,11 +23,11 @@ public class ObjectPooling : MonoBehaviour
 
     public static GameObject SpawnObject(GameObject prefab, Vector2 position, Quaternion rotation)
     {
-        PooledObjectInfo pool = Pools.Find(p => p.LookupString == prefab.name);
+        PooledObjectInfo pool = Pools.Find(p => p.Prefab == prefab);
 
         if (pool == null)
         {
-            pool = new PooledObjectInfo { LookupString = prefab.name };
+            pool = new PooledObjectInfo { LookupString = prefab.name, Prefab = prefab };
             Pools.Add(pool);
         }
 

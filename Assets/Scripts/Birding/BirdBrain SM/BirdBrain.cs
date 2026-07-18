@@ -14,6 +14,8 @@ using UnityEngine.Tilemaps;
 // ^ does this make the bird slide along the ground in idle positon?
 
 [Serializable]
+[RequireComponent(typeof(Rigidbody2D), typeof(BirdAnimatorController))]
+[RequireComponent(typeof(SortingGroup), typeof(DynamicSpriteSorting))]
 public partial class BirdBrain : MonoBehaviour, IFlockMate
 {
     public class BirdInstanceData
@@ -136,10 +138,6 @@ public partial class BirdBrain : MonoBehaviour, IFlockMate
         _waterTilemaps = GetTilemapsInLayerMask(_water);
 
         Assert.IsNotNull(_worldCollider);
-        Assert.IsNotNull(_rb);
-        Assert.IsNotNull(_animator);
-        Assert.IsNotNull(_sortingGroup);
-        Assert.IsNotNull(_spriteSorting);
         Assert.IsNotNull(_nearbyBirdsTracker);
         Assert.IsNotNull(_leafSplash);
         Assert.IsNotNull(_leafSplashRenderer);

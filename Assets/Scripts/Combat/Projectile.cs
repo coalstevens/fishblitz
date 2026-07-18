@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _lifespan;
@@ -19,13 +20,8 @@ public class Projectile : MonoBehaviour
         Assert.IsTrue(_lifespan > 0);
 
         _rb = GetComponent<Rigidbody2D>();
-        Assert.IsNotNull(_rb);
-
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        Assert.IsNotNull(_spriteRenderer);
-
         _hitbox = GetComponentInChildren<ContactHitbox>();
-        Assert.IsNotNull(_hitbox);
         _baseDamage = _hitbox.Damage;
         _hitbox.OnHit += OnHitTarget;
     }

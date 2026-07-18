@@ -36,7 +36,7 @@ public class SunLightControl : MonoBehaviour
     private Coroutine _fadeRoutine;
     private Action _unsubscribe;
 
-    void OnEnable()
+    void Start()
     {
         _light = GetComponent<Light2D>();
         GameClock.Instance.OnGameMinuteTick += OnMinuteChange; 
@@ -46,6 +46,7 @@ public class SunLightControl : MonoBehaviour
         UpdateLightState();
         UpdateLight();
     }
+
     void OnDisable()
     {
         GameClock.Instance.OnGameMinuteTick -= OnMinuteChange; 

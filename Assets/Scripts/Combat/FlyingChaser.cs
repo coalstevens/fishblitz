@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(EnemyHealth))]
 public class FlyingChaser : MonoBehaviour
 {
     private enum ChaserState { Wandering, Chasing }
@@ -48,10 +49,7 @@ public class FlyingChaser : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        Assert.IsNotNull(_rb);
-
         _enemyHealth = GetComponent<EnemyHealth>();
-        Assert.IsNotNull(_enemyHealth);
         _lastHealth = _enemyHealth.CurrentHealth.Value;
         _enemyHealth.CurrentHealth.OnChange(OnHealthChanged);
     }

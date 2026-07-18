@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class NearbyBirdTracker : MonoBehaviour
 {
     [SerializeField] private int _nearbyBirdsCount = 0;
@@ -14,7 +15,6 @@ public class NearbyBirdTracker : MonoBehaviour
     {
         _thisBird = GetComponentInParent<BirdBrain>();
         _viewRange = GetComponent<Collider2D>();
-        Assert.IsNotNull(_viewRange, "NearbyBirdTracker requires a Collider2D component!");
 
         if (!_viewRange.isTrigger)
         {

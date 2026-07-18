@@ -19,6 +19,12 @@ public class CoreManager : Singleton<CoreManager>
     {
         base.Awake();
 
+#if UNITY_EDITOR
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length > 1)
+            Debug.LogError($"[CoreManager] Found {players.Length} objects tagged 'Player' in scene '{gameObject.scene.name}'. Expected exactly 1. Found: {string.Join(", ", System.Array.ConvertAll(players, p => p.name))}");
+#endif
+
         if (_config.ClearSaveOnStart)
         {
             ClearAllFilesInPersistentDataPath();
@@ -73,8 +79,13 @@ public class CoreManager : Singleton<CoreManager>
         _config.PlayerInventory.ActiveItemSlot.Value = 0;
         _config.PlayerData.IsHoldingWheelBarrow.Value = false;
         _config.PlayerData.IsCarrying.Value = false;
-        _config.PlayerCarriedObjects.StoredObjects.Clear();
-        _config.PlayerCarriedObjects.CurrentWeight = 0;
+
+        var playerCarry = FindFirstObjectByType<PlayerCarry>();
+        if (playerCarry != null)
+        {
+            var stack = playerCarry.GetComponent<WeightyObjectStack>();
+            stack.Clear();
+        }
     }
 
     private void ClearAllFilesInPersistentDataPath()

@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Assertions;
 using System.Collections;
 
+[RequireComponent(typeof(WeightyObjectStack), typeof(PlayerStrength))]
 public class PlayerCarry : MonoBehaviour
 {
     [SerializeField] private PlayerData _playerData;
@@ -36,9 +37,7 @@ public class PlayerCarry : MonoBehaviour
         Assert.IsNotNull(_worldObjectOccupancyMap);
 
         _carriedObjects = GetComponent<WeightyObjectStack>();
-        Assert.IsNotNull(_carriedObjects);
         _playerStrength = GetComponent<PlayerStrength>();
-        Assert.IsNotNull(_playerStrength);
         Assert.IsNotNull(_playerData);
     }
 

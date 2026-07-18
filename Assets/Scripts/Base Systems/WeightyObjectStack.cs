@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using ReactiveUnity;
 
 public interface IWeightyObjectContainer : InteractInput.IInteractable
 {
@@ -10,51 +11,66 @@ public class WeightyObjectStack : MonoBehaviour
 {
     [SerializeField] public WeightyObjectStackData Data;
 
-    private void Awake()
+    public ReactiveStack<StoredWeightyObject> StoredObjects = new ReactiveStack<StoredWeightyObject>();
+    public int CurrentWeight { get; private set; }
+
+    private int _overriddenCapacity;
+    private bool _hasCapacityOverride;
+
+    public int EffectiveCapacity => _hasCapacityOverride ? _overriddenCapacity : (Data != null ? Data.WeightCapacity : 0);
+
+    public void SetWeightCapacity(int capacity)
     {
-        Assert.IsNotNull(Data);
+        _overriddenCapacity = capacity;
+        _hasCapacityOverride = true;
+    }
+
+    public void Clear()
+    {
+        StoredObjects.Clear();
+        CurrentWeight = 0;
     }
 
     public bool Push(StoredWeightyObject storedObject)
     {
         Assert.IsNotNull(storedObject);
-        Data.CurrentWeight += storedObject.Type.Weight;
-        Data.StoredObjects.Push(storedObject);
-        if (Data.InsertSound != null)
+        CurrentWeight += storedObject.Type.Weight;
+        StoredObjects.Push(storedObject);
+        if (Data != null && Data.InsertSound != null)
             PlayerAudioManager.Instance.PlayOneShot(Data.InsertSound);
         return true;
     }
 
     public StoredWeightyObject Pop()
     {
-        Assert.IsTrue(Data.StoredObjects.Count > 0);
-        Data.CurrentWeight -= Data.StoredObjects.Peek().Type.Weight;
-        if (Data.RemoveSound != null)
+        Assert.IsTrue(StoredObjects.Count > 0);
+        CurrentWeight -= StoredObjects.Peek().Type.Weight;
+        if (Data != null && Data.RemoveSound != null)
             PlayerAudioManager.Instance.PlayOneShot(Data.RemoveSound);
-        return Data.StoredObjects.Pop();
+        return StoredObjects.Pop();
     }
 
     public StoredWeightyObject Peek()
     {
         Assert.IsFalse(IsEmpty());
-        return Data.StoredObjects.Peek();
+        return StoredObjects.Peek();
     }
 
     public bool IsEmpty()
     {
-        if (Data.StoredObjects.Count == 0)
+        if (StoredObjects.Count == 0)
         {
-            Assert.IsTrue(Data.CurrentWeight == 0);
+            Assert.IsTrue(CurrentWeight == 0);
             return true;
         }
         return false;
     }
 
-    public int StoredCount => Data.StoredObjects.Count;
+    public int StoredCount => StoredObjects.Count;
 
     public bool HasEnoughSpace(int weight)
     {
         Assert.IsTrue(weight > 0);
-        return weight + Data.CurrentWeight <= Data.WeightCapacity;
+        return weight + CurrentWeight <= EffectiveCapacity;
     }
 }

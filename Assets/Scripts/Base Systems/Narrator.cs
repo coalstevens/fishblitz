@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Note: Narrator messages run on unscaledTime (unaffected by gamepause)
 
@@ -39,14 +40,10 @@ public class Narrator : MonoBehaviour
         _narratorMessageContainer = GameObject.FindGameObjectWithTag("NarratorMessageContainer").transform;
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        SceneSaveLoadManager.FirstVisitToScene += PrintFirstVisitToSceneMessage;
-    }
-
-    private void OnDisable()
-    {
-        SceneSaveLoadManager.FirstVisitToScene -= PrintFirstVisitToSceneMessage;
+        if (SceneSaveLoadManager.IsFirstVisit)
+            PrintFirstVisitToSceneMessage(SceneManager.GetActiveScene().name);
     }
 
     void Update()

@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private float _maxHealth = 2f;
     [SerializeField] private float _invulnerabilityDuration = 1.5f;
+    [SerializeField] private Logger _logger = new();
     public Reactive<float> CurrentHealth = new Reactive<float>(0);
     public Reactive<bool> IsInvulnerable = new(false);
 
@@ -19,6 +20,8 @@ public class EnemyHealth : MonoBehaviour
     {
         if (IsInvulnerable.Value) return;
         Assert.IsTrue(damage > 0);
+
+        _logger.Info($"{gameObject.name} took {damage} damage from {new System.Diagnostics.StackTrace().GetFrame(2)?.GetMethod()?.DeclaringType?.Name}.{new System.Diagnostics.StackTrace().GetFrame(2)?.GetMethod()?.Name}");
 
         CurrentHealth.Value -= damage;
         if (CurrentHealth.Value <= 0)

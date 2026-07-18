@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 public class WheelBarrowContainedRenderers : MonoBehaviour
 {
-    [SerializeField] private WeightyObjectStackData _wheelBarrowStack;
+    [SerializeField] private WeightyObjectStack _wheelBarrowStack;
     [SerializeField] private CompassDirection _facingDirection = CompassDirection.North;
     List<Action> _unsubscribeHooks = new();
 

@@ -9,7 +9,7 @@ public class CanyonTransition : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player")) return;
+        if (!other.transform.root.CompareTag("Player")) return;
 
         CanyonManager mgr = Store.Get<CanyonManager>();
         if (mgr == null) return;

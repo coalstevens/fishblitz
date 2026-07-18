@@ -30,6 +30,7 @@ public struct CardinalVector
     }
 }
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovementController : MonoBehaviour
 {
     public enum PlayerStates
@@ -59,8 +60,8 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStackData _playerWheelBarrow;
-    [SerializeField] private WeightyObjectStackData _carriedObjects;
+    [SerializeField] private WeightyObjectStack _playerWheelBarrow;
+    [SerializeField] private WeightyObjectStack _carriedObjects;
     [Header("Move Speeds")]
     [SerializeField] private float _defaultMoveSpeed = 3.5f;
     [SerializeField] private float _wheelbarrowMoveSpeed = 3.5f;
@@ -96,8 +97,6 @@ public class PlayerMovementController : MonoBehaviour
         transform.position = _playerData.SceneSpawnPosition;
         _maxMoveSpeeds = new CardinalVector(_defaultMoveSpeed);
         _moveSpeedsMultiplier = new CardinalVector(1);
-
-        Assert.IsNotNull(_rb);
     }
 
     public void OnMove(InputValue value)

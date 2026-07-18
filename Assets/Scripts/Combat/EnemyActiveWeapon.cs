@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Reloader))]
 public class EnemyActiveWeapon : MonoBehaviour 
 {
     [SerializeField] private Collider2D _targetCollider;
@@ -21,8 +22,6 @@ public class EnemyActiveWeapon : MonoBehaviour
         _weaponData.ProjectileSpawnRadius = _projectileSpawnRadius; 
 
         _reloader = GetComponent<Reloader>();
-        Assert.IsNotNull(_reloader);
-
         _reloader.SetActiveWeapon(_weapon, _weaponData);
     }
 

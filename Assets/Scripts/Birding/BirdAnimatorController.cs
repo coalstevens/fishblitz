@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
+[RequireComponent(typeof(BirdBrain))]
 public class BirdAnimatorController : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
@@ -18,7 +19,6 @@ public class BirdAnimatorController : MonoBehaviour
         _bird = GetComponent<BirdBrain>();
 
         Assert.IsNotNull(_animator);
-        Assert.IsNotNull(_bird);
 
         OverrideBirdAnimatorClips(_animator, _bird.SpeciesData);
     }
