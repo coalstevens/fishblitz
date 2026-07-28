@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using ColePersistence;
 using System.Collections.Generic;
+using System.IO;
 
 // Note about instantiating objects here:
 // World objects instantiated by this Manager should use Awake() instead of Start()
@@ -60,6 +61,17 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private void Awake() {
         _instance = this;
+        _isFirstVisit = null;
+        LoadScene();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        _impermanentContainer = null;
         _isFirstVisit = null;
         LoadScene();
     }
@@ -202,5 +214,19 @@ public class SceneSaveLoadManager : MonoBehaviour {
         string _sceneName = SceneManager.GetActiveScene().name;
         string suffix = string.IsNullOrEmpty(SceneSaveSuffix) ? "" : "_" + SceneSaveSuffix;
         return _sceneName + suffix + "_savedData.json";
+    }
+
+    public static void ClearTWNSaves(HashSet<string> twnSceneNames) {
+        string[] files = Directory.GetFiles(Application.persistentDataPath, "*_savedData.json");
+        foreach (string file in files) {
+            string fileName = Path.GetFileName(file);
+            string baseName = fileName.Substring(0, fileName.Length - "_savedData.json".Length);
+            int lastUnderscore = baseName.LastIndexOf('_');
+            if (lastUnderscore < 0) continue;
+            string sceneName = baseName.Substring(0, lastUnderscore);
+            string suffix = baseName.Substring(lastUnderscore + 1);
+            if (int.TryParse(suffix, out _) && twnSceneNames.Contains(sceneName))
+                JsonPersistence.DeleteFile(fileName);
+        }
     }
 }

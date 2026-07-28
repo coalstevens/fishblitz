@@ -27,5 +27,11 @@ namespace ColePersistence
     public static bool JsonExists(string relativePath) {
       return File.Exists(GetPersistencePath(relativePath));
     }
+
+    public static void DeleteFile(string relativePath) {
+      string fullPath = GetPersistencePath(relativePath);
+      if (File.Exists(fullPath))
+        File.Delete(fullPath);
+    }
   }
 }

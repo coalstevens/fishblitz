@@ -417,6 +417,8 @@ public class TheWayNorth : MonoBehaviour, ISaveableComponent
 
     private void StartRun()
     {
+        SceneSaveLoadManager.ClearTWNSaves(_config.GetAllTWNScceneNames());
+
         _scenePath.Clear();
         _exitToEntrance.Clear();
         _entranceToExit.Clear();

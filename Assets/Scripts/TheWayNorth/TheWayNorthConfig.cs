@@ -80,4 +80,17 @@ public class TheWayNorthConfig : ScriptableObject
             if (biome.name == name) return biome;
         return null;
     }
+
+    public HashSet<string> GetAllTWNScceneNames()
+    {
+        HashSet<string> names = new HashSet<string> { StartScene.ToString() };
+        foreach (var biome in Biomes)
+        {
+            foreach (var ws in biome.ScenePool)
+                names.Add(ws.Scene.ToString());
+            foreach (var ws in biome.Forks)
+                names.Add(ws.Scene.ToString());
+        }
+        return names;
+    }
 }
