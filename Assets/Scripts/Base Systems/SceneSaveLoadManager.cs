@@ -32,6 +32,8 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private static SceneSaveLoadManager _instance;
     private static bool? _isFirstVisit = null;
+    public static string SceneSaveSuffix { get; set; } = "";
+
     public static bool IsFirstVisit {
         get {
             if (_instance == null) {
@@ -39,9 +41,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
                 return false;
             }
             if (_isFirstVisit == null) {
-                string sceneName = SceneManager.GetActiveScene().name;
-                string fileName = sceneName + "_savedData.json";
-                _isFirstVisit = !JsonPersistence.JsonExists(fileName);
+                _isFirstVisit = !JsonPersistence.JsonExists(_instance.GetSceneFileName());
             }
             return _isFirstVisit.Value;
         }
@@ -70,11 +70,6 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private void OnApplicationQuit() {
         SavePlayerComponents();
-    }
-
-    private void OnDestroy() {
-        if (_instance == this)
-            _instance = null;
     }
 
     // --- World Object Save/Load (per-scene) ---
@@ -205,6 +200,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     private string GetSceneFileName() {
         string _sceneName = SceneManager.GetActiveScene().name;
-        return _sceneName + "_savedData.json";
+        string suffix = string.IsNullOrEmpty(SceneSaveSuffix) ? "" : "_" + SceneSaveSuffix;
+        return _sceneName + suffix + "_savedData.json";
     }
 }

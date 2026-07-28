@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440303712d64a4c2a8976993781821b6, type: 3}
+  m_Name: TheWayNorthConfig
+  m_EditorClassIdentifier: Assembly-CSharp::TheWayNorthConfig
+  StartScene: 11
+  Biomes:
+  - {fileID: 11400000, guid: 3514093f61c0c4708bf61202dcf285c5, type: 2}
+  NetworkDepth: 2
+  DepthBiomePools:
+  - Depth: 1
+    PossibleBiomes:
+    - Biome: {fileID: 11400000, guid: 3514093f61c0c4708bf61202dcf285c5, type: 2}
+      Weight: 1
+  - Depth: 2
+    PossibleBiomes:
+    - Biome: {fileID: 11400000, guid: 3514093f61c0c4708bf61202dcf285c5, type: 2}
+      Weight: 1

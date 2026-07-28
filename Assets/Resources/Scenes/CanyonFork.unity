@@ -5546,7 +5546,7 @@ GameObject:
   - component: {fileID: 675337747}
   - component: {fileID: 675337746}
   m_Layer: 0
-  m_Name: Exit Cave
+  m_Name: Exit Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5564,7 +5564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ff959935d44cecb749ea1f3d999c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TheWayNorthExit
-  _targetBiome: Cave
+  _forkDirection: 1
 --- !u!4 &675337747
 Transform:
   m_ObjectHideFlags: 0
@@ -71703,7 +71703,7 @@ GameObject:
   - component: {fileID: 1432725571}
   - component: {fileID: 1432725570}
   m_Layer: 0
-  m_Name: Exit Forest
+  m_Name: Exit Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71721,7 +71721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ff959935d44cecb749ea1f3d999c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TheWayNorthExit
-  _targetBiome: Forest
+  _forkDirection: 2
 --- !u!4 &1432725571
 Transform:
   m_ObjectHideFlags: 0
@@ -81327,6 +81327,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1903331750}
+  - component: {fileID: 1903331751}
   m_Layer: 0
   m_Name: Entrance
   m_TagString: Untagged
@@ -81353,6 +81354,18 @@ Transform:
   - {fileID: 37881524}
   m_Father: {fileID: 1525115436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1903331751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903331749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 714411509de3e42de9fd296ad3b6b2ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TheWayNorthEntrance
 --- !u!1001 &1910522644
 PrefabInstance:
   m_ObjectHideFlags: 0

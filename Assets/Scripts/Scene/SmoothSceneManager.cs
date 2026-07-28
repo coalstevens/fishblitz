@@ -12,12 +12,13 @@ namespace OysterUtils
             SceneTransitionOverlayPrefab = Resources.Load<GameObject>("Scene/scene-transition-overlay");
         }
 
-        public static void LoadScene(string toSceneName)
+        public static void LoadScene(string toSceneName, string loadSuffix = "")
         {
             SceneSaveLoadManager _saveLoadManager = GameObject.FindFirstObjectByType<SceneSaveLoadManager>();
             if (_saveLoadManager != null) {
                 _saveLoadManager.SaveScene();
             }
+            SceneSaveLoadManager.SceneSaveSuffix = loadSuffix;
             GameObject transitionObject = GameObject.Instantiate(SceneTransitionOverlayPrefab, Vector3.zero, Quaternion.identity);
             transitionObject.GetComponent<SceneTransitionOverlay>().LoadScene(toSceneName);
         }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7298516834122910809}
   - component: {fileID: 6657213939422133203}
   - component: {fileID: 1527055857586457474}
+  - component: {fileID: 752588707319116778}
   m_Layer: 0
   m_Name: WorldState
   m_TagString: Untagged
@@ -45,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463cf6b2287de405f8bad423e5933157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameclock: {fileID: 0}
   _logger:
     _info: 1
     _verbose: 0
@@ -128,4 +128,22 @@ MonoBehaviour:
     _info: 1
     _verbose: 0
     _prefix: Outside Temperature
+    _color: white
+--- !u!114 &752588707319116778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4980059793831655329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6639e1a2b3543bca5cddb5f10d591e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TheWayNorth
+  _config: {fileID: 11400000, guid: 8f310e1562a7046cdbb3d33d20709377, type: 2}
+  _logger:
+    _info: 1
+    _verbose: 0
+    _prefix: TWN
     _color: white

@@ -1,4 +1,3 @@
-using OysterUtils;
 using UnityEngine;
 
 public class TheWayNorthTransition : MonoBehaviour
@@ -11,14 +10,14 @@ public class TheWayNorthTransition : MonoBehaviour
     {
         if (!other.transform.root.CompareTag("Player")) return;
 
-        TheWayNorth mgr = Store.Get<TheWayNorth>();
+        TheWayNorth mgr = TheWayNorth.Instance;
         if (mgr == null) return;
 
         TheWayNorthExit exit = GetComponentInParent<TheWayNorthExit>();
         if (exit != null)
         {
             PlaySound();
-            mgr.TakeExit(exit.ExitId, _label, exit.TargetBiome);
+            mgr.TakeExit(exit.ExitId, _label);
             return;
         }
 

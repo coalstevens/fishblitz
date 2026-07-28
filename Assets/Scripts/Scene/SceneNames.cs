@@ -15,6 +15,13 @@ public enum SceneNames
     Canyon1,
     Canyon2,
     CanyonFork,
+    CaveStart,
+    Cave1,
+    Cave2,
+    CaveFork,
+    ForestStart,
+    Forest1,
+    Forest2,
+    ForestFork,
     Lobby
-    
 }
