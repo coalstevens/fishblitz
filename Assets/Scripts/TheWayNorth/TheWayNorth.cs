@@ -313,65 +313,70 @@ public class TheWayNorth : MonoBehaviour, ISaveableComponent
 
         if (_exitToEntrance.TryGetValue(key, out string target))
         {
-            string[] parts = target.Split('|');
-            string targetSceneName = parts[0];
-            int targetIndex = int.Parse(parts[1]);
-            string entranceId = parts[2];
-
-            _currentSceneIndex = targetIndex;
-
-            _logger.Info($"↩ Return: {currentScene}|{exitId} → {targetSceneName}|{entranceId} (spawn:{transitionLabel})");
-            LogNetworkState();
-
-            _pendingTargetId = entranceId;
-            _pendingSpawnLabel = transitionLabel;
-            SceneManager.sceneLoaded += ResolvePlayerSpawn;
-            _isRunTransition = true;
-            SceneSaveLoadManager.SceneSaveSuffix = sourceIndex.ToString();
-            SmoothSceneManager.LoadScene(targetSceneName, targetIndex.ToString());
+            HandleReturnTransition(target, transitionLabel, sourceIndex, currentScene, exitId);
+            return;
         }
-        else
+
+        BiomeNode child = TryGetForkChild(exitId);
+        if (child != null)
         {
-            BiomeNode child = TryGetForkChild(exitId);
-            if (child != null)
-            {
-                _currentNode = child;
-                _nodeOrder.Add(child);
-                _scenePath.AddRange(child.Path);
-                _currentSceneIndex = _scenePath.Count - child.Path.Count;
-
-                _logger.Info($"↳ Fork: {currentScene}|{exitId} → {child.Config.name}:{child.Path[0]} (spawn:{transitionLabel})");
-                LogNetworkState();
-
-                _pendingSourceLink = key;
-                _pendingSpawnLabel = transitionLabel;
-                SceneManager.sceneLoaded += ResolvePlayerSpawn;
-                _isRunTransition = true;
-                SceneSaveLoadManager.SceneSaveSuffix = sourceIndex.ToString();
-                SmoothSceneManager.LoadScene(child.Path[0].ToString(), _currentSceneIndex.ToString());
-            }
-            else
-            {
-                int nextIndex = sourceIndex + 1;
-                if (nextIndex < _scenePath.Count)
-                {
-                    _currentSceneIndex = nextIndex;
-
-                    LogNetworkState();
-
-                    _pendingSourceLink = key;
-                    _pendingSpawnLabel = transitionLabel;
-                    SceneManager.sceneLoaded += ResolvePlayerSpawn;
-                    _isRunTransition = true;
-                    SceneSaveLoadManager.SceneSaveSuffix = sourceIndex.ToString();
-                    SmoothSceneManager.LoadScene(_scenePath[nextIndex].ToString(), nextIndex.ToString());
-                }
-                else
-                {
-                    _logger.Info($"✗ Dead end: {currentScene}|{exitId} (spawn:{transitionLabel}) — no further scenes");
-                }
-            }
+            HandleForkTransition(child, key, transitionLabel, currentScene, exitId, sourceIndex);
+            return;
         }
+
+        HandleForwardTransition(key, transitionLabel, sourceIndex, currentScene, exitId);
+    }
+
+    private void HandleReturnTransition(string target, string transitionLabel, int sourceIndex, string currentScene, string exitId)
+    {
+        string[] parts = target.Split('|');
+        string targetSceneName = parts[0];
+        int targetIndex = int.Parse(parts[1]);
+        string entranceId = parts[2];
+        _currentSceneIndex = targetIndex;
+
+        PerformTransition(targetSceneName, targetIndex.ToString(), sourceIndex,
+            $"↩ Return: {currentScene}|{exitId} → {targetSceneName}|{entranceId} (spawn:{transitionLabel})",
+            null, transitionLabel, entranceId);
+    }
+
+    private void HandleForkTransition(BiomeNode child, string key, string transitionLabel, string currentScene, string exitId, int sourceIndex)
+    {
+        _currentNode = child;
+        _nodeOrder.Add(child);
+        _scenePath.AddRange(child.Path);
+        _currentSceneIndex = _scenePath.Count - child.Path.Count;
+
+        PerformTransition(child.Path[0].ToString(), _currentSceneIndex.ToString(), sourceIndex,
+            $"↳ Fork: {currentScene}|{exitId} → {child.Config.name}:{child.Path[0]} (spawn:{transitionLabel})",
+            key, transitionLabel, null);
+    }
+
+    private void HandleForwardTransition(string key, string transitionLabel, int sourceIndex, string currentScene, string exitId)
+    {
+        int nextIndex = sourceIndex + 1;
+        if (nextIndex >= _scenePath.Count)
+        {
+            _logger.Info($"✗ Dead end: {currentScene}|{exitId} (spawn:{transitionLabel}) — no further scenes");
+            return;
+        }
+        _currentSceneIndex = nextIndex;
+        PerformTransition(_scenePath[nextIndex].ToString(), nextIndex.ToString(), sourceIndex,
+            null, key, transitionLabel, null);
+    }
+
+    private void PerformTransition(string targetScene, string targetSuffix, int saveSuffix, string logMessage, string sourceLink, string spawnLabel, string targetId)
+    {
+        if (logMessage != null)
+            _logger.Info(logMessage);
+        LogNetworkState();
+        _pendingSourceLink = sourceLink;
+        _pendingSpawnLabel = spawnLabel;
+        _pendingTargetId = targetId;
+        SceneManager.sceneLoaded += ResolvePlayerSpawn;
+        _isRunTransition = true;
+        SceneSaveLoadManager.SceneSaveSuffix = saveSuffix.ToString();
+        SmoothSceneManager.LoadScene(targetScene, targetSuffix);
     }
 
     public void UseEntrance(string entranceId, string transitionLabel)
