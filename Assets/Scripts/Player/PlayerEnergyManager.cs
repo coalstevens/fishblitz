@@ -1,49 +1,78 @@
+using Newtonsoft.Json;
+using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
-public class PlayerEnergyManager : MonoBehaviour
+public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
 {
     public interface IEnergyDepleting
     {
         public int EnergyCost { get; }
     }
 
-    [SerializeField] private PlayerData _playerData;
+    public string ComponentId => "PlayerEnergy";
+
+    [Header("Energy")]
+    public Reactive<int> CurrentEnergy = new Reactive<int>(0);
+    [SerializeField] private int _maxEnergy = 100;
+    public int MaxEnergy => _maxEnergy;
+
+    [Header("Diet")]
+    public float TodaysProtein = 0;
+    public float TodaysCarbs = 0;
+    public float TodaysNutrients = 0;
+    public const float PROTEIN_REQUIRED_DAILY = 100;
+    public const float CARBS_REQUIRED_DAILY = 100;
+    public const float NUTRIENTS_REQUIRED_DAILY = 100;
+
+    [Header("Sleep")]
+    public bool IsPlayerSleeping = false;
+    public int LastPlayerSleepTime = 0;
+
     private PlayerTemperatureManager _playerTemperatureManager;
+    private PlayerSceneData _playerSceneData;
     private Logger _logger = new();
+
+    [System.Serializable]
+    private class State
+    {
+        public int CurrentEnergy;
+        public int MaxEnergy;
+        public float TodaysProtein;
+        public float TodaysCarbs;
+        public float TodaysNutrients;
+        public bool IsPlayerSleeping;
+        public int LastPlayerSleepTime;
+    }
+
     private void Awake()
     {
         _playerTemperatureManager = GetComponent<PlayerTemperatureManager>();
+        _playerSceneData = GetComponent<PlayerSceneData>();
     }
 
     public void Sleep()
     {
-        // The player temp is instantly updated to the ambient temperature.
-        // The player will not change temp or wetness while asleep.
-        //    To explain: If player lights a fire before going to bed 
-        //    their sleep quality will improve, and they don't have to stand around waiting
-        //    for the player temperature to match ambient.
-        // However, the player does have to stand around to dry off. Getting into bed wet should be miserable.
         _playerTemperatureManager.TryUpdatePlayerTempInstantly(true);
-        _playerData.SceneOnAwake = SceneManager.GetActiveScene().name;
-        _playerData.LastPlayerSleepTime = GameClock.Instance.GameMinutesElapsed;
+        _playerSceneData.SceneOnAwake = SceneManager.GetActiveScene().name;
+        LastPlayerSleepTime = GameClock.Instance.GameMinutesElapsed;
         LevelChanger.ChangeLevel("SleepMenu");
     }
 
     public void DepleteEnergy(int energy)
     {
         Assert.IsTrue(energy >= 0, "Energy to deplete must be non negative.");
-        if (_playerData.CurrentEnergy.Value >= energy)
+        if (CurrentEnergy.Value >= energy)
         {
-            _playerData.CurrentEnergy.Value -= energy;
-            _logger.Info("Energy depleted by " + energy + ". Current energy: " + _playerData.CurrentEnergy.Value);
+            CurrentEnergy.Value -= energy;
+            _logger.Info("Energy depleted by " + energy + ". Current energy: " + CurrentEnergy.Value);
         }
-        else if (_playerData.CurrentEnergy.Value < energy && _playerData.CurrentEnergy.Value > 0)
+        else if (CurrentEnergy.Value < energy && CurrentEnergy.Value > 0)
         {
-            _playerData.CurrentEnergy.Value = 0;
+            CurrentEnergy.Value = 0;
             _logger.Info("Energy insuffucient, this is the last player action");
-            _logger.Info("Energy depleted by " + energy + ". Current energy: " + _playerData.CurrentEnergy.Value);
+            _logger.Info("Energy depleted by " + energy + ". Current energy: " + CurrentEnergy.Value);
         }
         else
         {
@@ -54,22 +83,22 @@ public class PlayerEnergyManager : MonoBehaviour
     public void RecoverEnergy(int energy)
     {
         Assert.IsTrue(energy >= 0, "Energy to recover must be non negative.");
-        if (_playerData.CurrentEnergy.Value + energy <= _playerData.MaxEnergy)
+        if (CurrentEnergy.Value + energy <= MaxEnergy)
         {
-            _playerData.CurrentEnergy.Value += energy;
-            _logger.Info("Energy recovered by " + energy + ". Current energy: " + _playerData.CurrentEnergy.Value);
+            CurrentEnergy.Value += energy;
+            _logger.Info("Energy recovered by " + energy + ". Current energy: " + CurrentEnergy.Value);
         }
         else
         {
-            _playerData.CurrentEnergy.Value = _playerData.MaxEnergy;
-            _logger.Info("Energy recovered by " + energy + ". Current energy: " + _playerData.CurrentEnergy.Value);
+            CurrentEnergy.Value = MaxEnergy;
+            _logger.Info("Energy recovered by " + energy + ". Current energy: " + CurrentEnergy.Value);
             _logger.Info("More than energy energy recovered, energy is now at max");
         }
     }
 
     public bool IsEnergyAvailable()
     {
-        return _playerData.CurrentEnergy.Value > 0;
+        return CurrentEnergy.Value > 0;
     }
 
     public bool IsSufficientEnergyAvailable(IEnergyDepleting energyDepletingThing)
@@ -80,5 +109,41 @@ public class PlayerEnergyManager : MonoBehaviour
             return true;
         _logger.Info("Not enough energy remaining.");
         return false;
+    }
+
+    public string CaptureStateAsJson()
+    {
+        var _state = new State
+        {
+            CurrentEnergy = CurrentEnergy.Value,
+            MaxEnergy = _maxEnergy,
+            TodaysProtein = TodaysProtein,
+            TodaysCarbs = TodaysCarbs,
+            TodaysNutrients = TodaysNutrients,
+            IsPlayerSleeping = IsPlayerSleeping,
+            LastPlayerSleepTime = LastPlayerSleepTime
+        };
+        return JsonConvert.SerializeObject(_state);
+    }
+
+    public void RestoreStateFromJson(string json)
+    {
+        var _state = JsonConvert.DeserializeObject<State>(json);
+        CurrentEnergy.Value = _state.CurrentEnergy;
+        _maxEnergy = _state.MaxEnergy;
+        TodaysProtein = _state.TodaysProtein;
+        TodaysCarbs = _state.TodaysCarbs;
+        TodaysNutrients = _state.TodaysNutrients;
+        IsPlayerSleeping = _state.IsPlayerSleeping;
+        LastPlayerSleepTime = _state.LastPlayerSleepTime;
+    }
+
+    public void ResetToDefaults()
+    {
+        CurrentEnergy.Value = _maxEnergy;
+        TodaysProtein = 0;
+        TodaysCarbs = 0;
+        TodaysNutrients = 0;
+        IsPlayerSleeping = false;
     }
 }

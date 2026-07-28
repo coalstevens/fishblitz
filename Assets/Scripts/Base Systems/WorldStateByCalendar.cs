@@ -27,18 +27,18 @@ public class WorldStateCalendar : MonoBehaviour
         public WorldState.WindStates WindState;
     }
 
-    [SerializeField] private GameClock _gameclock;
     [SerializeField] private Logger _logger = new();
     [SerializeField] private List<DayState> _calendar = new();
 
-    void OnEnable()
+    void Start()
     {
-        _gameclock.OnGameDayTick += UpdateWorldState;
+        GameClock.Instance.OnGameDayTick += UpdateWorldState;
     }
 
     void OnDisable()
     {
-        _gameclock.OnGameDayTick -= UpdateWorldState;
+        if (GameClock.Instance != null)
+            GameClock.Instance.OnGameDayTick -= UpdateWorldState;
     }
 
     public void UpdateWorldState()

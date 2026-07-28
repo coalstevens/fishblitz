@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-[RequireComponent(typeof(PlayerMovementController), typeof(PlayerEnergyManager), typeof(PlayerCarry))]
+[RequireComponent(typeof(PlayerMovement), typeof(PlayerEnergyManager), typeof(PlayerCarry))]
 public class InteractInput : MonoBehaviour
 {
     public interface IInteractable
@@ -13,16 +13,15 @@ public class InteractInput : MonoBehaviour
     }
 
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private GridCursor _gridCursor;
     [SerializeField] private Logger _logger = new();
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
 
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _playerMovementController = GetComponent<PlayerMovement>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
     }
@@ -30,8 +29,8 @@ public class InteractInput : MonoBehaviour
     private void OnInteract()
     {
         // returns if player is not idle or walking
-        if (_playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Idle &&
-            _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Running)
+        if (_playerMovementController.PlayerState.Value != PlayerMovement.PlayerStates.Idle &&
+            _playerMovementController.PlayerState.Value != PlayerMovement.PlayerStates.Running)
         {
             _logger.Info("Attempted to interact but player state does not allow.");
             return;
@@ -47,7 +46,7 @@ public class InteractInput : MonoBehaviour
         string name = interactable is MonoBehaviour mb ? mb.gameObject.name : "";
 
         // Player can't interact except for weighty interactables
-        if (_playerData.IsCarrying.Value && interactable is not IWeighty && interactable is not IWeightyObjectContainer)
+        if (_playerCarry.IsCarrying.Value && interactable is not IWeighty && interactable is not IWeightyObjectContainer)
         {
             _logger.Info($"Can't interact with {name} while carrying.");
             return;

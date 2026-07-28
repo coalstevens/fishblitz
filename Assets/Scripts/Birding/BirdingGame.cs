@@ -270,7 +270,7 @@ public class BirdingGame : MonoBehaviour
     private void SetHUDInitialRotation()
     {
         // Set HUD start rotation
-        _motionInput = PlayerMovementController.Instance.CurrentMotion;
+        _motionInput = PlayerMovement.Instance.CurrentMotion;
         if (_motionInput != Vector2.zero)
         {
             AlignHUDToMotionDirection();
@@ -330,7 +330,7 @@ public class BirdingGame : MonoBehaviour
         (
             transform.localEulerAngles.x,
             transform.localEulerAngles.y,
-            PlayerMovementController.Instance.Direction.Value switch
+            PlayerMovement.Instance.Direction.Value switch
             {
                 CompassDirection.East      => 0f,
                 CompassDirection.NorthEast => 45f,
@@ -358,6 +358,6 @@ public class BirdingGame : MonoBehaviour
         _playerInput.SwitchCurrentActionMap("Player");
         yield return null;
         gameObject.SetActive(false);
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
     }
 }

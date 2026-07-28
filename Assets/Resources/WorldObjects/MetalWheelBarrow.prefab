@@ -467,7 +467,6 @@ GameObject:
   - component: {fileID: 7119745918406622068}
   - component: {fileID: 2449137835904940274}
   - component: {fileID: 7162082824941278695}
-  - component: {fileID: 4690009805800481129}
   - component: {fileID: 1645002115926865317}
   - component: {fileID: 8637061064077191128}
   - component: {fileID: 2503861928769645009}
@@ -525,8 +524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68fb87f7919647569f6157da858e9be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticWheelBarrow
-  _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
-  _animator: {fileID: 0}
+  _weightyContainer: {}
+  _stackConfig: {fileID: 0}
 --- !u!114 &7162082824941278695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,20 +544,6 @@ MonoBehaviour:
   _lowOffset: 0
   _highOffset: 0
   _birdOffset: 75
---- !u!114 &4690009805800481129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6780039278160430161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8092d3479dfdc4c619a58bd3dc304a0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeightyObjectStack
-  Data: {fileID: 11400000, guid: ad6da5624aed14428852a388aa2550ed, type: 2}
-  _audioSource: {fileID: 2503861928769645009}
 --- !u!114 &1645002115926865317
 MonoBehaviour:
   m_ObjectHideFlags: 0

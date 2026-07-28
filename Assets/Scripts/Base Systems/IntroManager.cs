@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,6 @@ public class IntroManager : MonoBehaviour
         Waterfall
     }
     [SerializeField] private bool _skipIntro = true;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private Inventory _playerInventory;
     [SerializeField] private RainAudio _rainManager;
     [SerializeField] private WorldStateCalendar _worldStateCalendar;
@@ -45,24 +43,31 @@ public class IntroManager : MonoBehaviour
 
     private void SetInitialPlayerState()
     {
-        _playerData.WettingGameMinCounter = 0;
-        _playerData.DryingPointsCounter = 0;
-        _playerData.CounterToMatchAmbientGamemins = 0;
-        _playerData.WetnessState.Value = PlayerData.WetnessStates.Dry;
-        _playerData.PlayerIsWet.Value = false;
-        _playerData.ActualPlayerTemperature.Value = Temperature.Normal;
-        _playerData.DryPlayerTemperature.Value = Temperature.Normal;
-        _playerData.CurrentEnergy.Value = 100;
-        _playerData.IsPlayerSleeping = false;
+        var _energyManager = FindFirstObjectByType<PlayerEnergyManager>();
+        var _dryingManager = FindFirstObjectByType<PlayerDryingManager>();
+        var _temperatureManager = FindFirstObjectByType<PlayerTemperatureManager>();
+        var _strengthManager = FindFirstObjectByType<PlayerStrength>();
+        var _sceneData = FindFirstObjectByType<PlayerSceneData>();
+
+        if (_energyManager != null) _energyManager.ResetToDefaults();
+        if (_dryingManager != null) _dryingManager.ResetToDefaults();
+        if (_temperatureManager != null) _temperatureManager.ResetToDefaults();
+        if (_strengthManager != null) _strengthManager.ResetToDefaults();
+
         _playerInventory.ActiveItemSlot.Value = 0;
-        _playerData.IsHoldingWheelBarrow.Value = false;
-        _playerData.IsCarrying.Value = false;
 
         var playerCarry = FindFirstObjectByType<PlayerCarry>();
         if (playerCarry != null)
         {
-            var stack = playerCarry.GetComponent<WeightyObjectStack>();
-            stack.Clear();
+            playerCarry.IsCarrying.Value = false;
+            playerCarry.CarriedStack.Clear();
+        }
+
+        var playerWheelBarrow = FindFirstObjectByType<PlayerWheelBarrow>();
+        if (playerWheelBarrow != null)
+        {
+            playerWheelBarrow.IsHoldingWheelBarrow.Value = false;
+            playerWheelBarrow.WheelBarrowStack.Clear();
         }
     }
 
@@ -83,9 +88,10 @@ public class IntroManager : MonoBehaviour
     private void LoadInitialScene()
     {
         if (_useCustomSpawn)
-            _playerData.SceneSpawnPosition = _customSpawnLocation;
+            PlayerSceneData.PendingSpawnPosition = _customSpawnLocation;
         else
-            _playerData.SceneSpawnPosition = _spawnPositions[_spawnPosition];
+            PlayerSceneData.PendingSpawnPosition = _spawnPositions[_spawnPosition];
+        PlayerSceneData.HasPendingSpawn = true;
         LevelChanger.ChangeLevel(_toScene);
     }
 

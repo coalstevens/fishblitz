@@ -25,6 +25,5 @@ public class BirdSpeciesData : ScriptableObject
 
     [Header("Birding Game")]
     public SoundData CaptureSoundData;
-    public PlayerData PlayerData;
 }
 

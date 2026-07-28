@@ -19,11 +19,11 @@ static class Diet
         (1f, "you ate well. you feel whole."),
     };
 
-    public static void EatFood(PlayerData playerData, IFood food)
+    public static void EatFood(PlayerEnergyManager energyManager, IFood food)
     {
-        playerData.TodaysProtein = playerData.TodaysProtein + food.Protein > PlayerData.PROTEIN_REQUIRED_DAILY ? PlayerData.PROTEIN_REQUIRED_DAILY : playerData.TodaysProtein + food.Protein;
-        playerData.TodaysCarbs = playerData.TodaysCarbs + food.Carbs > PlayerData.CARBS_REQUIRED_DAILY ? PlayerData.CARBS_REQUIRED_DAILY : playerData.TodaysCarbs + food.Carbs;
-        playerData.TodaysNutrients = playerData.TodaysNutrients + food.Nutrients > PlayerData.NUTRIENTS_REQUIRED_DAILY ? PlayerData.NUTRIENTS_REQUIRED_DAILY : playerData.TodaysNutrients + food.Nutrients;
+        energyManager.TodaysProtein = energyManager.TodaysProtein + food.Protein > PlayerEnergyManager.PROTEIN_REQUIRED_DAILY ? PlayerEnergyManager.PROTEIN_REQUIRED_DAILY : energyManager.TodaysProtein + food.Protein;
+        energyManager.TodaysCarbs = energyManager.TodaysCarbs + food.Carbs > PlayerEnergyManager.CARBS_REQUIRED_DAILY ? PlayerEnergyManager.CARBS_REQUIRED_DAILY : energyManager.TodaysCarbs + food.Carbs;
+        energyManager.TodaysNutrients = energyManager.TodaysNutrients + food.Nutrients > PlayerEnergyManager.NUTRIENTS_REQUIRED_DAILY ? PlayerEnergyManager.NUTRIENTS_REQUIRED_DAILY : energyManager.TodaysNutrients + food.Nutrients;
         PrintFoodMessage(food);
     }
 
@@ -37,26 +37,26 @@ static class Diet
         Narrator.Instance.PostMessage(_nutrients + _carbs + _protein);
     }
 
-    public static void ResetDailyIntake(PlayerData playerData)
+    public static void ResetDailyIntake(PlayerEnergyManager energyManager)
     {
-        playerData.TodaysProtein = 0;
-        playerData.TodaysCarbs = 0;
-        playerData.TodaysNutrients = 0;
+        energyManager.TodaysProtein = 0;
+        energyManager.TodaysCarbs = 0;
+        energyManager.TodaysNutrients = 0;
     }
 
-    public static float GetRecoveryRatio(PlayerData playerData)
+    public static float GetRecoveryRatio(PlayerEnergyManager energyManager)
     {
         return
         (
-            playerData.TodaysProtein / PlayerData.PROTEIN_REQUIRED_DAILY +
-            playerData.TodaysCarbs / PlayerData.CARBS_REQUIRED_DAILY +
-            playerData.TodaysNutrients / PlayerData.NUTRIENTS_REQUIRED_DAILY
+            energyManager.TodaysProtein / PlayerEnergyManager.PROTEIN_REQUIRED_DAILY +
+            energyManager.TodaysCarbs / PlayerEnergyManager.CARBS_REQUIRED_DAILY +
+            energyManager.TodaysNutrients / PlayerEnergyManager.NUTRIENTS_REQUIRED_DAILY
         ) / 3;
     }
 
-    public static string GetRecoveryMessage(PlayerData playerData)
+    public static string GetRecoveryMessage(PlayerEnergyManager energyManager)
     {
-        float _recoveryRatio = GetRecoveryRatio(playerData);
+        float _recoveryRatio = GetRecoveryRatio(energyManager);
         Debug.Log($"Food recovery value: {_recoveryRatio}");
         for (int i = _recoveryMessages.Count - 1; i >= 0; i--)
             if (_recoveryRatio >= _recoveryMessages[i].Item1)

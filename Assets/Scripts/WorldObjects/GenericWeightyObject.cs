@@ -11,7 +11,7 @@ public class GenericWeightyObject : MonoBehaviour, IWeighty
     private PlayerCarry _playerCarry;
     public WeightyObjectType WeightyObject => _weightyObjectType;
 
-    private void OnEnable()
+    private void Start()
     {
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
         Assert.IsNotNull(_player);

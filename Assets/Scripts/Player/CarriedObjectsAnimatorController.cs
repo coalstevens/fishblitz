@@ -6,14 +6,14 @@ using UnityEngine.Assertions;
 // This class could be more efficient, but do i care? no 
 public class CarriedObjectsAnimatorController : MonoBehaviour
 {
-    [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStack _playerCarriedObjects;
+    private WeightyObjectStack _playerCarriedObjects;
     List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()
     {
-        Assert.IsNotNull(_playerData);
-        Assert.IsNotNull(_playerCarriedObjects);
+        var playerCarry = GetComponentInParent<PlayerCarry>();
+        Assert.IsNotNull(playerCarry);
+        _playerCarriedObjects = playerCarry.CarriedStack;
         UpdateStackItemRenderers();
         _unsubscribeHooks.Add(_playerCarriedObjects.StoredObjects.OnChange(_ => UpdateStackItemRenderers()));
     }

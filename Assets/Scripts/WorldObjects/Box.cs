@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using DG.Tweening;
 
-[RequireComponent(typeof(WeightyObjectStack))]
 public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, SaveData.ISaveable
 {
     [Header("References")]
@@ -31,7 +30,8 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [SerializeField] private SoundData _winChimeSound;
     [SerializeField] private AudioSource _audioSource;
 
-    private WeightyObjectStack _weightyContainer;
+    [SerializeField] private WeightyObjectStack _weightyContainer = new();
+    [SerializeField] private WeightyObjectStackConfig _stackConfig;
     private Dictionary<WeightyObjectType, int> _fulfilledQuantities = new();
     private bool _hasInteracted = false;
     private bool _isComplete = false;
@@ -90,7 +90,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     private void Awake()
     {
-        _weightyContainer = GetComponent<WeightyObjectStack>();
         Assert.IsNotNull(_blurb);
         Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
@@ -166,6 +165,8 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         Debug.Log("Added " + item.Type);
 
         _weightyContainer.Push(item);
+        if (_stackConfig != null && _stackConfig.InsertSound != null)
+            PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
         _fulfilledQuantities[item.Type]++;
         UpdateUI();
         Shake();

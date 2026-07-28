@@ -8,8 +8,10 @@ public class Journal : MonoBehaviour
     [System.Serializable]
     private class JournalPage
     {
+        public enum LogType { Birding, Fishing }
+
         public Sprite FrameSprite;
-        public CaptureLog Log;
+        public LogType Type;
         public Transform LeftPage;
         public Transform RightPage;
     }
@@ -29,12 +31,21 @@ public class Journal : MonoBehaviour
     private int _currentJournalPageIndex;
     private Transform _selectedEntry;
     private List<List<Transform>> _pageEntries = new();
+    private List<CaptureLog> _resolvedLogs = new();
 
     private void OnEnable()
     {
         _pageEntries.Clear();
+        _resolvedLogs.Clear();
+
+        var captureLogs = FindFirstObjectByType<PlayerCaptureLogs>();
         foreach (var page in _journalPages)
+        {
             _pageEntries.Add(CollectJournalPageEntries(page));
+            _resolvedLogs.Add(page.Type == JournalPage.LogType.Birding
+                ? captureLogs.BirdingLog
+                : captureLogs.FishingLog);
+        }
 
         LoadJournalPage(_currentJournalPageIndex);
         WireEntryButtons();
@@ -58,7 +69,7 @@ public class Journal : MonoBehaviour
     public void OnEntrySelected(Transform entry)
     {
         _selectedEntry = entry;
-        UpdateNotebookDisplay(_journalPages[_currentJournalPageIndex]);
+        UpdateNotebookDisplay(_resolvedLogs[_currentJournalPageIndex]);
     }
 
     private void LoadJournalPage(int pageIndex)
@@ -70,19 +81,20 @@ public class Journal : MonoBehaviour
         }
 
         var page = _journalPages[pageIndex];
+        var log = _resolvedLogs[pageIndex];
         _frame.sprite = page.FrameSprite;
-        _counterText.Text = $"{page.Log.GetUniqueCaptureCount()} / {_pageEntries[pageIndex].Count}";
+        _counterText.Text = $"{log.GetUniqueCaptureCount()} / {_pageEntries[pageIndex].Count}";
 
         foreach (Transform child in page.LeftPage)
         {
-            bool isNameInLog = page.Log.HasBeenCaught(child.gameObject.name);
+            bool isNameInLog = log.HasBeenCaught(child.gameObject.name);
             child.GetChild(0).gameObject.SetActive(!isNameInLog);
             child.GetChild(1).gameObject.SetActive(isNameInLog);
         }
 
         foreach (Transform child in page.RightPage)
         {
-            bool isNameInLog = page.Log.HasBeenCaught(child.gameObject.name);
+            bool isNameInLog = log.HasBeenCaught(child.gameObject.name);
             child.GetChild(0).gameObject.SetActive(!isNameInLog);
             child.GetChild(1).gameObject.SetActive(isNameInLog);
         }
@@ -117,28 +129,28 @@ public class Journal : MonoBehaviour
         }
     }
 
-    private void UpdateNotebookDisplay(JournalPage page)
+    private void UpdateNotebookDisplay(CaptureLog log)
     {
         if (_selectedEntry == null)
             return;
 
         string titleText = _selectedEntry.name;
-        bool hasBeenCaught = page.Log.HasBeenCaught(titleText);
+        bool hasBeenCaught = log.HasBeenCaught(titleText);
         titleText = hasBeenCaught ? titleText : "???";
-        int caughtThisWeek = page.Log.GetCaptureCountForNameThisWeek(titleText);
-        int caughtAllTime = page.Log.GetCaptureCountForName(titleText);
+        int caughtThisWeek = log.GetCaptureCountForNameThisWeek(titleText);
+        int caughtAllTime = log.GetCaptureCountForName(titleText);
 
         _notebookImage.sprite = _selectedEntry.GetChild(1).GetComponent<NotebookSprite>().sprite;
         _notebookImage.enabled = hasBeenCaught;
 
         _noteBookTitle.Text = titleText;
         _tagText.Text = $"{caughtThisWeek} tagged this week\n{caughtAllTime} tagged all time";
-        UpdateDateDots(page, titleText);
+        UpdateDateDots(log, titleText);
     }
 
-    private void UpdateDateDots(JournalPage page, string name)
+    private void UpdateDateDots(CaptureLog log, string name)
     {
-        bool[,] seasonWeekTable = page.Log.GetSeasonWeekTable(name);
+        bool[,] seasonWeekTable = log.GetSeasonWeekTable(name);
 
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 3; j++)

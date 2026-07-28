@@ -3,14 +3,16 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-[RequireComponent(typeof(WeightyObjectStack), typeof(Animator))]
+[RequireComponent(typeof(Animator))]
 public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, BoxData.IBoxPrize
 {
-    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private WeightyObjectStack _weightyContainer = new();
+    [SerializeField] private WeightyObjectStackConfig _stackConfig;
+
+    private PlayerWheelBarrow _wheelBarrow;
     private Animator _animator;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     private StaticWheelBarrowSelector _staticWheelBarrow;
-    private WeightyObjectStack _weightyContainer;
     private PlayerCarry _playerCarry;
     public WeightyObjectStack WeightyStack => _weightyContainer;
 
@@ -20,15 +22,15 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
         Assert.IsNotNull(_player);
 
-        _playerMovementController = _player.GetComponent<PlayerMovementController>();
+        _playerMovementController = _player.GetComponent<PlayerMovement>();
         _playerCarry = _player.GetComponent<PlayerCarry>();
-        _weightyContainer = GetComponent<WeightyObjectStack>();
+        _wheelBarrow = _player.GetComponent<PlayerWheelBarrow>();
         _animator = GetComponent<Animator>();
 
         Assert.IsNotNull(_playerCarry);
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_staticWheelBarrow);
-        Assert.IsNotNull(_playerData);
+        Assert.IsNotNull(_wheelBarrow);
     }
     private bool IsFacingDirectionForWheelbarrowPickup()
     {
@@ -65,10 +67,11 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
     public bool CursorInteract(Vector3 cursorLocation)
     {
         if (IsFacingDirectionForWheelbarrowPickup() &&
-            _playerData.IsHoldingWheelBarrow.Value == false &&
-            _playerData.IsCarrying.Value == false)
+            _wheelBarrow.IsHoldingWheelBarrow.Value == false &&
+            _playerCarry.IsCarrying.Value == false)
         {
-            _playerData.IsHoldingWheelBarrow.Value = true;
+            _wheelBarrow.PickUpStaticWheelbarrow(_weightyContainer);
+            _wheelBarrow.IsHoldingWheelBarrow.Value = true;
             Destroy(transform.gameObject);
             return true;
         }
@@ -80,6 +83,8 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
             if (_playerCarry.HasEnoughSpace(_storedObject.Type.Weight) == false)
                 return false;
             _playerCarry.Push(_weightyContainer.Pop());
+            if (_stackConfig != null && _stackConfig.RemoveSound != null)
+                PlayerAudioManager.Instance.PlayOneShot(_stackConfig.RemoveSound);
         }
         return false;
     }

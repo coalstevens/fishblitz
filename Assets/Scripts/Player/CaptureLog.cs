@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCaptureLog", menuName = "CaptureLog")]
-public class CaptureLog : ScriptableObject 
+[System.Serializable]
+public class CaptureLog
 {
     [System.Serializable]
     public class CaptureEntry

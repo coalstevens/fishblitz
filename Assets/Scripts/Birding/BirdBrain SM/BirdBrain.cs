@@ -30,7 +30,7 @@ public partial class BirdBrain : MonoBehaviour, IFlockMate
             IsTagged.Value = true;
             if (SpeciesData.CaptureSoundData != null)
                 AudioManager.PlaySFX(AudioManager.Instance.GetComponent<AudioSource>(), SpeciesData.CaptureSoundData);
-            SpeciesData.PlayerData.BirdingLog.AddToLog(SpeciesData.SpeciesName);
+            FindFirstObjectByType<PlayerCaptureLogs>().BirdingLog.AddToLog(SpeciesData.SpeciesName);
         }
     }
 

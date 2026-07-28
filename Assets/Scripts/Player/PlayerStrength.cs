@@ -1,22 +1,34 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class PlayerStrength : MonoBehaviour
+public class PlayerStrength : MonoBehaviour, ISaveableComponent
 {
-    [SerializeField] private PlayerData _playerData;
+    public string ComponentId => "PlayerStrength";
+
+    [SerializeField] private StrengthData _strengthData;
+    public StrengthData StrengthData => _strengthData;
+    public int TotalPickupCount = 0;
 
     private WeightyObjectStack _carryStack;
+    private PlayerCarry _playerCarry;
     private int _currentLevel;
     private HashSet<string> _seenObjectIDs = new();
 
+    [System.Serializable]
+    private class State
+    {
+        public int TotalPickupCount;
+    }
+
     private void Start()
     {
-        Assert.IsNotNull(_playerData);
-        _carryStack = GetComponent<WeightyObjectStack>();
-        Assert.IsNotNull(_carryStack);
+        _playerCarry = GetComponent<PlayerCarry>();
+        Assert.IsNotNull(_playerCarry);
+        _carryStack = _playerCarry.CarriedStack;
 
-        _currentLevel = _playerData.StrengthData.GetLevel(_playerData.TotalPickupCount);
+        _currentLevel = _strengthData.GetLevel(TotalPickupCount);
         ApplyCarryCapacity();
     }
 
@@ -25,12 +37,12 @@ public class PlayerStrength : MonoBehaviour
         if (string.IsNullOrEmpty(objectId) || !_seenObjectIDs.Add(objectId))
             return;
 
-        _playerData.TotalPickupCount++;
-        int newLevel = _playerData.StrengthData.GetLevel(_playerData.TotalPickupCount);
+        TotalPickupCount++;
+        int newLevel = _strengthData.GetLevel(TotalPickupCount);
         if (newLevel > _currentLevel)
         {
             _currentLevel = newLevel;
-            string message = _playerData.StrengthData.GetLevelConfig(_currentLevel).LevelUpMessage;
+            string message = _strengthData.GetLevelConfig(_currentLevel).LevelUpMessage;
             if (!string.IsNullOrEmpty(message))
                 Narrator.Instance.PostMessage(message);
             ApplyCarryCapacity();
@@ -39,6 +51,23 @@ public class PlayerStrength : MonoBehaviour
 
     private void ApplyCarryCapacity()
     {
-        _carryStack.SetWeightCapacity(_playerData.StrengthData.GetLevelConfig(_currentLevel).CarryCapacity);
+        _carryStack.Capacity = _strengthData.GetLevelConfig(_currentLevel).CarryCapacity;
+    }
+
+    public string CaptureStateAsJson()
+    {
+        var _state = new State { TotalPickupCount = TotalPickupCount };
+        return JsonConvert.SerializeObject(_state);
+    }
+
+    public void RestoreStateFromJson(string json)
+    {
+        var _state = JsonConvert.DeserializeObject<State>(json);
+        TotalPickupCount = _state.TotalPickupCount;
+    }
+
+    public void ResetToDefaults()
+    {
+        TotalPickupCount = 0;
     }
 }

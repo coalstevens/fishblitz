@@ -18,7 +18,7 @@ public class Wind : MonoBehaviour
     [SerializeField] private float _spruceGustStrength = 0.5f;
     [SerializeField] private ParticleSystem _rain;
     [SerializeField] private ParticleSystemForceField _windForceField;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     [SerializeField] private float _rainParticleRotationScalar = 0.1f;
     [SerializeField] private float _playerMoveSpeedMultiplier = 0.4f;
 
@@ -54,7 +54,7 @@ public class Wind : MonoBehaviour
 
     void Start()
     {
-        _playerMovementController = PlayerMovementController.Instance;
+        _playerMovementController = PlayerMovement.Instance;
         _playerCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
         _unsubscribe = WindState.OnChange((prev, curr) => OnStateChange(prev, curr));
         _stopSoundCB = AudioManager.PlayLoopingSFX(_audioSource, _windSound);

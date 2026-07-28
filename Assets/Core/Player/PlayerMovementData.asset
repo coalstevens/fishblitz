@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649fee0e042b4497819e93b55b9de9a1, type: 3}
+  m_Name: PlayerMovementData
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementData
+  DefaultMoveSpeed: 4
+  WheelbarrowMoveSpeed: 3.5
+  BaseAcceleration: 40
+  BaseDeceleration: 40
+  BaseWheelbarrowAcceleration: 30
+  BaseWheelbarrowDeceleration: 40
+  CarryingPerObjectAccelReduction: 5
+  CarryingPerObjectMoveSpeedReduction: 0.25
+  WheelbarrowPerObjectAccelReduction: 1
+  WheelbarrowPerObjectMoveSpeedReduction: 0.05

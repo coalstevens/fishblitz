@@ -7,23 +7,12 @@ public interface IWeightyObjectContainer : InteractInput.IInteractable
     public WeightyObjectStack WeightyStack { get; }
 }
 
-public class WeightyObjectStack : MonoBehaviour
+[System.Serializable]
+public class WeightyObjectStack
 {
-    [SerializeField] public WeightyObjectStackData Data;
-
     public ReactiveStack<StoredWeightyObject> StoredObjects = new ReactiveStack<StoredWeightyObject>();
     public int CurrentWeight { get; private set; }
-
-    private int _overriddenCapacity;
-    private bool _hasCapacityOverride;
-
-    public int EffectiveCapacity => _hasCapacityOverride ? _overriddenCapacity : (Data != null ? Data.WeightCapacity : 0);
-
-    public void SetWeightCapacity(int capacity)
-    {
-        _overriddenCapacity = capacity;
-        _hasCapacityOverride = true;
-    }
+    public int Capacity { get; set; }
 
     public void Clear()
     {
@@ -36,8 +25,6 @@ public class WeightyObjectStack : MonoBehaviour
         Assert.IsNotNull(storedObject);
         CurrentWeight += storedObject.Type.Weight;
         StoredObjects.Push(storedObject);
-        if (Data != null && Data.InsertSound != null)
-            PlayerAudioManager.Instance.PlayOneShot(Data.InsertSound);
         return true;
     }
 
@@ -45,8 +32,6 @@ public class WeightyObjectStack : MonoBehaviour
     {
         Assert.IsTrue(StoredObjects.Count > 0);
         CurrentWeight -= StoredObjects.Peek().Type.Weight;
-        if (Data != null && Data.RemoveSound != null)
-            PlayerAudioManager.Instance.PlayOneShot(Data.RemoveSound);
         return StoredObjects.Pop();
     }
 
@@ -71,6 +56,6 @@ public class WeightyObjectStack : MonoBehaviour
     public bool HasEnoughSpace(int weight)
     {
         Assert.IsTrue(weight > 0);
-        return weight + CurrentWeight <= EffectiveCapacity;
+        return weight + CurrentWeight <= Capacity;
     }
 }

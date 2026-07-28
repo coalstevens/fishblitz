@@ -2,19 +2,24 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Assertions;
 using System.Collections;
+using ReactiveUnity;
 
-[RequireComponent(typeof(WeightyObjectStack), typeof(PlayerStrength))]
+[RequireComponent(typeof(PlayerStrength))]
 public class PlayerCarry : MonoBehaviour
 {
-    [SerializeField] private PlayerData _playerData;
+    public Reactive<bool> IsCarrying = new Reactive<bool>(false);
+
+    [SerializeField] private WeightyObjectStack _carriedStack = new();
+    [SerializeField] private WeightyObjectStackConfig _stackConfig;
     [SerializeField] private SoundData _putDownSound;
     private WorldObjectOccupancyMap _worldObjectOccupancyMap;
-    private WeightyObjectStack _carriedObjects;  
-    private PlayerMovementController _playermovementController;
+    private PlayerMovement _playermovementController;
     private PlayerStrength _playerStrength;
     private GameObject _impermanent;
     private Grid _grid;
     private PlayerInput _playerInput;
+
+    public WeightyObjectStack CarriedStack => _carriedStack;
 
     private void OnEnable()
     {
@@ -27,7 +32,7 @@ public class PlayerCarry : MonoBehaviour
         _playerInput = _player.GetComponent<PlayerInput>();
         Assert.IsNotNull(_playerInput);
 
-        _playermovementController = _player.GetComponent<PlayerMovementController>();
+        _playermovementController = _player.GetComponent<PlayerMovement>();
         Assert.IsNotNull(_playermovementController);
 
         _impermanent = GameObject.FindGameObjectWithTag("Impermanent");
@@ -36,16 +41,14 @@ public class PlayerCarry : MonoBehaviour
         _worldObjectOccupancyMap = _impermanent.GetComponent<WorldObjectOccupancyMap>();
         Assert.IsNotNull(_worldObjectOccupancyMap);
 
-        _carriedObjects = GetComponent<WeightyObjectStack>();
         _playerStrength = GetComponent<PlayerStrength>();
-        Assert.IsNotNull(_playerData);
     }
 
     public bool TryPickUpWeightyObject(IWeighty objectToPickup)
     {
         if (HasEnoughSpace(objectToPickup.WeightyObject.Weight) == false)
             return false;
-        _playermovementController.PlayerState.Value = PlayerMovementController.PlayerStates.PickingUp;
+        _playermovementController.PlayerState.Value = PlayerMovement.PlayerStates.PickingUp;
 
         StoredWeightyObject _objectToStore = new StoredWeightyObject(objectToPickup);
 
@@ -55,52 +58,54 @@ public class PlayerCarry : MonoBehaviour
             Push(objectToStore);
         }
 
-        StartCoroutine(DelayedPush(_objectToStore, 0.06f * 4)); // duration is half the pick up animation
+        StartCoroutine(DelayedPush(_objectToStore, 0.06f * 4));
 
         return true;
     }
 
     public bool HasEnoughSpace(int weight)
     {
-        return _carriedObjects.HasEnoughSpace(weight);
+        return _carriedStack.HasEnoughSpace(weight);
     }
 
     public void Push(StoredWeightyObject objectToStore)
     {
-        Assert.IsTrue(_carriedObjects.HasEnoughSpace(objectToStore.Type.Weight));
-        _playerData.IsCarrying.Value = true;
-        _carriedObjects.Push(objectToStore);
+        Assert.IsTrue(_carriedStack.HasEnoughSpace(objectToStore.Type.Weight));
+        IsCarrying.Value = true;
+        _carriedStack.Push(objectToStore);
+        if (_stackConfig != null && _stackConfig.InsertSound != null)
+            PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
         _playerStrength.RegisterPickup(objectToStore.SavedData.PersistentID);
     }
 
     public void PutDown(Vector3Int cursorLocationGrid)
     {
-        Assert.IsTrue(_playerData.IsCarrying.Value);
+        Assert.IsTrue(IsCarrying.Value);
 
         if (!TryGetUnoccupiedPosition(cursorLocationGrid, out Vector3Int _spawnPosition))
             return;
 
-        InstantiateWeightyObject(_carriedObjects.Pop(), _spawnPosition);
+        InstantiateWeightyObject(_carriedStack.Pop(), _spawnPosition);
         PlayerAudioManager.Instance.PlayOneShot(_putDownSound);
-        _playerData.IsCarrying.Value = !_carriedObjects.IsEmpty();
+        IsCarrying.Value = !_carriedStack.IsEmpty();
 
         return;
     }
 
     public StoredWeightyObject Pop()
     {
-        Assert.IsFalse(_carriedObjects.IsEmpty());
-        StoredWeightyObject _removedObject = _carriedObjects.Pop();
-        _playerData.IsCarrying.Value = !_carriedObjects.IsEmpty();
+        Assert.IsFalse(_carriedStack.IsEmpty());
+        StoredWeightyObject _removedObject = _carriedStack.Pop();
+        IsCarrying.Value = !_carriedStack.IsEmpty();
         return _removedObject;
     }
 
     public StoredWeightyObject Peek()
     {
-        return _carriedObjects.Peek();
+        return _carriedStack.Peek();
     }
 
-    public int CarriedCount => _carriedObjects.StoredCount;
+    public int CarriedCount => _carriedStack.StoredCount;
 
     private void InstantiateWeightyObject(StoredWeightyObject carriedObject, Vector3Int spawnPosition)
     {

@@ -33,7 +33,6 @@ public class BirdSpawner : MonoBehaviour
 
     [SerializeField] private BirdSeasonSpawnData _allSpawnData;
     [SerializeField] private BirdSceneSaveManager _birdSaveManager;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private string _birdSpeciesResourcePath = "Birds"; // Path under Resources
     [SerializeField] Collider2D _world;
     [SerializeField] private int RespawnAfterGameMinutesAway = 60;
@@ -48,7 +47,7 @@ public class BirdSpawner : MonoBehaviour
         Assert.IsNotNull(allSpecies, "All species was not found");
         Assert.IsTrue(allSpecies.Count > 0, "All species is empty");
         Assert.IsNotNull(_world, "World collider not assigned.");
-        Assert.IsNotNull(_playerData, "Player data not assigned.");
+        Assert.IsNotNull(_birdSaveManager, "Bird save manager not assigned.");
         Assert.IsNotNull(_birdSaveManager, "Bird save manager not assigned");
 
         _worldBounds = _world.bounds;

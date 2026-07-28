@@ -1,24 +1,22 @@
-using System.Runtime.CompilerServices;
 using OysterUtils;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] bool OnInteract = false;
     [SerializeField] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private SoundData _sound;
     [SerializeField] private AudioSource _audioSource;
-    private Scene test;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Player seen");
         if (!OnInteract && other.transform.root.CompareTag("Player"))
         {
             Debug.Log("Player confirmed");
-            _playerData.SceneSpawnPosition = _spawnLocation;
+            PlayerSceneData.PendingSpawnPosition = _spawnLocation;
+            PlayerSceneData.HasPendingSpawn = true;
             PlaySound();
             ChangeLevel(_toScene);
         }
@@ -28,7 +26,8 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
     {
         if (OnInteract)
         {
-            _playerData.SceneSpawnPosition = _spawnLocation;
+            PlayerSceneData.PendingSpawnPosition = _spawnLocation;
+            PlayerSceneData.HasPendingSpawn = true;
             PlaySound();
             ChangeLevel(_toScene);
             return true;
@@ -51,5 +50,4 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
         if (_sound != null)
             AudioManager.PlaySFX(_audioSource, _sound);
     }
-
 }

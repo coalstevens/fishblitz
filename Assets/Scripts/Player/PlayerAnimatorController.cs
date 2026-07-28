@@ -19,12 +19,13 @@ public class PlayerAnimatorController : MonoBehaviour
     private Animator _barrowAnimator;
     private Animator _carryAnimator;
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private PlayerData _playerData;
-    [SerializeField] private WeightyObjectStack _carriedObjects;
     [SerializeField] private GameObject _DefaultSprite;
     [SerializeField] private GameObject _BarrowingSprite;
     [SerializeField] private GameObject _CarryingSprite;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
+    private PlayerWheelBarrow _wheelBarrow;
+    private PlayerCarry _playerCarry;
+    private WeightyObjectStack _carriedObjects;
     private List<Action> _unsubscribeHooks = new();
     public CompassDirection AnimationDirection = CompassDirection.SouthEast;
 
@@ -38,13 +39,16 @@ public class PlayerAnimatorController : MonoBehaviour
         _defaultAnimator = _DefaultSprite.GetComponent<Animator>();
         _barrowAnimator = _BarrowingSprite.GetComponent<Animator>();
         _carryAnimator = _CarryingSprite.GetComponent<Animator>();
-        _playerMovementController = GetComponentInParent<PlayerMovementController>();
+        _playerMovementController = GetComponentInParent<PlayerMovement>();
+        _wheelBarrow = GetComponentInParent<PlayerWheelBarrow>();
+        _playerCarry = GetComponentInParent<PlayerCarry>();
+        _carriedObjects = _playerCarry.CarriedStack;
 
         _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange(curr => OnStateChange(curr)));
         _unsubscribeHooks.Add(_carriedObjects.StoredObjects.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
         _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_playerData.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_playerData.IsCarrying.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_wheelBarrow.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerCarry.IsCarrying.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
         _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
     }
 
@@ -81,7 +85,7 @@ public class PlayerAnimatorController : MonoBehaviour
         _CarryingSprite.SetActive(true);
     }
 
-    private void OnStateChange(PlayerMovementController.PlayerStates curr)
+    private void OnStateChange(PlayerMovement.PlayerStates curr)
     {
         CompassDirection playerDirection = _playerMovementController.Direction.Value;
         CompassDirection[] faceSouthEast = {CompassDirection.East, CompassDirection.NorthEast, CompassDirection.SouthEast};
@@ -102,40 +106,40 @@ public class PlayerAnimatorController : MonoBehaviour
 
         switch (curr)
         {
-            case PlayerMovementController.PlayerStates.Idle:
+            case PlayerMovement.PlayerStates.Idle:
                 HandleIdle();
                 break;
-            case PlayerMovementController.PlayerStates.Running:
+            case PlayerMovement.PlayerStates.Running:
                 HandleRunning();
                 break;
-            case PlayerMovementController.PlayerStates.Birding:
+            case PlayerMovement.PlayerStates.Birding:
                 PlayIdleBinos();
                 break;
-            case PlayerMovementController.PlayerStates.BirdingRunning:
+            case PlayerMovement.PlayerStates.BirdingRunning:
                 PlayRunningBinos();
                 break;
-            case PlayerMovementController.PlayerStates.Fishing:
+            case PlayerMovement.PlayerStates.Fishing:
                 HandleFishing();
                 break;
-            case PlayerMovementController.PlayerStates.Catching:
+            case PlayerMovement.PlayerStates.Catching:
                 HandleCatching();
                 break;
-            case PlayerMovementController.PlayerStates.Axing:
+            case PlayerMovement.PlayerStates.Axing:
                 HandleChopping();
                 break;
-            case PlayerMovementController.PlayerStates.Celebrating:
+            case PlayerMovement.PlayerStates.Celebrating:
                 HandleCelebrating();
                 break;
-            case PlayerMovementController.PlayerStates.PickingUp:
+            case PlayerMovement.PlayerStates.PickingUp:
                 HandlePickingUp();
                 break;
-            case PlayerMovementController.PlayerStates.Crouched:
+            case PlayerMovement.PlayerStates.Crouched:
                 HandleCrouched();
                 break;
-            case PlayerMovementController.PlayerStates.BowCharging:
+            case PlayerMovement.PlayerStates.BowCharging:
                 PlayIdleBow();
                 break;
-            case PlayerMovementController.PlayerStates.BowChargingRunning:
+            case PlayerMovement.PlayerStates.BowChargingRunning:
                 PlayRunningBow();
                 break;
         }
@@ -143,14 +147,14 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void HandleRunning()
     {
-        if (_playerData.IsHoldingWheelBarrow.Value)
+        if (_wheelBarrow.IsHoldingWheelBarrow.Value)
         {
             ShowBarrowingSprite();
             PlayRunningBarrow();
             return;
         }
 
-        if (_playerData.IsCarrying.Value)
+        if (_playerCarry.IsCarrying.Value)
         {
             ShowCarryingSprite();
             PlayRunningCarry();
@@ -189,14 +193,14 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void HandleIdle()
     {
-        if (_playerData.IsHoldingWheelBarrow.Value)
+        if (_wheelBarrow.IsHoldingWheelBarrow.Value)
         {
             ShowBarrowingSprite();
             HandleBarrowIdle();
             return;
         }
 
-        if (_playerData.IsCarrying.Value)
+        if (_playerCarry.IsCarrying.Value)
         {
             ShowCarryingSprite();
             HandleCarryIdle();
@@ -314,7 +318,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void SetPlayerIdle()
     {
-        _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
     }
 
     private void HandleBarrowIdle()

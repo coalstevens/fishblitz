@@ -15,7 +15,7 @@ public class Axe : Inventory.Item, UseItemInput.IUsableOnWorldObject, UseItemInp
 
     public bool UseWithoutTarget(Inventory.ItemInstanceData instanceData)
     {
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
+        PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Axing;
         return false;
     }
 
@@ -28,7 +28,7 @@ public class Axe : Inventory.Item, UseItemInput.IUsableOnWorldObject, UseItemInp
     {
         if (interactableWorldObject is IUseableWithAxe _worldObject)
         {
-            PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Axing;
+            PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Axing;
             _worldObject.OnUseAxe();
             return true;
         }

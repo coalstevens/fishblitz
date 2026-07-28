@@ -9,6 +9,7 @@ using System.Collections.Generic;
 // Awake() is called when a prefab object is instantiated.
 // Start() is called before first frame of scene, which has occured before instantiation.
 
+[DefaultExecutionOrder(100)]
 public class SceneSaveLoadManager : MonoBehaviour {
 
     [SerializeField] private Logger _logger = new();
@@ -51,45 +52,115 @@ public class SceneSaveLoadManager : MonoBehaviour {
         public int SceneExitGameTime;
     }
 
+    private class PlayerComponentsSaveData {
+        public Dictionary<string, string> ComponentStates = new();
+    }
+
+    private const string PLAYER_SAVE_FILE = "PlayerComponents.json";
+
     private void Awake() {
         _instance = this;
         _isFirstVisit = null;
         LoadScene();
     }
 
-    private void OnDestroy() {
-        _instance = null;
+    private void Start() {
+        LoadPlayerComponents();
     }
+
+    private void OnApplicationQuit() {
+        SavePlayerComponents();
+    }
+
+    private void OnDestroy() {
+        if (_instance == this)
+            _instance = null;
+    }
+
+    // --- World Object Save/Load (per-scene) ---
 
     public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
         _sceneSaveData.SaveDatas = GatherChildSaveData(ImpermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.Instance.GameMinutesElapsed;
 
-        JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetFileName()); 
+        JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetSceneFileName()); 
     }
 
     private void LoadScene() {
-        string _fileName = GetFileName();
+        string _fileName = GetSceneFileName();
         string _sceneName = SceneManager.GetActiveScene().name;
 
-        // no save file
         if (!JsonPersistence.JsonExists(_fileName)) {
             _logger.Info($"{_sceneName} initial scene visit.");
             return;
         }
 
-        // destroy defaults 
         DestroyChildren(ImpermanentContainer);
 
-        // load from save
         var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
         InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, ImpermanentContainer);
         ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, ImpermanentContainer);
         _logger.Info($"{_sceneName} loaded from save.");
     }
 
-    // dang
+    // --- Player Component Save/Load (global, persists across scenes) ---
+
+    public static void SavePlayerComponents() {
+        var _saveableComponents = FindAllSaveableComponents();
+        if (_saveableComponents.Count == 0) return;
+
+        var _saveData = new PlayerComponentsSaveData();
+        foreach (var _component in _saveableComponents) {
+            try {
+                var _json = _component.CaptureStateAsJson();
+                if (!string.IsNullOrEmpty(_json))
+                    _saveData.ComponentStates[_component.ComponentId] = _json;
+            }
+            catch (System.Exception ex) {
+                Debug.LogError($"Failed to save component '{_component.ComponentId}': {ex.Message}");
+            }
+        }
+
+        JsonPersistence.PersistJson(_saveData, PLAYER_SAVE_FILE);
+    }
+
+    private void LoadPlayerComponents() {
+        if (!JsonPersistence.JsonExists(PLAYER_SAVE_FILE)) {
+            _logger.Info("No player component save found.");
+            return;
+        }
+
+        var _saveData = JsonPersistence.FromJson<PlayerComponentsSaveData>(PLAYER_SAVE_FILE);
+        if (_saveData?.ComponentStates == null) return;
+
+        var _saveableComponents = FindAllSaveableComponents();
+        foreach (var _component in _saveableComponents) {
+            if (_saveData.ComponentStates.TryGetValue(_component.ComponentId, out var _json)) {
+                try {
+                    _component.RestoreStateFromJson(_json);
+                }
+                catch (System.Exception ex) {
+                    Debug.LogWarning($"Failed to restore component '{_component.ComponentId}': {ex.Message}");
+                }
+            }
+        }
+
+        _logger.Info("Player components loaded from save.");
+    }
+
+    private static List<ISaveableComponent> FindAllSaveableComponents() {
+        var _results = new List<ISaveableComponent>();
+        var _allMonoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+        foreach (var _mb in _allMonoBehaviours) {
+            if (_mb is ISaveableComponent _saveable)
+                _results.Add(_saveable);
+        }
+        return _results;
+    }
+
+    // --- Shared utilities ---
+
     private void DestroyChildren(Transform parent) {
         foreach (Transform _child in parent)
             Destroy(_child.gameObject);
@@ -123,18 +194,16 @@ public class SceneSaveLoadManager : MonoBehaviour {
         int _elapsedGameMinutes = GameClock.CalculateElapsedGameMinutesSinceTime(pastTime);
         List<GameClock.ITickable> _tickables = new();
 
-        // get tickables
         foreach (Transform _child in parent)
             if (_child.TryGetComponent<GameClock.ITickable>(out var _tickable))
                 _tickables.Add(_tickable);
         
-        // tick tickables
         for (int i = 0; i < _elapsedGameMinutes; i++)
             foreach(var _tickable in _tickables)
                 _tickable.OnGameMinuteTick();
     }
 
-    private string GetFileName() {
+    private string GetSceneFileName() {
         string _sceneName = SceneManager.GetActiveScene().name;
         return _sceneName + "_savedData.json";
     }

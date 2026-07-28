@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ReactiveUnity;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /// <summary>
@@ -9,9 +10,16 @@ using UnityEngine;
 /// if the player is dry, actualTemperature == dryTemperature
 /// else actualTemperature == dryTemperature - 1 temp step
 /// </summary>
-public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
+public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISaveableComponent
 {
-    [SerializeField] private PlayerData _playerData;
+    public string ComponentId => "PlayerTemperature";
+
+    public Reactive<Temperature> ActualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
+    public Reactive<Temperature> DryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
+    public int CounterToMatchAmbientGamemins = 0;
+
+    private PlayerDryingManager _dryingManager;
+    private PlayerEnergyManager _energyManager;
     private const int DURATION_TO_SHIFT_TO_AMBIENT_GAMEMINS = 60;
     private Dictionary<Temperature, string> _temperatureChangeMessages = new Dictionary<Temperature, string>
     {
@@ -27,16 +35,26 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
     public Temperature AmbientTemperature => _ambientTemperature.Value;
     public override Temperature Temperature
     {
-        get => _playerData.ActualPlayerTemperature.Value;
+        get => ActualPlayerTemperature.Value;
+    }
+
+    [System.Serializable]
+    private class State
+    {
+        public int ActualPlayerTemperature;
+        public int DryPlayerTemperature;
+        public int CounterToMatchAmbientGamemins;
     }
 
     private void OnEnable()
     {
+        _dryingManager = GetComponent<PlayerDryingManager>();
+        _energyManager = GetComponent<PlayerEnergyManager>();
         GameClock.Instance.OnGameMinuteTick += OnGameMinuteTick;
-        _unsubscribeHooks.Add(_playerData.PlayerIsWet.OnChange(_ => UpdateActualTemperature()));
-        _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => UpdateActualTemperature()));
-        _unsubscribeHooks.Add(_playerData.DryPlayerTemperature.OnChange(_ => ResetCounterToMatchAmbient()));
-        _unsubscribeHooks.Add(_playerData.ActualPlayerTemperature.OnChange(_ => NarrateTemperatureChange()));
+        _unsubscribeHooks.Add(_dryingManager.PlayerIsWet.OnChange(_ => UpdateActualTemperature()));
+        _unsubscribeHooks.Add(DryPlayerTemperature.OnChange(_ => UpdateActualTemperature()));
+        _unsubscribeHooks.Add(DryPlayerTemperature.OnChange(_ => ResetCounterToMatchAmbient()));
+        _unsubscribeHooks.Add(ActualPlayerTemperature.OnChange(_ => NarrateTemperatureChange()));
         _unsubscribeHooks.Add(_ambientTemperature.OnChange((prev, curr) => OnAmbientTemperatureChange(prev, curr)));
     }
 
@@ -50,22 +68,19 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
 
     private void UpdateActualTemperature()
     {
-        // Player is dry
-        if (!_playerData.PlayerIsWet.Value)
+        if (!_dryingManager.PlayerIsWet.Value)
         {
-            _playerData.ActualPlayerTemperature.Value = _playerData.DryPlayerTemperature.Value;
+            ActualPlayerTemperature.Value = DryPlayerTemperature.Value;
             return;
         }
 
-        // Player is cold as can be already
-        if (_playerData.DryPlayerTemperature.Value == Temperature.Freezing)
+        if (DryPlayerTemperature.Value == Temperature.Freezing)
         {
-            _playerData.ActualPlayerTemperature = _playerData.DryPlayerTemperature;
+            ActualPlayerTemperature = DryPlayerTemperature;
             return;
         }
 
-        // Player is wet, 1 step colder
-        _playerData.ActualPlayerTemperature.Value = _playerData.DryPlayerTemperature.Value - 1;
+        ActualPlayerTemperature.Value = DryPlayerTemperature.Value - 1;
     }
 
     public void OnGameMinuteTick()
@@ -73,25 +88,24 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
         if
         (
             _ambientHeatSources.Count == 0 ||
-            _playerData.IsPlayerSleeping || // no temp changes allowed during sleep
-            _playerData.DryPlayerTemperature.Value == _ambientTemperature.Value
+            _energyManager.IsPlayerSleeping ||
+            DryPlayerTemperature.Value == _ambientTemperature.Value
         )
             return;
 
-        _playerData.CounterToMatchAmbientGamemins++;
-        if (_playerData.CounterToMatchAmbientGamemins >= DURATION_TO_SHIFT_TO_AMBIENT_GAMEMINS) {
-            if(_ambientTemperature.Value > _playerData.DryPlayerTemperature.Value)
-                _playerData.DryPlayerTemperature.Value++;
+        CounterToMatchAmbientGamemins++;
+        if (CounterToMatchAmbientGamemins >= DURATION_TO_SHIFT_TO_AMBIENT_GAMEMINS) {
+            if(_ambientTemperature.Value > DryPlayerTemperature.Value)
+                DryPlayerTemperature.Value++;
             else
-                _playerData.DryPlayerTemperature.Value--;
+                DryPlayerTemperature.Value--;
         } 
     }
 
     private void OnAmbientTemperatureChange(Temperature previousTemperature, Temperature currentTemperature)
     {
-        // Player gets cold fast, and warm slow
         if (previousTemperature < currentTemperature)
-            _playerData.CounterToMatchAmbientGamemins = 0;
+            CounterToMatchAmbientGamemins = 0;
     }
 
     private void NarrateTemperatureChange()
@@ -103,15 +117,14 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
             return;
         }
 
-        // Post temperature change message
-        if (!_temperatureChangeMessages.TryGetValue(_playerData.ActualPlayerTemperature.Value, out var _message))
+        if (!_temperatureChangeMessages.TryGetValue(ActualPlayerTemperature.Value, out var _message))
             Debug.LogError("There is no temp change message associated with the adjusted temp.");
         Narrator.Instance.PostMessage(_message);
     }
 
     private void ResetCounterToMatchAmbient()
     {
-        _playerData.CounterToMatchAmbientGamemins = 0;
+        CounterToMatchAmbientGamemins = 0;
     }
 
     /// <summary>
@@ -124,12 +137,38 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable
     /// </returns>
     public bool TryUpdatePlayerTempInstantly(bool _skipMessage)
     {
-        if (_playerData.DryPlayerTemperature.Value != _ambientTemperature.Value)
+        if (DryPlayerTemperature.Value != _ambientTemperature.Value)
         {
             _skipMessage = true;
-            _playerData.DryPlayerTemperature.Value = _ambientTemperature.Value;
+            DryPlayerTemperature.Value = _ambientTemperature.Value;
             return true;
         }
         return false;
+    }
+
+    public string CaptureStateAsJson()
+    {
+        var _state = new State
+        {
+            ActualPlayerTemperature = (int)ActualPlayerTemperature.Value,
+            DryPlayerTemperature = (int)DryPlayerTemperature.Value,
+            CounterToMatchAmbientGamemins = CounterToMatchAmbientGamemins
+        };
+        return JsonConvert.SerializeObject(_state);
+    }
+
+    public void RestoreStateFromJson(string json)
+    {
+        var _state = JsonConvert.DeserializeObject<State>(json);
+        ActualPlayerTemperature.Value = (Temperature)_state.ActualPlayerTemperature;
+        DryPlayerTemperature.Value = (Temperature)_state.DryPlayerTemperature;
+        CounterToMatchAmbientGamemins = _state.CounterToMatchAmbientGamemins;
+    }
+
+    public void ResetToDefaults()
+    {
+        ActualPlayerTemperature.Value = Temperature.Normal;
+        DryPlayerTemperature.Value = Temperature.Normal;
+        CounterToMatchAmbientGamemins = 0;
     }
 }

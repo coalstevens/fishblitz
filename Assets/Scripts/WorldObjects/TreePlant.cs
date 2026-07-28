@@ -43,7 +43,9 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     protected float _originalBendScaler = 1f;
 
     protected SpriteRenderer _spriteRenderer;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
+    private PlayerMovement PlayerMovementController => _playerMovementController ??=
+        GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerMovement>();
     protected Action _unsubscribe;
     protected Wind _windManager;
     protected Vector3 _originalPosition;
@@ -54,7 +56,6 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _playerMovementController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovementController>();
         OnStateChange();
     }
     protected virtual void OnEnable()
@@ -87,7 +88,6 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
                 Debug.LogError("TreePlant state machine defaulted");
                 break;
         }
-        GetComponent<SpriteSubdivider>()?.Regenerate();
     }
 
     public void OnUseAxe()
@@ -113,7 +113,7 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     IEnumerator FallTree()
     {
         // Wait for axing animation to finish
-        yield return new WaitUntil(() => _playerMovementController.PlayerState.Value != PlayerMovementController.PlayerStates.Axing);
+        yield return new WaitUntil(() => PlayerMovementController.PlayerState.Value != PlayerMovement.PlayerStates.Axing);
 
         // Determine which tree prefab to select
         bool _fallsEast = WillTreeFallEast();
@@ -153,7 +153,7 @@ public abstract class TreePlant : MonoBehaviour, InteractInput.IInteractable, Ax
     /// </summary>
     private bool WillTreeFallEast()
     {
-        switch (_playerMovementController.Direction.Value)
+        switch (PlayerMovementController.Direction.Value)
         {
             case CompassDirection.West:
             case CompassDirection.NorthWest:

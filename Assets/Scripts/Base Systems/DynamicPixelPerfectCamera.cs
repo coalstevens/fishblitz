@@ -10,8 +10,7 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
     [SerializeField] private int scaleFactor = 1;
     [SerializeField] private int minimumWidth = 960;
     [SerializeField] private int minimumHeight = 540;
-    [SerializeField] private PlayerData _playerData;
-    [SerializeField] private Transform _tracked;
+    private Transform _tracked;
 
     public float PixelsPerUnit => pixelsPerUnit;
     public int ScaleFactor => scaleFactor;
@@ -29,6 +28,7 @@ public class DynamicPixelPerfectCamera : MonoBehaviour
 
     private void Start()
     {
+        _tracked = GameObject.FindGameObjectWithTag("Player")?.transform;
         _lastWidth = Screen.width;
         _lastHeight = Screen.height;
         UpdateOrthoSize();

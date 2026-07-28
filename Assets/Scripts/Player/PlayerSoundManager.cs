@@ -5,8 +5,8 @@ public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] private SoundData _walkingSound;
     [SerializeField] private SoundData _wheelbarrowRollingSound;
-    [SerializeField] private PlayerData _playerData;
-    private PlayerMovementController _playerMovementController;
+    private PlayerWheelBarrow _wheelBarrow;
+    private PlayerMovement _playerMovementController;
     private Action _stopFootstepSoundCB;
     private Action _stopWheelbarrowSoundCB;
     private Action _unsubscribeStateCB;
@@ -14,9 +14,10 @@ public class PlayerSoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _wheelBarrow = GetComponent<PlayerWheelBarrow>();
+        _playerMovementController = GetComponent<PlayerMovement>();
         _unsubscribeStateCB = _playerMovementController.PlayerState.OnChange((prev, curr) => OnPlayerStateChange(prev, curr));
-        _unsubscribeWheelbarrowCB = _playerData.IsHoldingWheelBarrow.OnChange(_ => OnWheelbarrowStateChange());
+        _unsubscribeWheelbarrowCB = _wheelBarrow.IsHoldingWheelBarrow.OnChange(_ => OnWheelbarrowStateChange());
     }
 
     private void OnDisable()
@@ -27,11 +28,11 @@ public class PlayerSoundManager : MonoBehaviour
         _unsubscribeWheelbarrowCB();
     }
 
-    private void OnPlayerStateChange(PlayerMovementController.PlayerStates previous, PlayerMovementController.PlayerStates current)
+    private void OnPlayerStateChange(PlayerMovement.PlayerStates previous, PlayerMovement.PlayerStates current)
     {
         switch (current)
         {
-            case PlayerMovementController.PlayerStates.Running:
+            case PlayerMovement.PlayerStates.Running:
                 _stopFootstepSoundCB = PlayerAudioManager.Instance.PlayLooping(_walkingSound);
                 break;
             default:
@@ -43,8 +44,8 @@ public class PlayerSoundManager : MonoBehaviour
 
     private void OnWheelbarrowStateChange()
     {
-        bool shouldRoll = _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Running
-                       && _playerData.IsHoldingWheelBarrow.Value;
+        bool shouldRoll = _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Running
+                       && _wheelBarrow.IsHoldingWheelBarrow.Value;
 
         if (shouldRoll && _stopWheelbarrowSoundCB == null)
             _stopWheelbarrowSoundCB = PlayerAudioManager.Instance.PlayLooping(_wheelbarrowRollingSound);

@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using ReactiveUnity;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerWheelBarrow : MonoBehaviour
 {
-    [SerializeField] private PlayerData _playerData;
+    public Reactive<bool> IsHoldingWheelBarrow = new Reactive<bool>(false);
+
+    [SerializeField] private WeightyObjectStack _wheelbarrowStack = new();
+    [SerializeField] private WeightyObjectStackConfig _stackConfig;
     [SerializeField] private GameObject _playerWheelBarrow;
     [SerializeField] private GameObject _staticWheelBarrowPrefab;
     [SerializeField] private SoundData _liftBarrowSound;
@@ -17,10 +21,12 @@ public class PlayerWheelBarrow : MonoBehaviour
     private PlayerInput _playerInput;
     private Rigidbody2D _rb;
 
+    public WeightyObjectStack WheelBarrowStack => _wheelbarrowStack;
+
     void OnEnable()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _unsubscribeHooks.Add(_playerData.IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
+        _unsubscribeHooks.Add(IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
         var player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
             _playerInput = player.GetComponent<PlayerInput>();
@@ -28,14 +34,12 @@ public class PlayerWheelBarrow : MonoBehaviour
 
     private void OnUseWheelBarrow()
     {
-        // not sure what to use this for yet. maybe dumping the wheelbarrow? or looking at its contents 
     }
 
     private void OnReleaseWheelBarrow()
     {
-        _playerData.IsHoldingWheelBarrow.Value = false;
+        IsHoldingWheelBarrow.Value = false;
     }
-
 
     private void OnWheelBarrowingChange(bool isWheelBarrowing)
     {
@@ -48,8 +52,32 @@ public class PlayerWheelBarrow : MonoBehaviour
         else
         {
             _playerInput?.SwitchCurrentActionMap("Player");
-            InstantiateStaticWheelBarrow().SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
+            StaticWheelBarrowSelector newBarrow = InstantiateStaticWheelBarrow();
+            newBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
+            TransferContentsToStaticWheelbarrow(newBarrow);
             PlayerAudioManager.Instance.PlayOneShot(_placeBarrowSound);
+        }
+    }
+
+    public void PickUpStaticWheelbarrow(WeightyObjectStack sourceStack)
+    {
+        while (!sourceStack.IsEmpty())
+        {
+            _wheelbarrowStack.Push(sourceStack.Pop());
+            if (_stackConfig != null && _stackConfig.InsertSound != null)
+                PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
+        }
+    }
+
+    private void TransferContentsToStaticWheelbarrow(StaticWheelBarrowSelector staticBarrow)
+    {
+        var targetStack = staticBarrow.GetComponent<StaticWheelBarrow>()?.WeightyStack;
+        if (targetStack == null) return;
+        while (!_wheelbarrowStack.IsEmpty())
+        {
+            targetStack.Push(_wheelbarrowStack.Pop());
+            if (_stackConfig != null && _stackConfig.InsertSound != null)
+                PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
         }
     }
 
@@ -81,5 +109,4 @@ public class PlayerWheelBarrow : MonoBehaviour
             hook();
         _unsubscribeHooks.Clear();
     }
-
 }

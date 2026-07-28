@@ -19,14 +19,14 @@ public class GridCursor : MonoBehaviour
     private PlayerCursor _activeCursor;
     private Grid _grid;
     private List<Action> _unsubscribeHooks = new();
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     public Vector3Int GridPosition => _grid.WorldToCell(_activeCursor.transform.position);
     public Collider2D Collider => _activeCursor.Collider;
 
     private void OnEnable()
     {
         _activeCursor = _cursorE;
-        _playerMovementController = transform.parent.GetComponent<PlayerMovementController>();
+        _playerMovementController = transform.parent.GetComponent<PlayerMovement>();
         _grid = GameObject.FindFirstObjectByType<Grid>();
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_grid);

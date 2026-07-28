@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fadedOpacity: 0.5
   _fadeDuration: 0.5
-  _searchOnParent: 1
+  _targetParent: 1
 --- !u!1 &4680636305652429274
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 3872819686384213603}
   - component: {fileID: 4815033212498117573}
   - component: {fileID: -1327815519383220636}
+  - component: {fileID: 4841166818519308242}
   m_Layer: 21
   m_Name: Spruce
   m_TagString: Untagged
@@ -377,3 +378,18 @@ MonoBehaviour:
   extraTilesToRight: 1
   extraTilesAbove: 1
   extraTilesBelow: 1
+--- !u!114 &4841166818519308242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4737805772135044970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c3812f6aa2445d1bff701c9a942938, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSubdivider
+  _horizontalSegments: 8
+  _verticalSegments: 4
+  _cloneSprite: 1

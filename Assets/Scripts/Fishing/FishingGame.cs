@@ -20,7 +20,7 @@ public class FishingGame : MonoBehaviour
     [SerializeField] private GameObject _fishBarTriggerPrefab;
     [SerializeField] private GameObject _fishTypeContainer;
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private PlayerData _playerData;
+    private PlayerCaptureLogs _captureLogs;
     
     [Header("Sound Effects")]
     [SerializeField] private SoundData _missedSound;
@@ -71,6 +71,7 @@ public class FishingGame : MonoBehaviour
     private void Awake() {
         _instance = this;
         _bar = GetComponent<SpriteRenderer>();
+        _captureLogs = FindFirstObjectByType<PlayerCaptureLogs>();
     }
 
     // Play the fishing mini game
@@ -106,7 +107,7 @@ public class FishingGame : MonoBehaviour
     {
         _logger.Info("New game started.");
         _stopReelingSFXCB = AudioManager.PlayLoopingSFX(_audioSource, _reelingInSound);
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Catching;
+        PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Catching;
         _fishType = GetRandomValidFishType();
         _gameStartPeriod = GameClock.Instance.GameDayPeriod;
         _gameStartSeason = GameClock.Instance.GameSeason;
@@ -181,10 +182,10 @@ public class FishingGame : MonoBehaviour
     }
 
     private void HandleGameWin() {
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Celebrating;
+        PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Celebrating;
         AudioManager.PlaySFX(_audioSource, _caughtSound);
         _inventory.AddItemOrDrop(_fishType.CaughtItem, 1, _playerCollider);
-        _playerData.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel);
+        _captureLogs.FishingLog.AddToLog(_fishType.CaughtItem.ItemLabel);
         _stopReelingSFXCB();
         _stopReelingSFXCB = null;
         EndGame();
@@ -210,7 +211,7 @@ public class FishingGame : MonoBehaviour
         LaunchFishCursor();
         _stopReelingSFXCB();
         yield return new WaitForSeconds(1.5f);
-        PlayerMovementController.Instance.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+        PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
         EndGame();
     }
 
@@ -227,8 +228,8 @@ public class FishingGame : MonoBehaviour
     /// </summary>
     private void OnUseItem()
     {
-        if (PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Fishing &&
-            PlayerMovementController.Instance.PlayerState.Value != PlayerMovementController.PlayerStates.Catching)
+        if (PlayerMovement.Instance.PlayerState.Value != PlayerMovement.PlayerStates.Fishing &&
+            PlayerMovement.Instance.PlayerState.Value != PlayerMovement.PlayerStates.Catching)
             return;
 
         // ignore if lost already

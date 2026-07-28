@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3116452438106739913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2538881789866864409}
+  - component: {fileID: 4403498177482455063}
+  m_Layer: 0
+  m_Name: GameClock
+  m_TagString: GameClock
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2538881789866864409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116452438106739913}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -35.545906, y: -35.000637, z: 0.84207743}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4403498177482455063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116452438106739913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419211f37f49740db9849954a952fa95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameDayInRealMinutes: 15
+  _numSeasonDays: 15
+  _dayPeriodRanges:
+  - Period: 0
+    StartHour: 6
+    EndHour: 8
+  - Period: 1
+    StartHour: 8
+    EndHour: 18
+  - Period: 2
+    StartHour: 18
+    EndHour: 20
+  - Period: 3
+    StartHour: 20
+    EndHour: 6
+  _logger:
+    _info: 1
+    _verbose: 1
+    _prefix: Gameclock
+    _color: white
+  GameClockPaused: 1
+  _startDay: 1
+  _startHour: 12
+  _startMinute: 0
+  _startSeason: 1
+  _startYear: 1
+  GameIsPaused:
+    _val: 0

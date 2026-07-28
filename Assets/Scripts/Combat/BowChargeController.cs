@@ -24,20 +24,21 @@ public class BowChargeController : MonoBehaviour
     private float _chargeNormalized;
     private bool _blockNextCharge = false;
     private PlayerEnergyManager _playerEnergyManager;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     private SpriteRenderer[] _frameRenderers;
     private static readonly int _overrideColorProp = Shader.PropertyToID("_OverrideColor");
     private static readonly int _overridePercentProp = Shader.PropertyToID("_OverridePercent");
-    [SerializeField] private PlayerData _playerData;
+    private PlayerCarry _playerCarry;
 
     private void Awake()
     {
         var player = GameObject.FindGameObjectWithTag("Player");
         Assert.IsNotNull(player, "Player not found for BowChargeController.");
 
+        _playerCarry = player.GetComponent<PlayerCarry>();
         _playerInput = player.GetComponent<PlayerInput>();
         _playerEnergyManager = player.GetComponent<PlayerEnergyManager>();
-        _playerMovementController = player.GetComponent<PlayerMovementController>();
+        _playerMovementController = player.GetComponent<PlayerMovement>();
 
         Assert.IsNotNull(_playerInput);
         Assert.IsNotNull(_playerEnergyManager);
@@ -52,7 +53,7 @@ public class BowChargeController : MonoBehaviour
     {
         if (_state != ChargeState.Idle) return false;
         if (_blockNextCharge) return false;
-        if (_playerData != null && _playerData.IsCarrying.Value) return false;
+        if (_playerCarry != null && _playerCarry.IsCarrying.Value) return false;
 
         _activeBow = bow;
         _activeWeaponData = weaponData;
@@ -69,7 +70,7 @@ public class BowChargeController : MonoBehaviour
 
         if (!_activeBow.AllowMovementWhileCharging)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.BowCharging;
+            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.BowCharging;
         }
 
         _state = ChargeState.Charging;
@@ -176,10 +177,10 @@ public class BowChargeController : MonoBehaviour
         SetFrameAlpha(0f);
         ClearOverride();
 
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowCharging ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.BowChargingRunning)
+        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.BowCharging ||
+            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.BowChargingRunning)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
         }
 
         if (_rotationPivot != null)

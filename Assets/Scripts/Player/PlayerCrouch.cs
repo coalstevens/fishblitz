@@ -2,16 +2,16 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInput), typeof(PlayerMovementController))]
+[RequireComponent(typeof(PlayerInput), typeof(PlayerMovement))]
 public class PlayerCrouch : MonoBehaviour
 {
     private InputAction _crouchAction;
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
 
     private void OnEnable()
     {
         PlayerInput _inputController = GetComponent<PlayerInput>();
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _playerMovementController = GetComponent<PlayerMovement>();
 
         _crouchAction = _inputController.actions["Crouch"];
         Assert.IsNotNull(_crouchAction);
@@ -28,19 +28,19 @@ public class PlayerCrouch : MonoBehaviour
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Crouched)
+        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Crouched)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Idle;
+            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
             return;
         }
     }
 
     private void OnCrouchStarted(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Idle ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Running)
+        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Idle ||
+            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Running)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovementController.PlayerStates.Crouched;
+            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Crouched;
             return;
         }
     }

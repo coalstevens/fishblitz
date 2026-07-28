@@ -15,7 +15,7 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
     }
 
     [SerializeField] private string _identifier = "WoodRack";
-    [SerializeField] private PlayerData _playerData;
+    private PlayerEnergyManager _energyManager;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Sprite[] _rackSprites;
     [SerializeField] private Inventory.Item _dryLog;
@@ -37,6 +37,7 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
 
     private void OnEnable()
     {
+        _energyManager = FindFirstObjectByType<PlayerEnergyManager>();
         _heatSensitive = GetComponent<HeatSensitive>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _unsubscribeCBs.Add(_numWetLogs.OnChange(_ => UpdateRackSprite()));
@@ -63,7 +64,7 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
         string _message = "All logs on the woodrack have dried out.";
         if (previousCount > 0 && currentCount == 0) 
         {
-            if (_playerData.IsPlayerSleeping)
+            if (_energyManager.IsPlayerSleeping)
                 Narrator.Instance.PostMessage(_message);
             else
                 StartCoroutine(WaitToPostMessage(_message)); // waiting for narrator to load in

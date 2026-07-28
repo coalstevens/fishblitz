@@ -38,10 +38,9 @@ public class UseItemInput : MonoBehaviour
     }
 
     [SerializeField] private GridCursor _gridCursor;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Logger _logger = new();
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
     private bool _useItemQueued;
@@ -49,14 +48,13 @@ public class UseItemInput : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovementController>();
+        _playerMovementController = GetComponent<PlayerMovement>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
 
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_playerEnergyManager);
         Assert.IsNotNull(_playerCarry);
-        Assert.IsNotNull(_playerData);
         Assert.IsNotNull(_gridCursor);
         Assert.IsNotNull(_inventory);
     }
@@ -69,10 +67,10 @@ public class UseItemInput : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
         // can't interrupt these
-        if (_playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Celebrating ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Catching ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.Axing ||
-            _playerMovementController.PlayerState.Value == PlayerMovementController.PlayerStates.PickingUp)
+        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Celebrating ||
+            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Catching ||
+            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Axing ||
+            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.PickingUp)
         {
             return;
         }
@@ -93,7 +91,7 @@ public class UseItemInput : MonoBehaviour
     private bool TryUseCarriedObject(Vector3Int cursorLocation, IUsableTarget targetWorldObject)
     {
         _logger.Info("Trying to use carried object");
-        if (!_playerData.IsCarrying.Value)
+        if (!_playerCarry.IsCarrying.Value)
             return false;
 
         if (targetWorldObject is Box box)

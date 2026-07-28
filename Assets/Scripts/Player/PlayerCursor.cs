@@ -23,13 +23,13 @@ public class PlayerCursor : MonoBehaviour
     {
         get => _collider;
     }
-    private PlayerMovementController _playerMovementController;
+    private PlayerMovement _playerMovementController;
     private Grid _grid;
     private List<Action> _unsubscribeHooks = new();
 
     private void OnEnable()
     {
-        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovementController>();
+        _playerMovementController = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange((prev, curr) => OnDirectionChange(curr)));
@@ -50,10 +50,10 @@ public class PlayerCursor : MonoBehaviour
         _grid = GameObject.FindFirstObjectByType<Grid>();
     }
 
-    private void TryHideCursor(PlayerMovementController.PlayerStates playerState)
+    private void TryHideCursor(PlayerMovement.PlayerStates playerState)
     {
         // If player is in an Acting State, hide the cursor
-        if (playerState != PlayerMovementController.PlayerStates.Idle && playerState != PlayerMovementController.PlayerStates.Running)
+        if (playerState != PlayerMovement.PlayerStates.Idle && playerState != PlayerMovement.PlayerStates.Running)
         {
             _spriteRenderer.enabled = false;
             return;

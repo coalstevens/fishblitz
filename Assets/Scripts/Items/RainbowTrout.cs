@@ -4,7 +4,6 @@ using UnityEngine;
 public class RainbowTrout : Inventory.Item, Diet.IFood, UseItemInput.IUsableOnWorldObject, UseItemInput.IUsableWithoutTarget
 {
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private PlayerData _playerData;
     [SerializeField] private int _protein = 10;
     [SerializeField] private int _carbs = 0;
     [SerializeField] private int _nutrients = 0;
@@ -30,7 +29,7 @@ public class RainbowTrout : Inventory.Item, Diet.IFood, UseItemInput.IUsableOnWo
     {
         if (_inventory.TryRemoveActiveItem(1))
         {
-            Diet.EatFood(_playerData, this);
+            Diet.EatFood(FindFirstObjectByType<PlayerEnergyManager>(), this);
             return true;
         }
         return false;
