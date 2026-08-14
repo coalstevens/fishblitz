@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerWheelBarrow : MonoBehaviour
 {
     public Reactive<bool> IsHoldingWheelBarrow = new Reactive<bool>(false);
@@ -29,7 +30,7 @@ public class PlayerWheelBarrow : MonoBehaviour
         _unsubscribeHooks.Add(IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
         var player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
-            _playerInput = player.GetComponent<PlayerInput>();
+            player.TryGetComponent(out _playerInput);
     }
 
     private void OnUseWheelBarrow()

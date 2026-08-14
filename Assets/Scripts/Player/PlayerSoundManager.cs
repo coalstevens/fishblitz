@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerWheelBarrow), typeof(PlayerMovement))]
 public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] private SoundData _walkingSound;

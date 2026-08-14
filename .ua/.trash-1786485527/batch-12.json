@@ -1,0 +1,2781 @@
+{
+ "nodes": [
+  {
+   "id": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "type": "file",
+   "name": "Barrel.cs",
+   "summary": "Barrel world object that displays a pair of binoculars on top until collected. Uses a Reactive<States> state machine (WithBinos/Normal) to swap sprites and destroy the child binoculars object, with SaveData.ISaveable persistence via extended save data.",
+   "tags": [
+    "barrel",
+    "world-object",
+    "reactive-state",
+    "save-system",
+    "collectible"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/Barrel.cs:Barrel",
+   "type": "class",
+   "name": "Barrel",
+   "summary": "MonoBehaviour state-machine object: switches between binoculars-on and bare-barrel sprites through a Reactive<States>, destroys the child binos object on removal, and implements SaveData.ISaveable.",
+   "tags": [
+    "barrel",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Barrel.cs:OnStateChange",
+   "type": "function",
+   "name": "OnStateChange",
+   "summary": "Applies the current barrel state: WithBinos shows the binoculars sprite; Normal destroys the child binoculars object and shows the plain barrel sprite.",
+   "tags": [
+    "barrel",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Barrel.cs:RemoveBinoculars",
+   "type": "function",
+   "name": "RemoveBinoculars",
+   "summary": "Switches the barrel to the Normal state, removing the binoculars display.",
+   "tags": [
+    "barrel",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Barrel.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Builds a SaveData with identifier, transform position, and extended BarrelSaveData holding the current state.",
+   "tags": [
+    "barrel",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Barrel.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the barrel state from saved extended data.",
+   "tags": [
+    "barrel",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Barrel.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BarrelBinos.cs",
+   "type": "file",
+   "name": "BarrelBinos.cs",
+   "summary": "Small interactable child component for the binoculars leaning on the Barrel: on cursor interact, tries to add the binoculars item to the player inventory, posts a dialogue message, then calls Barrel.RemoveBinoculars().",
+   "tags": [
+    "interactable",
+    "barrel",
+    "inventory",
+    "collectible",
+    "world-object"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BarrelBinos.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BarrelBinos.cs:BarrelBinos",
+   "type": "class",
+   "name": "BarrelBinos",
+   "summary": "InteractInput.IInteractable component on the barrel's binoculars: cursor interact grants the binoculars item to inventory and removes them from the barrel.",
+   "tags": [
+    "interactable",
+    "inventory",
+    "barrel"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BarrelBinos.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "type": "file",
+   "name": "BeachedBoat.cs",
+   "summary": "BeachedBoat world object showing a damaged boat with a hammer leaning against it. Reactive state machine (DamagedWithHammer/Damaged/Normal) swaps sprites and removes the child hammer object; persists BoatState through SaveData extended data.",
+   "tags": [
+    "boat",
+    "world-object",
+    "reactive-state",
+    "save-system",
+    "decoration"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BeachedBoat.cs:BeachedBoat",
+   "type": "class",
+   "name": "BeachedBoat",
+   "summary": "MonoBehaviour state machine that toggles damaged-boat-with-hammer, damaged, and normal sprites via a Reactive<States>, and implements SaveData.ISaveable.",
+   "tags": [
+    "boat",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:RemoveHammer",
+   "type": "function",
+   "name": "RemoveHammer",
+   "summary": "Switches the boat to the Damaged state, removing the hammer display.",
+   "tags": [
+    "boat",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Builds a SaveData with identifier, transform position, and extended BoatSaveData holding the current state.",
+   "tags": [
+    "boat",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the boat state from saved extended data.",
+   "tags": [
+    "boat",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BigRock.cs",
+   "type": "file",
+   "name": "BigRock.cs",
+   "summary": "Perchable world object for birds (BirdBrain.IPerchableLowElevation): tracks a list of child collider perches, reserves free perch slots for birds, and provides a random point inside a perch's bounds for landing.",
+   "tags": [
+    "birding",
+    "perch",
+    "world-object",
+    "bird-brain",
+    "collider"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/BigRock.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BigRock.cs:BigRock",
+   "type": "class",
+   "name": "BigRock",
+   "summary": "Bird perch container implementing IPerchableLowElevation: collects child Collider2D perches in Start and manages per-bird occupancy with random slot selection.",
+   "tags": [
+    "birding",
+    "perch",
+    "collider"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/BigRock.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BigRock.cs:GetPositionTarget",
+   "type": "function",
+   "name": "GetPositionTarget",
+   "summary": "Returns a random point inside the currently-targeted perch collider's bounds (intended to be called only after IsThereSpace).",
+   "tags": [
+    "birding",
+    "perch"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BigRock.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BigRock.cs:IsThereSpace",
+   "type": "function",
+   "name": "IsThereSpace",
+   "summary": "Searches perch slots starting from a random index for a free one, records it as the target perch, and returns whether any space exists.",
+   "tags": [
+    "birding",
+    "perch"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BigRock.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/BigRock.cs:ReserveSpace",
+   "type": "function",
+   "name": "ReserveSpace",
+   "summary": "Marks the target perch slot as occupied by the given bird.",
+   "tags": [
+    "birding",
+    "perch"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BigRock.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BoatHammer.cs",
+   "type": "file",
+   "name": "BoatHammer.cs",
+   "summary": "Interactable child of BeachedBoat: the hammer leaning against the boat has its own collider; interacting adds the hammer item to inventory and tells the boat to remove it.",
+   "tags": [
+    "interactable",
+    "boat",
+    "hammer",
+    "inventory",
+    "world-object"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoatHammer.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BoatHammer.cs:BoatHammer",
+   "type": "class",
+   "name": "BoatHammer",
+   "summary": "InteractInput.IInteractable on the hammer sprite; grants the hammer Inventory.Item on cursor interact and removes it from the parent BeachedBoat.",
+   "tags": [
+    "interactable",
+    "inventory",
+    "boat"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoatHammer.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BorderTree.cs",
+   "type": "file",
+   "name": "BorderTree.cs",
+   "summary": "Border tree decoration that swaps between summer/fall/dead adult sprites based on a Reactive<TreeStates> value. Purely cosmetic; maps state to a SpriteRenderer sprite.",
+   "tags": [
+    "tree",
+    "decoration",
+    "reactive-state",
+    "sprite",
+    "border"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BorderTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BorderTree.cs:BorderTree",
+   "type": "class",
+   "name": "BorderTree",
+   "summary": "MonoBehaviour decoration whose sprite follows a Reactive<TreeStates> (SummerAdult/FallAdult/DeadAdult) via UpdateSprite.",
+   "tags": [
+    "tree",
+    "reactive-state",
+    "sprite"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BorderTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "type": "file",
+   "name": "Box.cs",
+   "summary": "Quest delivery box: the player deposits WeightyObjectType items into a WeightyObjectStack; when the first required object's quantity is fulfilled, plays a win animation, fades out the blurb, and spawns the configured prize. Includes an item-request blurb with remaining count, alert badge, DOTween shake, and SaveData persistence.",
+   "tags": [
+    "quest",
+    "box",
+    "container",
+    "weighty-object",
+    "win-condition",
+    "save-system",
+    "dotween"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour using DOTween (DOShakePosition), coroutines for fade/prize sequences, NUnit Assert.IsNotNull on serialized refs, and WeightyObjectStack + WeightyObjectType from the Base Systems weighty-object module."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/Box.cs:Box",
+   "type": "class",
+   "name": "Box",
+   "summary": "Implements IWeightyObjectContainer, UseItemInput.IUsableTarget, and SaveData.ISaveable: tracks fulfilled quantities for a BoxData quest, accepts only valid weighty objects, and awards a prize when complete.",
+   "tags": [
+    "quest",
+    "box",
+    "container",
+    "weighty-object"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Shows the item-request blurb, hides the alert, and marks the box as interacted.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:TryAddToBox",
+   "type": "function",
+   "name": "TryAddToBox",
+   "summary": "Validates a deposited weighty object, pushes it onto the stack, increments the fulfilled quantity, plays the insert sound and shake, updates UI, and checks the win condition.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:CheckWinCondition",
+   "type": "function",
+   "name": "CheckWinCondition",
+   "summary": "Triggers Win when the first required object's fulfilled quantity reaches its target.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:Win",
+   "type": "function",
+   "name": "Win",
+   "summary": "Marks the box complete, disables the blurb opacity script, fades out renderers, plays the win chime and win animation, and starts the prize delivery coroutine.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:DeliverPrize",
+   "type": "function",
+   "name": "DeliverPrize",
+   "summary": "Waits for the win animation, instantiates the prize prefab at the configured spawn offset, invokes AwardPrize on it, then destroys the box.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:OnPlayerProximityEnter",
+   "type": "function",
+   "name": "OnPlayerProximityEnter",
+   "summary": "Plays the Opening animation and waits for it to finish when the player enters the lid trigger.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:OnPlayerProximityExit",
+   "type": "function",
+   "name": "OnPlayerProximityExit",
+   "summary": "Plays the Closing animation back to Closed when the player leaves the lid trigger.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists BoxData name, fulfilled quantities, interaction and completion flags as extended save data.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Box.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores BoxData from Resources, rebuilds fulfilled quantities, and applies the closed/completed visual state.",
+   "tags": [
+    "box",
+    "quest",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Box.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BoxData.cs",
+   "type": "file",
+   "name": "BoxData.cs",
+   "summary": "ScriptableObject asset configuring a Box quest: a list of RequiredObject (WeightyObjectType + quantity), a prize prefab with spawn offset, and a nested IBoxPrize interface that prize prefabs implement to award rewards.",
+   "tags": [
+    "scriptable-object",
+    "quest",
+    "box",
+    "configuration",
+    "prize"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoxData.cs",
+   "languageNotes": "C# ScriptableObject created via CreateAssetMenu, with a nested Serializable RequiredObject class and nested IBoxPrize interface."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BoxData.cs:BoxData",
+   "type": "class",
+   "name": "BoxData",
+   "summary": "Quest configuration ScriptableObject: holds required weighty objects and their quantities plus the prize prefab; defines the IBoxPrize contract for prize spawns.",
+   "tags": [
+    "quest",
+    "box",
+    "scriptable-object",
+    "prize"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoxData.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+   "type": "file",
+   "name": "BoxLidCollider.cs",
+   "summary": "Trigger collider on the Box lid that watches for the Player to enter/exit and drives the box's open/close animation via Box.OnPlayerProximityEnter/Exit.",
+   "tags": [
+    "trigger",
+    "box",
+    "animation",
+    "proximity",
+    "collider"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/BoxLidCollider.cs:BoxLidCollider",
+   "type": "class",
+   "name": "BoxLidCollider",
+   "summary": "Resolves the parent Box in Awake and forwards Player OnTriggerEnter2D/Exit2D to its proximity methods.",
+   "tags": [
+    "trigger",
+    "box",
+    "proximity"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "type": "file",
+   "name": "Campfire.cs",
+   "summary": "Campfire survival object with a fire lifecycle (Dead/Ready/Hot/Embers) advanced by GameClock game-minute ticks. Interact to light a Ready fire, AddFirewood to stoke/extend it; Hot/Embers emit warmth via LocalHeatSource and pulsing light; persists state and fire-duration counter.",
+   "tags": [
+    "campfire",
+    "survival",
+    "fire",
+    "heat-source",
+    "game-clock",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/Campfire.cs:Campfire",
+   "type": "class",
+   "name": "Campfire",
+   "summary": "Implements InteractInput.IInteractable, GameClock.ITickable, and SaveData.ISaveable: a Reactive<FireStates> state machine driving animator, heat source, and light per fire stage.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source",
+    "game-clock"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnGameMinuteTick",
+   "type": "function",
+   "name": "OnGameMinuteTick",
+   "summary": "Advances fire-duration counters each game minute; Hot decays to Embers and Embers decays to Dead after configured durations.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "type": "function",
+   "name": "OnStateChange",
+   "summary": "Routes the current fire state to the matching EnterHot/EnterEmbers/EnterDead/EnterReady handler.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterHot",
+   "type": "function",
+   "name": "EnterHot",
+   "summary": "Sets the hot-fire animator clip, enables LocalHeatSource (Warm), and activates a bright pulsing fire light.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterEmbers",
+   "type": "function",
+   "name": "EnterEmbers",
+   "summary": "Switches to slow embers animation, keeps heat at Warm, and dims the pulsing light.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterDead",
+   "type": "function",
+   "name": "EnterDead",
+   "summary": "Plays the Dead animator clip and disables heat source and light.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterReady",
+   "type": "function",
+   "name": "EnterReady",
+   "summary": "Plays the Ready animator clip with no heat or light, awaiting ignition.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Lights a Ready fire (transitions to Hot) and posts a narrator message; no-ops in other states.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:AddFirewood",
+   "type": "function",
+   "name": "AddFirewood",
+   "summary": "Resets the duration counter and advances state: Dead\u2192Ready, Embers\u2192Hot, stoking Hot flames with a narrator message.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists fire state and fire-duration counter as extended save data.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/Campfire.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores fire state and duration counter from saved extended data.",
+   "tags": [
+    "campfire",
+    "fire",
+    "heat-source"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/Campfire.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "type": "file",
+   "name": "FallenLarch.cs",
+   "summary": "Concrete larch variant of FallenTree: implements Save/Load for the shared fallen-tree state (Idle/Falling) using SaveData extended data and restores the idle animation state on load.",
+   "tags": [
+    "fallen-tree",
+    "larch",
+    "axe",
+    "save-system",
+    "world-object"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/FallenLarch.cs:FallenLarch",
+   "type": "class",
+   "name": "FallenLarch",
+   "summary": "FallenTree subclass adding SaveData.ISaveable persistence of the shared _state reactive field.",
+   "tags": [
+    "fallen-tree",
+    "larch",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "type": "file",
+   "name": "FallenSpruce.cs",
+   "summary": "Concrete spruce variant of FallenTree: implements Save/Load for the shared fallen-tree state using SaveData extended data; restores the idle sprite when loaded as Idle.",
+   "tags": [
+    "fallen-tree",
+    "spruce",
+    "axe",
+    "save-system",
+    "world-object"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/FallenSpruce.cs:FallenSpruce",
+   "type": "class",
+   "name": "FallenSpruce",
+   "summary": "FallenTree subclass adding SaveData.ISaveable persistence of the shared _state reactive field.",
+   "tags": [
+    "fallen-tree",
+    "spruce",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "type": "file",
+   "name": "FallenTree.cs",
+   "summary": "Abstract axe-choppable fallen tree. Plays an east/west falling animation (DOTween shake, collider disabled while falling) then settles into Idle. Takes five axe hits to destroy; used by FallenLarch and FallenSpruce.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "choppable",
+    "dotween",
+    "animation",
+    "world-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/FallenTree.cs:FallenTree",
+   "type": "class",
+   "name": "FallenTree",
+   "summary": "Abstract MonoBehaviour implementing InteractInput.IInteractable and Axe.IUseableWithAxe: Reactive<FallenTreeStates> (Idle/Falling), falling animation, and 5-hit axe destruction.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:PlayFallingAnimation",
+   "type": "function",
+   "name": "PlayFallingAnimation",
+   "summary": "Shakes, disables the collider, plays the E/W falling animator clip, swaps to the falling sprite, then waits for the clip to end.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:WaitForFallingAnimationToEnd",
+   "type": "function",
+   "name": "WaitForFallingAnimationToEnd",
+   "summary": "Waits for the falling clip, then calls StopAnimation and sets state to Idle.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:StopAnimation",
+   "type": "function",
+   "name": "StopAnimation",
+   "summary": "Halts the animator, re-enables the collider, resets the sprite local transform, and re-enables the YDepthSorter on the child.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "No-op cursor interaction (the tree does nothing on a normal interact).",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:OnUseAxe",
+   "type": "function",
+   "name": "OnUseAxe",
+   "summary": "Increments the hit count and shakes; destroys the tree after five hits.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FallenTree.cs:Shake",
+   "type": "function",
+   "name": "Shake",
+   "summary": "Applies a DOTween position shake to the fallen tree.",
+   "tags": [
+    "fallen-tree",
+    "axe",
+    "dotween"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FallenTree.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "type": "file",
+   "name": "FirewoodPile.cs",
+   "summary": "Interactable firewood pile: taking a log decrements a Reactive<int> count, swaps sprites per remaining count, and grants Firewood items to the inventory; destroys itself when empty. Save/Load persists remaining logs.",
+   "tags": [
+    "firewood",
+    "log-pile",
+    "interactable",
+    "inventory",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/FirewoodPile.cs:FirewoodPile",
+   "type": "class",
+   "name": "FirewoodPile",
+   "summary": "Implements InteractInput.IInteractable and SaveData.ISaveable: sprite reflects _numLogs, RemoveLog transfers Firewood to inventory.",
+   "tags": [
+    "firewood",
+    "interactable",
+    "inventory"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:RemoveLog",
+   "type": "function",
+   "name": "RemoveLog",
+   "summary": "Transfers one firewood item to the inventory (or posts a full-inventory message), decrements the count, and destroys the pile when empty.",
+   "tags": [
+    "firewood",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Removes one log per cursor interaction.",
+   "tags": [
+    "firewood",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists the number of remaining logs as extended save data.",
+   "tags": [
+    "firewood",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the log count from saved extended data.",
+   "tags": [
+    "firewood",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "type": "file",
+   "name": "GenericWeightyObject.cs",
+   "summary": "Generic pickup for weighty objects (IWeighty): on cursor interact, hands itself to PlayerCarry.TryPickUpWeightyObject and destroys itself after a short delay; persists via a GUID PersistentID assigned on first save.",
+   "tags": [
+    "weighty-object",
+    "carry",
+    "pickup",
+    "player-carry",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:GenericWeightyObject",
+   "type": "class",
+   "name": "GenericWeightyObject",
+   "summary": "Implements IWeighty: exposes its WeightyObjectType, resolves PlayerCarry in Start, and offers itself for pickup on cursor interact.",
+   "tags": [
+    "weighty-object",
+    "player-carry",
+    "pickup"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Offers itself to PlayerCarry.TryPickUpWeightyObject and destroys the GameObject after a short delay if the pickup succeeds.",
+   "tags": [
+    "weighty-object",
+    "player-carry"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Generates a GUID persistent ID on first save and persists identifier and transform position.",
+   "tags": [
+    "weighty-object",
+    "player-carry"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the persistent ID from saved data.",
+   "tags": [
+    "weighty-object",
+    "player-carry"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/Larch.cs",
+   "type": "file",
+   "name": "Larch.cs",
+   "summary": "Larch tree subclass of TreePlant with SaveData.ISaveable: persists the shared TreeStates reactive state (summer/fall/dead) via extended save data.",
+   "tags": [
+    "tree",
+    "larch",
+    "treeplant",
+    "save-system",
+    "season"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Larch.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/Larch.cs:Larch",
+   "type": "class",
+   "name": "Larch",
+   "summary": "TreePlant subclass adding SaveData.ISaveable persistence of the tree state.",
+   "tags": [
+    "tree",
+    "larch",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Larch.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "type": "file",
+   "name": "LarchStump.cs",
+   "summary": "Multi-state larch stump for firewood crafting: can hold an axe, hold a dry log, and split the log with the axe (splitting animation spawns three loose firewood). Also a low-elevation bird perch. Cursor interact retrieves the axe or dry log; Save/Load persists state.",
+   "tags": [
+    "stump",
+    "axe",
+    "firewood",
+    "crafting",
+    "log-splitting",
+    "birding",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/LarchStump.cs:LarchStump",
+   "type": "class",
+   "name": "LarchStump",
+   "summary": "Implements InteractInput.IInteractable, Axe.IUseableWithAxe, SaveData.ISaveable, and BirdBrain.IPerchableLowElevation: a Reactive<StumpStates> (AxeIn/LogOn/Splitting/Idle) that drives sprites, the split animation, and firewood spawning.",
+   "tags": [
+    "stump",
+    "axe",
+    "firewood",
+    "crafting",
+    "birding"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:OnStateChange",
+   "type": "function",
+   "name": "OnStateChange",
+   "summary": "Applies stump state: sets AxeIn/LogOn/Idle sprites, or plays the Splitting animation and spawns firewood.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:WaitForAnimationThenSpawnFirewood",
+   "type": "function",
+   "name": "WaitForAnimationThenSpawnFirewood",
+   "summary": "Waits for the split animation, plays the split-wood sound mid-way, spawns three loose firewood at computed positions, then returns the stump to Idle.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:GetFirewoodSpawnPositions",
+   "type": "function",
+   "name": "GetFirewoodSpawnPositions",
+   "summary": "Returns three hand-tuned offsets around the stump that line up with the splitting animation.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:OnUseAxe",
+   "type": "function",
+   "name": "OnUseAxe",
+   "summary": "Transitions the LogOn state to Splitting when the player uses the axe.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:TryLoadLog",
+   "type": "function",
+   "name": "TryLoadLog",
+   "summary": "Places a log onto an Idle stump (LogOn state) and returns success.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Retrieves the embedded axe or dry log into the inventory, reverting the stump to Idle.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists the stump state as extended save data.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LarchStump.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the stump state from saved extended data.",
+   "tags": [
+    "stump",
+    "firewood",
+    "axe"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LarchStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "type": "file",
+   "name": "LogPile.cs",
+   "summary": "Interactable log pile: taking a log decrements a Reactive<int> count, swaps sprites per remaining count, and adds the log item to inventory; destroys itself when empty. Structurally identical to FirewoodPile but yields logs instead of firewood.",
+   "tags": [
+    "log-pile",
+    "interactable",
+    "inventory",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/LogPile.cs:LogPile",
+   "type": "class",
+   "name": "LogPile",
+   "summary": "Implements InteractInput.IInteractable and SaveData.ISaveable: sprite reflects _numLogs, RemoveLog transfers logs to inventory.",
+   "tags": [
+    "log-pile",
+    "interactable",
+    "inventory"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LogPile.cs:RemoveLog",
+   "type": "function",
+   "name": "RemoveLog",
+   "summary": "Transfers one log item to the inventory (or posts a full-inventory message), decrements the count, and destroys the pile when empty.",
+   "tags": [
+    "log-pile",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LogPile.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Removes one log per cursor interaction.",
+   "tags": [
+    "log-pile",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LogPile.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists the number of remaining logs as extended save data.",
+   "tags": [
+    "log-pile",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/LogPile.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the log count from saved extended data.",
+   "tags": [
+    "log-pile",
+    "inventory"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/LogPile.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/MountedRod.cs",
+   "type": "file",
+   "name": "MountedRod.cs",
+   "summary": "Inventory item (extends Inventory.Item) representing a fishing rod to mount on a water tile; UseItemOnInteractableTileMap checks for a Water tilemap layer and calls the currently stubbed PlaceRod.",
+   "tags": [
+    "fishing",
+    "rod",
+    "item",
+    "tilemap",
+    "mount"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/MountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/MountedRod.cs:MountedRod",
+   "type": "class",
+   "name": "MountedRod",
+   "summary": "Inventory.Item subclass whose tilemap-use handler places a rod when the targeted tilemap layer is Water (PlaceRod is a TODO stub).",
+   "tags": [
+    "fishing",
+    "rod",
+    "tilemap"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/MountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/MountedRod.cs:UseItemOnInteractableTileMap",
+   "type": "function",
+   "name": "UseItemOnInteractableTileMap",
+   "summary": "Returns true and calls PlaceRod when the targeted tilemap layer is Water; otherwise rejects the placement.",
+   "tags": [
+    "fishing",
+    "rod",
+    "tilemap"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/MountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "type": "file",
+   "name": "PlacedMountedRod.cs",
+   "summary": "Placed fishing rod on water (one of four facing prefabs): a bobber randomly toggles fishOn state on a timer, shakes, and shows on/off plus selected sprites. Interacting with a fish-on rod stops the timer, launches the FishingGame, and destroys the rod; persists fishOn state.",
+   "tags": [
+    "fishing",
+    "rod",
+    "mounted-rod",
+    "interactive",
+    "dotween",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:PlacedMountedRod",
+   "type": "class",
+   "name": "PlacedMountedRod",
+   "summary": "Implements InteractInput.IInteractable and SaveData.ISaveable: Reactive<bool> fishOn/selected drive the sprite and shake; the change-state coroutine simulates a bobbing bobber.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:OnEnable",
+   "type": "function",
+   "name": "OnEnable",
+   "summary": "Subscribes reactive fishOn/selected changes to sprite updates and shake, then applies the initial sprite.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:ChangeStateRoutine",
+   "type": "function",
+   "name": "ChangeStateRoutine",
+   "summary": "Toggles the fishOn state on a random 3-10 second interval to simulate a bobber.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:ChangeSprite",
+   "type": "function",
+   "name": "ChangeSprite",
+   "summary": "Picks the on/off sprite based on the fishOn and selected reactive values.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Shake",
+   "type": "function",
+   "name": "Shake",
+   "summary": "Applies a DOTween position shake to the mounted rod.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Shakes if no fish; otherwise stops the state timer, launches the FishingGame, and destroys the rod.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists the fishOn state as extended save data.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the fishOn state from saved extended data.",
+   "tags": [
+    "fishing",
+    "rod",
+    "reactive-state"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "type": "file",
+   "name": "SleepingPad.cs",
+   "summary": "Simple interactable sleeping pad: cursor interact calls PlayerEnergyManager.Sleep() to end the day; persists its transform so it survives scene saves.",
+   "tags": [
+    "sleeping",
+    "energy",
+    "interactable",
+    "save-system",
+    "survival"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/SleepingPad.cs:SleepingPad",
+   "type": "class",
+   "name": "SleepingPad",
+   "summary": "InteractInput.IInteractable that resolves the player's PlayerEnergyManager and sleeps on interact; Save/Load only persist position.",
+   "tags": [
+    "sleeping",
+    "energy",
+    "interactable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/SleepingPad.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Calls PlayerEnergyManager.Sleep() to end the day and recover energy.",
+   "tags": [
+    "sleeping",
+    "energy"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/Spruce.cs",
+   "type": "file",
+   "name": "Spruce.cs",
+   "summary": "Spruce tree subclass of TreePlant with SaveData.ISaveable: persists the shared TreeStates reactive state via extended save data.",
+   "tags": [
+    "tree",
+    "spruce",
+    "treeplant",
+    "save-system",
+    "season"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Spruce.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/Spruce.cs:Spruce",
+   "type": "class",
+   "name": "Spruce",
+   "summary": "TreePlant subclass adding SaveData.ISaveable persistence of the tree state.",
+   "tags": [
+    "tree",
+    "spruce",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/Spruce.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "type": "file",
+   "name": "SpruceStump.cs",
+   "summary": "Purely decorative spruce stump with a single-state reactive sprite swap and Save/Load persistence of that state.",
+   "tags": [
+    "stump",
+    "spruce",
+    "decoration",
+    "reactive-state",
+    "save-system"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/SpruceStump.cs:SpruceStump",
+   "type": "class",
+   "name": "SpruceStump",
+   "summary": "SaveData.ISaveable MonoBehaviour with a single idle state; applies the idle sprite reactively.",
+   "tags": [
+    "stump",
+    "spruce",
+    "decoration"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/SpruceStump.cs:Save",
+   "type": "function",
+   "name": "Save",
+   "summary": "Persists the stump state as extended save data.",
+   "tags": [
+    "stump",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/SpruceStump.cs:Load",
+   "type": "function",
+   "name": "Load",
+   "summary": "Restores the stump state from saved extended data.",
+   "tags": [
+    "stump",
+    "save-system"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "type": "file",
+   "name": "StaticWheelBarrow.cs",
+   "summary": "Static wheelbarrow the player can pick up (moving its WeightyObjectStack into PlayerWheelBarrow) when facing the right direction and not already carrying, or unload from one item at a time. Also implements BoxData.IBoxPrize to play a spawn-in animation when awarded as a quest prize.",
+   "tags": [
+    "wheelbarrow",
+    "carry",
+    "weighty-object",
+    "direction-gated",
+    "prize",
+    "player-carry"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:StaticWheelBarrow",
+   "type": "class",
+   "name": "StaticWheelBarrow",
+   "summary": "Implements IWeightyObjectContainer, UseItemInput.IUsableTarget, and BoxData.IBoxPrize: direction-gated pickup of the whole wheelbarrow or single-object unloading into the player carry stack.",
+   "tags": [
+    "wheelbarrow",
+    "carry",
+    "weighty-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:CursorInteract",
+   "type": "function",
+   "name": "CursorInteract",
+   "summary": "Picks up the wheelbarrow if the player faces it and isn't carrying; otherwise pops one stored object onto the player's carry stack with a remove sound.",
+   "tags": [
+    "wheelbarrow",
+    "carry"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:IsFacingDirectionForWheelbarrowPickup",
+   "type": "function",
+   "name": "IsFacingDirectionForWheelbarrowPickup",
+   "summary": "Checks the player's facing direction against the wheelbarrow's facing direction (SouthEast/SouthWest fan).",
+   "tags": [
+    "wheelbarrow",
+    "carry"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:AwardPrize",
+   "type": "function",
+   "name": "AwardPrize",
+   "summary": "Plays the Spawn-then-Idle animation when the wheelbarrow is awarded as a box prize.",
+   "tags": [
+    "wheelbarrow",
+    "carry"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:PlaySpawnThenIdle",
+   "type": "function",
+   "name": "PlaySpawnThenIdle",
+   "summary": "Coroutine that plays the Spawn animator clip, then Idle.",
+   "tags": [
+    "wheelbarrow",
+    "carry"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "file:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "type": "file",
+   "name": "StaticWheelBarrowSelector.cs",
+   "summary": "Helper on the wheelbarrow parent: holds the facing direction (SouthEast/SouthWest) and mirrors the local scale to match, so the pickup logic can gate interaction by player direction.",
+   "tags": [
+    "wheelbarrow",
+    "direction",
+    "facing",
+    "helper"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "class:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs:StaticWheelBarrowSelector",
+   "type": "class",
+   "name": "StaticWheelBarrowSelector",
+   "summary": "Exposes a public CompassDirection FacingDirection and mirrors the object's local scale for SouthWest-facing wheelbarrows.",
+   "tags": [
+    "wheelbarrow",
+    "direction",
+    "facing"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  },
+  {
+   "id": "function:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs:SetFacingDirection",
+   "type": "function",
+   "name": "SetFacingDirection",
+   "summary": "Sets the facing direction and applies the matching local scale.",
+   "tags": [
+    "wheelbarrow",
+    "direction"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "languageNotes": "C# MonoBehaviour with [SerializeField] inspector fields and ReactiveUnity Reactive<T> .OnChange subscriptions (Barrel pattern)."
+  }
+ ],
+ "edges": [
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Barrel.cs:OnStateChange",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnStateChange"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Barrel.cs:RemoveBinoculars",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains RemoveBinoculars"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Barrel.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Barrel.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "class:Assets/Scripts/WorldObjects/Barrel.cs:Barrel",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class Barrel"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BarrelBinos.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BarrelBinos.cs:BarrelBinos",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BarrelBinos"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BarrelBinos.cs",
+   "target": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BarrelBinos interacts with the parent Barrel to remove the binoculars"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:RemoveHammer",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains RemoveHammer"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BeachedBoat.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BeachedBoat.cs:BeachedBoat",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BeachedBoat"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BigRock.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BigRock.cs:GetPositionTarget",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains GetPositionTarget"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BigRock.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BigRock.cs:IsThereSpace",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains IsThereSpace"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BigRock.cs",
+   "target": "function:Assets/Scripts/WorldObjects/BigRock.cs:ReserveSpace",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains ReserveSpace"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BigRock.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BigRock.cs:BigRock",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BigRock"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BoatHammer.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BoatHammer.cs:BoatHammer",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BoatHammer"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BoatHammer.cs",
+   "target": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BoatHammer.CursorInteract calls BeachedBoat.RemoveHammer after collecting"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BorderTree.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BorderTree.cs:BorderTree",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BorderTree"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:TryAddToBox",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains TryAddToBox"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:CheckWinCondition",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CheckWinCondition"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:Win",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Win"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:DeliverPrize",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains DeliverPrize"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:OnPlayerProximityEnter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnPlayerProximityEnter"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:OnPlayerProximityExit",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnPlayerProximityExit"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "class:Assets/Scripts/WorldObjects/Box.cs:Box",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class Box"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Box.cs:TryAddToBox",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:CheckWinCondition",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "TryAddToBox checks whether the box is complete"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Box.cs:CheckWinCondition",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:Win",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Win fires when the required quantity is fulfilled"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Box.cs:Win",
+   "target": "function:Assets/Scripts/WorldObjects/Box.cs:DeliverPrize",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Win starts the prize delivery coroutine"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "target": "file:Assets/Scripts/WorldObjects/BoxData.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Box reads RequiredObjects/PrizePrefab/PrizeSpawnOffset from its BoxData asset"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BoxData.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BoxData.cs:BoxData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BoxData"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+   "target": "class:Assets/Scripts/WorldObjects/BoxLidCollider.cs:BoxLidCollider",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class BoxLidCollider"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+   "target": "file:Assets/Scripts/WorldObjects/Box.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BoxLidCollider forwards player enter/exit triggers to Box proximity methods"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnGameMinuteTick",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnGameMinuteTick"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnStateChange"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterHot",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains EnterHot"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterEmbers",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains EnterEmbers"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterDead",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains EnterDead"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterReady",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains EnterReady"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:AddFirewood",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains AddFirewood"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Campfire.cs",
+   "target": "class:Assets/Scripts/WorldObjects/Campfire.cs:Campfire",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class Campfire"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterHot",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnStateChange dispatches to EnterHot"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterEmbers",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnStateChange dispatches to EnterEmbers"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterDead",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnStateChange dispatches to EnterDead"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/Campfire.cs:OnStateChange",
+   "target": "function:Assets/Scripts/WorldObjects/Campfire.cs:EnterReady",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnStateChange dispatches to EnterReady"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "target": "class:Assets/Scripts/WorldObjects/FallenLarch.cs:FallenLarch",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class FallenLarch"
+  },
+  {
+   "source": "class:Assets/Scripts/WorldObjects/FallenLarch.cs:FallenLarch",
+   "target": "class:Assets/Scripts/WorldObjects/FallenTree.cs:FallenTree",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "FallenLarch inherits the fallen-tree behavior from FallenTree"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "target": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "FallenLarch is a concrete FallenTree variant"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "target": "class:Assets/Scripts/WorldObjects/FallenSpruce.cs:FallenSpruce",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class FallenSpruce"
+  },
+  {
+   "source": "class:Assets/Scripts/WorldObjects/FallenSpruce.cs:FallenSpruce",
+   "target": "class:Assets/Scripts/WorldObjects/FallenTree.cs:FallenTree",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "FallenSpruce inherits the fallen-tree behavior from FallenTree"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "target": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "FallenSpruce is a concrete FallenTree variant"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:PlayFallingAnimation",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains PlayFallingAnimation"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:WaitForFallingAnimationToEnd",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains WaitForFallingAnimationToEnd"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:StopAnimation",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains StopAnimation"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:OnUseAxe",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnUseAxe"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:Shake",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Shake"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenTree.cs",
+   "target": "class:Assets/Scripts/WorldObjects/FallenTree.cs:FallenTree",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class FallenTree"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/FallenTree.cs:PlayFallingAnimation",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:Shake",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Falling animation starts with a shake"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/FallenTree.cs:PlayFallingAnimation",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:WaitForFallingAnimationToEnd",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "PlayFallingAnimation waits for the clip to end"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/FallenTree.cs:WaitForFallingAnimationToEnd",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:StopAnimation",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Settles the tree after the falling clip"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/FallenTree.cs:OnUseAxe",
+   "target": "function:Assets/Scripts/WorldObjects/FallenTree.cs:Shake",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Each axe hit shakes the tree"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:RemoveLog",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains RemoveLog"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "class:Assets/Scripts/WorldObjects/FirewoodPile.cs:FirewoodPile",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class FirewoodPile"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:CursorInteract",
+   "target": "function:Assets/Scripts/WorldObjects/FirewoodPile.cs:RemoveLog",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Interacting takes a log"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "target": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "target": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "target": "function:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+   "target": "class:Assets/Scripts/WorldObjects/GenericWeightyObject.cs:GenericWeightyObject",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class GenericWeightyObject"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Larch.cs",
+   "target": "class:Assets/Scripts/WorldObjects/Larch.cs:Larch",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class Larch"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:OnStateChange",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnStateChange"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:WaitForAnimationThenSpawnFirewood",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains WaitForAnimationThenSpawnFirewood"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:GetFirewoodSpawnPositions",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains GetFirewoodSpawnPositions"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:OnUseAxe",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnUseAxe"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:TryLoadLog",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains TryLoadLog"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LarchStump.cs",
+   "target": "class:Assets/Scripts/WorldObjects/LarchStump.cs:LarchStump",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class LarchStump"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/LarchStump.cs:OnStateChange",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:WaitForAnimationThenSpawnFirewood",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Splitting state starts the firewood-spawn coroutine"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/LarchStump.cs:WaitForAnimationThenSpawnFirewood",
+   "target": "function:Assets/Scripts/WorldObjects/LarchStump.cs:GetFirewoodSpawnPositions",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Spawn positions come from the computed offsets"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LogPile.cs:RemoveLog",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains RemoveLog"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LogPile.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LogPile.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "target": "function:Assets/Scripts/WorldObjects/LogPile.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "target": "class:Assets/Scripts/WorldObjects/LogPile.cs:LogPile",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class LogPile"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/LogPile.cs:CursorInteract",
+   "target": "function:Assets/Scripts/WorldObjects/LogPile.cs:RemoveLog",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Interacting takes a log"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/MountedRod.cs",
+   "target": "class:Assets/Scripts/WorldObjects/MountedRod.cs:MountedRod",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class MountedRod"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/MountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/MountedRod.cs:UseItemOnInteractableTileMap",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains UseItemOnInteractableTileMap"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:OnEnable",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains OnEnable"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:ChangeStateRoutine",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains ChangeStateRoutine"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:ChangeSprite",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains ChangeSprite"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "class:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:PlacedMountedRod",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class PlacedMountedRod"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:OnEnable",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:ChangeSprite",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnEnable applies the initial sprite"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:CursorInteract",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Shake",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Interacting a fish-less rod shakes it"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "target": "class:Assets/Scripts/WorldObjects/SleepingPad.cs:SleepingPad",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class SleepingPad"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/SleepingPad.cs",
+   "target": "function:Assets/Scripts/WorldObjects/SleepingPad.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Spruce.cs",
+   "target": "class:Assets/Scripts/WorldObjects/Spruce.cs:Spruce",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class Spruce"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/SpruceStump.cs:Save",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Save"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "target": "function:Assets/Scripts/WorldObjects/SpruceStump.cs:Load",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Load"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/SpruceStump.cs",
+   "target": "class:Assets/Scripts/WorldObjects/SpruceStump.cs:SpruceStump",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class SpruceStump"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:CursorInteract",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains CursorInteract"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:IsFacingDirectionForWheelbarrowPickup",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains IsFacingDirectionForWheelbarrowPickup"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:AwardPrize",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains AwardPrize"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:PlaySpawnThenIdle",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains PlaySpawnThenIdle"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "class:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:StaticWheelBarrow",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class StaticWheelBarrow"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:CursorInteract",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:IsFacingDirectionForWheelbarrowPickup",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Pickup is gated on the player facing direction"
+  },
+  {
+   "source": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:AwardPrize",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:PlaySpawnThenIdle",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "AwardPrize starts the spawn animation coroutine"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+   "target": "file:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "StaticWheelBarrow reads FacingDirection from its StaticWheelBarrowSelector parent"
+  },
+  {
+   "source": "class:Assets/Scripts/WorldObjects/StaticWheelBarrow.cs:StaticWheelBarrow",
+   "target": "class:Assets/Scripts/WorldObjects/BoxData.cs:BoxData",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "StaticWheelBarrow implements BoxData.IBoxPrize to act as a quest prize"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "target": "class:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs:StaticWheelBarrowSelector",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains class StaticWheelBarrowSelector"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs",
+   "target": "function:Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs:SetFacingDirection",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains SetFacingDirection"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FirewoodPile.cs",
+   "target": "file:Assets/Scripts/WorldObjects/LogPile.cs",
+   "type": "similar_to",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "FirewoodPile and LogPile share the same reactive log-count/sprite/interact structure, differing only in item granted"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Barrel.cs",
+   "target": "file:Assets/Scripts/WorldObjects/BeachedBoat.cs",
+   "type": "similar_to",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Barrel and BeachedBoat share the same reactive-state/save pattern for holding a collectible child object"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/FallenLarch.cs",
+   "target": "file:Assets/Scripts/WorldObjects/FallenSpruce.cs",
+   "type": "similar_to",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "FallenLarch and FallenSpruce are near-identical FallenTree variants differing only in save identifier"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/Larch.cs",
+   "target": "file:Assets/Scripts/WorldObjects/Spruce.cs",
+   "type": "similar_to",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Larch and Spruce are parallel TreePlant subclasses with identical save/load code"
+  },
+  {
+   "source": "file:Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+   "target": "function:Assets/Scripts/WorldObjects/PlacedMountedRod.cs:Shake",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File contains Shake"
+  }
+ ],
+ "files": [
+  "Assets/Scripts/WorldObjects/Barrel.cs",
+  "Assets/Scripts/WorldObjects/BarrelBinos.cs",
+  "Assets/Scripts/WorldObjects/BeachedBoat.cs",
+  "Assets/Scripts/WorldObjects/BigRock.cs",
+  "Assets/Scripts/WorldObjects/BoatHammer.cs",
+  "Assets/Scripts/WorldObjects/BorderTree.cs",
+  "Assets/Scripts/WorldObjects/Box.cs",
+  "Assets/Scripts/WorldObjects/BoxData.cs",
+  "Assets/Scripts/WorldObjects/BoxLidCollider.cs",
+  "Assets/Scripts/WorldObjects/Campfire.cs",
+  "Assets/Scripts/WorldObjects/FallenLarch.cs",
+  "Assets/Scripts/WorldObjects/FallenSpruce.cs",
+  "Assets/Scripts/WorldObjects/FallenTree.cs",
+  "Assets/Scripts/WorldObjects/FirewoodPile.cs",
+  "Assets/Scripts/WorldObjects/GenericWeightyObject.cs",
+  "Assets/Scripts/WorldObjects/Larch.cs",
+  "Assets/Scripts/WorldObjects/LarchStump.cs",
+  "Assets/Scripts/WorldObjects/LogPile.cs",
+  "Assets/Scripts/WorldObjects/MountedRod.cs",
+  "Assets/Scripts/WorldObjects/PlacedMountedRod.cs",
+  "Assets/Scripts/WorldObjects/SleepingPad.cs",
+  "Assets/Scripts/WorldObjects/Spruce.cs",
+  "Assets/Scripts/WorldObjects/SpruceStump.cs",
+  "Assets/Scripts/WorldObjects/StaticWheelBarrow.cs",
+  "Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs"
+ ]
+}

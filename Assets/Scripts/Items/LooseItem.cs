@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class LooseItem : MonoBehaviour
 {
     [SerializeField] public Inventory.ItemStack Item;

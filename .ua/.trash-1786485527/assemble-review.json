@@ -1,0 +1,27 @@
+{
+  "issues": [
+    {
+      "severity": "warning",
+      "category": "schema",
+      "message": "Node uses non-schema 'concept' prefix and is the only node missing the required 'filePath' field. It is a synthetic inherits target for UnityEngine.MonoBehaviour referenced by 11 class nodes. Either add a filePath (e.g. empty string) or retype as a class node so all nodes conform to the schema.",
+      "nodeId": "concept:UnityEngine.MonoBehaviour"
+    },
+    {
+      "severity": "warning",
+      "category": "contains-modeling",
+      "message": "49 'contains' edges are sourced from class nodes instead of file nodes (44 class->function, 5 class->nested-class), deviating from the file->class/function convention used by the other 993 contains edges. Affected files model their methods as contained by the class rather than the file: TreePlant.cs (14), WoodRack.cs (16), WoodStove.cs (12), WheelBarrowContainedSprites.cs (3) -- while every other file in the graph is file-contained. Additionally, 5 nested classes (RepairState, Gerard.States, RangedWeaponItem.InstanceData, FiringPattern, EnemyState) are double-contained by both the file node and their parent class. All paths are internally consistent (class/function filePath matches the source file's filePath), so this is a modeling inconsistency, not a data integrity error.",
+      "nodeId": null
+    },
+    {
+      "severity": "warning",
+      "category": "orphan-node",
+      "message": "Class node has zero edges: no 'contains' edge from its file node and no calls/inherits/related edges. The file node file:Assets/Scripts/Player/PlayerMovementData.cs also has zero contains edges, so this class (a ScriptableObject data holder) is unreachable in the graph. A missing 'contains' edge from the file node is likely.",
+      "nodeId": "class:Assets/Scripts/Player/PlayerMovementData.cs:PlayerMovementData"
+    }
+  ],
+  "missingFiles": [],
+  "orphanGraphNodes": [
+    "class:Assets/Scripts/Player/PlayerMovementData.cs:PlayerMovementData"
+  ],
+  "summary": "Strong assembly: all 245 scanned files have nodes (0 missing), node IDs and class/function filePaths are fully consistent, no edges reference missing nodes, no duplicate (source,target,type) pairs, and the single self-loop is a legitimate recursive call (FishingGame.PlayRound). Edge schema (source/target/type/weight/direction/description) is complete on all 1660 edges; all directions are 'forward' and weights fall in (0,1]. Summaries are specific and accurate to the source (spot-checked ~20 across files/classes/functions, plus placeholder files that correctly self-identify as empty). No errors; 3 warnings: a synthetic concept:UnityEngine.MonoBehaviour node missing filePath, a class-sourced 'contains' modeling inconsistency affecting 4 files (with 5 nested classes double-contained), and one orphaned class node (PlayerMovementData) missing its file->class contains edge."
+}

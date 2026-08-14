@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Assertions;
 
+[RequireComponent(typeof(PlayerCarry))]
 public class PlayerStrength : MonoBehaviour, ISaveableComponent
 {
     public string ComponentId => "PlayerStrength";
@@ -25,7 +25,6 @@ public class PlayerStrength : MonoBehaviour, ISaveableComponent
     private void Start()
     {
         _playerCarry = GetComponent<PlayerCarry>();
-        Assert.IsNotNull(_playerCarry);
         _carryStack = _playerCarry.CarriedStack;
 
         _currentLevel = _strengthData.GetLevel(TotalPickupCount);

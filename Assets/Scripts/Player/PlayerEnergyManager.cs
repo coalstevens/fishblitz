@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(PlayerTemperatureManager), typeof(PlayerSceneData))]
 public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
 {
     public interface IEnergyDepleting

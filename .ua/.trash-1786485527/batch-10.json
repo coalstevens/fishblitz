@@ -1,0 +1,3698 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/Player/PlayerMovementData.cs",
+      "type": "file",
+      "name": "PlayerMovementData.cs",
+      "summary": "ScriptableObject tuning asset for player movement: default and wheelbarrow move speeds, base acceleration/deceleration, and per-carried-object reductions to speed and acceleration. Consumed by the player movement controller so carrying and wheelbarrowing feel heavier.",
+      "tags": [
+        "player-movement",
+        "scriptable-object",
+        "tuning-config",
+        "carrying"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovementData.cs",
+      "languageNotes": "Pure [CreateAssetMenu] ScriptableObject data container with public float fields; no logic."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerMovementData.cs:PlayerMovementData",
+      "type": "class",
+      "name": "PlayerMovementData",
+      "summary": "Tuning asset holding move speeds, base accelerations, and per-carried-object penalties for normal and wheelbarrow movement.",
+      "tags": [
+        "player-movement",
+        "scriptable-object",
+        "carrying"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovementData.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "type": "file",
+      "name": "PlayerSceneData.cs",
+      "summary": "Persistent scene/position state on the player. Exposes static pending-spawn fields that scene transitions set before loading, and implements ISaveableComponent to capture/restore transform position and scene-on-awake across saves.",
+      "tags": [
+        "save-system",
+        "player",
+        "scene-transition",
+        "spawn-point"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerSceneData.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerSceneData.cs:PlayerSceneData",
+      "type": "class",
+      "name": "PlayerSceneData",
+      "summary": "MonoBehaviour implementing ISaveableComponent; saves player transform position plus scene-on-awake, and hosts static PendingSpawnPosition/HasPendingSpawn used by LevelChanger and TheWayNorth to drop the player at a point.",
+      "tags": [
+        "save-system",
+        "player",
+        "spawn-point"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerSceneData.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSceneData.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes current transform position and SceneOnAwake into a State object as JSON via JsonConvert.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSceneData.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSceneData.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Deserializes the State JSON and restores transform.position, SceneSpawnPosition, and SceneOnAwake.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSceneData.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "type": "file",
+      "name": "PlayerSoundManager.cs",
+      "summary": "Plays looping footstep and wheelbarrow-rolling audio driven by player state. Subscribes to PlayerState and IsHoldingWheelBarrow Reactive properties, starts/stops looping SoundData handles, and cleans up subscriptions on disable.",
+      "tags": [
+        "audio",
+        "player",
+        "reactive",
+        "sound-manager"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerSoundManager.cs:PlayerSoundManager",
+      "type": "class",
+      "name": "PlayerSoundManager",
+      "summary": "Bridges PlayerMovement/PlayerWheelBarrow reactive state to looping sounds on PlayerAudioManager; stops footstep/wheelbarrow loops on state change or disable.",
+      "tags": [
+        "audio",
+        "player",
+        "reactive"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches PlayerWheelBarrow and PlayerMovement and subscribes to their Reactive OnChange events.",
+      "tags": [
+        "reactive",
+        "subscription"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Stops both looping sounds and unsubscribes the reactive hooks.",
+      "tags": [
+        "audio",
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnPlayerStateChange",
+      "type": "function",
+      "name": "OnPlayerStateChange",
+      "summary": "Starts the looping footstep sound when running, otherwise stops it; then re-evaluates wheelbarrow rolling.",
+      "tags": [
+        "audio",
+        "player-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnWheelbarrowStateChange",
+      "type": "function",
+      "name": "OnWheelbarrowStateChange",
+      "summary": "Starts the rolling loop when running while holding the wheelbarrow, otherwise stops it.",
+      "tags": [
+        "audio",
+        "wheelbarrow"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopFootstepSound",
+      "type": "function",
+      "name": "StopFootstepSound",
+      "summary": "Invokes and nulls the footstep loop stop callback.",
+      "tags": [
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopWheelbarrowSound",
+      "type": "function",
+      "name": "StopWheelbarrowSound",
+      "summary": "Invokes and nulls the wheelbarrow loop stop callback.",
+      "tags": [
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerSoundManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "type": "file",
+      "name": "PlayerStrength.cs",
+      "summary": "Tracks permanent strength progression as the count of distinct carried objects ever picked up. New objects can raise the strength level, which bumps carry capacity on the player's WeightyObjectStack and posts a Narrator level-up message; persists via ISaveableComponent.",
+      "tags": [
+        "player-strength",
+        "progression",
+        "carry-capacity",
+        "save-system",
+        "narrator"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerStrength.cs:PlayerStrength",
+      "type": "class",
+      "name": "PlayerStrength",
+      "summary": "MonoBehaviour implementing ISaveableComponent; maintains TotalPickupCount, computes strength level from StrengthData, and applies carry capacity to the carried stack.",
+      "tags": [
+        "player-strength",
+        "progression",
+        "save-system"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Resolves PlayerCarry and its carried stack, computes the starting strength level, and applies carry capacity.",
+      "tags": [
+        "player-strength",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:RegisterPickup",
+      "type": "function",
+      "name": "RegisterPickup",
+      "summary": "Records a newly-seen object id, increments pickup count, and applies capacity + Narrator message on level-up.",
+      "tags": [
+        "player-strength",
+        "progression"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:ApplyCarryCapacity",
+      "type": "function",
+      "name": "ApplyCarryCapacity",
+      "summary": "Sets the carried WeightyObjectStack capacity from the current level config.",
+      "tags": [
+        "carry-capacity"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes TotalPickupCount as JSON.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Restores TotalPickupCount from saved JSON.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerStrength.cs:ResetToDefaults",
+      "type": "function",
+      "name": "ResetToDefaults",
+      "summary": "Zeroes TotalPickupCount.",
+      "tags": [
+        "save-system",
+        "reset"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerStrength.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "type": "file",
+      "name": "PlayerTemperatureManager.cs",
+      "summary": "Core player temperature model. Maintains a dry temperature that drifts one step toward ambient every 60 game-minutes and an actual temperature that drops one step below dry while the player is wet. Ticks on GameClock, narrates temperature changes, extends HeatSensitive to read ambient heat sources, and persists state.",
+      "tags": [
+        "temperature",
+        "survival",
+        "player",
+        "game-clock",
+        "reactive",
+        "heat"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerTemperatureManager.cs:PlayerTemperatureManager",
+      "type": "class",
+      "name": "PlayerTemperatureManager",
+      "summary": "Extends HeatSensitive and implements GameClock.ITickable + ISaveableComponent; drives dry and actual player temperatures from ambient heat and wetness via reactive properties.",
+      "tags": [
+        "temperature",
+        "survival",
+        "game-clock"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches drying/energy managers, subscribes to GameClock minute ticks and reactive OnChange hooks, and wires wetness/temperature change reactions.",
+      "tags": [
+        "subscription",
+        "game-clock"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes from GameClock and clears all reactive hooks.",
+      "tags": [
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:UpdateActualTemperature",
+      "type": "function",
+      "name": "UpdateActualTemperature",
+      "summary": "Sets actual temperature equal to dry when the player is dry, otherwise one step colder (except when already freezing).",
+      "tags": [
+        "temperature",
+        "wetness"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnGameMinuteTick",
+      "type": "function",
+      "name": "OnGameMinuteTick",
+      "summary": "Advances the counter toward matching ambient; steps dry temperature toward ambient once 60 game-minutes pass (skipped while sleeping or without heat sources).",
+      "tags": [
+        "game-clock",
+        "temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnAmbientTemperatureChange",
+      "type": "function",
+      "name": "OnAmbientTemperatureChange",
+      "summary": "Resets the drift counter when ambient warms up.",
+      "tags": [
+        "temperature",
+        "reactive"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:NarrateTemperatureChange",
+      "type": "function",
+      "name": "NarrateTemperatureChange",
+      "summary": "Posts a temperature-change message to Narrator (skippable via flag).",
+      "tags": [
+        "narrator",
+        "temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:ResetCounterToMatchAmbient",
+      "type": "function",
+      "name": "ResetCounterToMatchAmbient",
+      "summary": "Zeroes the ambient-matching counter.",
+      "tags": [
+        "temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:TryUpdatePlayerTempInstantly",
+      "type": "function",
+      "name": "TryUpdatePlayerTempInstantly",
+      "summary": "Sets dry temperature to match ambient immediately; returns whether it changed.",
+      "tags": [
+        "temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes actual/dry temperatures and drift counter as JSON.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Restores actual/dry temperatures and drift counter from saved JSON.",
+      "tags": [
+        "save-system",
+        "json"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:ResetToDefaults",
+      "type": "function",
+      "name": "ResetToDefaults",
+      "summary": "Resets temperatures to Normal and clears the drift counter.",
+      "tags": [
+        "reset"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "type": "file",
+      "name": "PlayerWheelBarrow.cs",
+      "summary": "Lets the player pick up a static wheelbarrow (transferring its WeightyObjectStack contents), carry it while switching the input action map to 'PlayerBarrowing', and put it back down as a new static wheelbarrow facing the player's direction. Plays lift/place sounds and moves contents between stacks.",
+      "tags": [
+        "wheelbarrow",
+        "carrying",
+        "player",
+        "input-system",
+        "reactive"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerWheelBarrow.cs:PlayerWheelBarrow",
+      "type": "class",
+      "name": "PlayerWheelBarrow",
+      "summary": "MonoBehaviour managing carry state (Reactive IsHoldingWheelBarrow), stack content transfer, static wheelbarrow instantiation, and input action map switching.",
+      "tags": [
+        "wheelbarrow",
+        "carrying",
+        "input-system"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches Rigidbody2D and PlayerInput, subscribes to IsHoldingWheelBarrow changes.",
+      "tags": [
+        "reactive",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnUseWheelBarrow",
+      "type": "function",
+      "name": "OnUseWheelBarrow",
+      "summary": "Empty handler left for input wiring (currently a no-op).",
+      "tags": [
+        "input-system"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnReleaseWheelBarrow",
+      "type": "function",
+      "name": "OnReleaseWheelBarrow",
+      "summary": "Sets IsHoldingWheelBarrow to false.",
+      "tags": [
+        "input-system",
+        "wheelbarrow"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnWheelBarrowingChange",
+      "type": "function",
+      "name": "OnWheelBarrowingChange",
+      "summary": "On pickup switches to 'PlayerBarrowing' action map and plays lift sound; on put-down instantiates a static wheelbarrow, transfers contents, and plays place sound.",
+      "tags": [
+        "wheelbarrow",
+        "input-system",
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:PickUpStaticWheelbarrow",
+      "type": "function",
+      "name": "PickUpStaticWheelbarrow",
+      "summary": "Drains a source stack into the carried wheelbarrow stack, playing insert sounds.",
+      "tags": [
+        "wheelbarrow",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:TransferContentsToStaticWheelbarrow",
+      "type": "function",
+      "name": "TransferContentsToStaticWheelbarrow",
+      "summary": "Moves carried contents back into the placed static wheelbarrow's stack.",
+      "tags": [
+        "wheelbarrow",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:InstantiateStaticWheelBarrow",
+      "type": "function",
+      "name": "InstantiateStaticWheelBarrow",
+      "summary": "Instantiates the static wheelbarrow prefab under the Impermanent container at the player wheelbarrow position and returns its selector.",
+      "tags": [
+        "wheelbarrow",
+        "instantiation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes all reactive hooks.",
+      "tags": [
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "type": "file",
+      "name": "SleepQuality.cs",
+      "summary": "Static lookup of sleep recovery tuning keyed by sleeping temperature: awake hour, narrator recovery message, energy recovery ratio, and a past-curfew penalty applied when going to bed at or after 23:00.",
+      "tags": [
+        "sleep",
+        "energy",
+        "temperature",
+        "game-clock"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": "Static helper class with private temperature-keyed lookup dictionaries and constants."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/SleepQuality.cs:SleepQuality",
+      "type": "class",
+      "name": "SleepQuality",
+      "summary": "Static utility providing per-temperature sleep recovery ratios, awake hours, recovery messages, and curfew penalties.",
+      "tags": [
+        "sleep",
+        "energy",
+        "temperature"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": "Static class with temperature-keyed Dictionary lookups and const ratios."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/SleepQuality.cs:GetAwakeHour",
+      "type": "function",
+      "name": "GetAwakeHour",
+      "summary": "Returns the awake hour for the sleeping temperature, defaulting to 7am with a logged error on unknown temperatures.",
+      "tags": [
+        "sleep",
+        "temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/SleepQuality.cs:GetRecoveryMessage",
+      "type": "function",
+      "name": "GetRecoveryMessage",
+      "summary": "Returns the narrator recovery message for the sleeping temperature.",
+      "tags": [
+        "sleep",
+        "narrator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/SleepQuality.cs:GetSleepRecoveryRatio",
+      "type": "function",
+      "name": "GetSleepRecoveryRatio",
+      "summary": "Returns the temperature recovery ratio minus any past-curfew penalty.",
+      "tags": [
+        "sleep",
+        "energy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/SleepQuality.cs:GetPastCurfewPenalty",
+      "type": "function",
+      "name": "GetPastCurfewPenalty",
+      "summary": "Returns the curfew penalty if GameClock hour is at or past curfew.",
+      "tags": [
+        "game-clock",
+        "sleep"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/SleepQuality.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/StrengthData.cs",
+      "type": "file",
+      "name": "StrengthData.cs",
+      "summary": "ScriptableObject defining strength level tiers: pickups required, carry capacity granted, and a level-up message. Provides reverse lookup of the highest reached level for a pickup count and clamped level config access.",
+      "tags": [
+        "player-strength",
+        "scriptable-object",
+        "tuning-config",
+        "progression"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/StrengthData.cs",
+      "languageNotes": "ScriptableObject with serialized LevelConfig array and simple lookup methods."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/StrengthData.cs:StrengthData",
+      "type": "class",
+      "name": "StrengthData",
+      "summary": "Holds an ordered array of LevelConfig tiers and exposes GetLevel(totalPickups) and GetLevelConfig(level).",
+      "tags": [
+        "player-strength",
+        "progression"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/StrengthData.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/StrengthData.cs:GetLevel",
+      "type": "function",
+      "name": "GetLevel",
+      "summary": "Walks levels from highest to lowest, returning the first tier whose PickupsRequired is met.",
+      "tags": [
+        "player-strength",
+        "progression"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/StrengthData.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/StrengthData.cs:GetLevelConfig",
+      "type": "function",
+      "name": "GetLevelConfig",
+      "summary": "Returns the level config clamped to the array bounds, or an empty config when unset.",
+      "tags": [
+        "player-strength"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/StrengthData.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Player/ToggleMenuInput.cs",
+      "type": "file",
+      "name": "ToggleMenuInput.cs",
+      "summary": "Toggles a game menu GameObject and swaps the PlayerInput action map between 'Player' and 'Menu' on the OnToggleMenu input action; also closes any active menu on Start.",
+      "tags": [
+        "menu",
+        "input-system",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/ToggleMenuInput.cs",
+      "languageNotes": "Input System message handler using SwitchCurrentActionMap and inspector-assigned PlayerInput."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/ToggleMenuInput.cs:ToggleMenuInput",
+      "type": "class",
+      "name": "ToggleMenuInput",
+      "summary": "MonoBehaviour that opens/closes a menu GameObject and switches input action maps accordingly.",
+      "tags": [
+        "menu",
+        "input-system"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/ToggleMenuInput.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Player/ToggleMenuInput.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Closes an active menu at startup and resets the open flag.",
+      "tags": [
+        "menu",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/ToggleMenuInput.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Player/ToggleMenuInput.cs:OnToggleMenu",
+      "type": "function",
+      "name": "OnToggleMenu",
+      "summary": "Toggles menu visibility and switches between 'Menu' and 'Player' action maps.",
+      "tags": [
+        "menu",
+        "input-system"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/ToggleMenuInput.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "type": "file",
+      "name": "LevelChanger.cs",
+      "summary": "Scene transition trigger/interactable. On player trigger or cursor interaction it sets PlayerSceneData pending spawn fields, plays a sound, and loads the target scene via SmoothSceneManager; also provides static ChangeLevel helpers taking a SceneNames enum or string.",
+      "tags": [
+        "scene-transition",
+        "level-changer",
+        "player-spawn"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": "Uses OysterUtils SmoothSceneManager and InteractInput.IInteractable; trigger + cursor interaction paths share ChangeLevel."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/LevelChanger.cs:LevelChanger",
+      "type": "class",
+      "name": "LevelChanger",
+      "summary": "Implements InteractInput.IInteractable; fires scene changes on trigger enter or cursor interaction with pending spawn placement.",
+      "tags": [
+        "scene-transition",
+        "interactable"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/LevelChanger.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "When not interact-gated, records the pending spawn position and loads the target scene on player entry.",
+      "tags": [
+        "scene-transition",
+        "trigger"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/LevelChanger.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "When interact-gated, records pending spawn and loads the target scene on cursor interaction.",
+      "tags": [
+        "scene-transition",
+        "interactable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/LevelChanger.cs:ChangeLevel",
+      "type": "function",
+      "name": "ChangeLevel",
+      "summary": "Static helper that routes to SmoothSceneManager.LoadScene by scene name string (or SceneNames enum).",
+      "tags": [
+        "scene-transition"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/LevelChanger.cs:PlaySound",
+      "type": "function",
+      "name": "PlaySound",
+      "summary": "Plays the assigned SoundData through AudioManager.PlaySFX.",
+      "tags": [
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/LevelChanger.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/RodPlacement.cs",
+      "type": "file",
+      "name": "RodPlacement.cs",
+      "summary": "Minimal marker component exposing a RodToPlace GameObject used by the fishing rod placement flow.",
+      "tags": [
+        "fishing",
+        "placement",
+        "marker"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/RodPlacement.cs",
+      "languageNotes": "Trivial MonoBehaviour with one public GameObject field."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/RodPlacement.cs:RodPlacement",
+      "type": "class",
+      "name": "RodPlacement",
+      "summary": "Marker holding a reference to the rod GameObject to place.",
+      "tags": [
+        "fishing",
+        "placement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/RodPlacement.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "file",
+      "name": "SceneNames.cs",
+      "summary": "Enumeration of every scene name in the project (Boot, Outside, River0, the canyon/cave/forest network scenes, menu/HUD/Narrator scenes, Win, Lobby), used to type scene references across the codebase.",
+      "tags": [
+        "scene-management",
+        "enum",
+        "scene-names"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneNames.cs",
+      "languageNotes": "Plain C# enum; no MonoBehaviour."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/SceneNames.cs:SceneNames",
+      "type": "class",
+      "name": "SceneNames",
+      "summary": "Enum of all game scene names consumed by scene transitions, spawn configs, and The Way North.",
+      "tags": [
+        "scene-management",
+        "enum"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneNames.cs",
+      "languageNotes": "Plain enum type."
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "type": "file",
+      "name": "SceneSpawnConfig.cs",
+      "summary": "ScriptableObject mapping scenes and named spawn points to positions. Lookups fall back to a default spawn (first entry) for a scene, then to the whole config's first scene when the requested scene isn't listed.",
+      "tags": [
+        "spawn-point",
+        "scriptable-object",
+        "scene-management",
+        "config"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "languageNotes": "ScriptableObject with serialized nested structs (SceneSpawnEntry/NamedSpawn) and fallback lookup logic."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/SceneSpawnConfig.cs:SceneSpawnConfig",
+      "type": "class",
+      "name": "SceneSpawnConfig",
+      "summary": "Resolves a spawn position or default spawn name for a SceneNames scene via nested SceneSpawnEntry/NamedSpawn structs.",
+      "tags": [
+        "spawn-point",
+        "scriptable-object"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetSpawnPosition",
+      "type": "function",
+      "name": "GetSpawnPosition",
+      "summary": "Finds the named spawn for a scene, falling back to the first spawn of the entry or the first entry overall.",
+      "tags": [
+        "spawn-point",
+        "lookup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetDefaultSpawnPosition",
+      "type": "function",
+      "name": "GetDefaultSpawnPosition",
+      "summary": "Returns the first spawn position in an entry, or zero.",
+      "tags": [
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetDefaultSpawnName",
+      "type": "function",
+      "name": "GetDefaultSpawnName",
+      "summary": "Returns the default (first) spawn name for a scene, or null.",
+      "tags": [
+        "spawn-point",
+        "lookup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "type": "file",
+      "name": "SceneTransitionOverlay.cs",
+      "summary": "A persistent (DontDestroyOnLoad) overlay that animates scene transitions: fades in, loads the target scene asynchronously, fades back out, then destroys itself. Lives on this persistent MonoBehaviour so the loading coroutine survives scene loads.",
+      "tags": [
+        "scene-transition",
+        "animation",
+        "coroutine",
+        "loading-screen"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": "Coroutine-based async scene loading on a DontDestroyOnLoad object; Animator bool 'SceneVisible' drives the fade."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneTransitionOverlay",
+      "type": "class",
+      "name": "SceneTransitionOverlay",
+      "summary": "Persistent overlay MonoBehaviour running the fade-in/load/fade-out SceneRoutine coroutine across scene loads.",
+      "tags": [
+        "scene-transition",
+        "coroutine"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the Animator and marks the object DontDestroyOnLoad.",
+      "tags": [
+        "scene-transition",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadSceneAsync",
+      "type": "function",
+      "name": "LoadSceneAsync",
+      "summary": "Yields until the SceneManager.LoadSceneAsync operation finishes.",
+      "tags": [
+        "scene-management",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadScene",
+      "type": "function",
+      "name": "LoadScene",
+      "summary": "Starts the SceneRoutine coroutine for the target scene.",
+      "tags": [
+        "scene-transition",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneRoutine",
+      "type": "function",
+      "name": "SceneRoutine",
+      "summary": "Plays the fade-in, waits, loads the scene, plays the fade-out, then destroys the overlay.",
+      "tags": [
+        "scene-transition",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "type": "file",
+      "name": "SmoothSceneManager.cs",
+      "summary": "Static helper (OysterUtils namespace) that saves the current scene via SceneSaveLoadManager, stamps a scene-save suffix, instantiates the scene-transition-overlay prefab from Resources, and triggers a smooth load into the target scene.",
+      "tags": [
+        "scene-transition",
+        "scene-management",
+        "save-system",
+        "static-helper"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "languageNotes": "Static class with RuntimeInitializeOnLoadMethod prefab caching; delegates to SceneTransitionOverlay."
+    },
+    {
+      "id": "class:Assets/Scripts/Scene/SmoothSceneManager.cs:SmoothSceneManager",
+      "type": "class",
+      "name": "SmoothSceneManager",
+      "summary": "Static facade around smooth scene transitions: caches the overlay prefab after scene load and drives overlay-based loads.",
+      "tags": [
+        "scene-transition",
+        "scene-management"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "languageNotes": "Static utility in OysterUtils namespace using Resources.Load."
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SmoothSceneManager.cs:OnAfterSceneLoad",
+      "type": "function",
+      "name": "OnAfterSceneLoad",
+      "summary": "Loads the scene-transition-overlay prefab from Resources into a static field.",
+      "tags": [
+        "scene-management",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/Scene/SmoothSceneManager.cs:LoadScene",
+      "type": "function",
+      "name": "LoadScene",
+      "summary": "Saves the current scene, sets the save suffix, instantiates the overlay prefab, and triggers its LoadScene.",
+      "tags": [
+        "scene-transition",
+        "save-system"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "type": "file",
+      "name": "BiomeConfig.cs",
+      "summary": "ScriptableObject defining a The Way North biome: a weighted pool of scenes, a list of fork scenes, and how many pool scenes play before a fork scene.",
+      "tags": [
+        "the-way-north",
+        "biome",
+        "scriptable-object",
+        "procedural"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "languageNotes": "ScriptableObject with public WeightedScene lists."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/BiomeConfig.cs:BiomeConfig",
+      "type": "class",
+      "name": "BiomeConfig",
+      "summary": "Data container for a biome's scene pool, fork scenes, and fork timing.",
+      "tags": [
+        "the-way-north",
+        "biome"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "type": "file",
+      "name": "TheWayNorth.cs",
+      "summary": "The Way North procedural zone system. Generates a binary tree of biome nodes (weighted scenes per biome, left/right forks), tracks traversal through a scene path with return links between exits and entrances, drives transitions via SmoothSceneManager, and persists/restores the whole network through ISaveableComponent. Resolves player spawns from exit/entrance GameObjects at runtime.",
+      "tags": [
+        "the-way-north",
+        "procedural-generation",
+        "scene-transition",
+        "save-system",
+        "biome-tree",
+        "zone-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": "Unity MonoBehaviour zone manager using coroutine-free async scene loads, SceneManager.sceneLoaded callbacks, Logger verbose logging, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TheWayNorth",
+      "type": "class",
+      "name": "TheWayNorth",
+      "summary": "Singleton MonoBehaviour orchestrating the The Way North zone: generates the biome tree on run start, routes TakeExit/UseEntrance transitions, records exit-entrance links, resolves spawn points, and serializes the network.",
+      "tags": [
+        "the-way-north",
+        "procedural-generation",
+        "save-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": "Unity MonoBehaviour zone manager using coroutine-free async scene loads, SceneManager.sceneLoaded callbacks, Logger verbose logging, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes scene path, current index, link dictionaries, biome tree, current node path, and node order to JSON.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Deserializes and rebuilds the network, tree, links, and current node; finds fork exits for a restored fork scene.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Enforces the singleton, destroying duplicate instances.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "Starts a run on the start scene if no save exists (or AlwaysRegenerateNetwork), else restores the current node.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "type": "function",
+      "name": "StartRun",
+      "summary": "Clears old saves and state, generates the root biome node tree, and seeds the scene path with the start scene.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GenerateBiomeNode",
+      "type": "function",
+      "name": "GenerateBiomeNode",
+      "summary": "Recursively builds a biome node: weighted pool scenes plus a fork scene, then left/right child nodes down to NetworkDepth.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "type": "function",
+      "name": "TakeExit",
+      "summary": "Routes an exit trigger to a return, fork, or forward transition based on recorded links and the current node's children.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:UseEntrance",
+      "type": "function",
+      "name": "UseEntrance",
+      "summary": "Routes an entrance trigger back to its linked exit scene, restoring the owning node.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "type": "function",
+      "name": "PerformTransition",
+      "summary": "Logs the transition, records pending link/spawn/target, and loads the target scene via SmoothSceneManager with a save suffix.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "type": "function",
+      "name": "ResolvePlayerSpawn",
+      "summary": "Scene-loaded callback that finds the matching entrance/exit, records the source link, and places the player at the spawn.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PlacePlayer",
+      "type": "function",
+      "name": "PlacePlayer",
+      "summary": "Sets PlayerSceneData pending spawn position and SceneSpawnPosition.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindForkExits",
+      "type": "function",
+      "name": "FindForkExits",
+      "summary": "Scans scene for TheWayNorthExit objects and records left/right fork exit ids onto the node.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:IsForkScene",
+      "type": "function",
+      "name": "IsForkScene",
+      "summary": "True when the scene name matches the node's final (fork) path scene.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindNodeByPathIndex",
+      "type": "function",
+      "name": "FindNodeByPathIndex",
+      "summary": "Maps a scene-path index to the owning biome node using node-order offsets.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "type": "function",
+      "name": "RestoreCurrentNode",
+      "summary": "Re-resolves the current node from the path index and fills fork exits if missing.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleReturnTransition",
+      "type": "function",
+      "name": "HandleReturnTransition",
+      "summary": "Returns the player to a recorded prior scene/entrance through an exit link.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForkTransition",
+      "type": "function",
+      "name": "HandleForkTransition",
+      "summary": "Moves onto a child biome node, extending the scene path and switching to its first scene.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForwardTransition",
+      "type": "function",
+      "name": "HandleForwardTransition",
+      "summary": "Advances to the next scene in the path, stopping at dead ends.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TryGetForkChild",
+      "type": "function",
+      "name": "TryGetForkChild",
+      "summary": "Returns the left/right child whose exit id matches the given exit.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RecordLink",
+      "type": "function",
+      "name": "RecordLink",
+      "summary": "Records an exit->entrance link and its reverse in the dictionaries.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogNetworkState",
+      "type": "function",
+      "name": "LogNetworkState",
+      "summary": "Logs the current scene path with the active scene highlighted.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogTree",
+      "type": "function",
+      "name": "LogTree",
+      "summary": "Logs the full biome tree with indentation.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ParseSceneName",
+      "type": "function",
+      "name": "ParseSceneName",
+      "summary": "Parses a string into SceneNames, defaulting to CanyonStart.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:SerializeNode",
+      "type": "function",
+      "name": "SerializeNode",
+      "summary": "Recursively converts a BiomeNode into serializable TreeNodeData.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:DeserializeNode",
+      "type": "function",
+      "name": "DeserializeNode",
+      "summary": "Recursively rebuilds a BiomeNode tree from TreeNodeData.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderFromPath",
+      "type": "function",
+      "name": "RebuildNodeOrderFromPath",
+      "summary": "Rebuilds the depth-first node ordering from the saved scene path.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderRecursive",
+      "type": "function",
+      "name": "RebuildNodeOrderRecursive",
+      "summary": "Depth-first walk that appends nodes whose paths match the scene path at the current offset.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PathMatchesAt",
+      "type": "function",
+      "name": "PathMatchesAt",
+      "summary": "Checks whether a node's path matches the scene path starting at an offset.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:WalkNodePath",
+      "type": "function",
+      "name": "WalkNodePath",
+      "summary": "Walks the tree from root following left/right ints to locate a node.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GetNodePath",
+      "type": "function",
+      "name": "GetNodePath",
+      "summary": "Converts a node to its left/right path from the root as a list of ints.",
+      "tags": [
+        "the-way-north"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "type": "file",
+      "name": "TheWayNorthConfig.cs",
+      "summary": "ScriptableObject configuring The Way North: start scene, biome list, network depth, per-depth biome pools, and a debug always-regenerate flag. Provides weighted picks for scenes/biomes and helpers to find biomes and enumerate all zone scene names.",
+      "tags": [
+        "the-way-north",
+        "scriptable-object",
+        "procedural-generation",
+        "config"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": "ScriptableObject with nested WeightedBiome/DepthBiomePool classes and weighted-random helpers."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:TheWayNorthConfig",
+      "type": "class",
+      "name": "TheWayNorthConfig",
+      "summary": "Holds zone-level configuration and weighted random selection logic (PickWeighted, PickBiome, GetPossibleBiomesForDepth, FindBiomeConfig, GetAllTWNScceneNames).",
+      "tags": [
+        "the-way-north",
+        "procedural-generation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:PickWeighted",
+      "type": "function",
+      "name": "PickWeighted",
+      "summary": "Picks a SceneNames from WeightedScene entries by cumulative weighted roll.",
+      "tags": [
+        "weighted-random"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:PickBiome",
+      "type": "function",
+      "name": "PickBiome",
+      "summary": "Picks a BiomeConfig from WeightedBiome entries by cumulative weighted roll.",
+      "tags": [
+        "weighted-random",
+        "biome"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:GetPossibleBiomesForDepth",
+      "type": "function",
+      "name": "GetPossibleBiomesForDepth",
+      "summary": "Returns the possible biome pool for a given network depth, logging an error if absent.",
+      "tags": [
+        "the-way-north",
+        "depth"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:FindBiomeConfig",
+      "type": "function",
+      "name": "FindBiomeConfig",
+      "summary": "Returns the biome config whose asset name matches the given string.",
+      "tags": [
+        "the-way-north",
+        "lookup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:GetAllTWNScceneNames",
+      "type": "function",
+      "name": "GetAllTWNScceneNames",
+      "summary": "Collects all zone scene names (start + every biome pool/fork) into a set for save clearing.",
+      "tags": [
+        "the-way-north",
+        "scene-management"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "type": "file",
+      "name": "TheWayNorthEntrance.cs",
+      "summary": "Marks a scene entrance in a The Way North scene; the entrance id is the GameObject name. Looks up a labeled TheWayNorthSpawn child and draws an editor gizmo.",
+      "tags": [
+        "the-way-north",
+        "entrance",
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "languageNotes": "Simple MonoBehaviour with Transform-child spawn lookup and OnDrawGizmos."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:TheWayNorthEntrance",
+      "type": "class",
+      "name": "TheWayNorthEntrance",
+      "summary": "Identifies an arrival point by GameObject name and resolves a labeled spawn child.",
+      "tags": [
+        "the-way-north",
+        "entrance"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:GetSpawn",
+      "type": "function",
+      "name": "GetSpawn",
+      "summary": "Returns the child TheWayNorthSpawn whose label matches, or null.",
+      "tags": [
+        "the-way-north",
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:OnDrawGizmos",
+      "type": "function",
+      "name": "OnDrawGizmos",
+      "summary": "Draws a blue sphere gizmo at the entrance position in the editor.",
+      "tags": [
+        "gizmo",
+        "editor"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "type": "file",
+      "name": "TheWayNorthExit.cs",
+      "summary": "Marks a scene exit in a The Way North scene, optionally tagged as a left/right fork direction. The exit id is the GameObject name; finds labeled spawn children and draws a gizmo.",
+      "tags": [
+        "the-way-north",
+        "exit",
+        "fork-direction",
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "languageNotes": "Simple MonoBehaviour with ForkDirection enum and Transform-child spawn lookup."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:TheWayNorthExit",
+      "type": "class",
+      "name": "TheWayNorthExit",
+      "summary": "Identifies a departure point by GameObject name, flags left/right fork direction, and resolves labeled spawn children.",
+      "tags": [
+        "the-way-north",
+        "exit"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:GetSpawn",
+      "type": "function",
+      "name": "GetSpawn",
+      "summary": "Returns the child TheWayNorthSpawn whose label matches, or null.",
+      "tags": [
+        "the-way-north",
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:OnDrawGizmos",
+      "type": "function",
+      "name": "OnDrawGizmos",
+      "summary": "Draws a white sphere gizmo at the exit position in the editor.",
+      "tags": [
+        "gizmo",
+        "editor"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "type": "file",
+      "name": "TheWayNorthSpawn.cs",
+      "summary": "A labeled spawn point nested under a The Way North entrance or exit, used to position the player after a transition. Draws an editor gizmo.",
+      "tags": [
+        "the-way-north",
+        "spawn-point",
+        "marker"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "languageNotes": "Minimal MonoBehaviour exposing a serialized label."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs:TheWayNorthSpawn",
+      "type": "class",
+      "name": "TheWayNorthSpawn",
+      "summary": "A named spawn marker with a Label property used to select the right drop point.",
+      "tags": [
+        "the-way-north",
+        "spawn-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs:OnDrawGizmos",
+      "type": "function",
+      "name": "OnDrawGizmos",
+      "summary": "Draws a teal sphere gizmo at the spawn position in the editor.",
+      "tags": [
+        "gizmo",
+        "editor"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "type": "file",
+      "name": "TheWayNorthTransition.cs",
+      "summary": "Trigger volume on an exit/entrance that routes the player to the The Way North manager: uses the parent TheWayNorthExit or TheWayNorthEntrance id and label to call TakeExit or UseEntrance, playing a sound first.",
+      "tags": [
+        "the-way-north",
+        "transition",
+        "trigger",
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "languageNotes": "Trigger2D handler that walks up to the parent exit/entrance component."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:TheWayNorthTransition",
+      "type": "class",
+      "name": "TheWayNorthTransition",
+      "summary": "Routes player trigger entry to TheWayNorth.TakeExit or UseEntrance based on the parent exit/entrance.",
+      "tags": [
+        "the-way-north",
+        "transition"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "languageNotes": "Unity script with [SerializeField] inspector fields, ReactiveUnity Reactive<T> properties with OnChange subscriptions, and ISaveableComponent JSON persistence via Newtonsoft.Json."
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "On player entry, calls TakeExit or UseEntrance on TheWayNorth.Instance using the parent's id and this trigger's label.",
+      "tags": [
+        "the-way-north",
+        "trigger"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:PlaySound",
+      "type": "function",
+      "name": "PlaySound",
+      "summary": "Plays the assigned SoundData through AudioManager.PlaySFX.",
+      "tags": [
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "type": "file",
+      "name": "WeightedScene.cs",
+      "summary": "Serializable pair of a SceneNames scene and a 0..1 weight used for weighted-random scene picks in The Way North biomes.",
+      "tags": [
+        "the-way-north",
+        "weighted-random",
+        "serializable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "languageNotes": "Plain [System.Serializable] class with public fields."
+    },
+    {
+      "id": "class:Assets/Scripts/TheWayNorth/WeightedScene.cs:WeightedScene",
+      "type": "class",
+      "name": "WeightedScene",
+      "summary": "Holds a SceneNames scene and a Range-constrained weight for weighted picks.",
+      "tags": [
+        "the-way-north",
+        "weighted-random"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "languageNotes": "Serializable data class."
+    },
+    {
+      "id": "file:Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "type": "file",
+      "name": "AdditiveUIScaler.cs",
+      "summary": "Keeps an additive screen-space-camera canvas pixel-perfect by copying the DynamicPixelPerfectCamera's scale factor into the CanvasScaler every frame; wires the canvas to the main camera in Awake.",
+      "tags": [
+        "ui",
+        "pixel-perfect",
+        "canvas",
+        "camera"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "languageNotes": "Sets canvas.renderMode to ScreenSpaceCamera and syncs CanvasScaler.scaleFactor from DynamicPixelPerfectCamera.ScaleFactor."
+    },
+    {
+      "id": "class:Assets/Scripts/UI/AdditiveUIScaler.cs:AdditiveUIScaler",
+      "type": "class",
+      "name": "AdditiveUIScaler",
+      "summary": "MonoBehaviour that configures an additive UI canvas for camera rendering and continuously mirrors the pixel camera scale factor.",
+      "tags": [
+        "ui",
+        "canvas",
+        "pixel-perfect"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "languageNotes": "Unity UI helper MonoBehaviour using [DefaultExecutionOrder], RequireComponent, and Canvas/CanvasScaler setup at runtime."
+    },
+    {
+      "id": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches Canvas/CanvasScaler, finds the main camera and its DynamicPixelPerfectCamera, and configures screen-space camera rendering.",
+      "tags": [
+        "ui",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Re-syncs the scale factor every frame.",
+      "tags": [
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:UpdateScale",
+      "type": "function",
+      "name": "UpdateScale",
+      "summary": "Copies the pixel camera's scale factor into the CanvasScaler when both exist.",
+      "tags": [
+        "ui",
+        "pixel-perfect"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "file:Assets/Scripts/UI/AssignUICamera.cs",
+      "type": "file",
+      "name": "AssignUICamera.cs",
+      "summary": "At runtime, finds the camera tagged 'UICamera' and assigns it as the canvas world camera. Runs early via DefaultExecutionOrder(-100) so other canvas-dependent scripts see the camera already set.",
+      "tags": [
+        "ui",
+        "canvas",
+        "camera",
+        "runtime-setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AssignUICamera.cs",
+      "languageNotes": "Uses [DefaultExecutionOrder(-100)] and [RequireComponent(typeof(Canvas))] to guarantee the canvas exists."
+    },
+    {
+      "id": "class:Assets/Scripts/UI/AssignUICamera.cs:AssignUICameraAtRuntime",
+      "type": "class",
+      "name": "AssignUICameraAtRuntime",
+      "summary": "MonoBehaviour (class name differs from file name) that assigns the 'UICamera'-tagged camera to the canvas worldCamera at Start.",
+      "tags": [
+        "ui",
+        "canvas",
+        "camera"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AssignUICamera.cs",
+      "languageNotes": "Unity UI helper MonoBehaviour using [DefaultExecutionOrder], RequireComponent, and Canvas/CanvasScaler setup at runtime."
+    },
+    {
+      "id": "function:Assets/Scripts/UI/AssignUICamera.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Caches the Canvas and assigns the UI camera.",
+      "tags": [
+        "ui",
+        "init"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AssignUICamera.cs",
+      "languageNotes": null
+    },
+    {
+      "id": "function:Assets/Scripts/UI/AssignUICamera.cs:AssignCamera",
+      "type": "function",
+      "name": "AssignCamera",
+      "summary": "Finds the camera tagged 'UICamera' and sets canvas.worldCamera, warning if missing.",
+      "tags": [
+        "ui",
+        "camera"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/AssignUICamera.cs",
+      "languageNotes": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "target": "class:Assets/Scripts/Player/PlayerSceneData.cs:PlayerSceneData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSceneData.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSceneData.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerSoundManager.cs:PlayerSoundManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnPlayerStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnWheelbarrowStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopFootstepSound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopWheelbarrowSound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnPlayerStateChange",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers PlayerState.OnChange callback"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnWheelbarrowStateChange",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers IsHoldingWheelBarrow.OnChange callback"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnPlayerStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnWheelbarrowStateChange",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Re-evaluates rolling after state change"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnPlayerStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopFootstepSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Stops footsteps on non-running state"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnWheelbarrowStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopWheelbarrowSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Stops rolling when not both running and holding"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnDisable",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopFootstepSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Cleanup on disable"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerSoundManager.cs:OnDisable",
+      "target": "function:Assets/Scripts/Player/PlayerSoundManager.cs:StopWheelbarrowSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Cleanup on disable"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerSoundManager.cs",
+      "target": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "RequireComponent and reads IsHoldingWheelBarrow state"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "class:Assets/Scripts/Player/PlayerStrength.cs:PlayerStrength",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:RegisterPickup",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:ApplyCarryCapacity",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:ResetToDefaults",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerStrength.cs:Start",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:ApplyCarryCapacity",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Apply capacity at startup"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerStrength.cs:RegisterPickup",
+      "target": "function:Assets/Scripts/Player/PlayerStrength.cs:ApplyCarryCapacity",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Reapply capacity after level-up"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerStrength.cs",
+      "target": "file:Assets/Scripts/Player/StrengthData.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Uses StrengthData.GetLevel/GetLevelConfig for level lookups"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerTemperatureManager.cs:PlayerTemperatureManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:UpdateActualTemperature",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnGameMinuteTick",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnAmbientTemperatureChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:NarrateTemperatureChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:ResetCounterToMatchAmbient",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:TryUpdatePlayerTempInstantly",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerTemperatureManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:ResetToDefaults",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:UpdateActualTemperature",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers reactive OnChange hook"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:ResetCounterToMatchAmbient",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers reactive OnChange hook"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:NarrateTemperatureChange",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers reactive OnChange hook"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerTemperatureManager.cs:OnAmbientTemperatureChange",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers reactive OnChange hook"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "class:Assets/Scripts/Player/PlayerWheelBarrow.cs:PlayerWheelBarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnUseWheelBarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnReleaseWheelBarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnWheelBarrowingChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:PickUpStaticWheelbarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:TransferContentsToStaticWheelbarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:InstantiateStaticWheelBarrow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerWheelBarrow.cs",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnEnable",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnWheelBarrowingChange",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Registers IsHoldingWheelBarrow.OnChange callback"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnWheelBarrowingChange",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:InstantiateStaticWheelBarrow",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spawns static wheelbarrow on put-down"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:OnWheelBarrowingChange",
+      "target": "function:Assets/Scripts/Player/PlayerWheelBarrow.cs:TransferContentsToStaticWheelbarrow",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Moves contents on put-down"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "target": "class:Assets/Scripts/Player/SleepQuality.cs:SleepQuality",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "target": "function:Assets/Scripts/Player/SleepQuality.cs:GetAwakeHour",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "target": "function:Assets/Scripts/Player/SleepQuality.cs:GetRecoveryMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "target": "function:Assets/Scripts/Player/SleepQuality.cs:GetSleepRecoveryRatio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/SleepQuality.cs",
+      "target": "function:Assets/Scripts/Player/SleepQuality.cs:GetPastCurfewPenalty",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/SleepQuality.cs:GetSleepRecoveryRatio",
+      "target": "function:Assets/Scripts/Player/SleepQuality.cs:GetPastCurfewPenalty",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies curfew penalty to ratio"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/StrengthData.cs",
+      "target": "class:Assets/Scripts/Player/StrengthData.cs:StrengthData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/StrengthData.cs",
+      "target": "function:Assets/Scripts/Player/StrengthData.cs:GetLevel",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/StrengthData.cs",
+      "target": "function:Assets/Scripts/Player/StrengthData.cs:GetLevelConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/ToggleMenuInput.cs",
+      "target": "class:Assets/Scripts/Player/ToggleMenuInput.cs:ToggleMenuInput",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/ToggleMenuInput.cs",
+      "target": "function:Assets/Scripts/Player/ToggleMenuInput.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/ToggleMenuInput.cs",
+      "target": "function:Assets/Scripts/Player/ToggleMenuInput.cs:OnToggleMenu",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "class:Assets/Scripts/Scene/LevelChanger.cs:LevelChanger",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:ChangeLevel",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:PlaySound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/LevelChanger.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:ChangeLevel",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Triggers scene load"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/LevelChanger.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:PlaySound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Plays transition sound"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/LevelChanger.cs:CursorInteract",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:ChangeLevel",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Triggers scene load"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/LevelChanger.cs:CursorInteract",
+      "target": "function:Assets/Scripts/Scene/LevelChanger.cs:PlaySound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Plays transition sound"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "ChangeLevel accepts a SceneNames enum"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "type": "writes_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Sets PendingSpawnPosition/HasPendingSpawn statics"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/LevelChanger.cs",
+      "target": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ChangeLevel delegates to SmoothSceneManager.LoadScene"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/RodPlacement.cs",
+      "target": "class:Assets/Scripts/Scene/RodPlacement.cs:RodPlacement",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "target": "class:Assets/Scripts/Scene/SceneNames.cs:SceneNames",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "target": "class:Assets/Scripts/Scene/SceneSpawnConfig.cs:SceneSpawnConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "target": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetSpawnPosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "target": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetDefaultSpawnPosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "target": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetDefaultSpawnName",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetSpawnPosition",
+      "target": "function:Assets/Scripts/Scene/SceneSpawnConfig.cs:GetDefaultSpawnPosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Falls back to default spawn"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneSpawnConfig.cs",
+      "target": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Keys spawn entries by SceneNames"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "target": "class:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneTransitionOverlay",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadSceneAsync",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneRoutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadScene",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneRoutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Starts transition coroutine"
+    },
+    {
+      "source": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:SceneRoutine",
+      "target": "function:Assets/Scripts/Scene/SceneTransitionOverlay.cs:LoadSceneAsync",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Loads scene within routine"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "target": "class:Assets/Scripts/Scene/SmoothSceneManager.cs:SmoothSceneManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "target": "function:Assets/Scripts/Scene/SmoothSceneManager.cs:OnAfterSceneLoad",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "target": "function:Assets/Scripts/Scene/SmoothSceneManager.cs:LoadScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "target": "file:Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Instantiates and invokes SceneTransitionOverlay.LoadScene"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/BiomeConfig.cs:BiomeConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "ScenePool and Forks hold WeightedScene entries"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TheWayNorth",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GenerateBiomeNode",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:UseEntrance",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PlacePlayer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindForkExits",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:IsForkScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindNodeByPathIndex",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleReturnTransition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForkTransition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForwardTransition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TryGetForkChild",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RecordLink",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogNetworkState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogTree",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ParseSceneName",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:SerializeNode",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:DeserializeNode",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderFromPath",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderRecursive",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PathMatchesAt",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:WalkNodePath",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GetNodePath",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:CaptureStateAsJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:SerializeNode",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Serializes tree"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:CaptureStateAsJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GetNodePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Builds node paths"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:DeserializeNode",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Rebuilds tree"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:WalkNodePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves nodes from paths"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderFromPath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Rebuilds node order fallback"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindNodeByPathIndex",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Finds current node by index"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:IsForkScene",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Checks fork scene restoration"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreStateFromJson",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindForkExits",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fills missing fork exits"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:OnSceneLoaded",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Starts run on start scene"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:OnSceneLoaded",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogNetworkState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Logs network after start"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:OnSceneLoaded",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Restores node on active run"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Starts run if inactive"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TryGetForkChild",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Checks fork children"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleReturnTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Routes recorded return"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForkTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Routes fork"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:TakeExit",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForwardTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Routes forward"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleReturnTransition",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Performs return load"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForkTransition",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Performs fork load"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:HandleForwardTransition",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Performs forward load"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogNetworkState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Logs path state"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PerformTransition",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Hooks sceneLoaded for spawn resolution"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:UseEntrance",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindNodeByPathIndex",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Restores owning node"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:UseEntrance",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogNetworkState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Logs return path"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:UseEntrance",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Hooks sceneLoaded for spawn resolution"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:GenerateBiomeNode",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Builds root biome tree"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:StartRun",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:LogTree",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Logs generated tree"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RecordLink",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Records source link on arrival"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:ResolvePlayerSpawn",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PlacePlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Places player at spawn"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindNodeByPathIndex",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Re-finds current node"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:IsForkScene",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Checks fork scene"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RestoreCurrentNode",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:FindForkExits",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fills missing fork exits"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderFromPath",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderRecursive",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Depth-first rebuild"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:RebuildNodeOrderRecursive",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorth.cs:PathMatchesAt",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Matches path segments"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Reads start scene, biomes, depth, weighted picks"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FindObjectsByType + GetSpawn for arrival resolution"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FindForkExits and ResolvePlayerSpawn scan exits"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Positions player from spawn labels"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "GenerateBiomeNode consumes BiomeConfig pools/forks"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Scene paths and ParseSceneName use the enum"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/Player/PlayerSceneData.cs",
+      "type": "writes_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "PlacePlayer sets pending spawn statics"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "target": "file:Assets/Scripts/Scene/SmoothSceneManager.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "PerformTransition/UseEntrance load scenes through it"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:TheWayNorthConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:PickWeighted",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:PickBiome",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:GetPossibleBiomesForDepth",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:FindBiomeConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs:GetAllTWNScceneNames",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "StartScene and WeightedScene picks are SceneNames"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "PickBiome/FindBiomeConfig operate on BiomeConfigs"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "PickWeighted consumes WeightedScene entries"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:TheWayNorthEntrance",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:GetSpawn",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs:OnDrawGizmos",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "GetSpawn returns labeled TheWayNorthSpawn children"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:TheWayNorthExit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:GetSpawn",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs:OnDrawGizmos",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "GetSpawn returns labeled TheWayNorthSpawn children"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs:TheWayNorthSpawn",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs:OnDrawGizmos",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:TheWayNorthTransition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:PlaySound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs:PlaySound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Plays transition sound"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Calls TakeExit/UseEntrance on TheWayNorth.Instance"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Walks up to parent exit for id/direction"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+      "target": "file:Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Walks up to parent entrance for id"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "target": "class:Assets/Scripts/TheWayNorth/WeightedScene.cs:WeightedScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/TheWayNorth/WeightedScene.cs",
+      "target": "file:Assets/Scripts/Scene/SceneNames.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Holds a SceneNames scene"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "target": "class:Assets/Scripts/UI/AdditiveUIScaler.cs:AdditiveUIScaler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "target": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "target": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AdditiveUIScaler.cs",
+      "target": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:UpdateScale",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Awake",
+      "target": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:UpdateScale",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies initial scale"
+    },
+    {
+      "source": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:Update",
+      "target": "function:Assets/Scripts/UI/AdditiveUIScaler.cs:UpdateScale",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies scale each frame"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AssignUICamera.cs",
+      "target": "class:Assets/Scripts/UI/AssignUICamera.cs:AssignUICameraAtRuntime",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AssignUICamera.cs",
+      "target": "function:Assets/Scripts/UI/AssignUICamera.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "file:Assets/Scripts/UI/AssignUICamera.cs",
+      "target": "function:Assets/Scripts/UI/AssignUICamera.cs:AssignCamera",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains definition"
+    },
+    {
+      "source": "function:Assets/Scripts/UI/AssignUICamera.cs:Start",
+      "target": "function:Assets/Scripts/UI/AssignUICamera.cs:AssignCamera",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Assigns camera on start"
+    }
+  ],
+  "files": [
+    "Assets/Scripts/Player/PlayerMovementData.cs",
+    "Assets/Scripts/Player/PlayerSceneData.cs",
+    "Assets/Scripts/Player/PlayerSoundManager.cs",
+    "Assets/Scripts/Player/PlayerStrength.cs",
+    "Assets/Scripts/Player/PlayerTemperatureManager.cs",
+    "Assets/Scripts/Player/PlayerWheelBarrow.cs",
+    "Assets/Scripts/Player/SleepQuality.cs",
+    "Assets/Scripts/Player/StrengthData.cs",
+    "Assets/Scripts/Player/ToggleMenuInput.cs",
+    "Assets/Scripts/Scene/LevelChanger.cs",
+    "Assets/Scripts/Scene/RodPlacement.cs",
+    "Assets/Scripts/Scene/SceneNames.cs",
+    "Assets/Scripts/Scene/SceneSpawnConfig.cs",
+    "Assets/Scripts/Scene/SceneTransitionOverlay.cs",
+    "Assets/Scripts/Scene/SmoothSceneManager.cs",
+    "Assets/Scripts/TheWayNorth/BiomeConfig.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorth.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorthExit.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs",
+    "Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs",
+    "Assets/Scripts/TheWayNorth/WeightedScene.cs",
+    "Assets/Scripts/UI/AdditiveUIScaler.cs",
+    "Assets/Scripts/UI/AssignUICamera.cs"
+  ]
+}

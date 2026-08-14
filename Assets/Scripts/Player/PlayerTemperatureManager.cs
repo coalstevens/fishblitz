@@ -10,6 +10,7 @@ using UnityEngine;
 /// if the player is dry, actualTemperature == dryTemperature
 /// else actualTemperature == dryTemperature - 1 temp step
 /// </summary>
+[RequireComponent(typeof(PlayerDryingManager), typeof(PlayerEnergyManager))]
 public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISaveableComponent
 {
     public string ComponentId => "PlayerTemperature";

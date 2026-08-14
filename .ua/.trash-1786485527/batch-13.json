@@ -1,0 +1,1331 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/WorldObjects/TreePlant.cs",
+      "type": "file",
+      "name": "TreePlant.cs",
+      "summary": "Abstract base class for choppable, seasonal trees. Trees take 5 axe hits (via Axe.IUseableWithAxe) then fall, swapping in a stump and fallen-tree prefab; they swap sprite and material by TreeStates season state (windy material for summer/fall, standard lit when dead), shake on chopping/gusts/bird landings, and act as a bird shelter target (BirdBrain.IShelterable).",
+      "tags": [
+        "tree",
+        "chopping",
+        "birding",
+        "seasonal-state",
+        "wind-shader"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Unity script with [SerializeField] protected inspector fields, ReactiveUnity Reactive<TreeStates> with OnChange subscriptions, DOTween DOShakePosition for chop shake, and coroutines (WaitUntil on the player's Axing state) for the falling animation timing."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreeStates",
+      "type": "class",
+      "name": "TreeStates",
+      "summary": "Seasonal adult states of a tree: SummerAdult, FallAdult, and DeadAdult.",
+      "tags": ["tree", "seasonal-state"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "type": "class",
+      "name": "TreePlant",
+      "summary": "Abstract MonoBehaviour implementing InteractInput.IInteractable, Axe.IUseableWithAxe, and BirdBrain.IShelterable. Tracks a Reactive<TreeStates> state that drives sprite/material, survives 5 axe hits before spawning a stump + fallen tree and destroying itself, frightens perched birds when chopped, and provides a random perch target inside its bird-shelter collider.",
+      "tags": ["tree", "chopping", "birding", "shelter"],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Unity script with [SerializeField] protected inspector fields, ReactiveUnity Reactive<TreeStates> with OnChange subscriptions, and DOTween."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the SpriteRenderer and applies the current tree-state visuals via OnStateChange().",
+      "tags": ["tree", "unity-lifecycle"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Unity script lifecycle method."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Subscribes to the Reactive _treeState change event, routing any state change to OnStateChange().",
+      "tags": ["tree", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "ReactiveUnity OnChange subscription, unsubscribe action stored for OnDisable."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes the stored Reactive change hook.",
+      "tags": ["tree", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Unity script lifecycle method."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnStateChange",
+      "type": "function",
+      "name": "OnStateChange",
+      "summary": "Swaps the SpriteRenderer's material and sprite based on TreeStates: windy material with summer/fall sprites, standard-lit material with the dead sprite.",
+      "tags": ["tree", "seasonal-state"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "ReactiveUnity OnChange callback pattern."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnUseAxe",
+      "type": "function",
+      "name": "OnUseAxe",
+      "summary": "Axe strike handler: increments _hitCount and frightens birds + shakes the tree until _HITS_TO_FALL (5) hits, then starts the FallTree coroutine.",
+      "tags": ["chopping", "tree"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Axe.IUseableWithAxe implementation; uses StartCoroutine for the fall sequence."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:ShakeTree",
+      "type": "function",
+      "name": "ShakeTree",
+      "summary": "Plays a positional shake on the transform via DOTween DOShakePosition using the chop-shake duration, horizontal strength, vibrato, and randomness fields.",
+      "tags": ["tree", "tweening"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Uses DOTween's DOShakePosition with a Vector3 strength (X-only)."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FallTree",
+      "type": "function",
+      "name": "FallTree",
+      "summary": "Waits for the player's axing animation to end, picks a fall side via WillTreeFallEast(), instantiates a stump and the east/west fallen-tree prefab under the Impermanent tag at offsets, disables the fallen tree's YDepthSorter and bumps its sorting order so it renders in front of the stump, then destroys this tree.",
+      "tags": ["chopping", "tree", "spawning"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Coroutine using WaitUntil; Object.Instantiate with a parent from FindGameObjectWithTag(\"Impermanent\"); GetComponentInChildren for YDepthSorter."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:WillTreeFallEast",
+      "type": "function",
+      "name": "WillTreeFallEast",
+      "summary": "Maps the player's CompassDirection to the tree's fall side — west-facing directions fall west, east-facing fall east, and north/south resolve randomly.",
+      "tags": ["tree", "chopping"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Switch on the player's Direction Reactive value."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "InteractInput stub that always returns false — trees are only chopped with the axe, not cursor-interacted.",
+      "tags": ["interaction"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdEntry",
+      "type": "function",
+      "name": "OnBirdEntry",
+      "summary": "Adds an entering bird to _birdsInTree and shakes the tree when a bird first lands in it.",
+      "tags": ["birding", "tree"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "BirdBrain.IShelterable implementation; HashSet membership guard."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdExit",
+      "type": "function",
+      "name": "OnBirdExit",
+      "summary": "Removes a departing bird from _birdsInTree and shakes the tree on departure.",
+      "tags": ["birding", "tree"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:GetPositionTarget",
+      "type": "function",
+      "name": "GetPositionTarget",
+      "summary": "Returns a random point inside the _birdShelterTarget collider's bounds — the perch target birds seek when taking shelter in the tree.",
+      "tags": ["birding", "tree"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs",
+      "languageNotes": "Uses Bounds from a serialized Collider2D and UnityEngine.Random.Range."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FrightenBirds",
+      "type": "function",
+      "name": "FrightenBirds",
+      "summary": "Calls FrightenBird() on every bird currently perched in the tree, used when the tree is chopped.",
+      "tags": ["birding", "chopping"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/TreePlant.cs:GetSortingOrder",
+      "type": "function",
+      "name": "GetSortingOrder",
+      "summary": "Returns the tree's SpriteRenderer sorting order so birds can layer on top of the tree.",
+      "tags": ["birding", "tree"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/TreePlant.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs",
+      "type": "file",
+      "name": "WeightyObjectStackConfig.cs",
+      "summary": "ScriptableObject config for a weighty-object container (e.g. a wheelbarrow): a weight capacity plus insert/remove SoundData for audio feedback.",
+      "tags": [
+        "weighty-object",
+        "scriptable-object",
+        "config",
+        "sound"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs",
+      "languageNotes": "[CreateAssetMenu] ScriptableObject data container with public fields; no logic."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs:WeightyObjectStackConfig",
+      "type": "class",
+      "name": "WeightyObjectStackConfig",
+      "summary": "ScriptableObject exposing WeightCapacity, InsertSound, and RemoveSound for weighty-object stacks like the wheelbarrow.",
+      "tags": ["weighty-object", "scriptable-object", "config"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs",
+      "languageNotes": "[CreateAssetMenu(fileName = \"WeightyObjectContainerData\", menuName = \"Weighty/WeightyObjectContainerData\")]."
+    },
+    {
+      "id": "file:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "type": "file",
+      "name": "WheelBarrowContainedSprites.cs",
+      "summary": "MonoBehaviour that mirrors a wheelbarrow's WeightyObjectStack contents onto its child SpriteRenderers, picking the north-south or east-west carry sprite based on the wheelbarrow's facing direction.",
+      "tags": [
+        "wheelbarrow",
+        "weighty-object",
+        "sprite-rendering",
+        "reactive"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "languageNotes": "Unity script subscribing to a ReactiveUnity Reactive collection (StoredObjects.OnChange); uses UnityEngine.Assertions.Assert.IsTrue for dev checks."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:WheelBarrowContainedRenderers",
+      "type": "class",
+      "name": "WheelBarrowContainedRenderers",
+      "summary": "On each StoredObjects change, activates one child per stored object and assigns the carried object's NSCarry or EWCarry sprite by facing direction, deactivating unused children.",
+      "tags": ["wheelbarrow", "weighty-object", "sprite-rendering"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "languageNotes": "Unity script with ReactiveUnity OnChange subscription and Assert.IsNotNull/IsTrue dev checks."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Asserts the stack reference, subscribes to StoredObjects changes, and refreshes contained renderers once.",
+      "tags": ["wheelbarrow", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "languageNotes": "Unity lifecycle method; adds to a list of unsubscribe hooks."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Runs and clears all stored Reactive unsubscribe hooks.",
+      "tags": ["wheelbarrow", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "languageNotes": "Unity lifecycle method."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:UpdateContainedRenderers",
+      "type": "function",
+      "name": "UpdateContainedRenderers",
+      "summary": "Iterates StoredObjects, enabling one child per object and assigning NSCarry or EWCarry sprites by _facingDirection, then hides leftover children. Asserts enough child GameObjects exist to display every contained object.",
+      "tags": ["wheelbarrow", "sprite-rendering"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "languageNotes": "Uses transform.GetChild(i) + GetComponent<SpriteRenderer>().sprite."
+    },
+    {
+      "id": "file:Assets/Scripts/WorldObjects/WoodRack.cs",
+      "type": "file",
+      "name": "WoodRack.cs",
+      "summary": "Firewood storage rack holding wet and dry logs. Implements InteractInput.IInteractable, GameClock.ITickable, and SaveData.ISaveable: wet logs dry over in-game minutes (drying faster when the rack sits in a Warm/Hot heat zone), dry logs can be removed into the inventory, and the rack sprite swaps by fill level with narrator feedback.",
+      "tags": [
+        "wood",
+        "firewood",
+        "drying",
+        "inventory",
+        "save-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Unity script with ReactiveUnity Reactive<int> log counts + OnChange subscriptions, GameClock.OnGameMinuteTick events, coroutine to delay narrator messages, and SaveData.ISaveable JSON persistence."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "type": "class",
+      "name": "WoodRack",
+      "summary": "MonoBehaviour firewood rack implementing InteractInput.IInteractable, GameClock.ITickable, SaveData.ISaveable. Tracks wet/dry log counts as Reactive<int>s, dries wet logs over game minutes (multiplied by _temperatureMultiplier in Warm/Hot zones via HeatSensitive), narrates when all logs dry, adds dry logs to the inventory, and saves/loads counts plus per-log timers.",
+      "tags": ["wood", "firewood", "drying", "inventory", "save-system"],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Unity script with ReactiveUnity subscriptions and GameClock.ITickable minute-tick subscription; uses FindFirstObjectByType for PlayerEnergyManager."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRackSaveData",
+      "type": "class",
+      "name": "WoodRackSaveData",
+      "summary": "Nested serializable snapshot of rack state: wet log count, dry log count, and the per-log drying timers list.",
+      "tags": ["save-system", "wood"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Plain private data class serialized via SaveData.AddExtendedSaveData<T>()."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches PlayerEnergyManager, HeatSensitive, and SpriteRenderer; subscribes Reactive hooks for both log counts and the GameClock minute tick; seeds starting wet/dry logs; refreshes the rack sprite.",
+      "tags": ["wood", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Unity lifecycle; FindFirstObjectByType + GameClock.Instance event subscription."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes from the GameClock minute tick and runs/clears all Reactive unsubscribe hooks.",
+      "tags": ["wood", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Unity lifecycle method."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:PostAllLogsDryMessage",
+      "type": "function",
+      "name": "PostAllLogsDryMessage",
+      "summary": "Narrates 'All logs on the woodrack have dried out.' when the last wet log converts — immediately if the player is sleeping, otherwise deferred one frame via coroutine so the narrator has loaded.",
+      "tags": ["wood", "narration"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "ReactiveUnity OnChange(prev, curr) callback reading PlayerEnergyManager.IsPlayerSleeping."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:WaitToPostMessage",
+      "type": "function",
+      "name": "WaitToPostMessage",
+      "summary": "Waits a single frame then posts the given message through the Narrator.",
+      "tags": ["wood", "narration"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Small coroutine using yield return null."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:UpdateRackSprite",
+      "type": "function",
+      "name": "UpdateRackSprite",
+      "summary": "Selects the rack sprite by total log count (dry + wet) from the serialized _rackSprites array.",
+      "tags": ["wood", "sprite-rendering"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "ReactiveUnity OnChange callback; indexes array by sum of Reactive values."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnGameMinuteTick",
+      "type": "function",
+      "name": "OnGameMinuteTick",
+      "summary": "Increments each wet log's drying timer every game minute (multiplied by _temperatureMultiplier when the rack's HeatSensitive temperature is Warm/Hot), then converts every timer that passed _timeToDryGameMins from wet to dry.",
+      "tags": ["wood", "drying", "game-clock"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "GameClock.ITickable; List.RemoveAll predicate to reap expired timers."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddWetLog",
+      "type": "function",
+      "name": "TryAddWetLog",
+      "summary": "Adds a wet log (pushing a fresh drying timer) if the rack is not full.",
+      "tags": ["wood", "inventory"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:IsRackFull",
+      "type": "function",
+      "name": "IsRackFull",
+      "summary": "Returns true and narrates 'the rack is full.' when wet + dry logs reach _rackLogCapacity.",
+      "tags": ["wood", "narration"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Narrator.Instance.PostMessage for player feedback."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddDryLog",
+      "type": "function",
+      "name": "TryAddDryLog",
+      "summary": "Adds a dry log directly if the rack is not full.",
+      "tags": ["wood", "inventory"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:RemoveDryLog",
+      "type": "function",
+      "name": "RemoveDryLog",
+      "summary": "Removes one dry log into the inventory; does nothing on an empty rack and reports 'this wood is wet' (PlayerDialogue) when only wet logs remain.",
+      "tags": ["wood", "inventory"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "Uses Inventory.TryAddItem with the serialized _dryLog item."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "InteractInput entry point that removes a dry log from the rack.",
+      "tags": ["interaction", "wood"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:Save",
+      "type": "function",
+      "name": "Save",
+      "summary": "Builds a SaveData with identifier, transform position, and WoodRackSaveData extended data (wet/dry counts and drying timers).",
+      "tags": ["save-system", "wood"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "SaveData.ISaveable pattern: AddIdentifier, AddTransformPosition, AddExtendedSaveData<T>."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodRack.cs:Load",
+      "type": "function",
+      "name": "Load",
+      "summary": "Restores wet/dry log counts and the drying timers list from extended SaveData.",
+      "tags": ["save-system", "wood"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodRack.cs",
+      "languageNotes": "SaveData.GetExtendedSaveData<WoodRackSaveData>()."
+    },
+    {
+      "id": "file:Assets/Scripts/WorldObjects/WoodStove.cs",
+      "type": "file",
+      "name": "WoodStove.cs",
+      "summary": "Stove with a fire state machine (Dead, Ready, Hot, Embers). Implements InteractInput.IInteractable, UseItemInput.IUsableTarget, GameClock.ITickable, and SaveData.ISaveable: firewood-loading and interaction drive state transitions, game minutes burn the fire Hot→Embers→Dead, and each state drives an Animator clip, LocalHeatSource (Warm), PulseLight intensity, and looping fire SFX.",
+      "tags": [
+        "stove",
+        "heating",
+        "fire",
+        "fuel",
+        "survival",
+        "save-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Unity script with ReactiveUnity Reactive<FireStates> + OnChange subscription, GameClock.ITickable minute tick, and AudioManager.PlayLoopingSFX for fire audio."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "type": "class",
+      "name": "WoodStove",
+      "summary": "MonoBehaviour implementing InteractInput.IInteractable, UseItemInput.IUsableTarget, GameClock.ITickable, SaveData.ISaveable. Drives a Reactive<FireStates> machine: Ready is lit by interaction (Hot), firewood can be loaded when Dead (→Ready) or Embers (→Hot), game minutes advance Hot→Embers→Dead, and state changes replay Animator clips, toggle LocalHeatSource Warm heat and PulseLight, and start/stop looping fire SFX.",
+      "tags": ["stove", "heating", "fire", "fuel", "survival", "save-system"],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Unity script with ReactiveUnity subscription and GameClock minute tick; nested private enum + save-data class."
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WoodStove.cs:FireStates",
+      "type": "class",
+      "name": "FireStates",
+      "summary": "Private stove state machine states: Dead, Ready (fuel loaded, unlit), Hot, and Embers.",
+      "tags": ["stove", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStoveSaveData",
+      "type": "class",
+      "name": "WoodStoveSaveData",
+      "summary": "Nested serializable snapshot of stove state: the FireStates value and the fire-duration counter in game minutes.",
+      "tags": ["save-system", "stove"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Plain private data class serialized via SaveData.AddExtendedSaveData<T>()."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches Animator, LocalHeatSource, and PulseLight; subscribes a Reactive state hook and the GameClock minute tick; applies the initial state.",
+      "tags": ["stove", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Unity lifecycle; GameClock.Instance.OnGameMinuteTick subscription."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Stops any playing fire SFX, unsubscribes from the GameClock minute tick, and runs/clears Reactive hooks.",
+      "tags": ["stove", "reactive-subscription"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Unity lifecycle method."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnGameMinuteTick",
+      "type": "function",
+      "name": "OnGameMinuteTick",
+      "summary": "Advances the fire each game minute: Hot transitions to Embers after _hotFireDurationGameMinutes, and Embers to Dead after hot + embers duration combined.",
+      "tags": ["stove", "fire", "game-clock"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "GameClock.ITickable; mutates Reactive _stoveState.Value to trigger OnStateChange."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "type": "function",
+      "name": "OnStateChange",
+      "summary": "Routes Reactive stove state changes to the matching EnterDead/EnterReady/EnterHot/EnterEmbers handler.",
+      "tags": ["stove", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "ReactiveUnity OnChange callback dispatch switch."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterHot",
+      "type": "function",
+      "name": "EnterHot",
+      "summary": "Resets the duration counter, plays the HotFire animation at full speed, enables the heat source at Temperature.Warm, activates the fire light, and sets its flicker intensity to the fire range.",
+      "tags": ["stove", "heating", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "PulseLight.SetIntensity(min, max) drives the flicker."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterEmbers",
+      "type": "function",
+      "name": "EnterEmbers",
+      "summary": "Stops the fire SFX, plays the Embers animation at 0.05 speed, keeps the Warm heat source on, and dims the PulseLight to the embers intensity range.",
+      "tags": ["stove", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterDead",
+      "type": "function",
+      "name": "EnterDead",
+      "summary": "Resets animation speed, plays a blank clip then the Dead clip (fixing scene-switch jank), and disables the heat source and fire light.",
+      "tags": ["stove", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Animator.Play(\"\") reset then Animator.Play(\"Dead\")."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterReady",
+      "type": "function",
+      "name": "EnterReady",
+      "summary": "Plays the Ready animation with heat source and fire light off — stove is loaded and waiting to be lit.",
+      "tags": ["stove", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "InteractInput handler: narrates 'the stove is cold.' when Dead, or when Ready transitions to Hot, starts the fire SFX and narrates 'the room grows warm.'; otherwise refuses interaction.",
+      "tags": ["stove", "interaction", "fire"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Narrator.Instance.PostMessage for feedback."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:AddFirewood",
+      "type": "function",
+      "name": "AddFirewood",
+      "summary": "UseItemInput target that loads fuel: Dead→Ready, Embers→Hot (restarting fire SFX), Hot just re-narrates 'you stoke the flames.'; refuses while already Ready. Always resets the duration counter.",
+      "tags": ["stove", "fuel", "inventory"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Switch over Reactive _stoveState.Value."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:Save",
+      "type": "function",
+      "name": "Save",
+      "summary": "Builds a SaveData with identifier, transform position, and WoodStoveSaveData extended state (FireStates value + fire duration counter).",
+      "tags": ["save-system", "stove"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "SaveData.ISaveable pattern: AddIdentifier, AddTransformPosition, AddExtendedSaveData<T>."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:Load",
+      "type": "function",
+      "name": "Load",
+      "summary": "Restores the stove state and fire duration counter from extended SaveData, restarting the fire SFX if the stove loads in the Hot state.",
+      "tags": ["save-system", "stove"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "SaveData.GetExtendedSaveData<WoodStoveSaveData>()."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StopFireSFX",
+      "type": "function",
+      "name": "StopFireSFX",
+      "summary": "Stops the looping fire sound via the stored stop callback if one is active.",
+      "tags": ["stove", "audio"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "Stores the stop Action returned by AudioManager.PlayLoopingSFX."
+    },
+    {
+      "id": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StartFireSFX",
+      "type": "function",
+      "name": "StartFireSFX",
+      "summary": "Starts a looping fire SFX through AudioManager.PlayLoopingSFX if fire sound data exists and no loop is already playing.",
+      "tags": ["stove", "audio"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/WorldObjects/WoodStove.cs",
+      "languageNotes": "AudioManager.PlayLoopingSFX(_audioSource, _fireSound) returns a stop Action."
+    },
+    {
+      "id": "file:Assets/Shaders/Birding/Wedges.hlsl",
+      "type": "file",
+      "name": "Wedges.hlsl",
+      "summary": "HLSL include (Shader Graph Custom Function) providing two antialiased wedge-mask functions — a circular wedge fill and a UV wedge cutout — used by birding shaders to draw radial wedge shapes and angle-range masks.",
+      "tags": [
+        "shader",
+        "hlsl",
+        "birding",
+        "wedge-mask",
+        "antialiasing"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Shaders/Birding/Wedges.hlsl",
+      "languageNotes": "Custom Function nodes for Unity Shader Graph; functions follow the _float suffix convention (inputs/outputs of float4 with out params). Uses atan2, fwidth/ddx/ddy for antialiased edges."
+    },
+    {
+      "id": "function:Assets/Shaders/Birding/Wedges.hlsl:CircularWedge_float",
+      "type": "function",
+      "name": "CircularWedge_float",
+      "summary": "Outputs an antialiased mask for a circular wedge: radius check via distance with fwidth-based edge softening, plus an angle-range test (in radians, handling ranges that cross 0).",
+      "tags": ["shader", "wedge-mask", "antialiasing"],
+      "complexity": "moderate",
+      "filePath": "Assets/Shaders/Birding/Wedges.hlsl",
+      "languageNotes": "Uses atan2 for angle, fwidth(dist) for antialiasing, saturate for the edge gradient."
+    },
+    {
+      "id": "function:Assets/Shaders/Birding/Wedges.hlsl:WedgeCutout_float",
+      "type": "function",
+      "name": "WedgeCutout_float",
+      "summary": "Cuts a wedge out of a UV: builds an angular step mask for the angle range and antialiases the wedge edges using the ddx/ddy angular gradient, leaving the rest of the UV visible.",
+      "tags": ["shader", "wedge-mask", "antialiasing"],
+      "complexity": "moderate",
+      "filePath": "Assets/Shaders/Birding/Wedges.hlsl",
+      "languageNotes": "Uses step() for angle masks and abs(ddx(theta)) + abs(ddy(theta)) for angular antialiasing."
+    },
+    {
+      "id": "config:Packages/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "summary": "Unity package manifest declaring project dependencies: Cinemachine 3.1.3 (camera), Unity Input System 1.18.0 (new input), URP 17.3.0 (2D rendering), 2D Animation 13.0.4, ugui 2.0.0, feature.2d 2.0.2, and the BlueOyster json-persistence-unity git package (ReactiveUnity + JSON save system). All standard com.unity.modules.* built-in modules are pinned to 1.0.0. DOTween is not here — it ships as a vendored package under Assets/.",
+      "tags": [
+        "unity-config",
+        "packages",
+        "dependencies",
+        "input-system",
+        "urp",
+        "cinemachine"
+      ],
+      "complexity": "simple",
+      "filePath": "Packages/manifest.json"
+    },
+    {
+      "id": "config:Packages/packages-lock.json",
+      "type": "config",
+      "name": "packages-lock.json",
+      "summary": "Unity UPM lockfile resolving manifest.json dependencies to concrete versions and hashes. Resolves the BlueOyster git package (hash 808e8ad..., pulling Newtonsoft JSON 3.2.1) and transitive deps such as com.unity.collections, burst, splines, and shadergraph 17.3.0.",
+      "tags": ["unity-config", "packages", "lockfile", "dependencies"],
+      "complexity": "simple",
+      "filePath": "Packages/packages-lock.json"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/WorldObjects/TreePlant.cs",
+      "target": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreeStates",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the TreeStates enum."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/TreePlant.cs",
+      "target": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the abstract TreePlant class."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines Awake."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnEnable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnDisable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnStateChange."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnUseAxe",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnUseAxe."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:ShakeTree",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines ShakeTree."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FallTree",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines FallTree."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:WillTreeFallEast",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines WillTreeFallEast."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines CursorInteract."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdEntry",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnBirdEntry."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdExit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines OnBirdExit."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:GetPositionTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines GetPositionTarget."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FrightenBirds",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines FrightenBirds."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/TreePlant.cs:TreePlant",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:GetSortingOrder",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "TreePlant defines GetSortingOrder."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:Awake",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnStateChange",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Awake applies initial tree visuals via OnStateChange."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnStateChange",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "State-change subscription routes to OnStateChange."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnUseAxe",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FrightenBirds",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each axe hit frightens birds in the tree."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnUseAxe",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:ShakeTree",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Axe hits shake the tree."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnUseAxe",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FallTree",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Final axe hit starts the FallTree coroutine."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:FallTree",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:WillTreeFallEast",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FallTree asks WillTreeFallEast which side to fall toward."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdEntry",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:ShakeTree",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "A landing bird makes the tree shake."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/TreePlant.cs:OnBirdExit",
+      "target": "function:Assets/Scripts/WorldObjects/TreePlant.cs:ShakeTree",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "A departing bird makes the tree shake."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs:WeightyObjectStackConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the WeightyObjectStackConfig ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:WheelBarrowContainedRenderers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the WheelBarrowContainedRenderers class."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:WheelBarrowContainedRenderers",
+      "target": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WheelBarrowContainedRenderers defines OnEnable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:WheelBarrowContainedRenderers",
+      "target": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WheelBarrowContainedRenderers defines OnDisable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:WheelBarrowContainedRenderers",
+      "target": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:UpdateContainedRenderers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WheelBarrowContainedRenderers defines UpdateContainedRenderers."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs:UpdateContainedRenderers",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable refreshes the contained renderers on startup."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodRack.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the WoodRack class."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodRack.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRackSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the nested WoodRackSaveData class."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines OnEnable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines OnDisable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:PostAllLogsDryMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines PostAllLogsDryMessage."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:WaitToPostMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines WaitToPostMessage."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:UpdateRackSprite",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines UpdateRackSprite."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnGameMinuteTick",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines OnGameMinuteTick."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddWetLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines TryAddWetLog."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:IsRackFull",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines IsRackFull."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddDryLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines TryAddDryLog."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:RemoveDryLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines RemoveDryLog."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines CursorInteract."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:Save",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines Save."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodRack.cs:WoodRack",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:Load",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodRack defines Load."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddWetLog",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable seeds starting wet logs."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddDryLog",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable seeds starting dry logs."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:UpdateRackSprite",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable refreshes the rack sprite after seeding."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:PostAllLogsDryMessage",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:WaitToPostMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Defers the all-dry message one frame when the player is awake."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddWetLog",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:IsRackFull",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Capacity check before adding a wet log."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:TryAddDryLog",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:IsRackFull",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Capacity check before adding a dry log."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodRack.cs:CursorInteract",
+      "target": "function:Assets/Scripts/WorldObjects/WoodRack.cs:RemoveDryLog",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Cursor interaction removes a dry log."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodStove.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the WoodStove class."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodStove.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WoodStove.cs:FireStates",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FireStates enum."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodStove.cs",
+      "target": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStoveSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the nested WoodStoveSaveData class."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines OnEnable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines OnDisable."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnGameMinuteTick",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines OnGameMinuteTick."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines OnStateChange."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterHot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines EnterHot."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterEmbers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines EnterEmbers."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterDead",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines EnterDead."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterReady",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines EnterReady."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines CursorInteract."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:AddFirewood",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines AddFirewood."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:Save",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines Save."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:Load",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines Load."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StopFireSFX",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines StopFireSFX."
+    },
+    {
+      "source": "class:Assets/Scripts/WorldObjects/WoodStove.cs:WoodStove",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StartFireSFX",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "WoodStove defines StartFireSFX."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnEnable",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable applies the initial stove state."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterDead",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Dead state dispatches to EnterDead."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterReady",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Ready state dispatches to EnterReady."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterHot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Hot state dispatches to EnterHot."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:OnStateChange",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterEmbers",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Embers state dispatches to EnterEmbers."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:CursorInteract",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StartFireSFX",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Lighting the stove starts the fire sound."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:AddFirewood",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StartFireSFX",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Re-igniting embers starts the fire sound."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:EnterEmbers",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StopFireSFX",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fire dies down to embers, stopping the crackle."
+    },
+    {
+      "source": "function:Assets/Scripts/WorldObjects/WoodStove.cs:Load",
+      "target": "function:Assets/Scripts/WorldObjects/WoodStove.cs:StartFireSFX",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Loading a hot stove restarts the fire sound."
+    },
+    {
+      "source": "file:Assets/Shaders/Birding/Wedges.hlsl",
+      "target": "function:Assets/Shaders/Birding/Wedges.hlsl:CircularWedge_float",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines CircularWedge_float."
+    },
+    {
+      "source": "file:Assets/Shaders/Birding/Wedges.hlsl",
+      "target": "function:Assets/Shaders/Birding/Wedges.hlsl:WedgeCutout_float",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines WedgeCutout_float."
+    },
+    {
+      "source": "config:Packages/manifest.json",
+      "target": "config:Packages/packages-lock.json",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "The lockfile pins versions for the dependencies declared in the manifest."
+    },
+    {
+      "source": "file:Assets/Scripts/WorldObjects/WoodRack.cs",
+      "target": "file:Assets/Scripts/WorldObjects/WoodStove.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Both belong to the firewood loop — wet logs dried on the rack become fuel for the stove, and WoodStove serializes firewood/dry wood/wet wood inventory items."
+    }
+  ],
+  "files": [
+    "Assets/Scripts/WorldObjects/TreePlant.cs",
+    "Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs",
+    "Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs",
+    "Assets/Scripts/WorldObjects/WoodRack.cs",
+    "Assets/Scripts/WorldObjects/WoodStove.cs",
+    "Assets/Shaders/Birding/Wedges.hlsl",
+    "Packages/manifest.json",
+    "Packages/packages-lock.json"
+  ]
+}

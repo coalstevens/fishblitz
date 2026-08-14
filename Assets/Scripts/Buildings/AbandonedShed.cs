@@ -5,6 +5,7 @@ using UnityEngine;
 
 // the roof is huge so gonna let infinite birds land on it.
 // hopefully thats not an issue
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class AbandonedShed : MonoBehaviour, BirdBrain.IPerchableHighElevation, InteractInput.IInteractable, Axe.IUseableWithAxe
 {
     [Serializable]

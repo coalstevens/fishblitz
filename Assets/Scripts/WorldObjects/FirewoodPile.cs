@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ReactiveUnity;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
 {
     private class LogPileSaveData

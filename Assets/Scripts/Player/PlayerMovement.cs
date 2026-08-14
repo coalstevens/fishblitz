@@ -30,7 +30,8 @@ public struct CardinalVector
     }
 }
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(PlayerSceneData))]
+[RequireComponent(typeof(PlayerWheelBarrow), typeof(PlayerCarry))]
 public class PlayerMovement : MonoBehaviour
 {
     public enum PlayerStates

@@ -3,63 +3,37 @@
 ## Overview
 Fishblitz is a top-down pixel art RPG built with Unity (2022.3+). It features fishing, birding, crafting, and survival mechanics.
 
-## Project Structure
-```
-Assets/
-├── Scripts/
-│   ├── Base Systems/     # Core systems (GameClock, Singleton, Logger, Persistence)
-│   ├── Player/          # Player-related scripts (movement, inventory, UI)
-│   ├── Characters/      # NPC characters and dialogue
-│   ├── WorldObjects/    # Trees, stumps, campfires, etc.
-│   ├── Items/           # Item definitions (tools, fish, mushrooms)
-│   ├── Birding/         # Birding mini-game
-│   ├── Combat/          # Combat systems (projectiles, steering, health, knockback)
-│   ├── Fishing/         # Fishing mini-game
-│   ├── Weather/         # Weather systems
-│   ├── UI/              # UI components
-│   ├── Scene/           # Scene management
-│   └── Utilities/       # Logger, Singleton, etc.
-├── Graphics/            # Sprite assets organized by category
-├── Prefabs/             # Reusable game objects
-├── Scenes/              # Unity scenes
-├── Resources/           # Runtime-loaded assets
-├── Settings/           # Project settings
-└── Shaders/             # Custom shaders
-```
+## Design Philosophy
 
-## Build & Development Commands
+A local community drama about learning to live within limits of nature — a cycle of adaptation and repair. IDEAS.md is the source of detail; these principles guide decisions.
 
-### Unity Editor
-- Open project in Unity Hub (version 2022.3 or later recommended)
-- Use Unity Editor to build and run: `File > Build Settings`
-- Tests can be run via `Window > General > Test Runner`
+1. People never hurt the player. Conflict comes from the environment and the land, strained by years of expansion and extraction — not instant or cartoonish evil.
 
-### Command Line Build (macOS)
-```bash
-# Open Unity and build (requires Unity Pro)
-"/Applications/Unity/Unity.app/Contents/MacOS/Unity" -quit -batchmode -projectPath /path/to/fishblitz -buildTarget MacStandalone -buildPath ./Build
-```
+2. Progress comes from choices, tradeoffs, and cooperation. Keep environmentalism in the background.
 
-### Running a Single Test
-1. Open Unity Editor
-2. Go to `Window > General > Test Runner`
-3. Right-click a test and select "Run Selected" or use keyboard shortcut
+3. The Presences: real enough to matter, never so direct they become the solution. Ancient, limited, observant. They operate as omens, whispers, memory, and pressure from the land. Never confirm them in a way that removes doubt; NPCs interpret the same signs differently.
 
-Note: This project currently has no formal unit tests in the NUnit framework.
+4. Storytelling must never interrupt the primary act of playing. Keep direct dialogue very brief. Longer content is delivered as audio overlay you can listen to while playing. Environment should reinforce the story.
 
-## Code Style Guidelines
+5. Story is filtered through bias. NPCs withhold, misremember, misinterpret, rationalize.
 
-### Naming Conventions
-- **Classes/Structs**: `PascalCase` (e.g., `PlayerMovementController`, `GameClock`)
-- **Interfaces**: `I` prefix (e.g., `IGiftable`, `ITickable`)
-- **Enums**: `PascalCase` with values also in `PascalCase`
-- **Public Methods/Properties**: `PascalCase`
-- **Private Fields**: `_camelCase` with underscore prefix (e.g., `_playerData`, `_rb`)
-- **Protected Fields**: Same as private (`_camelCase`)
-- **Constants**: `PascalCase` (e.g., `DEFAULT_MOVE_SPEED`)
-- **Unity Events**: `PascalCase` (e.g., `OnEnable`, `Start`)
+6. Costly resources shape behavior. Scarcity is a design lever — arrow cost encourages stealth, careful aim, and evasion. Every tool carries a cost or downside; tradeoffs over raw stats.
 
-### Code Organization
+7. Community arrives slowly. People return based on time, events, or player milestones, each filling a role.
+
+8. Seasons structure the drama. Main seasons carry chronic problems (hot summers, cold winters); shoulder seasons bring catastrophic, somewhat-random events with subtle foreshadowing. The player should realize damage will happen but couldn't prepare enough.
+
+## Communication Style
+
+When talking to the user:
+
+- Be extremely concise. Sacrifice grammar for the sake of concision.
+- Keep a light voice, no ornament. A little personality is welcome; no aphorisms or rhetorical flourishes.
+- Be casual and direct.
+- Be a teammate, support me, but also push-back when I might be wrong.
+- If my approach breaks standard conventions, call me out.
+
+## Code Organization
 ```csharp
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -97,33 +71,7 @@ public class MyClass : MonoBehaviour
 }
 ```
 
-### Imports
-Always order imports alphabetically:
-1. System namespaces (`System`, `System.Collections`, `System.IO`)
-2. Unity namespaces (`UnityEngine`, `UnityEngine.InputSystem`)
-3. Third-party (`ReactiveUnity`, `NUnit.Framework`)
-4. Project-specific (none)
-
-### Attributes
-- Use `[SerializeField]` for private fields exposed in Inspector
-- Use `[Header("Section Title")]` to organize Inspector fields
-- Use `[NonSerialized]` for public fields not in Inspector
-- Use `[CreateAssetMenu(fileName = "...", menuName = "...")]` for ScriptableObjects
-- Use `[Serializable]` for non-MonoBehaviour classes serialized by Unity
-
 ### Patterns Used
-
-#### Singleton Pattern
-```csharp
-public class GameClock : Singleton<GameClock>
-{
-    protected override void Awake()
-    {
-        base.Awake();
-        // initialization
-    }
-}
-```
 
 #### Reactive Properties (ReactiveUnity)
 ```csharp
@@ -132,90 +80,13 @@ public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(PlayerSta
 // Access value with .Value property
 ```
 
-#### Logger Usage
-```csharp
-[SerializeField] private Logger _logger = new();
-
-_logger.Info("Player moved");
-_logger.Warning("Low health");
-_logger.Verbose("Detailed debug info");
-```
-
-#### Interface Pattern
-```csharp
-public interface ITickable
-{
-    void OnGameMinuteTick();
-}
-```
-
-### Error Handling
-- Use `Debug.LogError()` for critical errors that should halt execution
-- Use `Debug.LogWarning()` for non-critical issues
-- Use `Debug.Assert()` or `Assert.IsNotNull()` from NUnit for development checks
-- Use try-catch for file I/O operations
-
 ### General Guidelines
 - Keep classes focused and single-responsibility
-- Use `ScriptableObject` for data containers (items, inventory)
-- Use `MonoBehaviour` for components attached to GameObjects
 - Comment complex logic, but avoid obvious comments
 - Use meaningful variable names - avoid single letters except for common patterns (x, y for coordinates)
-- Follow 100-character line limit when practical
-- Use braces even for single-line statements
 
 ### Common Patterns
 - Static instance: `private static PlayerMovementController _instance;`
-- Component caching: `_rb = GetComponent<Rigidbody2D>();` in Awake
-- Assert non-null: `Assert.IsNotNull(_rb);` after GetComponent
-- Coroutines for timed operations: `StartCoroutine(MyCoroutine())`
-- Input System: Use `UnityEngine.InputSystem` with `OnMove(InputValue value)`
-
-### Testing
-- NUnit is available (used in PlayerMovementController imports)
-- Add tests to appropriate test assemblies
-- Use `[Test]` and `[UnityTest]` attributes
-- Use `Assert.IsNotNull()`, `Assert.AreEqual()`, etc.
-
-## Additional Notes
-- Uses Universal Render Pipeline (URP) for 2D graphics
-- Uses Cinemachine for camera control
-- Uses Unity Input System (new) not legacy Input Manager
-- Custom shaders in Assets/Shaders/
-- Audio in Assets/Sound/
-- Save system uses JSON persistence via BlueOyster package
-
-## Prefab Setup: FlyingChaser
-
-Create the prefab at `Assets/Prefabs/Combat/FlyingChaser.prefab` with the following structure:
-
-### Root GameObject ("FlyingChaser")
-
-| Component | Settings |
-|---|---|
-| `FlyingChaser` | Configure wander speeds, chase speed (5), view radius (8), contact damage (1), self-knockback force (15) |
-| `Rigidbody2D` | Body Type: Dynamic, Linear Drag: 2, Gravity Scale: 0, Sleeping Mode: Never Sleep |
-| `CircleCollider2D` (body) | Is Trigger: false, used for world collision |
-| `CircleCollider2D` (hitbox) | Is Trigger: true, slightly smaller than body, for contact damage detection |
-| `SpriteRenderer` | Assign your flying enemy sprite |
-| `EnemyHealth` | Assign `_maxHealth` in Inspector |
-
-### Child "Hurtbox"
-
-| Component | Settings |
-|---|---|
-| `Collider2D` | Is Trigger: true, layer: `EnemyHurtbox` |
-| `EnemyHurtbox` | — |
-
-### Child "ViewRange" (optional, for gizmo visualization)
-
-| Component | Settings |
-|---|---|
-| `CircleCollider2D` | Is Trigger: true, Radius: matching `_viewRadius` setting |
-
-### Layer setup
-- Root GameObject layer: add a new layer like "FlyingChaser" or use existing non-player layer (must not collide with FriendlyHurtbox via collision matrix so that the hitbox trigger handles contact instead)
-- Ensure `FlyingChaser._obstacleLayers` in the Inspector includes the layers the chaser should avoid (e.g., Default, Ground, Cover)
-
-### Player setup
-- `PlayerHealth` component must be added to the Player root GameObject (alongside PlayerMovementController)
+- Hard dependencies (same GameObject): declare `[RequireComponent(typeof(Rigidbody2D))]`, then cache with `GetComponent` in Awake — guaranteed non-null, no assert needed
+- Optional dependencies: use `TryGetComponent` and null-guard
+- Assert non-null (`Assert.IsNotNull(...)`) only when `RequireComponent` can't guarantee a dependency — inspector-assigned `[SerializeField]` refs, cross-object `GetComponent`, `GetComponentInParent`/`GetComponentInChildren`, interface lookups

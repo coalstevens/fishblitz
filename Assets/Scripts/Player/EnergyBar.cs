@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Image))]
 public class EnergyBar : MonoBehaviour
 {
     private PlayerEnergyManager _energyManager;

@@ -1,0 +1,4241 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Birding/BirdingGame.cs",
+      "summary": "The birding minigame HUD. The player charges a frame meter by holding the UseBinoculars input action; on release the frame is caught and bounces to a stop (critically damped spring), then a cursor sweeps across the bird view and the player presses the action again to tag a bird under it. The HUD rotates to track the mouse angle. A legacy joystick-driven rotation variant is preserved in commented-out KEEP blocks.",
+      "tags": [
+        "birding",
+        "minigame",
+        "input-system",
+        "hud",
+        "cursor-tagging"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs",
+      "languageNotes": "Unity new Input System with action-map switching (Player <-> Birding), NUnit Assert validation in Awake, coroutine for game teardown, fixed-timestep state machine."
+    },
+    {
+      "id": "file:Assets/Scripts/Birding/BirdingWinFrame.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Birding/BirdingWinFrame.cs",
+      "summary": "One-shot 'NICE!' celebration overlay for the birding minigame: shows the tagged bird's icon, plays an animator clip, and deactivates itself when the clip finishes.",
+      "tags": [
+        "birding",
+        "ui",
+        "feedback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingWinFrame.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "summary": "Tracks which BirdBrain instances are within a bird's trigger view range, exposing them as a read-only collection. Keeps the set in sync on trigger enter/exit and on the global BirdBrain.BirdDestroyed event.",
+      "tags": [
+        "birding",
+        "bird-ai",
+        "proximity",
+        "triggers"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "summary": "Keeps a birding HUD material's shader property _GradientOriginPosition pinned to an origin transform every frame so the opacity gradient follows the HUD; resets the property to zero on destroy.",
+      "tags": [
+        "birding",
+        "shader",
+        "visual-effects"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/BootstrapperConfig.cs",
+      "type": "file",
+      "name": "Assets/Scripts/BootstrapperConfig.cs",
+      "summary": "ScriptableObject asset that declares which prefabs the scene bootstrapper should spawn, grouped by persistence (persistent DontDestroyOnLoad, all scenes, inside scenes, outside scenes).",
+      "tags": [
+        "bootstrapper",
+        "config",
+        "scene-management"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/BootstrapperConfig.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Buildings/AbandonedShed.cs",
+      "summary": "The abandoned shed: an interactable that can be repaired stage by stage (requires a hammer plus materials from the player inventory), serves as an infinite bird perch, and has vines the player chops with an axe that shake via DOTween and, once fully chopped, spawn items and are hidden.",
+      "tags": [
+        "building",
+        "repair",
+        "interactable",
+        "bird-perch",
+        "dotween"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs",
+      "languageNotes": "Implements three project interfaces (BirdBrain.IPerchableHighElevation, InteractInput.IInteractable, Axe.IUseableWithAxe); DOTween DOShakePosition for vine chop feedback."
+    },
+    {
+      "id": "file:Assets/Scripts/Buildings/AbandonedShedData.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Buildings/AbandonedShedData.cs",
+      "summary": "ScriptableObject holding the shed's shared mutable state: how many repair stages have been done, whether the vines are destroyed, and the names of repaired parts (consumed by the interior to switch visuals).",
+      "tags": [
+        "building",
+        "save-state",
+        "scriptableobject"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShedData.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Buildings/AbandonedShedInterior.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Buildings/AbandonedShedInterior.cs",
+      "summary": "On start, reads the shed data to reflect repairs in the interior: a repaired roof or dry weather disables the rain particles and puddle, a repaired roof disables the roof light, and a repaired floor swaps the sprite.",
+      "tags": [
+        "building",
+        "interior",
+        "world-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShedInterior.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Characters/DialogueController.cs",
+      "summary": "Speech-bubble controller for NPCs: renders one message at a time into a PixelTextRenderer child, holds it for a configurable duration, then fades it out alpha by alpha.",
+      "tags": [
+        "dialogue",
+        "npc",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/DialogueController.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Characters/Gerard.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Characters/Gerard.cs",
+      "summary": "ScriptableObject tracking Gerard's rescue arc: a three-stage state (UnconsciousBeach, UnconsciousShed, AwakeShed) that advances one step on each player sleep once the ReadyForNextState flag has been set.",
+      "tags": [
+        "npc",
+        "character-state",
+        "scriptableobject",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Characters/IGiftable.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Characters/IGiftable.cs",
+      "summary": "Declares the IGiftReceiving interface: NPCs that can accept item gifts. It extends UseItemInput.IUsableTarget and requires a TryGiveGift(Inventory.Item) implementation that reports acceptance.",
+      "tags": [
+        "npc",
+        "interface",
+        "gifting"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/IGiftable.cs",
+      "languageNotes": "Interface-only file; the node name differs from the filename (IGiftReceiving declared in IGiftable.cs)."
+    },
+    {
+      "id": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Characters/ShedGerard.cs",
+      "summary": "The awake variant of Gerard near the shed. It activates only when Gerard.State is AwakeShed, shows cycling dialogue lines chosen by location (inside/outside) and game hour, and after a couple of outside chats sets ReadyForNextState to progress the arc.",
+      "tags": [
+        "npc",
+        "dialogue",
+        "character-state",
+        "game-clock"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "summary": "The passed-out Gerard lying on the beach or in the shed. It shows starving flavour dialogue, accepts acceptable food gifts through IGiftReceiving, and once fed enough it reads fed messages, then falls asleep (so only the Narrator comments).",
+      "tags": [
+        "npc",
+        "dialogue",
+        "gifting",
+        "character-state"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/BasicWeapon.cs",
+      "summary": "Defines RangedWeaponItem, a ScriptableObject inventory item for projectile weapons. It holds fire-rate, reload, clip, and a projectile prefab, and exposes per-usage InstanceData (reload/cooldown reactive flags, clip count, spawn transform, target collider). TryFire spawns a pooled projectile aimed at the mouse or a locked-on target.",
+      "tags": [
+        "combat",
+        "weapon",
+        "projectile",
+        "inventory-item",
+        "scriptableobject"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs",
+      "languageNotes": "ReactiveUnity Reactive<bool> in InstanceData for reload/cooldown state; ObjectPooling for projectile spawn; nested Serializable instance-data class."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/BowChargeController.cs",
+      "summary": "Charge-choreography controller for the bow. While charging it locks the player into the Combat action map, fills a HUD frame, tints the frame via MaterialPropertyBlock shader override by charge tier (normal/crit), then on release fires a pooled projectile with speed scaled by charge, applies crit damage and energy cost, and ends with a cooldown gate.",
+      "tags": [
+        "combat",
+        "bow",
+        "charge",
+        "projectile",
+        "hud",
+        "input-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs",
+      "languageNotes": "Input System action-map switching (Player <-> Combat), MaterialPropertyBlock for per-renderer override, ObjectPooling for projectiles, coroutine cooldown gate, Logger."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/ContactHitbox.cs",
+      "summary": "Trigger hitbox placed on weapons, projectiles, and enemies that deals damage to anything implementing IHurtBox. Validates targets by layer pairing (enemy hitbox vs friendly hurtbox and vice versa), applies knockback in self/target/both modes, and exposes an OnHit event.",
+      "tags": [
+        "combat",
+        "hitbox",
+        "damage",
+        "knockback"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs",
+      "languageNotes": "Layer-name-based target validation, ForceMode2D.Impulse knockback, C# event for hit reporting."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "summary": "Fires a RangedWeaponItem for an enemy: builds the weapon's InstanceData pointing at a target collider and the enemy transform as spawn center, registers it with the Reloader, and calls TryFire every frame while firing is enabled.",
+      "tags": [
+        "combat",
+        "enemy",
+        "weapon",
+        "reload"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyActiveWeapon.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/EnemyHealth.cs",
+      "summary": "Enemy health component: ReactiveUnity current health initialized to max on enable, TakeDamage with timed invulnerability frames, Heal with clamp, death via Destroy, and a gizmo-drawn health bar for editor visualization.",
+      "tags": [
+        "combat",
+        "enemy",
+        "health",
+        "reactive"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs",
+      "languageNotes": "ReactiveUnity Reactive<float> CurrentHealth and Reactive<bool> IsInvulnerable; WaitForSeconds coroutine for i-frames."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "summary": "Trigger collider marking an enemy as damageable: resolves the parent EnemyHealth on enable, exposes vulnerability from its invulnerability flag, and forwards TakeDamage calls to it.",
+      "tags": [
+        "combat",
+        "enemy",
+        "hurtbox",
+        "damage"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHurtbox.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/FlyingChaser.cs",
+      "summary": "Flying enemy AI that wanders with steering wander force, detects the player within a view radius with line-of-sight checks, then chases with seek + obstacle avoidance; taking damage makes it permanently aggressive. Gizmos visualize view radius, wander ring, and forces.",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "steering",
+        "chaser"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs",
+      "languageNotes": "Steering forces (SteeringForces helper) for wander/seek/avoidance; Reactive OnChange subscription to EnemyHealth.CurrentHealth; force-based Rigidbody2D movement."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/IHurtBox.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/IHurtBox.cs",
+      "summary": "The damage-receiver contract used across combat: anything with TakeDamage(float) and an IsVulnerable flag can be hit by a ContactHitbox.",
+      "tags": [
+        "combat",
+        "interface",
+        "damage"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/IHurtBox.cs",
+      "languageNotes": "Interface-only file declaring the shared combat damage contract."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/KnockbackMode.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/KnockbackMode.cs",
+      "summary": "Enumeration of how a ContactHitbox applies knockback: no knockback, knock the hitbox owner, knock the target, or both.",
+      "tags": [
+        "combat",
+        "knockback",
+        "enum"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/KnockbackMode.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "summary": "Watches the player's active inventory slot via ReactiveUnity; whenever the active item is a RangedWeaponItem, its instance data (with spawn center at the weapon's transform) is handed to the Reloader, and nulled when it is not.",
+      "tags": [
+        "combat",
+        "weapon",
+        "inventory",
+        "reactive"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/PlayerActiveWeapon.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/Projectile.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/Projectile.cs",
+      "summary": "Pooled projectile that launches at a velocity, dies on lifespan timeout or when it hits a Default-layer collider, and is returned to the pool after hitting a target. Supports a crit variant that doubles the hitbox damage and turns the sprite yellow.",
+      "tags": [
+        "combat",
+        "projectile",
+        "object-pooling",
+        "crit"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs",
+      "languageNotes": "ObjectPooling.SpawnObject/ReturnObjectToPool lifecycle; subscribes to ContactHitbox.OnHit; coroutine lifespan timeout."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "type": "file",
+      "name": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "summary": "Configurable enemy that keeps the player at a comfortable firing range and executes one of six projectile patterns: single, spread, parallel, burst, aimed (charged, telegraphed red), and ring shot. It idles with wandering, engages with distance-band movement, and becomes permanently aggressive on taking damage.",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "projectile",
+        "state-machine",
+        "patterns"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "languageNotes": "Nested FiringPattern/EnemyState enums; coroutines for burst/aimed patterns; ObjectPooling for projectiles; reactive health subscription."
+    },
+    {
+      "id": "class:Assets/Scripts/Birding/BirdingGame.cs:BirdingGame",
+      "type": "class",
+      "name": "BirdingGame",
+      "summary": "MonoBehaviour singleton driving the charging/targeting birding state machine, with mouse alignment, a critically damped frame bounce, cursor sweep, and bird tagging on collision overlap.",
+      "tags": [
+        "birding",
+        "singleton",
+        "state-machine"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Birding/BirdingWinFrame.cs:BirdingWinFrame",
+      "type": "class",
+      "name": "BirdingWinFrame",
+      "summary": "MonoBehaviour popup that plays a success animation and auto-hides after the clip completes.",
+      "tags": [
+        "birding",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingWinFrame.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Birding/NearbyBirdTracker.cs:NearbyBirdTracker",
+      "type": "class",
+      "name": "NearbyBirdTracker",
+      "summary": "MonoBehaviour (requires Collider2D) maintaining a HashSet of nearby BirdBrains, self-excluding, with a debug count field.",
+      "tags": [
+        "birding",
+        "bird-ai",
+        "proximity"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:SetBirdingOpacityGradient",
+      "type": "class",
+      "name": "SetBirdingOpacityGradient",
+      "summary": "MonoBehaviour that writes the gradient origin transform position into a material's vector property each Update.",
+      "tags": [
+        "birding",
+        "shader",
+        "visual-effects"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/BootstrapperConfig.cs:BootstrapperConfig",
+      "type": "class",
+      "name": "BootstrapperConfig",
+      "summary": "ScriptableObject holding four public GameObject arrays that the bootstrapper uses to populate persistent and per-scene prefabs.",
+      "tags": [
+        "bootstrapper",
+        "config"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/BootstrapperConfig.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Buildings/AbandonedShed.cs:AbandonedShed",
+      "type": "class",
+      "name": "AbandonedShed",
+      "summary": "MonoBehaviour tying the shed's repair ladder and vine-clearing to shared AbandonedShedData, with a perch collider for birds and a serialized list of repair stages.",
+      "tags": [
+        "building",
+        "repair",
+        "interactable"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Buildings/AbandonedShed.cs:RepairState",
+      "type": "class",
+      "name": "RepairState",
+      "summary": "Serializable nested struct-like class describing one shed repair stage: the sprite to show, the inventory item and quantity required, and the repair's display name.",
+      "tags": [
+        "building",
+        "repair",
+        "serializable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Buildings/AbandonedShedData.cs:AbandonedShedData",
+      "type": "class",
+      "name": "AbandonedShedData",
+      "summary": "ScriptableObject with RepairProgress index, AreVinesDestroyed flag, and NamesOfRepaired list.",
+      "tags": [
+        "building",
+        "save-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShedData.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Buildings/AbandonedShedInterior.cs:AbandonedShedInterior",
+      "type": "class",
+      "name": "AbandonedShedInterior",
+      "summary": "MonoBehaviour that toggles interior visuals (rain, puddle, roof light, floor sprite) based on AbandonedShedData repair names and the WorldState rain flag.",
+      "tags": [
+        "building",
+        "interior",
+        "world-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShedInterior.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/DialogueController.cs:DialogueController",
+      "type": "class",
+      "name": "DialogueController",
+      "summary": "MonoBehaviour managing a single in-world text message with a hold duration and per-frame fade, exposed through PostMessage.",
+      "tags": [
+        "dialogue",
+        "npc"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/DialogueController.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/Gerard.cs:Gerard",
+      "type": "class",
+      "name": "Gerard",
+      "summary": "ScriptableObject holding Gerard's current state, a ReadyForNextState flag, and a handler advancing the state when the player sleeps.",
+      "tags": [
+        "npc",
+        "character-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/Gerard.cs:Gerard.States",
+      "type": "class",
+      "name": "Gerard.States",
+      "summary": "Enum (type: enum) of Gerard's arc positions: passed out on the beach, moved to the shed, awake in the shed.",
+      "tags": [
+        "npc",
+        "character-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/IGiftable.cs:IGiftReceiving",
+      "type": "class",
+      "name": "IGiftReceiving",
+      "summary": "Interface (type: interface) extending UseItemInput.IUsableTarget; implementers accept an Inventory.Item gift and return whether it was accepted.",
+      "tags": [
+        "npc",
+        "interface",
+        "gifting"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/IGiftable.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/ShedGerard.cs:ShedGerard",
+      "type": "class",
+      "name": "ShedGerard",
+      "summary": "MonoBehaviour (implements InteractInput.IInteractable) showing time- and location-appropriate dialogue for the awake shed Gerard and nudging the shared Gerard state forward.",
+      "tags": [
+        "npc",
+        "dialogue"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Characters/UnconsciousGerard.cs:UnconsciousGerard",
+      "type": "class",
+      "name": "UnconsciousGerard",
+      "summary": "MonoBehaviour implementing InteractInput.IInteractable and IGiftReceiving; validates the player's location against Gerard.State, handles gift acceptance, and transitions to sleeping after being fed.",
+      "tags": [
+        "npc",
+        "gifting",
+        "dialogue"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem",
+      "type": "class",
+      "name": "RangedWeaponItem",
+      "summary": "Inventory.Item subclass (ScriptableObject) describing a ranged weapon: fire type, rate, reload, clip size, projectile prefab, and a flag for enemy projectiles; implements IInstancedItem<RangedWeaponItem.InstanceData>.",
+      "tags": [
+        "combat",
+        "weapon",
+        "inventory-item"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem.InstanceData",
+      "type": "class",
+      "name": "RangedWeaponItem.InstanceData",
+      "summary": "Per-instance mutable state for a ranged weapon: spawn center/radius, reactive reload and cooldown flags, elapsed timers, current clip count, and the target collider.",
+      "tags": [
+        "combat",
+        "weapon",
+        "reactive"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/BowChargeController.cs:BowChargeController",
+      "type": "class",
+      "name": "BowChargeController",
+      "summary": "MonoBehaviour orchestrating bow charge state (Idle/Charging), HUD visuals, firing, crit detection, energy drain, and the one-frame cooldown between charges.",
+      "tags": [
+        "combat",
+        "bow",
+        "charge"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/ContactHitbox.cs:ContactHitbox",
+      "type": "class",
+      "name": "ContactHitbox",
+      "summary": "MonoBehaviour implementing the damage-dealing half of combat: an OnTriggerEnter2D handler that damages valid IHurtBoxes and applies knockback.",
+      "tags": [
+        "combat",
+        "hitbox",
+        "damage"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/EnemyActiveWeapon.cs:EnemyActiveWeapon",
+      "type": "class",
+      "name": "EnemyActiveWeapon",
+      "summary": "MonoBehaviour (requires Reloader) that configures and continuously fires an enemy's ranged weapon at its assigned target.",
+      "tags": [
+        "combat",
+        "enemy",
+        "weapon"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyActiveWeapon.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/EnemyHealth.cs:EnemyHealth",
+      "type": "class",
+      "name": "EnemyHealth",
+      "summary": "MonoBehaviour holding an enemy's max/current health as reactive values, invulnerability gating, damage/heal logic, and a gizmo health bar.",
+      "tags": [
+        "combat",
+        "enemy",
+        "health"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/EnemyHurtbox.cs:EnemyHurtbox",
+      "type": "class",
+      "name": "EnemyHurtbox",
+      "summary": "MonoBehaviour implementing IHurtBox (type: interface implementation) that adapts the parent EnemyHealth to the IHurtBox damage contract.",
+      "tags": [
+        "combat",
+        "enemy",
+        "hurtbox"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHurtbox.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/FlyingChaser.cs:FlyingChaser",
+      "type": "class",
+      "name": "FlyingChaser",
+      "summary": "MonoBehaviour (requires Rigidbody2D and EnemyHealth) with a Wandering/Chasing state machine driven by steering forces and player detection.",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "steering"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/IHurtBox.cs:IHurtBox",
+      "type": "class",
+      "name": "IHurtBox",
+      "summary": "Interface (type: interface) declaring TakeDamage(float damage) and a read-only IsVulnerable property.",
+      "tags": [
+        "combat",
+        "interface"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/IHurtBox.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/KnockbackMode.cs:KnockbackMode",
+      "type": "class",
+      "name": "KnockbackMode",
+      "summary": "Enum (type: enum) with None, KnockSelf, KnockTarget, and KnockBoth options.",
+      "tags": [
+        "combat",
+        "knockback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/KnockbackMode.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/PlayerActiveWeapon.cs:PlayerActiveWeapon",
+      "type": "class",
+      "name": "PlayerActiveWeapon",
+      "summary": "MonoBehaviour (requires Reloader) bridging the player's active inventory item to the reloader-driven firing pipeline.",
+      "tags": [
+        "combat",
+        "weapon",
+        "inventory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/PlayerActiveWeapon.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/Projectile.cs:Projectile",
+      "type": "class",
+      "name": "Projectile",
+      "summary": "MonoBehaviour (requires Rigidbody2D and SpriteRenderer) wrapping a ContactHitbox child and managing launch, lifespan, crit state, and pool return.",
+      "tags": [
+        "combat",
+        "projectile"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ProjectileFiringEnemy",
+      "type": "class",
+      "name": "ProjectileFiringEnemy",
+      "summary": "MonoBehaviour (requires Rigidbody2D, SpriteRenderer, EnemyHealth) running an Idle/Engaging/Firing state machine with configurable projectile patterns and distance-band behavior.",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "state-machine"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FiringPattern",
+      "type": "class",
+      "name": "FiringPattern",
+      "summary": "Enum (type: enum) of attack patterns: SingleShot, SpreadShot, ParallelSpread, BurstFire, AimedShot, RingShot.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:EnemyState",
+      "type": "class",
+      "name": "EnemyState",
+      "summary": "Enum (type: enum) of the enemy's AI states: Idle, Engaging, Firing.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Sets the singleton instance, caches cursor renderer/collider and the player's PlayerInput, asserts required components, and disables the HUD if it starts active.",
+      "tags": [
+        "birding",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "type": "function",
+      "name": "Play",
+      "summary": "Entry point from the binoculars tool: resets state, configures the Birding action map, pulls charge/cursor velocities from the active Binoculars, aligns HUD rotation to the mouse, and activates the HUD.",
+      "tags": [
+        "birding",
+        "binoculars"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "type": "function",
+      "name": "HandleState",
+      "summary": "Fixed-update state machine: CHARGING advances the frame while the use action is held and ends early if released; TARGETING bounces the frame, moves the cursor, and on action press tags birds or ends the game when the cursor reaches its adjusted limit.",
+      "tags": [
+        "birding",
+        "state-machine"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:TagAnyBirdsUnderCursor",
+      "type": "function",
+      "name": "TagAnyBirdsUnderCursor",
+      "summary": "Overlaps the cursor collider, plays the miss sound if nothing is hit, otherwise tags the first untagged BirdBrain found (updating its instance data) and logs the species.",
+      "tags": [
+        "birding",
+        "tagging",
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:MoveCursor",
+      "type": "function",
+      "name": "MoveCursor",
+      "summary": "Advances the targeting cursor along x by the cursor velocity each fixed tick.",
+      "tags": [
+        "birding"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:BounceFrame",
+      "type": "function",
+      "name": "BounceFrame",
+      "summary": "Eases the frame from its release position toward the stop point using a critically damped spring; snaps it into place once velocity and position are both within tolerance.",
+      "tags": [
+        "birding",
+        "spring-physics"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:GetNextBounceMotionValues",
+      "type": "function",
+      "name": "GetNextBounceMotionValues",
+      "summary": "Pure math helper integrating a critically damped spring (zeta=1, m=1, k=omega^2) one fixed timestep, returning the next position and velocity toward a target.",
+      "tags": [
+        "birding",
+        "spring-physics",
+        "math"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:EnterTargetingState",
+      "type": "function",
+      "name": "EnterTargetingState",
+      "summary": "Switches to TARGETING: shows the cursor, clamps the frame stop point, and maps the frame's charge completion into the cursor's max travel limit so shorter charges yield shorter cursor sweeps.",
+      "tags": [
+        "birding",
+        "state-machine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:FixedUpdate",
+      "type": "function",
+      "name": "FixedUpdate",
+      "summary": "Aligns the HUD to the mouse every fixed tick, skips one tick after an action-map switch (input misfire workaround), then runs HandleState.",
+      "tags": [
+        "birding",
+        "unity-callback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:AlignHUDToMousePosition",
+      "type": "function",
+      "name": "AlignHUDToMousePosition",
+      "summary": "Rotates the HUD so it always faces the current mouse position in world space.",
+      "tags": [
+        "birding",
+        "mouse"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:ConfigureControls",
+      "type": "function",
+      "name": "ConfigureControls",
+      "summary": "Switches the player to the Birding action map and grabs the UseBinoculars action, asserting it exists.",
+      "tags": [
+        "birding",
+        "input-system"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:ResetGameState",
+      "type": "function",
+      "name": "ResetGameState",
+      "summary": "Resets the minigame: hides the cursor, zeroes charge/bounce/flag fields, and returns the frame and cursor to their start positions.",
+      "tags": [
+        "birding",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:GetParametersFromBinoculars",
+      "type": "function",
+      "name": "GetParametersFromBinoculars",
+      "summary": "Derives frame charge velocity and cursor sweep velocity from the active Binoculars' ChargeTimeSecs and CursorTimeSecs.",
+      "tags": [
+        "birding",
+        "binoculars"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingGame.cs:EndGame",
+      "type": "function",
+      "name": "EndGame",
+      "summary": "Coroutine that logs completion, switches the player back to the Player action map, deactivates the HUD, and returns the player to the Idle state.",
+      "tags": [
+        "birding",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:PlayWin",
+      "type": "function",
+      "name": "PlayWin",
+      "summary": "Activates the win frame, sets the bird icon sprite, and starts the coroutine that waits for the NICE! clip to finish.",
+      "tags": [
+        "birding",
+        "ui"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingWinFrame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:WaitForAnimationToEnd",
+      "type": "function",
+      "name": "WaitForAnimationToEnd",
+      "summary": "Coroutine that plays the named clip and yields until its normalized time reaches 1, then deactivates the frame.",
+      "tags": [
+        "birding",
+        "coroutine",
+        "animation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/BirdingWinFrame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Caches the owning BirdBrain and view collider, forces the collider to be a trigger, and seeds the set with currently overlapping birds.",
+      "tags": [
+        "birding",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:InitializeNearbyBirds",
+      "type": "function",
+      "name": "InitializeNearbyBirds",
+      "summary": "Overlaps the view range and adds every overlapping non-self BirdBrain to the nearby set.",
+      "tags": [
+        "birding",
+        "proximity"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Subscribes to the BirdBrain.BirdDestroyed static event.",
+      "tags": [
+        "birding",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes from the BirdBrain.BirdDestroyed static event.",
+      "tags": [
+        "birding",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "Adds a non-self bird that enters the view range to the nearby set.",
+      "tags": [
+        "birding",
+        "triggers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnTriggerExit2D",
+      "type": "function",
+      "name": "OnTriggerExit2D",
+      "summary": "Removes a bird that leaves the view range from the nearby set.",
+      "tags": [
+        "birding",
+        "triggers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnBirdDestroyed",
+      "type": "function",
+      "name": "OnBirdDestroyed",
+      "summary": "Removes a destroyed bird from the set and sweeps out any stale null entries.",
+      "tags": [
+        "birding",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/NearbyBirdTracker.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Asserts the origin transform and material are assigned and that the material has the _GradientOriginPosition property.",
+      "tags": [
+        "birding",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Sets the material's _GradientOriginPosition vector to the current origin transform position.",
+      "tags": [
+        "birding",
+        "shader"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:OnDestroy",
+      "type": "function",
+      "name": "OnDestroy",
+      "summary": "Resets the material's _GradientOriginPosition to zero so the gradient does not linger after the HUD is gone.",
+      "tags": [
+        "birding",
+        "shader"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Caches renderer/collider and perch bounds, sets the sprite to the current repair progress stage, and hides or re-layers the vines depending on the shed data.",
+      "tags": [
+        "building",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:GetPositionTarget",
+      "type": "function",
+      "name": "GetPositionTarget",
+      "summary": "Returns a random point inside the perch collider, resampling until the point actually overlaps it - used by birds to land on the shed roof.",
+      "tags": [
+        "bird-perch",
+        "random-point"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:GetSortingOrder",
+      "type": "function",
+      "name": "GetSortingOrder",
+      "summary": "Exposes the renderer sorting order so birds can draw above or below the roof correctly.",
+      "tags": [
+        "bird-perch",
+        "rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "Interact handler: blocks interaction while vines remain, then checks the player holds the hammer (else hints via PlayerDialogue) and has the required materials (else hints quantity needed) before advancing repair progress, swapping the sprite, and narrating the repair.",
+      "tags": [
+        "building",
+        "repair",
+        "interactable",
+        "inventory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:OnUseAxe",
+      "type": "function",
+      "name": "OnUseAxe",
+      "summary": "Axe interaction: counts a vine chop, shakes the vines, and once enough chops accumulate marks vines destroyed, spawns drop items from the collider, and hides the vines.",
+      "tags": [
+        "building",
+        "axe",
+        "vines"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShed.cs:ShakeVines",
+      "type": "function",
+      "name": "ShakeVines",
+      "summary": "DOTween position-shakes the vines transform using the serialized shake duration, strength, vibrato, and randomness.",
+      "tags": [
+        "building",
+        "dotween",
+        "feedback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShed.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Buildings/AbandonedShedInterior.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Evaluates roof/floor repair names and the current rain state, then disables the rain system/puddle, roof light, and swaps the floor sprite accordingly.",
+      "tags": [
+        "building",
+        "interior"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Buildings/AbandonedShedInterior.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/DialogueController.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Resolves the PixelTextRenderer from children and records the parent transform to follow.",
+      "tags": [
+        "dialogue",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/DialogueController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/DialogueController.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Holds the current message until the duration elapses, then fades its alpha each frame and clears the text at zero.",
+      "tags": [
+        "dialogue",
+        "fade"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/DialogueController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/DialogueController.cs:PostMessage",
+      "type": "function",
+      "name": "PostMessage",
+      "summary": "Sets the text renderer's message at full opacity and restarts the hold timer.",
+      "tags": [
+        "dialogue"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/DialogueController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/Gerard.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Subscribes to the global SleepMenu.PlayerSlept event.",
+      "tags": [
+        "npc",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/Gerard.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Unsubscribes from the global SleepMenu.PlayerSlept event.",
+      "tags": [
+        "npc",
+        "events"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/Gerard.cs:OnPlayerSleep",
+      "type": "function",
+      "name": "OnPlayerSleep",
+      "summary": "Advances Gerard one stage per sleep when ReadyForNextState is true (UnconsciousBeach -> UnconsciousShed -> AwakeShed), clearing the flag each time.",
+      "tags": [
+        "npc",
+        "character-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/Gerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/ShedGerard.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Hides or destroys this object unless Gerard is in the AwakeShed state, then toggles visibility by whether the current game hour falls inside the active day window for this location.",
+      "tags": [
+        "npc",
+        "setup",
+        "game-clock"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/ShedGerard.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "Interact handler that posts an inside or outside message depending on the flagged location.",
+      "tags": [
+        "npc",
+        "dialogue",
+        "interactable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/ShedGerard.cs:PostInsideMessage",
+      "type": "function",
+      "name": "PostInsideMessage",
+      "summary": "Cycles through the inside dialogue list, then falls back to random general lines.",
+      "tags": [
+        "npc",
+        "dialogue"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/ShedGerard.cs:PostOutsideMessage",
+      "type": "function",
+      "name": "PostOutsideMessage",
+      "summary": "Cycles the outside dialogue list and, after the second outside line, sets Gerard.ReadyForNextState so the arc can progress.",
+      "tags": [
+        "npc",
+        "dialogue",
+        "character-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/ShedGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Shows this variant only when Gerard.State matches the scene location (beach vs shed) and the date is past the first spring; caches the DialogueController.",
+      "tags": [
+        "npc",
+        "setup",
+        "character-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:TryGiveGift",
+      "type": "function",
+      "name": "TryGiveGift",
+      "summary": "Gift handler: refuses and posts a fed message if asleep/already ready, accepts and sets ReadyForNextState if the gift is in the acceptable-food list, otherwise declines with a 'not what I need' line.",
+      "tags": [
+        "npc",
+        "gifting",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "Interact handler that posts a random starving message, or the after-fed/sleep message once the arc has progressed.",
+      "tags": [
+        "npc",
+        "dialogue",
+        "interactable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:PostAfterFedMessage",
+      "type": "function",
+      "name": "PostAfterFedMessage",
+      "summary": "Posts either a narrator 'He's asleep' line when asleep, or cycles the fed-thanks lines until exhausted, at which point the character falls asleep.",
+      "tags": [
+        "npc",
+        "dialogue",
+        "narrator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Characters/UnconsciousGerard.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BasicWeapon.cs:CreateInstanceData",
+      "type": "function",
+      "name": "CreateInstanceData",
+      "summary": "Factory that builds a fresh InstanceData from the weapon's serialized clip size and default reactive flags.",
+      "tags": [
+        "combat",
+        "weapon"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BasicWeapon.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Asserts the weapon's clip size, fire rate, and projectile prefab are configured.",
+      "tags": [
+        "combat",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BasicWeapon.cs:TryFire",
+      "type": "function",
+      "name": "TryFire",
+      "summary": "Fires if not reloading or cooling down: executes the fire method, starts the cooldown, decrements the clip, and flips to reloading when the clip empties.",
+      "tags": [
+        "combat",
+        "weapon",
+        "reload"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BasicWeapon.cs:ExecuteFireMethod",
+      "type": "function",
+      "name": "ExecuteFireMethod",
+      "summary": "Dispatches to the weapon's fire method by FireType (currently only SingleShot).",
+      "tags": [
+        "combat",
+        "weapon"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BasicWeapon.cs:FireSingleShot",
+      "type": "function",
+      "name": "FireSingleShot",
+      "summary": "Spawns the projectile from the pool at the spawn center offset by the spawn radius toward the aim point (mouse or target collider), rotates it, and calls Launch.",
+      "tags": [
+        "combat",
+        "projectile",
+        "object-pooling"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BasicWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Locates the player and caches PlayerCarry, PlayerInput, PlayerEnergyManager, PlayerMovement; caches frame renderers and hides the HUD.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:StartCharge",
+      "type": "function",
+      "name": "StartCharge",
+      "summary": "Public entry from the bow tool: rejects if charging, blocked, or carrying; switches to the Combat map, computes charge velocity from the bow, resets frame visuals, optionally locks the player into BowCharging state.",
+      "tags": [
+        "combat",
+        "bow",
+        "charge"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "While charging: aligns the pivot to the mouse, advances the frame while the use action is held, fires at max charge or on release above the minimum, else cancels; updates frame alpha and override color each frame.",
+      "tags": [
+        "combat",
+        "bow",
+        "input"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:Fire",
+      "type": "function",
+      "name": "Fire",
+      "summary": "Resolves energy affordability, spawns and launches a pooled projectile aimed at the mouse with charge-scaled speed, marks crits, drains energy, decrements the clip/reload, then ends the charge.",
+      "tags": [
+        "combat",
+        "projectile",
+        "crit",
+        "energy"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "type": "function",
+      "name": "EndCharge",
+      "summary": "Cleans up the charge: hides the HUD, resets frame alpha and shader override, restores the player's Idle state if locked, resets the pivot, returns to the Player action map, and starts the one-frame cooldown.",
+      "tags": [
+        "combat",
+        "bow"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:ChargeCooldown",
+      "type": "function",
+      "name": "ChargeCooldown",
+      "summary": "Coroutine that blocks the next charge for a single frame to prevent instant re-triggers.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:SetFrameAlpha",
+      "type": "function",
+      "name": "SetFrameAlpha",
+      "summary": "Applies an alpha to every frame sprite renderer.",
+      "tags": [
+        "combat",
+        "hud"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:SetOverride",
+      "type": "function",
+      "name": "SetOverride",
+      "summary": "Sets a MaterialPropertyBlock on every frame renderer with override color and percent shader properties.",
+      "tags": [
+        "combat",
+        "shader"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:ClearOverride",
+      "type": "function",
+      "name": "ClearOverride",
+      "summary": "Clears the MaterialPropertyBlock from every frame renderer, restoring default material color.",
+      "tags": [
+        "combat",
+        "shader"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:UpdateOverrideColor",
+      "type": "function",
+      "name": "UpdateOverrideColor",
+      "summary": "Colors the charge frame white while ramping to the crit window, solid yellow inside the crit window, and clears it past the crit window.",
+      "tags": [
+        "combat",
+        "shader",
+        "crit"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:AlignPivotToMouse",
+      "type": "function",
+      "name": "AlignPivotToMouse",
+      "summary": "Rotates the bow pivot transform to face the mouse position in world space.",
+      "tags": [
+        "combat",
+        "mouse"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/BowChargeController.cs:AbortCharge",
+      "type": "function",
+      "name": "AbortCharge",
+      "summary": "Public cancel entry point that ends the charge if one is active.",
+      "tags": [
+        "combat",
+        "bow"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/BowChargeController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the parent Rigidbody2D and resolves the friendly/enemy hitbox and hurtbox layer indices.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "On trigger overlap: skips invalid or invulnerable hurtboxes, otherwise deals damage, applies knockback, and raises the OnHit event.",
+      "tags": [
+        "combat",
+        "damage",
+        "triggers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:IsValidTarget",
+      "type": "function",
+      "name": "IsValidTarget",
+      "summary": "Checks that the overlapping collider's layer matches this hitbox's side: enemy hitbox only hits friendly hurtbox, friendly hitbox only enemy hurtbox.",
+      "tags": [
+        "combat",
+        "layers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:ApplyKnockback",
+      "type": "function",
+      "name": "ApplyKnockback",
+      "summary": "Applies an impulse knockback according to the configured KnockbackMode: self, target, both, or none.",
+      "tags": [
+        "combat",
+        "knockback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:GetTargetRb",
+      "type": "function",
+      "name": "GetTargetRb",
+      "summary": "Resolves the rigidbody to knock back from the hurtbox collider, preferring a parent rigidbody.",
+      "tags": [
+        "combat",
+        "knockback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ContactHitbox.cs:DoKnockback",
+      "type": "function",
+      "name": "DoKnockback",
+      "summary": "Static helper that pushes a rigidbody away from a source position with an impulse force.",
+      "tags": [
+        "combat",
+        "knockback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ContactHitbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyActiveWeapon.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Creates the weapon instance data, wires the target collider and spawn transform, and hands the weapon to the Reloader.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyActiveWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyActiveWeapon.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Fires the weapon every frame while the _isFiring flag is set.",
+      "tags": [
+        "combat",
+        "enemy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyActiveWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHealth.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Resets current health to max whenever the enemy is enabled (pool-spawn friendly).",
+      "tags": [
+        "combat",
+        "health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHealth.cs:TakeDamage",
+      "type": "function",
+      "name": "TakeDamage",
+      "summary": "Applies positive damage if not invulnerable, logs the attacker from the stack trace, kills the enemy at zero health, otherwise starts invulnerability frames.",
+      "tags": [
+        "combat",
+        "health",
+        "damage"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHealth.cs:InvulnerabilityFrames",
+      "type": "function",
+      "name": "InvulnerabilityFrames",
+      "summary": "Coroutine that flips IsInvulnerable on, waits the configured duration, then flips it off.",
+      "tags": [
+        "combat",
+        "health",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHealth.cs:Heal",
+      "type": "function",
+      "name": "Heal",
+      "summary": "Adds a positive heal amount, clamped to max health.",
+      "tags": [
+        "combat",
+        "health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHealth.cs:Die",
+      "type": "function",
+      "name": "Die",
+      "summary": "Logs the death and destroys the enemy GameObject.",
+      "tags": [
+        "combat",
+        "enemy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHurtbox.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Caches the parent EnemyHealth and asserts it exists.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHurtbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/EnemyHurtbox.cs:TakeDamage",
+      "type": "function",
+      "name": "TakeDamage",
+      "summary": "Forwards damage to the parent EnemyHealth.TakeDamage.",
+      "tags": [
+        "combat",
+        "damage"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/EnemyHurtbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the rigidbody and EnemyHealth and subscribes to CurrentHealth changes to detect taking damage.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:GetPlayer",
+      "type": "function",
+      "name": "GetPlayer",
+      "summary": "Lazily finds the player by tag and caches the PlayerHurtbox transform as the chase target.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Initializes the wander target and resolves interaction layers for avoidance from the steering helper.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Periodically re-detects the player: transitions to Chasing when within view radius with no obstacle linecast, and back to Wandering when the player leaves (unless already aggressive).",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "state-machine"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:FixedUpdate",
+      "type": "function",
+      "name": "FixedUpdate",
+      "summary": "Runs the wander or chase behavior based on the current state.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateWandering",
+      "type": "function",
+      "name": "UpdateWandering",
+      "summary": "Refreshes the steering wander force on an interval, adds the wander plus avoidance force, and clamps velocity to wander speed.",
+      "tags": [
+        "combat",
+        "steering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateChasing",
+      "type": "function",
+      "name": "UpdateChasing",
+      "summary": "Applies a seek force toward the player plus avoidance, clamped to chase speed.",
+      "tags": [
+        "combat",
+        "steering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/FlyingChaser.cs:OnHealthChanged",
+      "type": "function",
+      "name": "OnHealthChanged",
+      "summary": "Reactive health callback that flips the chaser aggressive and enters Chasing the first time it takes damage.",
+      "tags": [
+        "combat",
+        "reactive",
+        "state-machine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/FlyingChaser.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Subscribes to the inventory's ActiveItemSlot reactive and re-resolves the active weapon.",
+      "tags": [
+        "combat",
+        "reactive"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/PlayerActiveWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Runs all stored unsubscription hooks to detach from the inventory reactive.",
+      "tags": [
+        "combat",
+        "reactive"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/PlayerActiveWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:SetActiveWeapon",
+      "type": "function",
+      "name": "SetActiveWeapon",
+      "summary": "Reads the active inventory item; clears the reloader weapon if not a ranged weapon, otherwise hands it the RangedWeaponItem with its InstanceData and assigns the spawn center/radius.",
+      "tags": [
+        "combat",
+        "weapon",
+        "inventory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/PlayerActiveWeapon.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the rigidbody, sprite renderer, and child ContactHitbox, stores base damage, and subscribes to the hitbox's OnHit event.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:OnDestroy",
+      "type": "function",
+      "name": "OnDestroy",
+      "summary": "Unsubscribes from the hitbox's OnHit event.",
+      "tags": [
+        "combat",
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "Disables the projectile when it overlaps a Default-layer collider (terrain/walls).",
+      "tags": [
+        "combat",
+        "projectile"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:Launch",
+      "type": "function",
+      "name": "Launch",
+      "summary": "Starts the lifespan timeout and sets the rigidbody velocity to the direction times speed and an optional speed multiplier.",
+      "tags": [
+        "combat",
+        "projectile"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:SetCrit",
+      "type": "function",
+      "name": "SetCrit",
+      "summary": "Toggles crit state: yellow sprite and doubled hitbox damage when crit, white and base damage otherwise.",
+      "tags": [
+        "combat",
+        "crit"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:OnHitTarget",
+      "type": "function",
+      "name": "OnHitTarget",
+      "summary": "Hit event handler that disables the projectile once it lands a hit.",
+      "tags": [
+        "combat",
+        "projectile"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectileAfterLifespan",
+      "type": "function",
+      "name": "DisableProjectileAfterLifespan",
+      "summary": "Coroutine that waits the lifespan then disables the projectile.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectile",
+      "type": "function",
+      "name": "DisableProjectile",
+      "summary": "Stops the lifespan coroutine, zeroes velocity, resets crit, and returns the projectile to the object pool.",
+      "tags": [
+        "combat",
+        "object-pooling"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Projectile.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Caches the rigidbody, sprite renderer, and EnemyHealth, records the original color, and subscribes to health changes.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Finds the player by tag, caches the PlayerHurtbox transform, and picks an initial wander target.",
+      "tags": [
+        "combat",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Runs periodic detection and, while Firing, drives the firing pattern logic.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FixedUpdate",
+      "type": "function",
+      "name": "FixedUpdate",
+      "summary": "Runs the movement behavior matching the current state (idle wander, engage, or hold position while firing).",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "type": "function",
+      "name": "HandleDetection",
+      "summary": "Periodically checks line of sight to the player within the approach radius to enter Engaging, and returns to Idle when the player is lost and the enemy is not aggressive.",
+      "tags": [
+        "combat",
+        "enemy-ai",
+        "state-machine"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:PickNewWanderTarget",
+      "type": "function",
+      "name": "PickNewWanderTarget",
+      "summary": "Picks a random point within the wander radius around the current position as the new idle destination.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopIdleWait",
+      "type": "function",
+      "name": "StopIdleWait",
+      "summary": "Cancels an in-progress idle wait coroutine and clears the waiting flag.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateIdleMovement",
+      "type": "function",
+      "name": "UpdateIdleMovement",
+      "summary": "Drifts toward the wander target at idle speed and, on arrival, starts the idle wait coroutine.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:IdleWaitCoroutine",
+      "type": "function",
+      "name": "IdleWaitCoroutine",
+      "summary": "Halts movement for a random wait duration, then picks a new wander target.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateEngagingMovement",
+      "type": "function",
+      "name": "UpdateEngagingMovement",
+      "summary": "Moves toward the player at engage speed, retreats if inside the retreat radius, and enters Firing when inside the firing band.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateFiringMovement",
+      "type": "function",
+      "name": "UpdateFiringMovement",
+      "summary": "Holds position while firing and drops back to Engaging when the player gets too close or too far.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleFiring",
+      "type": "function",
+      "name": "HandleFiring",
+      "summary": "Gates on the fire rate and whether a firing coroutine is already active, then executes the configured pattern.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "type": "function",
+      "name": "ExecuteFiringPattern",
+      "summary": "Dispatches to the pattern-specific fire method, starting coroutines for burst and aimed shots.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopActiveFireCoroutine",
+      "type": "function",
+      "name": "StopActiveFireCoroutine",
+      "summary": "Cancels an in-flight burst/aimed coroutine, clears the active flag, and restores the sprite color.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:GetDirectionToPlayer",
+      "type": "function",
+      "name": "GetDirectionToPlayer",
+      "summary": "Returns the normalized direction from the enemy to the player.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "function",
+      "name": "SpawnAndLaunchProjectile",
+      "summary": "Spawns a pooled projectile at the spawn offset, orients it, launches it with speed/damage multipliers, and boosts the hitbox damage when the damage multiplier exceeds one.",
+      "tags": [
+        "combat",
+        "projectile",
+        "object-pooling"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSingleShot",
+      "type": "function",
+      "name": "FireSingleShot",
+      "summary": "Launches a single projectile aimed at the player.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSpreadShot",
+      "type": "function",
+      "name": "FireSpreadShot",
+      "summary": "Launches a fan of projectiles across a configurable angle around the player direction.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireParallelSpread",
+      "type": "function",
+      "name": "FireParallelSpread",
+      "summary": "Launches a line of parallel projectiles perpendicular to the aim direction at a given spacing.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:BurstFireCoroutine",
+      "type": "function",
+      "name": "BurstFireCoroutine",
+      "summary": "Coroutine that fires N aimed shots at a fixed interval, blocking other firing while active.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:AimedShotCoroutine",
+      "type": "function",
+      "name": "AimedShotCoroutine",
+      "summary": "Coroutine that telegraphs with a red sprite while stationary for the charge duration, then fires a faster, harder-hitting aimed shot.",
+      "tags": [
+        "combat",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireRingShot",
+      "type": "function",
+      "name": "FireRingShot",
+      "summary": "Fires a full 360-degree ring of projectiles.",
+      "tags": [
+        "combat",
+        "enemy-ai"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:OnHealthChanged",
+      "type": "function",
+      "name": "OnHealthChanged",
+      "summary": "Reactive health callback that marks the enemy aggressive and jumps from Idle to Engaging on first damage.",
+      "tags": [
+        "combat",
+        "reactive",
+        "state-machine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "class:Assets/Scripts/Birding/BirdingGame.cs:BirdingGame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the BirdingGame type."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingWinFrame.cs",
+      "target": "class:Assets/Scripts/Birding/BirdingWinFrame.cs:BirdingWinFrame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the BirdingWinFrame type."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "class:Assets/Scripts/Birding/NearbyBirdTracker.cs:NearbyBirdTracker",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the NearbyBirdTracker type."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "target": "class:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:SetBirdingOpacityGradient",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the SetBirdingOpacityGradient type."
+    },
+    {
+      "source": "file:Assets/Scripts/BootstrapperConfig.cs",
+      "target": "class:Assets/Scripts/BootstrapperConfig.cs:BootstrapperConfig",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the BootstrapperConfig type."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "class:Assets/Scripts/Buildings/AbandonedShed.cs:AbandonedShed",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the AbandonedShed type."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "class:Assets/Scripts/Buildings/AbandonedShed.cs:RepairState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the RepairState type."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShedData.cs",
+      "target": "class:Assets/Scripts/Buildings/AbandonedShedData.cs:AbandonedShedData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the AbandonedShedData type."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShedInterior.cs",
+      "target": "class:Assets/Scripts/Buildings/AbandonedShedInterior.cs:AbandonedShedInterior",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the AbandonedShedInterior type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "target": "class:Assets/Scripts/Characters/DialogueController.cs:DialogueController",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the DialogueController type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/Gerard.cs",
+      "target": "class:Assets/Scripts/Characters/Gerard.cs:Gerard",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Gerard type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/Gerard.cs",
+      "target": "class:Assets/Scripts/Characters/Gerard.cs:Gerard.States",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Gerard.States type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/IGiftable.cs",
+      "target": "class:Assets/Scripts/Characters/IGiftable.cs:IGiftReceiving",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the IGiftReceiving type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "class:Assets/Scripts/Characters/ShedGerard.cs:ShedGerard",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the ShedGerard type."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "class:Assets/Scripts/Characters/UnconsciousGerard.cs:UnconsciousGerard",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the UnconsciousGerard type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the RangedWeaponItem type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem.InstanceData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the RangedWeaponItem.InstanceData type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "class:Assets/Scripts/Combat/BowChargeController.cs:BowChargeController",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the BowChargeController type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "class:Assets/Scripts/Combat/ContactHitbox.cs:ContactHitbox",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the ContactHitbox type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "target": "class:Assets/Scripts/Combat/EnemyActiveWeapon.cs:EnemyActiveWeapon",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the EnemyActiveWeapon type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "class:Assets/Scripts/Combat/EnemyHealth.cs:EnemyHealth",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the EnemyHealth type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "target": "class:Assets/Scripts/Combat/EnemyHurtbox.cs:EnemyHurtbox",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the EnemyHurtbox type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "class:Assets/Scripts/Combat/FlyingChaser.cs:FlyingChaser",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FlyingChaser type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/IHurtBox.cs",
+      "target": "class:Assets/Scripts/Combat/IHurtBox.cs:IHurtBox",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the IHurtBox type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/KnockbackMode.cs",
+      "target": "class:Assets/Scripts/Combat/KnockbackMode.cs:KnockbackMode",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the KnockbackMode type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "target": "class:Assets/Scripts/Combat/PlayerActiveWeapon.cs:PlayerActiveWeapon",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the PlayerActiveWeapon type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "class:Assets/Scripts/Combat/Projectile.cs:Projectile",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Projectile type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ProjectileFiringEnemy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the ProjectileFiringEnemy type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FiringPattern",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FiringPattern type."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:EnemyState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the EnemyState type."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Play."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains HandleState."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:TagAnyBirdsUnderCursor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains TagAnyBirdsUnderCursor."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:MoveCursor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains MoveCursor."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:BounceFrame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains BounceFrame."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:GetNextBounceMotionValues",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetNextBounceMotionValues."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:EnterTargetingState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains EnterTargetingState."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:FixedUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FixedUpdate."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:AlignHUDToMousePosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains AlignHUDToMousePosition."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:ConfigureControls",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ConfigureControls."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:ResetGameState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ResetGameState."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:GetParametersFromBinoculars",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetParametersFromBinoculars."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingGame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:EndGame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains EndGame."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingWinFrame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:PlayWin",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PlayWin."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/BirdingWinFrame.cs",
+      "target": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:WaitForAnimationToEnd",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains WaitForAnimationToEnd."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:InitializeNearbyBirds",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains InitializeNearbyBirds."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnDisable."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnTriggerEnter2D."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnTriggerExit2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnTriggerExit2D."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/NearbyBirdTracker.cs",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:OnBirdDestroyed",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnBirdDestroyed."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "target": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "target": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+      "target": "function:Assets/Scripts/Birding/SetBirdingOpacityGradient.cs:OnDestroy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnDestroy."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:GetPositionTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetPositionTarget."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:GetSortingOrder",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetSortingOrder."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains CursorInteract."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:OnUseAxe",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnUseAxe."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShed.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:ShakeVines",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ShakeVines."
+    },
+    {
+      "source": "file:Assets/Scripts/Buildings/AbandonedShedInterior.cs",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShedInterior.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "target": "function:Assets/Scripts/Characters/DialogueController.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "target": "function:Assets/Scripts/Characters/DialogueController.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "target": "function:Assets/Scripts/Characters/DialogueController.cs:PostMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PostMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/Gerard.cs",
+      "target": "function:Assets/Scripts/Characters/Gerard.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/Gerard.cs",
+      "target": "function:Assets/Scripts/Characters/Gerard.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnDisable."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/Gerard.cs",
+      "target": "function:Assets/Scripts/Characters/Gerard.cs:OnPlayerSleep",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnPlayerSleep."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains CursorInteract."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:PostInsideMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PostInsideMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:PostOutsideMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PostOutsideMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:TryGiveGift",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains TryGiveGift."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains CursorInteract."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:PostAfterFedMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PostAfterFedMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:CreateInstanceData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains CreateInstanceData."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:TryFire",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains TryFire."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:ExecuteFireMethod",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ExecuteFireMethod."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:FireSingleShot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FireSingleShot."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:StartCharge",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains StartCharge."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:Fire",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Fire."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains EndCharge."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:ChargeCooldown",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ChargeCooldown."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetFrameAlpha",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains SetFrameAlpha."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetOverride",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains SetOverride."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:ClearOverride",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ClearOverride."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:UpdateOverrideColor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateOverrideColor."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:AlignPivotToMouse",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains AlignPivotToMouse."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:AbortCharge",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains AbortCharge."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnTriggerEnter2D."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:IsValidTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains IsValidTarget."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:ApplyKnockback",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ApplyKnockback."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:GetTargetRb",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetTargetRb."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:DoKnockback",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains DoKnockback."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyActiveWeapon.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyActiveWeapon.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:TakeDamage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains TakeDamage."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:InvulnerabilityFrames",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains InvulnerabilityFrames."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:Heal",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Heal."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:Die",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Die."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHurtbox.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "target": "function:Assets/Scripts/Combat/EnemyHurtbox.cs:TakeDamage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains TakeDamage."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:GetPlayer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetPlayer."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:FixedUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FixedUpdate."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateWandering",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateWandering."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateChasing",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateChasing."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:OnHealthChanged",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnHealthChanged."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnEnable."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnDisable."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "target": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:SetActiveWeapon",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains SetActiveWeapon."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:OnDestroy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnDestroy."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnTriggerEnter2D."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:Launch",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Launch."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:SetCrit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains SetCrit."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:OnHitTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnHitTarget."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectileAfterLifespan",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains DisableProjectileAfterLifespan."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectile",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains DisableProjectile."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Awake."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Start."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains Update."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FixedUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FixedUpdate."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains HandleDetection."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:PickNewWanderTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains PickNewWanderTarget."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopIdleWait",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains StopIdleWait."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateIdleMovement",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateIdleMovement."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:IdleWaitCoroutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains IdleWaitCoroutine."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateEngagingMovement",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateEngagingMovement."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateFiringMovement",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains UpdateFiringMovement."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleFiring",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains HandleFiring."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains ExecuteFiringPattern."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopActiveFireCoroutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains StopActiveFireCoroutine."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:GetDirectionToPlayer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains GetDirectionToPlayer."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains SpawnAndLaunchProjectile."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSingleShot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FireSingleShot."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSpreadShot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FireSpreadShot."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireParallelSpread",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FireParallelSpread."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:BurstFireCoroutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains BurstFireCoroutine."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:AimedShotCoroutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains AimedShotCoroutine."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireRingShot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains FireRingShot."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:OnHealthChanged",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File contains OnHealthChanged."
+    },
+    {
+      "source": "class:Assets/Scripts/Buildings/AbandonedShed.cs:AbandonedShed",
+      "target": "class:Assets/Scripts/Buildings/AbandonedShed.cs:RepairState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "RepairState is a nested type of AbandonedShed."
+    },
+    {
+      "source": "class:Assets/Scripts/Characters/Gerard.cs:Gerard",
+      "target": "class:Assets/Scripts/Characters/Gerard.cs:Gerard.States",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "States is a nested type of Gerard."
+    },
+    {
+      "source": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem",
+      "target": "class:Assets/Scripts/Combat/BasicWeapon.cs:RangedWeaponItem.InstanceData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "InstanceData is a nested type of RangedWeaponItem."
+    },
+    {
+      "source": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ProjectileFiringEnemy",
+      "target": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FiringPattern",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FiringPattern is a nested enum of ProjectileFiringEnemy."
+    },
+    {
+      "source": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ProjectileFiringEnemy",
+      "target": "class:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:EnemyState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "EnemyState is a nested enum of ProjectileFiringEnemy."
+    },
+    {
+      "source": "class:Assets/Scripts/Combat/EnemyHurtbox.cs:EnemyHurtbox",
+      "target": "class:Assets/Scripts/Combat/IHurtBox.cs:IHurtBox",
+      "type": "implements",
+      "weight": 0.9,
+      "direction": "forward",
+      "description": "EnemyHurtbox implements the IHurtBox damage contract."
+    },
+    {
+      "source": "class:Assets/Scripts/Characters/UnconsciousGerard.cs:UnconsciousGerard",
+      "target": "class:Assets/Scripts/Characters/IGiftable.cs:IGiftReceiving",
+      "type": "implements",
+      "weight": 0.9,
+      "direction": "forward",
+      "description": "UnconsciousGerard implements the IGiftReceiving gift interface."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:ResetGameState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play resets minigame state before configuring."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:ConfigureControls",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play switches to the Birding action map."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:GetParametersFromBinoculars",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play derives velocities from the active binoculars."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:Play",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:AlignHUDToMousePosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play orients the HUD toward the mouse."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:AlignHUDToMousePosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FixedUpdate keeps the HUD aligned each tick."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FixedUpdate drives the game state machine."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:EnterTargetingState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Charging state transitions into targeting."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:BounceFrame",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Targeting state bounces the frame to its stop point."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:MoveCursor",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Targeting state advances the cursor."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:TagAnyBirdsUnderCursor",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Targeting state tags birds on action press."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:HandleState",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:EndGame",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Targeting state ends the game on tag or cursor limit."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingGame.cs:BounceFrame",
+      "target": "function:Assets/Scripts/Birding/BirdingGame.cs:GetNextBounceMotionValues",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "BounceFrame integrates the damped spring each tick."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:PlayWin",
+      "target": "function:Assets/Scripts/Birding/BirdingWinFrame.cs:WaitForAnimationToEnd",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "PlayWin waits for the win clip to finish."
+    },
+    {
+      "source": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:Start",
+      "target": "function:Assets/Scripts/Birding/NearbyBirdTracker.cs:InitializeNearbyBirds",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Start seeds the set with birds already in range."
+    },
+    {
+      "source": "function:Assets/Scripts/Buildings/AbandonedShed.cs:OnUseAxe",
+      "target": "function:Assets/Scripts/Buildings/AbandonedShed.cs:ShakeVines",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each chop shakes the vines."
+    },
+    {
+      "source": "function:Assets/Scripts/Characters/ShedGerard.cs:CursorInteract",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:PostInsideMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Inside interactions post the inside message."
+    },
+    {
+      "source": "function:Assets/Scripts/Characters/ShedGerard.cs:CursorInteract",
+      "target": "function:Assets/Scripts/Characters/ShedGerard.cs:PostOutsideMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Outside interactions post the outside message."
+    },
+    {
+      "source": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:TryGiveGift",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:PostAfterFedMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Gift handler posts the fed/asleep line when appropriate."
+    },
+    {
+      "source": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:CursorInteract",
+      "target": "function:Assets/Scripts/Characters/UnconsciousGerard.cs:PostAfterFedMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Interact posts the fed/asleep line once the arc progresses."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BasicWeapon.cs:TryFire",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:ExecuteFireMethod",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "TryFire dispatches to the fire method."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BasicWeapon.cs:ExecuteFireMethod",
+      "target": "function:Assets/Scripts/Combat/BasicWeapon.cs:FireSingleShot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "SingleShot fires one pooled projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:AlignPivotToMouse",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update keeps the pivot aimed at the mouse while charging."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:Fire",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update fires at full charge or on release above minimum."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update cancels the charge below the minimum."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetFrameAlpha",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update fades the frame with charge progress."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Update",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:UpdateOverrideColor",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update recolors the frame by charge tier."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:StartCharge",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetFrameAlpha",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "StartCharge begins with a hidden frame."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:Fire",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fire always ends the charge afterward."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetFrameAlpha",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "EndCharge resets frame alpha to zero."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:ClearOverride",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "EndCharge clears the shader override."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:ChargeCooldown",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "EndCharge starts the one-frame cooldown gate."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:UpdateOverrideColor",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:SetOverride",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Charge tiers apply white/yellow overrides."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:UpdateOverrideColor",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:ClearOverride",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Charge tiers clear the override past the crit window."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/BowChargeController.cs:AbortCharge",
+      "target": "function:Assets/Scripts/Combat/BowChargeController.cs:EndCharge",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "AbortCharge ends the charge early."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ContactHitbox.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:IsValidTarget",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Hit validation by layer pairing."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ContactHitbox.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:ApplyKnockback",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Hit applies configured knockback."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ContactHitbox.cs:ApplyKnockback",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:DoKnockback",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Knockback pushes the owning rigidbody."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ContactHitbox.cs:ApplyKnockback",
+      "target": "function:Assets/Scripts/Combat/ContactHitbox.cs:GetTargetRb",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Target knockback resolves the target rigidbody."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/EnemyHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:InvulnerabilityFrames",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Non-fatal hits start i-frames."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/EnemyHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Combat/EnemyHealth.cs:Die",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Zero health kills the enemy."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/FlyingChaser.cs:Update",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:GetPlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Detection resolves the player transform."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/FlyingChaser.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateWandering",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Wandering state runs wander steering."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/FlyingChaser.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/FlyingChaser.cs:UpdateChasing",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Chasing state runs seek + avoidance."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:OnEnable",
+      "target": "function:Assets/Scripts/Combat/PlayerActiveWeapon.cs:SetActiveWeapon",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "OnEnable resolves the active weapon."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Projectile.cs:Launch",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectileAfterLifespan",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Launch starts the lifespan timeout."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Projectile.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Terrain contact disables the projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Projectile.cs:OnHitTarget",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Landing a hit disables the projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectileAfterLifespan",
+      "target": "function:Assets/Scripts/Combat/Projectile.cs:DisableProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Timeout disables the projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Start",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:PickNewWanderTarget",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Start picks an initial wander target."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Update",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update runs periodic player detection."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:Update",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleFiring",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Update drives firing while in the Firing state."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateIdleMovement",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Idle state wanders."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateEngagingMovement",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Engaging state moves by distance bands."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateFiringMovement",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Firing state holds position."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopIdleWait",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Detection cancels idle waiting."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopActiveFireCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Detection cancels an in-flight fire pattern."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleDetection",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:PickNewWanderTarget",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Detection picks a new wander target on reset."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateIdleMovement",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:IdleWaitCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Reaching the target starts an idle wait."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:UpdateFiringMovement",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:StopActiveFireCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Leaving the firing band cancels the pattern."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:HandleFiring",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fire-rate gating then executes the pattern."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSingleShot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "SingleShot pattern fires one shot."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSpreadShot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "SpreadShot pattern fires a fan."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireParallelSpread",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ParallelSpread pattern fires a line."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:BurstFireCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "BurstFire starts the burst coroutine."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:AimedShotCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "AimedShot starts the charge coroutine."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:ExecuteFiringPattern",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireRingShot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "RingShot fires a full ring."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:BurstFireCoroutine",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each burst shot spawns a projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:AimedShotCoroutine",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Aimed shot spawns a boosted projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSingleShot",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:GetDirectionToPlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Aim resolves the player direction."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSingleShot",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Single shot spawns the projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSpreadShot",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:GetDirectionToPlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spread base angle uses the player direction."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireSpreadShot",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each spread angle spawns a projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireParallelSpread",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each parallel lane spawns a projectile."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:FireRingShot",
+      "target": "function:Assets/Scripts/Combat/ProjectileFiringEnemy.cs:SpawnAndLaunchProjectile",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each ring angle spawns a projectile."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ShedGerard posts messages through DialogueController.PostMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/ShedGerard.cs",
+      "target": "file:Assets/Scripts/Characters/Gerard.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ShedGerard reads Gerard.State for visibility and sets ReadyForNextState."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "file:Assets/Scripts/Characters/DialogueController.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "UnconsciousGerard posts messages through DialogueController.PostMessage."
+    },
+    {
+      "source": "file:Assets/Scripts/Characters/UnconsciousGerard.cs",
+      "target": "file:Assets/Scripts/Characters/Gerard.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "UnconsciousGerard reads and sets Gerard.State / ReadyForNextState."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyHurtbox.cs",
+      "target": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "EnemyHurtbox forwards damage to the parent EnemyHealth."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/FlyingChaser.cs",
+      "target": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FlyingChaser subscribes to EnemyHealth.CurrentHealth for aggression."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "file:Assets/Scripts/Combat/EnemyHealth.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ProjectileFiringEnemy subscribes to EnemyHealth.CurrentHealth for aggression."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ProjectileFiringEnemy.cs",
+      "target": "file:Assets/Scripts/Combat/Projectile.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ProjectileFiringEnemy spawns and launches Projectile instances."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Projectile subscribes to its child ContactHitbox.OnHit event."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Projectile.cs",
+      "target": "file:Assets/Scripts/Combat/IHurtBox.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Projectile's OnHitTarget consumes the IHurtBox hit payload."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "file:Assets/Scripts/Combat/IHurtBox.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ContactHitbox resolves IHurtBox components and calls TakeDamage."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ContactHitbox.cs",
+      "target": "file:Assets/Scripts/Combat/KnockbackMode.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "ContactHitbox branches on the shared KnockbackMode enum."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "target": "file:Assets/Scripts/Combat/Projectile.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FireSingleShot spawns and launches Projectile instances."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "BowChargeController reads RangedWeaponItem config and InstanceData."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/BowChargeController.cs",
+      "target": "file:Assets/Scripts/Combat/Projectile.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "BowChargeController spawns and launches Projectile instances."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+      "target": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "EnemyActiveWeapon builds RangedWeaponItem instance data and fires it."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+      "target": "file:Assets/Scripts/Combat/BasicWeapon.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "PlayerActiveWeapon casts the active item to RangedWeaponItem and its InstanceData."
+    }
+  ],
+  "files": [
+    "Assets/Scripts/Birding/BirdingGame.cs",
+    "Assets/Scripts/Birding/BirdingWinFrame.cs",
+    "Assets/Scripts/Birding/NearbyBirdTracker.cs",
+    "Assets/Scripts/Birding/SetBirdingOpacityGradient.cs",
+    "Assets/Scripts/BootstrapperConfig.cs",
+    "Assets/Scripts/Buildings/AbandonedShed.cs",
+    "Assets/Scripts/Buildings/AbandonedShedData.cs",
+    "Assets/Scripts/Buildings/AbandonedShedInterior.cs",
+    "Assets/Scripts/Characters/DialogueController.cs",
+    "Assets/Scripts/Characters/Gerard.cs",
+    "Assets/Scripts/Characters/IGiftable.cs",
+    "Assets/Scripts/Characters/ShedGerard.cs",
+    "Assets/Scripts/Characters/UnconsciousGerard.cs",
+    "Assets/Scripts/Combat/BasicWeapon.cs",
+    "Assets/Scripts/Combat/BowChargeController.cs",
+    "Assets/Scripts/Combat/ContactHitbox.cs",
+    "Assets/Scripts/Combat/EnemyActiveWeapon.cs",
+    "Assets/Scripts/Combat/EnemyHealth.cs",
+    "Assets/Scripts/Combat/EnemyHurtbox.cs",
+    "Assets/Scripts/Combat/FlyingChaser.cs",
+    "Assets/Scripts/Combat/IHurtBox.cs",
+    "Assets/Scripts/Combat/KnockbackMode.cs",
+    "Assets/Scripts/Combat/PlayerActiveWeapon.cs",
+    "Assets/Scripts/Combat/Projectile.cs",
+    "Assets/Scripts/Combat/ProjectileFiringEnemy.cs"
+  ]
+}

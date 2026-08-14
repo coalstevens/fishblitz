@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "config:ProjectSettings/BurstAotSettings_StandaloneOSX.json",
+      "type": "config",
+      "name": "BurstAotSettings_StandaloneOSX.json",
+      "summary": "Burst AOT compiler settings for the standalone macOS build target. Enables Burst compilation and optimisations while disabling safety checks and debug-in-all-builds, targeting 64-bit x86/ARM CPUs with optimize-for-size off.",
+      "tags": ["unity", "project-settings", "burst-aot", "build-target", "standalone-macos"],
+      "complexity": "simple",
+      "filePath": "ProjectSettings/BurstAotSettings_StandaloneOSX.json"
+    },
+    {
+      "id": "config:ProjectSettings/BurstAotSettings_WebGL.json",
+      "type": "config",
+      "name": "BurstAotSettings_WebGL.json",
+      "summary": "Burst AOT compiler settings for the WebGL build target. Enables Burst compilation and optimisations with safety checks off, but omits a CPU target list since WebGL has no specific CPU target selection.",
+      "tags": ["unity", "project-settings", "burst-aot", "build-target", "webgl"],
+      "complexity": "simple",
+      "filePath": "ProjectSettings/BurstAotSettings_WebGL.json"
+    },
+    {
+      "id": "config:ProjectSettings/CommonBurstAotSettings.json",
+      "type": "config",
+      "name": "CommonBurstAotSettings.json",
+      "summary": "Burst AOT settings shared across all build targets: a minimal MonoBehaviour block with an empty DisabledWarnings string, meaning no Burst compiler warnings are suppressed globally.",
+      "tags": ["unity", "project-settings", "burst-aot", "shared-settings"],
+      "complexity": "simple",
+      "filePath": "ProjectSettings/CommonBurstAotSettings.json"
+    },
+    {
+      "id": "document:ProjectSettings/ProjectVersion.txt",
+      "type": "document",
+      "name": "ProjectVersion.txt",
+      "summary": "Records the Unity Editor version the project is opened with: 6000.3.10f1 (revision e35f0c77bd8e). This pins the editor version despite the project aiming for Unity 2022.3+.",
+      "tags": ["unity", "project-settings", "unity-version", "editor"],
+      "complexity": "simple",
+      "filePath": "ProjectSettings/ProjectVersion.txt"
+    },
+    {
+      "id": "config:ProjectSettings/SceneTemplateSettings.json",
+      "type": "config",
+      "name": "SceneTemplateSettings.json",
+      "summary": "Scene template pin/dependency settings for the Unity Scene Template system. Registers dependency types (AnimationClip, AnimatorController, Material, Shader, Texture, SceneAsset, etc.) with default instantiation modes — assets like MonoScript, Shader, and SceneAsset default to a copy; textures and materials default to referencing the original.",
+      "tags": ["unity", "project-settings", "scene-template", "asset-pipeline"],
+      "complexity": "moderate",
+      "filePath": "ProjectSettings/SceneTemplateSettings.json"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:ProjectSettings/BurstAotSettings_StandaloneOSX.json",
+      "target": "config:ProjectSettings/CommonBurstAotSettings.json",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Both are Burst AOT compiler settings; the per-target file applies on top of the common settings."
+    },
+    {
+      "source": "config:ProjectSettings/BurstAotSettings_WebGL.json",
+      "target": "config:ProjectSettings/CommonBurstAotSettings.json",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Both are Burst AOT compiler settings; the per-target file applies on top of the common settings."
+    },
+    {
+      "source": "config:ProjectSettings/BurstAotSettings_StandaloneOSX.json",
+      "target": "config:ProjectSettings/BurstAotSettings_WebGL.json",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Sibling per-build-target Burst AOT settings files with the same option structure."
+    }
+  ],
+  "files": [
+    "ProjectSettings/BurstAotSettings_StandaloneOSX.json",
+    "ProjectSettings/BurstAotSettings_WebGL.json",
+    "ProjectSettings/CommonBurstAotSettings.json",
+    "ProjectSettings/ProjectVersion.txt",
+    "ProjectSettings/SceneTemplateSettings.json"
+  ]
+}

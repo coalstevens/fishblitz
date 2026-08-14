@@ -1,0 +1,38 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'document:ProjectSettings/ProjectVersion.txt' has no edges (orphan)",
+    "Node 'config:ProjectSettings/SceneTemplateSettings.json' has no edges (orphan)",
+    "Node 'document:docs/agents/domain.md' has no edges (orphan)",
+    "Node 'config:Assets/Core/fish blitz.inputactions' has no edges (orphan)",
+    "Node 'document:Assets/DOTween/Editor/DOTweenEditor.XML' has no edges (orphan)",
+    "Node 'file:Assets/Scripts/Birding/BirdSeasonSpawnData.cs' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 1284,
+    "totalEdges": 1661,
+    "totalLayers": 12,
+    "tourSteps": 14,
+    "nodeTypes": {
+      "document": 11,
+      "config": 7,
+      "file": 227,
+      "class": 292,
+      "function": 746,
+      "concept": 1
+    },
+    "edgeTypes": {
+      "related": 59,
+      "contains": 1043,
+      "inherits": 17,
+      "calls": 458,
+      "documents": 9,
+      "reads_from": 33,
+      "configures": 1,
+      "implements": 11,
+      "subscribes": 13,
+      "writes_to": 6,
+      "similar_to": 11
+    }
+  }
+}

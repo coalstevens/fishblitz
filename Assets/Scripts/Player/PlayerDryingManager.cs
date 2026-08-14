@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using ReactiveUnity;
 
+[RequireComponent(typeof(PlayerEnergyManager), typeof(PlayerTemperatureManager))]
 public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveableComponent
 {
     public enum WetnessStates { Wet, Dry, Drying, Wetting };

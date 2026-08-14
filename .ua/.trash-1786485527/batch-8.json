@@ -1,0 +1,1364 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/Combat/ReloadBar.cs",
+      "type": "file",
+      "name": "ReloadBar.cs",
+      "summary": "In-world progress bar for ranged weapon reloading. Subscribes to the Reloader's active weapon instance data via ReactiveUnity OnChange, shows/scales a child SpriteRenderer to the reload progress each frame while IsReloading is true.",
+      "tags": ["combat", "reload-bar", "reactive-unity", "ui", "ranged-weapon"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ReloadBar.cs",
+      "languageNotes": "Uses Reactive<T>.OnChange callbacks stored as Action unsubscribe closures, an Assert.IsNotNull inspector check, and a coroutine for per-frame bar scaling."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/Reloader.cs",
+      "type": "file",
+      "name": "Reloader.cs",
+      "summary": "Drives reload and fire-cooldown timers for the player's currently equipped ranged weapon. In FixedUpdate it advances ReloadElapsed/CoolDownElapsed on the weapon's InstanceData and flips IsReloading/IsCoolingDown Reactive flags when complete, refilling the clip.",
+      "tags": ["combat", "reload", "cooldown", "ranged-weapon", "reactive-unity"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs",
+      "languageNotes": "ReactiveUnity Reactive<T> fields for the active weapon and its instance data; timer logic lives in FixedUpdate using Time.fixedDeltaTime."
+    },
+    {
+      "id": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "type": "file",
+      "name": "SteeringForces.cs",
+      "summary": "Static library of steering behaviors for enemy/bird AI: Seek, a wander force with a projected ring, obstacle avoidance via CircleCast, a Reynolds-style boid force (separation/alignment/cohesion over nearest IFlockMate neighbors), and a collision-mask helper that derives interaction layers from the rigidbody and layer matrix.",
+      "tags": ["combat", "enemy-ai", "steering", "boid", "flocking", "movement"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs",
+      "languageNotes": "Pure static helpers returning Vector2 forces so callers sum them into their own movement; generic method over IFlockMate for boid behavior."
+    },
+    {
+      "id": "file:Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "type": "file",
+      "name": "FishBarTrigger.cs",
+      "summary": "A trigger zone on the fishing minigame bar. Reports when the rising cursor passes it (OnTriggerExit2D sends PassedFishBarTrigger up the hierarchy), toggles a fulfilled/unfulfilled sprite, and optionally oscillates up and down within clamped bounds at a FishingRound-configured speed.",
+      "tags": ["fishing", "minigame", "trigger", "oscillation", "sprite-renderer"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "languageNotes": "SendMessageUpwards for minigame communication; oscillation driven in FixedUpdate by translating the trigger transform between local bounds."
+    },
+    {
+      "id": "file:Assets/Scripts/Fishing/FishType.cs",
+      "type": "file",
+      "name": "FishType.cs",
+      "summary": "Config ScriptableBehaviour-style component describing a catchable fish: which scenes it can be caught in, the Inventory.Item it grants, spawnable seasons/day periods, and a list of FishingRound minigame difficulty configs (speed, trigger count/spacing, stacking modifier, oscillation).",
+      "tags": ["fishing", "fish-species", "config", "minigame", "spawning"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishType.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "type": "file",
+      "name": "FishingGame.cs",
+      "summary": "The fishing minigame. Picks a valid FishType for the current scene/season/period, runs one or more rounds where a rising cursor passes trigger bars the player must time with the use key, handles hit/miss detection via Overlap, and on win awards the fish item + capture-log entry while on fail shakes and launches the cursor.",
+      "tags": ["fishing", "minigame", "timing-game", "rounds", "reward", "audio"],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs",
+      "languageNotes": "Static singleton Instance; static readonly TRIGGER_MAPPING_* constants map normalized positions (y=mx+b) to the bar; coroutine-driven rounds; DOTween DOShakePosition for the fail shake; Logger for round/fish diagnostics."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Axe.cs",
+      "type": "file",
+      "name": "Axe.cs",
+      "summary": "ScriptableObject axe item. Sets the player to the Axing state and triggers OnUseAxe on world objects that implement IUseableWithAxe (trees/stumps), playing a chop sound; costs energy.",
+      "tags": ["item", "axe", "tool", "chopping", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Axe.cs",
+      "languageNotes": "Inventory.Item ScriptableObject implementing UseItemInput.IUsableOnWorldObject / IUsableWithoutTarget / IEnergyDepleting; nested interface IUseableWithAxe for targets."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Binoculars.cs",
+      "type": "file",
+      "name": "Binoculars.cs",
+      "summary": "ScriptableObject binoculars item that switches the player into the Birding state and starts the birding minigame via BirdingGame.Instance.Play(this), passing beam rotation/acceleration and charge/cursor timing settings; costs energy.",
+      "tags": ["item", "binoculars", "birding", "tool", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Binoculars.cs",
+      "languageNotes": "Inventory.Item ScriptableObject; exposes tuning floats for the birding cursor beam, consumed by BirdingGame."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Bow.cs",
+      "type": "file",
+      "name": "Bow.cs",
+      "summary": "ScriptableObject bow ranged weapon. On use, hands off to BowChargeController.StartCharge when a projectile spawn point exists (charged shots with crit window), otherwise fires immediately via TryFire; exposes charge time, min-speed multiplier, and crit-shot charge range.",
+      "tags": ["item", "bow", "ranged-weapon", "charge-shot", "crit", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Bow.cs",
+      "languageNotes": "Extends RangedWeaponItem (fire rate/clip/reload); interfaces with BowChargeController attached to the projectile spawn center GameObject."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/DryLog.cs",
+      "type": "file",
+      "name": "DryLog.cs",
+      "summary": "ScriptableObject dry-log item placed on world objects: loads into a LarchStump or adds to a WoodRack, consuming the active inventory item and playing a placement sound on success.",
+      "tags": ["item", "log", "wood", "crafting", "placement"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/DryLog.cs",
+      "languageNotes": "Inventory.Item implementing UseItemInput.IUsableOnWorldObject with type-check pattern-matching against LarchStump/WoodRack."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Firewood.cs",
+      "type": "file",
+      "name": "Firewood.cs",
+      "summary": "ScriptableObject firewood item that adds fuel to a WoodStove or Campfire, consuming the active inventory item and playing a placement sound on success.",
+      "tags": ["item", "firewood", "fuel", "heat", "placement"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Firewood.cs",
+      "languageNotes": "Inventory.Item implementing UseItemInput.IUsableOnWorldObject; pattern-matches WoodStove/Campfire and calls AddFirewood()."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Fly Agaric 1.cs",
+      "type": "file",
+      "name": "Fly Agaric 1.cs",
+      "summary": "ScriptableObject fly-agaric mushroom variant (fly agaric 1). Edible food: removing the active item and calling Diet.EatFood against the player's energy manager to recover protein/carbs/nutrients.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric 1.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; identical to the other Fly Agaric variants apart from the asset class name."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Fly Agaric 2.cs",
+      "type": "file",
+      "name": "Fly Agaric 2.cs",
+      "summary": "ScriptableObject fly-agaric mushroom variant (fly agaric 2). Edible food: removes the active item and feeds it to the player's energy manager via Diet.EatFood for protein/carbs/nutrients.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric 2.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; near-duplicate of the other Fly Agaric variants."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Fly Agaric.cs",
+      "type": "file",
+      "name": "Fly Agaric.cs",
+      "summary": "ScriptableObject fly-agaric mushroom item. Edible food: consumes the active item and feeds protein/carbs/nutrients to the player via Diet.EatFood.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; base variant of the near-duplicate Fly Agaric 1/2 scripts."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Hammer.cs",
+      "type": "file",
+      "name": "Hammer.cs",
+      "summary": "Empty ScriptableObject hammer item marker used for gifting/crafting progression; carries no behavior beyond being an Inventory.Item.",
+      "tags": ["item", "hammer", "tool", "crafting"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Hammer.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Kokanee.cs",
+      "type": "file",
+      "name": "Kokanee.cs",
+      "summary": "ScriptableObject kokanee salmon item. Both a gift (UseOnWorldObject hands it to IGiftReceiving targets like NPCs via TryGiveGift) and an edible food (Diet.EatFood for protein/carbs/nutrients).",
+      "tags": ["item", "fish", "food", "gift", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Kokanee.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood plus both IUsableWithoutTarget and IUsableOnWorldObject for eat-or-gift dual use."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Larch Bolete 2.cs",
+      "type": "file",
+      "name": "Larch Bolete 2.cs",
+      "summary": "ScriptableObject larch bolete mushroom variant (bolete 2). Edible food: consumes the active item and feeds protein/carbs/nutrients via Diet.EatFood; zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete 2.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; near-duplicate of the other Larch Bolete variants."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Larch Bolete 3.cs",
+      "type": "file",
+      "name": "Larch Bolete 3.cs",
+      "summary": "ScriptableObject larch bolete mushroom variant (bolete 3). Edible food: consumes the active item and feeds protein/carbs/nutrients via Diet.EatFood; zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete 3.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; near-duplicate of the other Larch Bolete variants."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Larch Bolete.cs",
+      "type": "file",
+      "name": "Larch Bolete.cs",
+      "summary": "ScriptableObject larch bolete mushroom item. Edible food: consumes the active item and feeds protein/carbs/nutrients via Diet.EatFood; zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet", "energy"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood and IUsableWithoutTarget; base variant of the near-duplicate Larch Bolete 2/3 scripts."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/LooseItem.cs",
+      "type": "file",
+      "name": "LooseItem.cs",
+      "summary": "World-space dropped item holding an Inventory.ItemStack and an animator; becomes magnetically attractable to the player once its animation reaches the Idle state (so it can't be grabbed mid-drop).",
+      "tags": ["item", "pickup", "drop", "magnetic", "world-object"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/LooseItem.cs",
+      "languageNotes": "MonoBehaviour with [RequireComponent(typeof(Animator))]; polls the current animator state name in Update to gate IsMagnetic."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/RainbowTrout.cs",
+      "type": "file",
+      "name": "RainbowTrout.cs",
+      "summary": "ScriptableObject rainbow trout item. Both a gift (UseOnWorldObject hands it to IGiftReceiving targets via TryGiveGift) and an edible food (Diet.EatFood for protein/carbs/nutrients); zero energy cost.",
+      "tags": ["item", "fish", "food", "gift", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/RainbowTrout.cs",
+      "languageNotes": "Inventory.Item implementing Diet.IFood plus both IUsableWithoutTarget and IUsableOnWorldObject for eat-or-gift dual use."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Rod.cs",
+      "type": "file",
+      "name": "Rod.cs",
+      "summary": "ScriptableObject fishing rod item used on tilemaps: casting on the Water tilemap starts fishing (FishingGame.CastForFish) while already fishing reels the line in, toggling the player between Fishing and Idle states; costs energy.",
+      "tags": ["item", "rod", "fishing", "tool", "tilemap", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Rod.cs",
+      "languageNotes": "Inventory.Item implementing UseItemInput.IUsableOnTileMap; drives FishingGame.Instance lifecycle based on the cursor tilemap layer name."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/Sling.cs",
+      "type": "file",
+      "name": "Sling.cs",
+      "summary": "ScriptableObject sling ranged weapon that fires instantly on use via RangedWeaponItem.TryFire, with a per-shot energy cost.",
+      "tags": ["item", "sling", "ranged-weapon", "ammo-cost", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Sling.cs",
+      "languageNotes": "Extends RangedWeaponItem; the smallest weapon script — a one-line UseWithoutTarget that forwards to TryFire."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs",
+      "type": "file",
+      "name": "SpawnLooseItemsOnDestroy.cs",
+      "summary": "Spawns configured loose items from a collider when the object is disabled, unless disabled by a scene unload (checks gameObject.scene.isLoaded); items are launched with velocity and drag. Named OnDestroy but hooks OnDisable to exclude scene-exit destruction.",
+      "tags": ["item", "spawning", "world-object", "loot", "scene-save"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs",
+      "languageNotes": "MonoBehaviour; wraps SpawnItems.SpawnItemsFromCollider and guards against scene unload so loot doesn't spawn during saves."
+    },
+    {
+      "id": "file:Assets/Scripts/Items/WetLog.cs",
+      "type": "file",
+      "name": "WetLog.cs",
+      "summary": "ScriptableObject wet-log item. Trying to burn it on a WoodStove/Campfire posts a 'too wet to burn' dialogue message, while placing it on a WoodRack dries it (TryAddWetLog), consuming the active item.",
+      "tags": ["item", "log", "wood", "wetness", "drying", "placement"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/WetLog.cs",
+      "languageNotes": "Inventory.Item implementing UseItemInput.IUsableOnWorldObject; dialogue feedback via PlayerDialogue.Instance.PostMessage."
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/ReloadBar.cs:ReloadBar",
+      "type": "class",
+      "name": "ReloadBar",
+      "summary": "MonoBehaviour that visually mirrors the active ranged weapon's reload state by scaling a child progress-bar SpriteRenderer; subscribes/unsubscribes to ReactiveUnity change events for the active weapon and its IsReloading flag.",
+      "tags": ["combat", "reload-bar", "reactive-unity", "ui"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/ReloadBar.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/Reloader.cs:Reloader",
+      "type": "class",
+      "name": "Reloader",
+      "summary": "MonoBehaviour holding the active RangedWeaponItem and its InstanceData as Reactive properties; in FixedUpdate it advances reload and cooldown timers, refills the clip and clears the flags when done. CoolDownTime derives from the weapon's shots-per-second.",
+      "tags": ["combat", "reload", "cooldown", "ranged-weapon"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/SteeringForces.cs:IFlockMate",
+      "type": "class",
+      "name": "IFlockMate",
+      "summary": "Interface exposing a flock neighbor's Position and Velocity so generic boid behavior can run against any moving entity (enemies, birds).",
+      "tags": ["interface", "flocking", "enemy-ai", "steering"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Combat/SteeringForces.cs:SteeringForces",
+      "type": "class",
+      "name": "SteeringForces",
+      "summary": "Static steering math library: Seek, wander ring, CircleCast-based avoidance, boid separation/alignment/cohesion, and a LayerMask builder from the rigidbody's ignore matrix.",
+      "tags": ["static", "enemy-ai", "steering", "movement"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Fishing/FishBarTrigger.cs:FishBarTrigger",
+      "type": "class",
+      "name": "FishBarTrigger",
+      "summary": "Minigame trigger bar: swaps between fulfilled/unfulfilled sprites, reports when the cursor passes it, and optionally oscillates vertically within clamped play-area bounds for harder rounds.",
+      "tags": ["fishing", "minigame", "trigger", "oscillation"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishBarTrigger.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Fishing/FishType.cs:FishType",
+      "type": "class",
+      "name": "FishType",
+      "summary": "Component describing a catchable species: scene whitelist, granted Inventory.Item, spawnable seasons/day periods, and its list of FishingRound minigame difficulty configs.",
+      "tags": ["fishing", "fish-species", "config"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishType.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Fishing/FishType.cs:FishingRound",
+      "type": "class",
+      "name": "FishingRound",
+      "summary": "Serializable per-round minigame config: game speed, trigger count/spacing, stacked-trigger modifier (none/doubles/mega), and optional trigger oscillation speed/length.",
+      "tags": ["fishing", "minigame", "config", "difficulty"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishType.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Fishing/FishingGame.cs:FishingGame",
+      "type": "class",
+      "name": "FishingGame",
+      "summary": "Singleton minigame orchestrator: picks a valid fish, runs timed rounds with a rising cursor passing trigger bars, handles the use-key hit/miss check, and resolves win (reward + capture log) or fail (shake, blink, cursor launch).",
+      "tags": ["fishing", "minigame", "singleton", "timing-game"],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Axe.cs:Axe",
+      "type": "class",
+      "name": "Axe",
+      "summary": "ScriptableObject axe tool; sets the Axing player state and invokes OnUseAxe on IUseableWithAxe targets, with a chop SFX and energy cost.",
+      "tags": ["item", "axe", "tool", "energy-cost"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Axe.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Binoculars.cs:Binoculars",
+      "type": "class",
+      "name": "Binoculars",
+      "summary": "ScriptableObject birding tool; enters the Birding player state and launches BirdingGame with configurable beam/charge/cursor tuning; costs energy.",
+      "tags": ["item", "binoculars", "birding", "tool"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Binoculars.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Bow.cs:Bow",
+      "type": "class",
+      "name": "Bow",
+      "summary": "ScriptableObject bow weapon with charged shots: delegates to BowChargeController when a projectile spawn center exists, else fires immediately; exposes charge/min-speed/crit settings and energy cost.",
+      "tags": ["item", "bow", "ranged-weapon", "charge-shot"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Bow.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/DryLog.cs:DryLog",
+      "type": "class",
+      "name": "DryLog",
+      "summary": "ScriptableObject dry-log placement item for loading into LarchStumps or WoodRacks.",
+      "tags": ["item", "log", "wood", "placement"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/DryLog.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Firewood.cs:Firewood",
+      "type": "class",
+      "name": "Firewood",
+      "summary": "ScriptableObject fuel item added to WoodStoves and Campfires.",
+      "tags": ["item", "firewood", "fuel", "heat"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Firewood.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Fly Agaric 1.cs:FlyAgaric1",
+      "type": "class",
+      "name": "FlyAgaric1",
+      "summary": "Edible fly-agaric mushroom ScriptableObject (variant 1); eats for protein/carbs/nutrients.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric 1.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Fly Agaric 2.cs:FlyAgaric2",
+      "type": "class",
+      "name": "FlyAgaric2",
+      "summary": "Edible fly-agaric mushroom ScriptableObject (variant 2); eats for protein/carbs/nutrients.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric 2.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Fly Agaric.cs:FlyAgaric",
+      "type": "class",
+      "name": "FlyAgaric",
+      "summary": "Edible fly-agaric mushroom ScriptableObject (base variant); eats for protein/carbs/nutrients.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Fly Agaric.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Hammer.cs:Hammer",
+      "type": "class",
+      "name": "Hammer",
+      "summary": "Marker ScriptableObject hammer item with no behavior of its own.",
+      "tags": ["item", "hammer", "tool"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Hammer.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Kokanee.cs:Kokanee",
+      "type": "class",
+      "name": "Kokanee",
+      "summary": "Kokanee salmon ScriptableObject usable as a gift to IGiftReceiving NPCs or eaten for nutrition.",
+      "tags": ["item", "fish", "food", "gift"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Kokanee.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Larch Bolete 2.cs:LarchBolete2",
+      "type": "class",
+      "name": "LarchBolete2",
+      "summary": "Edible larch bolete mushroom ScriptableObject (variant 2); eats for protein/carbs/nutrients at zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete 2.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Larch Bolete 3.cs:LarchBolete3",
+      "type": "class",
+      "name": "LarchBolete3",
+      "summary": "Edible larch bolete mushroom ScriptableObject (variant 3); eats for protein/carbs/nutrients at zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete 3.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Larch Bolete.cs:LarchBolete",
+      "type": "class",
+      "name": "LarchBolete",
+      "summary": "Edible larch bolete mushroom ScriptableObject (base variant); eats for protein/carbs/nutrients at zero energy cost.",
+      "tags": ["item", "food", "mushroom", "diet"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Larch Bolete.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/LooseItem.cs:LooseItem",
+      "type": "class",
+      "name": "LooseItem",
+      "summary": "World-space dropped item with an Inventory.ItemStack that becomes magnetic to the player once its drop animation reaches Idle.",
+      "tags": ["item", "pickup", "drop", "magnetic"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/LooseItem.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/RainbowTrout.cs:RainbowTrout",
+      "type": "class",
+      "name": "RainbowTrout",
+      "summary": "Rainbow trout ScriptableObject usable as a gift to IGiftReceiving NPCs or eaten for nutrition.",
+      "tags": ["item", "fish", "food", "gift"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/RainbowTrout.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Rod.cs:Rod",
+      "type": "class",
+      "name": "Rod",
+      "summary": "Fishing rod ScriptableObject that casts on Water tilemaps and reels in when already fishing, toggling player state and driving FishingGame.",
+      "tags": ["item", "rod", "fishing", "tilemap"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Rod.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/Sling.cs:Sling",
+      "type": "class",
+      "name": "Sling",
+      "summary": "ScriptableObject sling weapon that fires instantly via TryFire with an energy cost.",
+      "tags": ["item", "sling", "ranged-weapon"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/Sling.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs:SpawnLooseItemsOnDisable",
+      "type": "class",
+      "name": "SpawnLooseItemsOnDisable",
+      "summary": "Spawns configured loose items from a collider on OnDisable unless the scene is unloading, launching them with velocity/drag.",
+      "tags": ["item", "spawning", "loot", "scene-save"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Items/WetLog.cs:WetLog",
+      "type": "class",
+      "name": "WetLog",
+      "summary": "ScriptableObject wet-log item: refused by fire sources with a dialogue message but accepted by WoodRack for drying.",
+      "tags": ["item", "log", "wetness", "drying"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/WetLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Reloader.cs:SetActiveWeapon",
+      "type": "function",
+      "name": "SetActiveWeapon",
+      "summary": "Assigns the equipped weapon and its instance data to the Reloader's Reactive properties, which ReloadBar and friends subscribe to.",
+      "tags": ["combat", "reload", "reactive-unity"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Reloader.cs:FixedUpdate",
+      "type": "function",
+      "name": "FixedUpdate",
+      "summary": "Every fixed tick, advances reload and cooldown timers on the active weapon's instance data when their flags are set.",
+      "tags": ["combat", "reload", "cooldown"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Reloader.cs:UpdateReloading",
+      "type": "function",
+      "name": "UpdateReloading",
+      "summary": "Increments ReloadElapsed; when it reaches the weapon's reload time, resets it and refills the clip to full, clearing IsReloading.",
+      "tags": ["combat", "reload"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/Reloader.cs:UpdateCooldown",
+      "type": "function",
+      "name": "UpdateCooldown",
+      "summary": "Increments CoolDownElapsed; clears IsCoolingDown once it exceeds the fire-rate-derived cooldown time.",
+      "tags": ["combat", "cooldown", "fire-rate"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/Reloader.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/SteeringForces.cs:Seek",
+      "type": "function",
+      "name": "Seek",
+      "summary": "Steering force steering toward a target position, clamped to a force limit from the difference between desired and current velocity.",
+      "tags": ["steering", "enemy-ai", "movement"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateWanderForce",
+      "type": "function",
+      "name": "CalculateWanderForce",
+      "summary": "Projects a wander ring ahead of the entity, picks a random point on it (returned via ref/out), and Seeks it for wandering motion.",
+      "tags": ["steering", "wander", "enemy-ai"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateAvoidanceForce",
+      "type": "function",
+      "name": "CalculateAvoidanceForce",
+      "summary": "CircleCasts ahead along the velocity; on a non-trigger obstacle, pushes away proportionally to proximity, weighting by an avoidance factor and exposing the obstacle point.",
+      "tags": ["steering", "avoidance", "enemy-ai", "circlecast"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateBoidForce",
+      "type": "function",
+      "name": "CalculateBoidForce",
+      "summary": "Computes a Reynolds-style boid force over the nearest IFlockMate neighbors (bounded by maxMates): weighted separation, alignment, and cohesion combined into a single normalized force.",
+      "tags": ["steering", "boid", "flocking", "enemy-ai"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Combat/SteeringForces.cs:GetInteractionLayers",
+      "type": "function",
+      "name": "GetInteractionLayers",
+      "summary": "Builds a LayerMask from the global layer-collision matrix minus the object's own layer, then applies the rigidbody's excludeLayers/includeLayers overrides.",
+      "tags": ["layermask", "collision", "utility"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Combat/SteeringForces.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:Play",
+      "type": "function",
+      "name": "Play",
+      "summary": "Boots the minigame: activates all UI pieces, caches player/cursor colliders and the cursor rigidbody, initializes a new game and first round, and starts the round coroutine.",
+      "tags": ["fishing", "minigame", "rounds"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:CastForFish",
+      "type": "function",
+      "name": "CastForFish",
+      "summary": "Starts a coroutine that waits a random bite-time range before Play() is called; called by the Rod item.",
+      "tags": ["fishing", "bite", "coroutine"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:ReelInLine",
+      "type": "function",
+      "name": "ReelInLine",
+      "summary": "Stops the waiting-for-bite coroutine so the player can cancel a cast before the minigame starts.",
+      "tags": ["fishing", "cancel"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:UpdateGameCursor",
+      "type": "function",
+      "name": "UpdateGameCursor",
+      "summary": "Interpolates the cursor and stretching bar-fill between start and end height by a 0-1 progress value, freezing the cursor if the round already failed.",
+      "tags": ["fishing", "minigame", "cursor"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:PassedFishBarTrigger",
+      "type": "function",
+      "name": "PassedFishBarTrigger",
+      "summary": "Message received from FishBarTrigger via SendMessageUpwards: marks the game failed if an unfulfilled trigger was passed.",
+      "tags": ["fishing", "minigame", "messaging"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewGame",
+      "type": "function",
+      "name": "InitializeNewGame",
+      "summary": "Resets game-wide state: starts the reeling-in loop SFX, locks the player into Catching, picks a random valid fish, snapshots season/period, and resets failure flag and round counter.",
+      "tags": ["fishing", "setup", "audio"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "type": "function",
+      "name": "InitializeNewRound",
+      "summary": "Clears and rebuilds the trigger bars for a round from generated normalized positions, optionally arming oscillation.",
+      "tags": ["fishing", "rounds", "triggers"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "type": "function",
+      "name": "PlayRound",
+      "summary": "Core timing loop: advances the cursor over the round duration, breaks early on failure, then either fails the game, wins (last round), or recursively launches the next round.",
+      "tags": ["fishing", "rounds", "coroutine", "win-loss"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:OnUseItem",
+      "type": "function",
+      "name": "OnUseItem",
+      "summary": "The keypress handler: while fishing/catching, overlaps the cursor against triggers and fulfills the lowest unfulfilled one; no hit means an instant miss.",
+      "tags": ["fishing", "minigame", "input", "overlap"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameWin",
+      "type": "function",
+      "name": "HandleGameWin",
+      "summary": "On success: celebrates, plays the caught SFX, adds the fish item to inventory (or drops), logs the capture, stops the reel SFX, and hides the minigame UI.",
+      "tags": ["fishing", "reward", "inventory", "capture-log"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameFail",
+      "type": "function",
+      "name": "HandleGameFail",
+      "summary": "On failure: shakes the bar via DOTween and runs the red/grey blink + cursor-launch failure coroutine.",
+      "tags": ["fishing", "failure", "tween"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:GenerateNormalizedTriggerPositions",
+      "type": "function",
+      "name": "GenerateNormalizedTriggerPositions",
+      "summary": "Procedurally places 0-1 normalized trigger positions per round modifier: singles with minimum spacing, pairs (doubles), or a stacked mega-cluster; always reserves 1.0 for the final trigger, then sorts.",
+      "tags": ["fishing", "procedural", "triggers", "difficulty"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:InstantiateTriggers",
+      "type": "function",
+      "name": "InstantiateTriggers",
+      "summary": "Spawns FishBarTrigger prefabs under the triggers container, mapping normalized positions to world bar space via the TRIGGER_MAPPING linear formula.",
+      "tags": ["fishing", "instantiation", "triggers"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Fishing/FishingGame.cs:GetRandomValidFishType",
+      "type": "function",
+      "name": "GetRandomValidFishType",
+      "summary": "Filters child FishType components by current scene, season, and day period, logs diagnostics, and picks one at random.",
+      "tags": ["fishing", "fish-species", "season", "random"],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Fishing/FishingGame.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs:OnDisable",
+      "type": "function",
+      "name": "OnDisable",
+      "summary": "Spawns the configured loose items from the collider with launch velocity/drag, but only if the game object's scene is still loaded (skips scene-exit destruction).",
+      "tags": ["spawning", "loot", "scene-save"],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/Combat/ReloadBar.cs",
+      "target": "class:Assets/Scripts/Combat/ReloadBar.cs:ReloadBar",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the ReloadBar MonoBehaviour."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Reloader.cs",
+      "target": "class:Assets/Scripts/Combat/Reloader.cs:Reloader",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Reloader MonoBehaviour."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Reloader.cs",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:SetActiveWeapon",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Reloader exposes SetActiveWeapon."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Reloader.cs",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:FixedUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Reloader defines the FixedUpdate timer loop."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Reloader.cs",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:UpdateReloading",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Reloader defines UpdateReloading."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/Reloader.cs",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:UpdateCooldown",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Reloader defines UpdateCooldown."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "class:Assets/Scripts/Combat/SteeringForces.cs:IFlockMate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the IFlockMate interface."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "class:Assets/Scripts/Combat/SteeringForces.cs:SteeringForces",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the static SteeringForces class."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:Seek",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SteeringForces defines Seek."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateWanderForce",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SteeringForces defines CalculateWanderForce."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateAvoidanceForce",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SteeringForces defines CalculateAvoidanceForce."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateBoidForce",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SteeringForces defines CalculateBoidForce."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/SteeringForces.cs",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:GetInteractionLayers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SteeringForces defines GetInteractionLayers."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "target": "class:Assets/Scripts/Fishing/FishBarTrigger.cs:FishBarTrigger",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FishBarTrigger MonoBehaviour."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishType.cs",
+      "target": "class:Assets/Scripts/Fishing/FishType.cs:FishType",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FishType component."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishType.cs",
+      "target": "class:Assets/Scripts/Fishing/FishType.cs:FishingRound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the serializable FishingRound config class."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "class:Assets/Scripts/Fishing/FishingGame.cs:FishingGame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FishingGame singleton."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:Play",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines Play."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:CastForFish",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines CastForFish."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:ReelInLine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines ReelInLine."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:UpdateGameCursor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines UpdateGameCursor."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:PassedFishBarTrigger",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines PassedFishBarTrigger."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewGame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines InitializeNewGame."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines InitializeNewRound."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines PlayRound."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:OnUseItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines OnUseItem."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameWin",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines HandleGameWin."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameFail",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines HandleGameFail."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:GenerateNormalizedTriggerPositions",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines GenerateNormalizedTriggerPositions."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InstantiateTriggers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines InstantiateTriggers."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:GetRandomValidFishType",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "FishingGame defines GetRandomValidFishType."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Axe.cs",
+      "target": "class:Assets/Scripts/Items/Axe.cs:Axe",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Axe item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Binoculars.cs",
+      "target": "class:Assets/Scripts/Items/Binoculars.cs:Binoculars",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Binoculars item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Bow.cs",
+      "target": "class:Assets/Scripts/Items/Bow.cs:Bow",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Bow weapon ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/DryLog.cs",
+      "target": "class:Assets/Scripts/Items/DryLog.cs:DryLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the DryLog item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Firewood.cs",
+      "target": "class:Assets/Scripts/Items/Firewood.cs:Firewood",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Firewood item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric 1.cs",
+      "target": "class:Assets/Scripts/Items/Fly Agaric 1.cs:FlyAgaric1",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FlyAgaric1 item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric 2.cs",
+      "target": "class:Assets/Scripts/Items/Fly Agaric 2.cs:FlyAgaric2",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FlyAgaric2 item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric.cs",
+      "target": "class:Assets/Scripts/Items/Fly Agaric.cs:FlyAgaric",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the FlyAgaric item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Hammer.cs",
+      "target": "class:Assets/Scripts/Items/Hammer.cs:Hammer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Hammer item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Kokanee.cs",
+      "target": "class:Assets/Scripts/Items/Kokanee.cs:Kokanee",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Kokanee item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete 2.cs",
+      "target": "class:Assets/Scripts/Items/Larch Bolete 2.cs:LarchBolete2",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the LarchBolete2 item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete 3.cs",
+      "target": "class:Assets/Scripts/Items/Larch Bolete 3.cs:LarchBolete3",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the LarchBolete3 item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete.cs",
+      "target": "class:Assets/Scripts/Items/Larch Bolete.cs:LarchBolete",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the LarchBolete item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/LooseItem.cs",
+      "target": "class:Assets/Scripts/Items/LooseItem.cs:LooseItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the LooseItem MonoBehaviour."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/RainbowTrout.cs",
+      "target": "class:Assets/Scripts/Items/RainbowTrout.cs:RainbowTrout",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the RainbowTrout item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Rod.cs",
+      "target": "class:Assets/Scripts/Items/Rod.cs:Rod",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Rod item ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Sling.cs",
+      "target": "class:Assets/Scripts/Items/Sling.cs:Sling",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the Sling weapon ScriptableObject."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs",
+      "target": "class:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs:SpawnLooseItemsOnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the SpawnLooseItemsOnDisable MonoBehaviour."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs",
+      "target": "function:Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs:OnDisable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "SpawnLooseItemsOnDisable defines the OnDisable spawn hook."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/WetLog.cs",
+      "target": "class:Assets/Scripts/Items/WetLog.cs:WetLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "File defines the WetLog item ScriptableObject."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Reloader.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:UpdateReloading",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FixedUpdate advances the reload timer while IsReloading is set."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/Reloader.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Combat/Reloader.cs:UpdateCooldown",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FixedUpdate advances the cooldown timer while IsCoolingDown is set."
+    },
+    {
+      "source": "function:Assets/Scripts/Combat/SteeringForces.cs:CalculateWanderForce",
+      "target": "function:Assets/Scripts/Combat/SteeringForces.cs:Seek",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Wander force seeks toward the randomly placed ring target."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:Play",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewGame",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play resets game state before the first round."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:Play",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play builds the first round's triggers."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:Play",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Play starts the round timing coroutine."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewGame",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:GetRandomValidFishType",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "New-game setup picks a valid fish for the current time/place."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:GenerateNormalizedTriggerPositions",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Round setup generates trigger layout positions."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InstantiateTriggers",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Round setup spawns trigger bars from the generated positions."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:UpdateGameCursor",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Each tick advances the cursor by normalized time."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameFail",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "A missed trigger ends the round in failure."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:HandleGameWin",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Clearing the final round wins the minigame."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:InitializeNewRound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "A won intermediate round is followed by rebuilding the next round."
+    },
+    {
+      "source": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "target": "function:Assets/Scripts/Fishing/FishingGame.cs:PlayRound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "PlayRound recursively starts itself for the next round's duration."
+    },
+    {
+      "source": "file:Assets/Scripts/Combat/ReloadBar.cs",
+      "target": "file:Assets/Scripts/Combat/Reloader.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "ReloadBar reads the Reloader's ActiveWeapon/ActiveWeaponData Reactive state and subscribes to reload changes."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "file:Assets/Scripts/Fishing/FishType.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FishingGame picks a random FishType and drives its FishingRound configs."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "target": "file:Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FishingGame instantiates FishBarTrigger bars, arms oscillation, and receives PassedFishBarTrigger messages."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "target": "file:Assets/Scripts/Fishing/FishType.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "FishBarTrigger reads FishingRound oscillation speed/length to drive its oscillation."
+    },
+    {
+      "source": "file:Assets/Scripts/Fishing/FishBarTrigger.cs",
+      "target": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "FishBarTrigger uses FishingGame's TRIGGER_MAPPING_SLOPE/INTERCEPT constants to clamp oscillation within the play area."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Rod.cs",
+      "target": "file:Assets/Scripts/Fishing/FishingGame.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Rod starts and cancels fishing via FishingGame.Instance.CastForFish/ReelInLine."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric.cs",
+      "target": "file:Assets/Scripts/Items/Fly Agaric 1.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate fly agaric food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric.cs",
+      "target": "file:Assets/Scripts/Items/Fly Agaric 2.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate fly agaric food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Fly Agaric 1.cs",
+      "target": "file:Assets/Scripts/Items/Fly Agaric 2.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate fly agaric food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete.cs",
+      "target": "file:Assets/Scripts/Items/Larch Bolete 2.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate larch bolete food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete.cs",
+      "target": "file:Assets/Scripts/Items/Larch Bolete 3.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate larch bolete food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Larch Bolete 2.cs",
+      "target": "file:Assets/Scripts/Items/Larch Bolete 3.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Near-duplicate larch bolete food scripts differing only in asset class name."
+    },
+    {
+      "source": "file:Assets/Scripts/Items/Kokanee.cs",
+      "target": "file:Assets/Scripts/Items/RainbowTrout.cs",
+      "type": "similar_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Both are caught-fish items usable as gifts or food with identical eat/gift structure."
+    }
+  ],
+  "files": [
+    "Assets/Scripts/Combat/ReloadBar.cs",
+    "Assets/Scripts/Combat/Reloader.cs",
+    "Assets/Scripts/Combat/SteeringForces.cs",
+    "Assets/Scripts/Fishing/FishBarTrigger.cs",
+    "Assets/Scripts/Fishing/FishType.cs",
+    "Assets/Scripts/Fishing/FishingGame.cs",
+    "Assets/Scripts/Items/Axe.cs",
+    "Assets/Scripts/Items/Binoculars.cs",
+    "Assets/Scripts/Items/Bow.cs",
+    "Assets/Scripts/Items/DryLog.cs",
+    "Assets/Scripts/Items/Firewood.cs",
+    "Assets/Scripts/Items/Fly Agaric 1.cs",
+    "Assets/Scripts/Items/Fly Agaric 2.cs",
+    "Assets/Scripts/Items/Fly Agaric.cs",
+    "Assets/Scripts/Items/Hammer.cs",
+    "Assets/Scripts/Items/Kokanee.cs",
+    "Assets/Scripts/Items/Larch Bolete 2.cs",
+    "Assets/Scripts/Items/Larch Bolete 3.cs",
+    "Assets/Scripts/Items/Larch Bolete.cs",
+    "Assets/Scripts/Items/LooseItem.cs",
+    "Assets/Scripts/Items/RainbowTrout.cs",
+    "Assets/Scripts/Items/Rod.cs",
+    "Assets/Scripts/Items/Sling.cs",
+    "Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs",
+    "Assets/Scripts/Items/WetLog.cs"
+  ]
+}

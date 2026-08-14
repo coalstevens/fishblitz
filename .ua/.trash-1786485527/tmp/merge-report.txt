@@ -1,0 +1,29 @@
+Found 13 batch files (13 logical batches, 0 multi-part):
+  batch-1.json: 4 nodes, 4 edges
+  batch-2.json: 5 nodes, 3 edges
+  batch-3.json: 3 nodes, 2 edges
+  batch-4.json: 85 nodes, 101 edges
+  batch-5.json: 159 nodes, 204 edges
+  batch-6.json: 142 nodes, 223 edges
+  batch-7.json: 176 nodes, 249 edges
+  batch-8.json: 76 nodes, 78 edges
+  batch-9.json: 155 nodes, 193 edges
+  batch-10.json: 151 nodes, 211 edges
+  batch-11.json: 145 nodes, 183 edges
+  batch-12.json: 120 nodes, 128 edges
+  batch-13.json: 63 nodes, 82 edges
+
+Input: 1284 nodes, 1661 edges
+
+Fixed (328 corrections):
+    92 × bare path → function: (missing prefix)
+    28 × bare path → class: (missing prefix)
+    25 × bare path → file: (missing prefix)
+   183 × edge references rewritten after ID normalization
+
+Output: 1284 nodes, 1660 edges
+
+Imports edge recovery:
+  Recovered 0 `imports` edges from importMap (245 entries scanned)
+
+Written to /Users/cstevens/Documents/fishblitz/.ua/intermediate/assembled-graph.json (1191 KB)

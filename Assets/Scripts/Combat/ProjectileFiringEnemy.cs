@@ -49,19 +49,16 @@ public class ProjectileFiringEnemy : MonoBehaviour
     [Header("Pattern: Ring")]
     [SerializeField] private int _ringCount = 8;
 
-    [Header("Detection")]
-    [SerializeField] private float _viewRadius = 10f;
-    [SerializeField] private float _detectionInterval = 0.5f;
     [SerializeField] private LayerMask _obstacleLayers;
-
-    [Header("Movement")]
     [SerializeField] private float _idleSpeed = 1.5f;
     [SerializeField] private float _engageSpeed = 3f;
     [SerializeField] private float _wanderRadius = 5f;
     [SerializeField] private float _idleWaitMin = 1f;
     [SerializeField] private float _idleWaitMax = 3f;
-    [SerializeField] private float _dangerDistance = 3f;
-    [SerializeField] private float _safeDistance = 7f;
+    [SerializeField] private float _detectionInterval = 0.5f;
+    [SerializeField] private float _approachRadius = 10f;
+    [SerializeField] private float _retreatRadius = 3f;
+    [SerializeField] private float _firing_radius = 7f;
 
     [Header("Debug")]
     [SerializeField] private Logger _logger = new();
@@ -148,7 +145,7 @@ public class ProjectileFiringEnemy : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, _playerTransform.position);
 
-        if (distance <= _viewRadius)
+        if (distance <= _approachRadius)
         {
             RaycastHit2D hit = Physics2D.Linecast(transform.position, _playerTransform.position, _obstacleLayers);
             if (!hit)
@@ -226,7 +223,7 @@ public class ProjectileFiringEnemy : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, _playerTransform.position);
 
-        if (distance <= _safeDistance && distance >= _dangerDistance)
+        if (distance <= _firing_radius && distance >= _retreatRadius)
         {
             _state = EnemyState.Firing;
             _rb.linearVelocity = Vector2.zero;
@@ -236,7 +233,7 @@ public class ProjectileFiringEnemy : MonoBehaviour
         }
 
         Vector2 direction;
-        if (distance < _dangerDistance)
+        if (distance < _retreatRadius)
             direction = ((Vector2)transform.position - (Vector2)_playerTransform.position).normalized;
         else
             direction = ((Vector2)_playerTransform.position - (Vector2)transform.position).normalized;
@@ -253,13 +250,13 @@ public class ProjectileFiringEnemy : MonoBehaviour
 
         float distance = Vector2.Distance(transform.position, _playerTransform.position);
 
-        if (distance < _dangerDistance)
+        if (distance < _retreatRadius)
         {
             _state = EnemyState.Engaging;
             StopActiveFireCoroutine();
             _logger.Info("Changed state: Firing -> Engaging (too close)");
         }
-        else if (distance > _safeDistance)
+        else if (distance > _firing_radius)
         {
             _state = EnemyState.Engaging;
             StopActiveFireCoroutine();
@@ -435,12 +432,12 @@ public class ProjectileFiringEnemy : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, _viewRadius);
+        Gizmos.DrawWireSphere(transform.position, _approachRadius);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _safeDistance);
+        Gizmos.DrawWireSphere(transform.position, _firing_radius);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _dangerDistance);
+        Gizmos.DrawWireSphere(transform.position, _retreatRadius);
     }
 }

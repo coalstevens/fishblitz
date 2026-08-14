@@ -1,0 +1,3664 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "type": "file",
+      "name": "LocalHeatSource.cs",
+      "summary": "Localized heat source component implementing IHeatSource. Uses a Collider2D trigger to register/unregister itself with overlapping HeatSensitive components, exposing a settable Temperature that re-registers the source with nearby heat sensitives.",
+      "tags": [
+        "heat-simulation",
+        "temperature",
+        "trigger-colliders",
+        "IHeatSource"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "languageNotes": "[SerializeField] inspector collider, Overlap() with ContactFilter2D, TryGetComponent pattern, OnTriggerEnter2D/OnTriggerExit2D lifecycle."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/LocalHeatSource.cs:LocalHeatSource",
+      "type": "class",
+      "name": "LocalHeatSource",
+      "summary": "MonoBehaviour heat emitter that adds itself as an IHeatSource to every HeatSensitive whose collider overlaps _heatCollider, whenever enabled or when its Temperature changes. Re-registers on enable and unregisters on disable.",
+      "tags": [
+        "heat-source",
+        "IHeatSource",
+        "overlap-detection"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/LocalHeatSource.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:Temperature",
+      "type": "function",
+      "name": "Temperature",
+      "summary": "IHeatSource.Temperature property; setting a new value re-runs overlap detection so heat sensitives in range receive this source.",
+      "tags": [
+        "property",
+        "heat-source"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/LocalHeatSource.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:AddSourceToOverlappedHeatSensitives",
+      "type": "function",
+      "name": "AddSourceToOverlappedHeatSensitives",
+      "summary": "Overlaps _heatCollider and calls AddHeatSource(this) on every HeatSensitive component found.",
+      "tags": [
+        "overlap",
+        "heat-source"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/LocalHeatSource.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:RemoveSourceFromOverlappedHeatSensitives",
+      "type": "function",
+      "name": "RemoveSourceFromOverlappedHeatSensitives",
+      "summary": "Overlaps _heatCollider and calls RemoveHeatSource(this) on every HeatSensitive component found, used on disable.",
+      "tags": [
+        "overlap",
+        "heat-source"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/LocalHeatSource.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "type": "file",
+      "name": "Magnetosphere.cs",
+      "summary": "Player magnet for magnetic LooseItems: items in a magnet range are pulled toward the player with an inverse-square force and collected into the Inventory when they intersect a collect collider.",
+      "tags": [
+        "item-collection",
+        "magnetism",
+        "inventory",
+        "physics"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "languageNotes": "FixedUpdate physics loop, Rigidbody2D.AddForce Impulse, list mutation deferred past loop to avoid modifying during iteration, collider-bounds intersection checks."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/Magnetosphere.cs:Magnetosphere",
+      "type": "class",
+      "name": "Magnetosphere",
+      "summary": "MonoBehaviour that tracks LooseItems in a magnet collider, applies inverse-square magnetic force toward the player, and collects any magnetic item whose bounds intersect a separate collect collider into the Inventory.",
+      "tags": [
+        "item-collection",
+        "magnetism",
+        "inventory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/Magnetosphere.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:FixedUpdate",
+      "type": "function",
+      "name": "FixedUpdate",
+      "summary": "Main loop: for each magnetic loose item in range with inventory space, apply magnetic force and collect; destroys collected items after the loop.",
+      "tags": [
+        "physics-loop",
+        "item-collection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Magnetosphere.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:CollectItem",
+      "type": "function",
+      "name": "CollectItem",
+      "summary": "Returns true and adds the item to the inventory if the loose item bounds intersect the collect collider and TryAddItem succeeds.",
+      "tags": [
+        "item-collection",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Magnetosphere.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:ApplyMagneticForce",
+      "type": "function",
+      "name": "ApplyMagneticForce",
+      "summary": "Pulls a loose item toward the player via an inverse-square Coulomb-style force (strength / radius^2) applied as an impulse on its Rigidbody2D.",
+      "tags": [
+        "magnetism",
+        "physics"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Magnetosphere.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/MatchLightWithSun.cs",
+      "type": "file",
+      "name": "MatchLightWithSun.cs",
+      "summary": "Small component that mirrors the global SunLightControl's current intensity and color onto a local Light2D every LateUpdate, so interior lights track the sun.",
+      "tags": [
+        "lighting",
+        "sun-sync",
+        "light2d"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/MatchLightWithSun.cs",
+      "languageNotes": "URP Light2D, tag-based lookup of a Sun object, LateUpdate read of SunLightControl properties."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/MatchLightWithSun.cs:MatchLightWithSun",
+      "type": "class",
+      "name": "MatchLightWithSun",
+      "summary": "MonoBehaviour that finds the tagged Sun GameObject in Awake and copies its SunLightControl intensity and color onto this object's Light2D each frame.",
+      "tags": [
+        "lighting",
+        "sun-sync"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/MatchLightWithSun.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/MatchLightWithSun.cs:LateUpdate",
+      "type": "function",
+      "name": "LateUpdate",
+      "summary": "Assigns _light.intensity and _light.color from _sun.Intensity and _sun.LightColor when a sun is present.",
+      "tags": [
+        "lighting",
+        "per-frame"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/MatchLightWithSun.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "type": "file",
+      "name": "Narrator.cs",
+      "summary": "Scene-level singleton that queues and displays short narrative messages as pixel-text overlays, running on unscaled time so narration continues during pause. Also prints first-visit scene messages on entering a scene for the first time.",
+      "tags": [
+        "narrative",
+        "message-queue",
+        "singleton",
+        "pixel-text"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs",
+      "languageNotes": "static Instance accessor, Queue<string> + unscaledDeltaTime timing, coroutine with WaitForSecondsRealtime, GameObject tag lookup, instantiates PixelCanvasTextRenderer message prefabs."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/Narrator.cs:Narrator",
+      "type": "class",
+      "name": "Narrator",
+      "summary": "Queues narrative messages, prints them as stacked pixel-text overlays, fades and destroys them after a lifespan, and exposes AreMessagesClear for other systems to await message drain.",
+      "tags": [
+        "narrative",
+        "message-queue",
+        "singleton"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:Instance",
+      "type": "function",
+      "name": "Instance",
+      "summary": "Static singleton accessor; logs an error if the Narrator is not present in the scene.",
+      "tags": [
+        "singleton",
+        "accessor"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessage",
+      "type": "function",
+      "name": "PostMessage",
+      "summary": "Public API that enqueues a string to be displayed once the post-message delay elapses.",
+      "tags": [
+        "narrative",
+        "queue"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Checks message life spans, then dequeues and prints the next queued message once the post-message buffer exceeds the delay (unscaled time).",
+      "tags": [
+        "narrative",
+        "update-loop"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintMessage",
+      "type": "function",
+      "name": "PrintMessage",
+      "summary": "Shifts existing messages up, instantiates the message prefab into the container, sets its Text via PixelCanvasTextRenderer, and records its start time.",
+      "tags": [
+        "narrative",
+        "pixel-text"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:CheckMessageLifeSpans",
+      "type": "function",
+      "name": "CheckMessageLifeSpans",
+      "summary": "Fades out messages older than _messageDurationSecs and destroys them once alpha falls below the fade rate.",
+      "tags": [
+        "narrative",
+        "fade"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:AreMessagesClear",
+      "type": "function",
+      "name": "AreMessagesClear",
+      "summary": "Returns true when no posted messages remain and the queue is empty; used by sleep and other sequences to wait for narration to drain.",
+      "tags": [
+        "narrative",
+        "query"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintFirstVisitToSceneMessage",
+      "type": "function",
+      "name": "PrintFirstVisitToSceneMessage",
+      "summary": "On a first visit (SceneSaveLoadManager.IsFirstVisit) schedules scene-specific ambient messages, e.g. 'i need to find shelter' on first entering Outside.",
+      "tags": [
+        "narrative",
+        "first-visit"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessageAfterDelay",
+      "type": "function",
+      "name": "PostMessageAfterDelay",
+      "summary": "Coroutine that waits in real time, then posts the message via the Narrator or via PlayerDialogue depending on the narrator flag.",
+      "tags": [
+        "coroutine",
+        "delayed-message"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Narrator.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "type": "file",
+      "name": "ObjectPooling.cs",
+      "summary": "Simple static GameObject object pool. SpawnObject reuses an inactive pooled instance or instantiates a new one; ReturnObjectToPool deactivates and stores objects under their pool key.",
+      "tags": [
+        "object-pooling",
+        "performance",
+        "static-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "languageNotes": "static class members on a MonoBehaviour, nested PooledObjectInfo data holder, NUnit Assert.IsNotNull guard, Logger usage, FirstOrDefault LINQ lookup."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/ObjectPooling.cs:ObjectPooling",
+      "type": "class",
+      "name": "ObjectPooling",
+      "summary": "Static object pool service: SpawnObject pulls from a per-prefab inactive list or instantiates under a shared container; ReturnObjectToPool matches by stripped '(Clone)' name.",
+      "tags": [
+        "object-pooling",
+        "static-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/ObjectPooling.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/ObjectPooling.cs:PooledObjectInfo",
+      "type": "class",
+      "name": "PooledObjectInfo",
+      "summary": "Nested data holder tracking a prefab's LookupString and its list of inactive pooled GameObjects.",
+      "tags": [
+        "object-pooling",
+        "data-holder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/ObjectPooling.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/ObjectPooling.cs:SpawnObject",
+      "type": "function",
+      "name": "SpawnObject",
+      "summary": "Static factory: finds the pool for a prefab, reuses the first inactive instance (repositioning/re-rotating it) or instantiates a new one under the pool container, then returns it active.",
+      "tags": [
+        "object-pooling",
+        "factory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/ObjectPooling.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/ObjectPooling.cs:ReturnObjectToPool",
+      "type": "function",
+      "name": "ReturnObjectToPool",
+      "summary": "Static method that strips the '(Clone)' suffix, finds the matching pool, and stores the object deactivated; warns if no pool matches.",
+      "tags": [
+        "object-pooling",
+        "recycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/ObjectPooling.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+      "type": "file",
+      "name": "OccupyWorldObjectSpace.cs",
+      "summary": "Marks a world object as occupying a rectangular tile footprint (configured by extra-tile fields) on the scene's WorldObjectOccupancyMap while enabled, and frees that space on disable.",
+      "tags": [
+        "occupancy",
+        "world-objects",
+        "tile-grid"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+      "languageNotes": "public int footprint fields read by SceneSpawner, Action-based removal handle returned by SetOccupied, OnEnable/OnDisable pairing, tag lookup for the occupancy map."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs:OccupyWorldObjectSpace",
+      "type": "class",
+      "name": "OccupyWorldObjectSpace",
+      "summary": "Registers the object's tile footprint (center plus extra tiles left/right/above/below) with the scene occupancy map on enable and releases it on disable.",
+      "tags": [
+        "occupancy",
+        "world-objects"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Locates the Impermanent container's WorldObjectOccupancyMap and calls SetOccupied with the object's footprint, storing the returned removal Action.",
+      "tags": [
+        "occupancy",
+        "registration"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "type": "file",
+      "name": "OutsideTemperature.cs",
+      "summary": "Singleton IHeatSource representing outdoor ambient temperature, backed by WorldState.OutsideTemperature. On temperature change or scene load it re-registers itself with all HeatSensitive components on the player and under the scene Grid.",
+      "tags": [
+        "heat-simulation",
+        "temperature",
+        "world-state",
+        "singleton"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "languageNotes": "singleton destroy-pattern, IHeatSource implementation, recursive child traversal for HeatSensitive registration, SceneManager.sceneLoaded subscription, Logger usage."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/OutsideTemperature.cs:OutsideTemperature",
+      "type": "class",
+      "name": "OutsideTemperature",
+      "summary": "Scene-independent ambient temperature source; its Temperature property writes through to WorldState.OutsideTemperature and fans out to every HeatSensitive in the scene (player plus world-grid children).",
+      "tags": [
+        "heat-simulation",
+        "ambient-temperature",
+        "singleton"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:Temperature",
+      "type": "function",
+      "name": "Temperature",
+      "summary": "IHeatSource.Temperature property backed by WorldState.OutsideTemperature; on change logs and triggers re-registration with all heat sensitives.",
+      "tags": [
+        "property",
+        "ambient-temperature"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnTemperatureChange",
+      "type": "function",
+      "name": "OnTemperatureChange",
+      "summary": "Re-adds this source to all heat sensitives under the scene grid when the outside temperature changes.",
+      "tags": [
+        "heat-simulation",
+        "re-registration"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllHeatSensitives",
+      "type": "function",
+      "name": "AddToAllHeatSensitives",
+      "summary": "Adds this source to the player's PlayerTemperatureManager and recurses through the world grid's children.",
+      "tags": [
+        "heat-simulation",
+        "registration"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllChildHeatSensitives",
+      "type": "function",
+      "name": "AddToAllChildHeatSensitives",
+      "summary": "Recursively walks a transform's descendants and calls AddHeatSource on each HeatSensitive component found.",
+      "tags": [
+        "heat-simulation",
+        "recursion"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "On scene load, caches the Player's PlayerTemperatureManager and the scene Grid, then registers this source with all heat sensitives.",
+      "tags": [
+        "scene-load",
+        "registration"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/OutsideTemperature.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "type": "file",
+      "name": "Persistence.cs",
+      "summary": "Static JSON persistence helper (namespace ColePersistence) that serializes/deserializes objects with Newtonsoft.Json into Application.persistentDataPath, with exists and delete helpers.",
+      "tags": [
+        "save-system",
+        "json-persistence",
+        "file-io"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs",
+      "languageNotes": "static class in ColePersistence namespace, Newtonsoft JsonConvert, Path.Combine with Application.persistentDataPath, synchronous File I/O."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/Persistence.cs:JsonPersistence",
+      "type": "class",
+      "name": "JsonPersistence",
+      "summary": "Static utility for persisting arbitrary objects as JSON under a relative path inside Application.persistentDataPath; the low-level store used by the save system.",
+      "tags": [
+        "save-system",
+        "json-persistence"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "function",
+      "name": "GetPersistencePath",
+      "summary": "Combines a relative path with Application.persistentDataPath.",
+      "tags": [
+        "save-system",
+        "path-helper"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Persistence.cs:PersistJson",
+      "type": "function",
+      "name": "PersistJson",
+      "summary": "Serializes an object to JSON and writes it to the persisted path.",
+      "tags": [
+        "save-system",
+        "serialize"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Persistence.cs:FromJson",
+      "type": "function",
+      "name": "FromJson",
+      "summary": "Reads a JSON file from the persisted path and deserializes it into type T.",
+      "tags": [
+        "save-system",
+        "deserialize"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Persistence.cs:JsonExists",
+      "type": "function",
+      "name": "JsonExists",
+      "summary": "Returns whether a save file exists at the given relative path.",
+      "tags": [
+        "save-system",
+        "existence-check"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/Persistence.cs:DeleteFile",
+      "type": "function",
+      "name": "DeleteFile",
+      "summary": "Deletes the persisted file at the given relative path if it exists.",
+      "tags": [
+        "save-system",
+        "delete"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/Persistence.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+      "type": "file",
+      "name": "PickUpOnInteract.cs",
+      "summary": "Interactable pickup: on cursor interaction adds a fixed item quantity to the player's inventory, plays a pickup sound, and destroys the object, or posts a no-space message.",
+      "tags": [
+        "item-pickup",
+        "interaction",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+      "languageNotes": "Implements InteractInput.IInteractable.CursorInteract, [SerializeField] Inventory.Item + SoundData, static AudioManager.PlaySFX, PlayerDialogue.Instance.PostMessage."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/PickUpOnInteract.cs:PickUpOnInteract",
+      "type": "class",
+      "name": "PickUpOnInteract",
+      "summary": "Adds a configured item to the player inventory on cursor interact; if space is insufficient it posts a no-space message through PlayerDialogue.",
+      "tags": [
+        "item-pickup",
+        "interaction"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/PickUpOnInteract.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/PickUpOnInteract.cs:CursorInteract",
+      "type": "function",
+      "name": "CursorInteract",
+      "summary": "Tries to add the item to inventory; on success plays the pickup sound and destroys the object, otherwise posts a dialogue message. Always returns true.",
+      "tags": [
+        "item-pickup",
+        "interaction"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/PickUpOnInteract.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "type": "file",
+      "name": "ReduceOpacityWhenPlayerBehind.cs",
+      "summary": "Fades a visual (SpriteRenderer, Image, CanvasGroup, or a SortingGroup's child sprites) to a lower opacity while the player's collider overlaps, and restores it on exit.",
+      "tags": [
+        "opacity",
+        "fade",
+        "player-proximity",
+        "visibility"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "languageNotes": "coroutine-based lerp fade, supports multiple opacity-bearing components via conditional branches, tooltip-serialized options (_targetParent), Debug.Log noise on trigger enter."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:ReduceOpacityWhenPlayerBehind",
+      "type": "class",
+      "name": "ReduceOpacityWhenPlayerBehind",
+      "summary": "Detects the player overlapping its trigger, then fades the configured opacity component (optionally on the parent) down and back, using a cancellable fade coroutine.",
+      "tags": [
+        "opacity",
+        "fade",
+        "player-proximity"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerEnter2D",
+      "type": "function",
+      "name": "OnTriggerEnter2D",
+      "summary": "Starts a fade to _fadedOpacity when a player-rooted object enters the trigger.",
+      "tags": [
+        "opacity",
+        "trigger"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerExit2D",
+      "type": "function",
+      "name": "OnTriggerExit2D",
+      "summary": "Starts a fade back to the original alpha when the player leaves the trigger.",
+      "tags": [
+        "opacity",
+        "trigger"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:FadeToOpacity",
+      "type": "function",
+      "name": "FadeToOpacity",
+      "summary": "Coroutine that lerps the target opacity component(s) - SpriteRenderer, Image, CanvasGroup, or all SortingGroup child sprites - toward a target alpha over _fadeDuration.",
+      "tags": [
+        "opacity",
+        "coroutine",
+        "fade"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "type": "file",
+      "name": "SaveData.cs",
+      "summary": "Serializable per-world-object save payload: identifier, persistent ID, position (via SimpleVector3), and extended JSON data. Defines the ISaveable component contract and instantiates prefabs back from Resources on load.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "world-objects",
+        "json"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs",
+      "languageNotes": "Newtonsoft serializable plain class, nested ISaveable interface + SimpleVector3 value holder (Vector3 is not JSON-friendly), Resources.Load prefab lookup under 'WorldObjects/'."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SaveData.cs:SaveData",
+      "type": "class",
+      "name": "SaveData",
+      "summary": "Plain serializable payload describing a saved world object: Identifier (prefab key under Resources/WorldObjects), PersistentID, Position, and ExtendedData JSON for component-specific state.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "data-payload"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SaveData.cs:ISaveable",
+      "type": "class",
+      "name": "ISaveable",
+      "summary": "Nested interface that world-object components implement to capture their own SaveData (Save()) and restore it (Load).",
+      "tags": [
+        "save-system",
+        "interface",
+        "contract"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SaveData.cs:SimpleVector3",
+      "type": "class",
+      "name": "SimpleVector3",
+      "summary": "Nested float-triplet value holder used instead of Vector3 because Unity's Vector3 does not JSON-serialize cleanly.",
+      "tags": [
+        "serialization",
+        "vector"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SaveData.cs:AddIdentifier",
+      "type": "function",
+      "name": "AddIdentifier",
+      "summary": "Validates that a prefab exists at Resources/WorldObjects/<identifier> and stores the identifier; logs an error and returns false otherwise.",
+      "tags": [
+        "save-system",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SaveData.cs:AddTransformPosition",
+      "type": "function",
+      "name": "AddTransformPosition",
+      "summary": "Stores a Vector3 position as a SimpleVector3 for serialization.",
+      "tags": [
+        "save-system",
+        "position"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SaveData.cs:AddExtendedSaveData",
+      "type": "function",
+      "name": "AddExtendedSaveData",
+      "summary": "Serializes arbitrary component state to the ExtendedData JSON string, returning false and logging on failure.",
+      "tags": [
+        "save-system",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SaveData.cs:GetExtendedSaveData",
+      "type": "function",
+      "name": "GetExtendedSaveData",
+      "summary": "Deserializes ExtendedData back into type T, returning default(T) on failure.",
+      "tags": [
+        "save-system",
+        "deserialization"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SaveData.cs:InstantiateGameObjectFromSaveData",
+      "type": "function",
+      "name": "InstantiateGameObjectFromSaveData",
+      "summary": "Loads the prefab from Resources/WorldObjects/<Identifier> and instantiates it under the given parent at the saved position.",
+      "tags": [
+        "save-system",
+        "instantiation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SaveData.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "type": "file",
+      "name": "SceneSaveLoadManager.cs",
+      "summary": "Central save/load manager: persists each scene's world objects (children of the Impermanent container) to a per-scene JSON file, persists global player-component state, replays elapsed game-time ticks on load, and manages the first-visit flag.",
+      "tags": [
+        "save-system",
+        "scene-save",
+        "load-scene",
+        "persistence"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "languageNotes": "[DefaultExecutionOrder(100)], static IsFirstVisit flag, JsonPersistence (ColePersistence), GameObject tag lookup, ISaveableComponent discovery via FindObjectsByType, Dictionary per-component JSON states."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SceneSaveLoadManager",
+      "type": "class",
+      "name": "SceneSaveLoadManager",
+      "summary": "Saves/loads world objects under the Impermanent container per scene, saves/restores ISaveableComponent state globally across scenes, and replays GameClock ticks to simulate elapsed time away from a scene.",
+      "tags": [
+        "save-system",
+        "scene-save"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SceneSaveData",
+      "type": "class",
+      "name": "SceneSaveData",
+      "summary": "Nested per-scene payload holding a list of world-object SaveData plus the game time when the player exited the scene.",
+      "tags": [
+        "save-system",
+        "payload"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:PlayerComponentsSaveData",
+      "type": "class",
+      "name": "PlayerComponentsSaveData",
+      "summary": "Nested payload mapping each ISaveableComponent's ComponentId to its captured JSON state.",
+      "tags": [
+        "save-system",
+        "payload"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:IsFirstVisit",
+      "type": "function",
+      "name": "IsFirstVisit",
+      "summary": "Static lazy flag: true when no per-scene save file exists yet for the current scene; errors if no manager is in the scene.",
+      "tags": [
+        "save-system",
+        "first-visit"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Sets the static instance, resets the first-visit flag, loads the current scene save, and subscribes to sceneLoaded.",
+      "tags": [
+        "save-system",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "Resets cached containers and the first-visit flag, then reloads the newly active scene's save.",
+      "tags": [
+        "save-system",
+        "scene-load"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Restores global player component state from the PlayerComponents save file after the scene is up.",
+      "tags": [
+        "save-system",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnApplicationQuit",
+      "type": "function",
+      "name": "OnApplicationQuit",
+      "summary": "Persists player component state when the app quits.",
+      "tags": [
+        "save-system",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SaveScene",
+      "type": "function",
+      "name": "SaveScene",
+      "summary": "Public API that gathers child SaveData from the Impermanent container, records the current game time, and persists the scene to its JSON file.",
+      "tags": [
+        "save-system",
+        "save-scene"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "type": "function",
+      "name": "LoadScene",
+      "summary": "Reads the scene save file; if present, destroys existing container children, instantiates saved objects, and replays elapsed game minutes on ITickable children.",
+      "tags": [
+        "save-system",
+        "load-scene"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SavePlayerComponents",
+      "type": "function",
+      "name": "SavePlayerComponents",
+      "summary": "Static: captures state from every ISaveableComponent in the scene into a ComponentId-to-JSON dictionary and persists it to PlayerComponents.json.",
+      "tags": [
+        "save-system",
+        "player-components"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadPlayerComponents",
+      "type": "function",
+      "name": "LoadPlayerComponents",
+      "summary": "Restores each ISaveableComponent's state from the PlayerComponents save, skipping missing entries and swallowing per-component failures.",
+      "tags": [
+        "save-system",
+        "player-components"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:FindAllSaveableComponents",
+      "type": "function",
+      "name": "FindAllSaveableComponents",
+      "summary": "Scans all MonoBehaviours in the scene and collects those implementing ISaveableComponent.",
+      "tags": [
+        "save-system",
+        "reflection-scan"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:GatherChildSaveData",
+      "type": "function",
+      "name": "GatherChildSaveData",
+      "summary": "Walks the container's children, letting SaveData.ISaveable components produce their own SaveData, or synthesizing identifier+position SaveData from the GameObject name.",
+      "tags": [
+        "save-system",
+        "serialization"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:InstantiateAndLoadSavedObjects",
+      "type": "function",
+      "name": "InstantiateAndLoadSavedObjects",
+      "summary": "Instantiates each SaveData's GameObject and calls Load on any SaveData.ISaveable component found on it.",
+      "tags": [
+        "save-system",
+        "instantiation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:ProcessElaspedTimeForChildren",
+      "type": "function",
+      "name": "ProcessElaspedTimeForChildren",
+      "summary": "Computes elapsed game minutes since the recorded scene exit time and ticks each GameClock.ITickable child once per minute to simulate time passing while away.",
+      "tags": [
+        "save-system",
+        "time-simulation",
+        "game-clock"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:ClearTWNSaves",
+      "type": "function",
+      "name": "ClearTWNSaves",
+      "summary": "Static: deletes saved-data files for The Way North scenes (numeric suffix) whose base scene name is in the given set, used when regenerating the TWN network.",
+      "tags": [
+        "save-system",
+        "the-way-north",
+        "cleanup"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "type": "file",
+      "name": "SceneSpawner.cs",
+      "summary": "Tilemap-driven world object spawner. Reads marker tiles and SpawnObjectInfo configs, filters candidate positions by occupancy, object footprint size, Perlin noise, and near-type proximity, then instantiates prefab variants on first visit only.",
+      "tags": [
+        "spawning",
+        "tilemap",
+        "procedural-placement",
+        "world-objects"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "languageNotes": "heavy Logger.Info/Verbose instrumentation, tile-position filtering pipeline, static overloaded CalculateWorldPosition, SpawnOffset lookup, Fisher-Yates Shuffle<T>."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SceneSpawner.cs:SceneSpawner",
+      "type": "class",
+      "name": "SceneSpawner",
+      "summary": "MonoBehaviour placed on a marker tilemap that spawns configured prefab variants onto world tilemaps during a scene's first visit, respecting occupancy, footprint size, noise, and adjacency constraints.",
+      "tags": [
+        "spawning",
+        "tilemap",
+        "procedural-placement"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Spawns objects if this is the scene's first visit, otherwise deactivates the spawner GameObject.",
+      "tags": [
+        "spawning",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:InitializeSpawner",
+      "type": "function",
+      "name": "InitializeSpawner",
+      "summary": "Caches the marker Tilemap, all world tilemaps under the Tilemaps tag, the Impermanent container and occupancy map, logs tile/marker diagnostics, and verifies prefab variants share a footprint.",
+      "tags": [
+        "spawning",
+        "initialization"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "type": "function",
+      "name": "SpawnObjects",
+      "summary": "For each SpawnObjectInfo config: computes valid tile positions, filters by occupancy/size/noise/nearby-types, shuffles, instantiates the chosen variant count, and removes newly-occupied positions.",
+      "tags": [
+        "spawning",
+        "placement-pipeline"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:ApplyPerlinNoiseToPositions",
+      "type": "function",
+      "name": "ApplyPerlinNoiseToPositions",
+      "summary": "Keeps only positions whose Perlin-noise value exceeds the config's threshold, producing natural clustering.",
+      "tags": [
+        "spawning",
+        "perlin-noise"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsOccupiedByNewObject",
+      "type": "function",
+      "name": "RemovePositionsOccupiedByNewObject",
+      "summary": "Removes positions within a just-spawned object's footprint so objects don't overlap one another.",
+      "tags": [
+        "spawning",
+        "occupancy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreOccupied",
+      "type": "function",
+      "name": "RemovePositionsThatAreOccupied",
+      "summary": "Filters out positions already marked occupied on the WorldObjectOccupancyMap.",
+      "tags": [
+        "spawning",
+        "occupancy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreTooSmall",
+      "type": "function",
+      "name": "RemovePositionsThatAreTooSmall",
+      "summary": "Keeps only positions where the whole rectangular footprint of the object's OccupyWorldObjectSpace fits within valid tiles.",
+      "tags": [
+        "spawning",
+        "footprint-filter"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:GetPositionsOfValidTilesInArea",
+      "type": "function",
+      "name": "GetPositionsOfValidTilesInArea",
+      "summary": "Collects marker-tile positions that sit on a world tile whose name matches a config's ValidTileTypes (or on no tile when a null entry allows it).",
+      "tags": [
+        "spawning",
+        "tile-filter"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsNotNearTypes",
+      "type": "function",
+      "name": "RemovePositionsNotNearTypes",
+      "summary": "Keeps only spawn positions within a configurable adjacency distance of a previously spawned or already-existing object of a nearby type.",
+      "tags": [
+        "spawning",
+        "proximity"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Shuffle",
+      "type": "function",
+      "name": "Shuffle",
+      "summary": "Generic Fisher-Yates in-place shuffle of a list, used to randomize spawn order.",
+      "tags": [
+        "spawning",
+        "randomization"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:VerifyVariantsAreSameSize",
+      "type": "function",
+      "name": "VerifyVariantsAreSameSize",
+      "summary": "Checks all prefab variants of each config occupy the same tile footprint and logs an error if not.",
+      "tags": [
+        "spawning",
+        "validation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:CalculateWorldPosition",
+      "type": "function",
+      "name": "CalculateWorldPosition",
+      "summary": "Static overloads converting a tilemap/grid cell to a world position (cell center +0.5x) and optionally adding a prefab's SpawnOffset.",
+      "tags": [
+        "spawning",
+        "coordinate-transform"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SceneSpawner.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+      "type": "file",
+      "name": "SelectRandomSprite.cs",
+      "summary": "Picks a sprite from a weighted list at Start using the object's world position as a deterministic random seed, so identical objects in different cells get varied but stable sprites.",
+      "tags": [
+        "sprite-variation",
+        "weighted-random",
+        "visual-variety"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+      "languageNotes": "nested [System.Serializable] WeightedSprite struct, transform.position.GetHashCode() as seed, System.Random weighted draw."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SelectRandomSprite.cs:SelectRandomSprite",
+      "type": "class",
+      "name": "SelectRandomSprite",
+      "summary": "Assigns one of several weighted sprites to the SpriteRenderer at Start, seeded deterministically by world position.",
+      "tags": [
+        "sprite-variation",
+        "weighted-random"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SelectRandomSprite.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SelectRandomSprite.cs:WeightedSprite",
+      "type": "class",
+      "name": "WeightedSprite",
+      "summary": "Nested serializable pair of a Sprite and its selection weight.",
+      "tags": [
+        "sprite-variation",
+        "data-holder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SelectRandomSprite.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SelectRandomSprite.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Computes total weight, seeds a Random by world position, and assigns the selected sprite to the SpriteRenderer.",
+      "tags": [
+        "sprite-variation",
+        "weighted-random"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SelectRandomSprite.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SleepMenu.cs",
+      "type": "file",
+      "name": "SleepMenu.cs",
+      "summary": "Sleep sequence: pauses the game clock, computes energy recovered from sleep quality and diet, waits for narration to clear, applies recovered energy, skips to the next morning, and re-enters the scene via LevelChanger.",
+      "tags": [
+        "sleep",
+        "energy-recovery",
+        "game-clock",
+        "day-cycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SleepMenu.cs",
+      "languageNotes": "coroutine-driven sequence with WaitUntil(AreMessagesClear) and WaitForSecondsRealtime, static PlayerSlept event, GameClock pause/skip/resume."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SleepMenu.cs:SleepMenu",
+      "type": "class",
+      "name": "SleepMenu",
+      "summary": "Coordinates the end-of-day sleep routine: pauses time, shows recovery messages via the Narrator, recovers energy from sleep and diet, fires PlayerSlept, advances the calendar, and reloads the scene.",
+      "tags": [
+        "sleep",
+        "energy-recovery",
+        "day-cycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SleepMenu.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SleepMenu.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Locates PlayerEnergyManager, PlayerTemperatureManager, and PlayerSceneData, then starts the SleepRoutine coroutine.",
+      "tags": [
+        "sleep",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SleepMenu.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SleepMenu.cs:SleepRoutine",
+      "type": "function",
+      "name": "SleepRoutine",
+      "summary": "Pauses the clock, computes and applies sleep+diet energy recovery, posts recovery messages, waits for them to drain, skips to the next day at the wake hour, resumes, and changes scene.",
+      "tags": [
+        "sleep",
+        "coroutine",
+        "energy-recovery"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SleepMenu.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SoundData.cs",
+      "type": "file",
+      "name": "SoundData.cs",
+      "summary": "ScriptableObject audio asset describing a clip with volume, looping, pitch/volume variation, fade in/out, and loop-spacing options consumed by the audio managers.",
+      "tags": [
+        "audio",
+        "scriptable-object",
+        "sound-config"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SoundData.cs",
+      "languageNotes": "[CreateAssetMenu] ScriptableObject, [Range] inspector ranges on variation amounts."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SoundData.cs:SoundData",
+      "type": "class",
+      "name": "SoundData",
+      "summary": "Serializable audio configuration asset: clip, volume, looping flag, optional pitch/volume variation, fade in/out with duration, and loop spacing/variation for ambient loops.",
+      "tags": [
+        "audio",
+        "scriptable-object",
+        "sound-config"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SoundData.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SoundDataEditor.cs",
+      "type": "file",
+      "name": "SoundDataEditor.cs",
+      "summary": "Custom Unity editor inspector for SoundData that conditionally reveals pitch/volume variation fields and looping sub-fields (fade, spacing) with indentation.",
+      "tags": [
+        "audio",
+        "custom-editor",
+        "inspector"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SoundDataEditor.cs",
+      "languageNotes": "[CustomEditor(typeof(SoundData))], SerializedProperty caching in OnEnable, conditional EditorGUILayout.PropertyField with indent levels."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SoundDataEditor.cs:SoundDataEditor",
+      "type": "class",
+      "name": "SoundDataEditor",
+      "summary": "Editor drawer for SoundData assets that shows variation options only when enabled and loops-only options only when IsLooping is checked.",
+      "tags": [
+        "audio",
+        "custom-editor"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SoundDataEditor.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SoundDataEditor.cs:OnInspectorGUI",
+      "type": "function",
+      "name": "OnInspectorGUI",
+      "summary": "Renders SoundData fields with conditional visibility for pitch/volume variation and looping sub-options, then applies modified properties.",
+      "tags": [
+        "audio",
+        "inspector"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SoundDataEditor.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "type": "file",
+      "name": "SpawnItems.cs",
+      "summary": "Static helper for spawning loose item pickups: scatters item stacks within a collider or at explicit positions, applies an optional launch velocity/drag direction, and loads items from Resources.",
+      "tags": [
+        "item-spawning",
+        "loose-items",
+        "static-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs",
+      "languageNotes": "static class, Resources.Load<Inventory.Item> by ItemLabel, Unity.Mathematics import, switch-expression for launch angle, Rigidbody2D linearDamping/linearVelocity (new 2D API)."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItems",
+      "type": "class",
+      "name": "SpawnItems",
+      "summary": "Static factory that instantiates LooseItem pickups from Inventory.Item data, scattering them inside a collider bounds or at given positions and optionally launching them in a direction.",
+      "tags": [
+        "item-spawning",
+        "loose-items",
+        "static-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpawnItems.cs:LaunchDirection",
+      "type": "class",
+      "name": "LaunchDirection",
+      "summary": "Nested enum of launch direction options: UP, DOWN, LEFT, RIGHT, or ANY.",
+      "tags": [
+        "item-spawning",
+        "enum"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemData",
+      "type": "class",
+      "name": "SpawnItemData",
+      "summary": "Nested serializable description of an item type with a min/max quantity range for randomized spawn counts.",
+      "tags": [
+        "item-spawning",
+        "data-holder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "type": "function",
+      "name": "SpawnItemsFromCollider",
+      "summary": "Overloaded static entry point: spawns a quantity of one item type (or an array of SpawnItemData) at random points inside a collider with a launch direction/speed/drag.",
+      "tags": [
+        "item-spawning",
+        "collider-scatter"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnLooseItems",
+      "type": "function",
+      "name": "SpawnLooseItems",
+      "summary": "Spawns single-quantity loose items at explicit positions, optionally skipping the bounce animation and applying a launch velocity.",
+      "tags": [
+        "item-spawning",
+        "position-spawn"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:FetchItem",
+      "type": "function",
+      "name": "FetchItem",
+      "summary": "Loads an Inventory.Item from Resources/Items/<itemName>, logging an error if missing.",
+      "tags": [
+        "item-spawning",
+        "resources"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:InstantiateLooseItem",
+      "type": "function",
+      "name": "InstantiateLooseItem",
+      "summary": "Instantiates the Resources/Items/LooseItem prefab under the LooseItems container, assigns the item sprite to its SpriteRenderer, and transfers the ItemStack to its LooseItem component.",
+      "tags": [
+        "item-spawning",
+        "loose-items"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GetRandomPositionsWithinCollider",
+      "type": "function",
+      "name": "GetRandomPositionsWithinCollider",
+      "summary": "Samples random points inside a collider's bounds until the requested quantity of valid (overlapping) positions are found, capped by attempts.",
+      "tags": [
+        "item-spawning",
+        "random-scatter"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SetLaunchSpeed",
+      "type": "function",
+      "name": "SetLaunchSpeed",
+      "summary": "Sets a spawned object's Rigidbody2D drag and initial velocity from the launch direction and speed.",
+      "tags": [
+        "item-spawning",
+        "physics"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GenerateLaunchDirection",
+      "type": "function",
+      "name": "GenerateLaunchDirection",
+      "summary": "Produces a normalized random direction vector constrained to a directional angle window (or full circle for ANY) via a switch expression.",
+      "tags": [
+        "item-spawning",
+        "directional-random"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnItems.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SpawnObjectInfo.cs",
+      "type": "file",
+      "name": "SpawnObjectInfo.cs",
+      "summary": "ScriptableObject spawn configuration for SceneSpawner: prefab variants, valid world tile types, density, optional near-type adjacency, and optional Perlin noise gating.",
+      "tags": [
+        "spawning",
+        "scriptable-object",
+        "config"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnObjectInfo.cs",
+      "languageNotes": "[CreateAssetMenu] ScriptableObject holding serializable lists of GameObject variants and TileBase types."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpawnObjectInfo.cs:SpawnObjectInfo",
+      "type": "class",
+      "name": "SpawnObjectInfo",
+      "summary": "Config asset describing how a family of prefab variants should be placed: which tile types they sit on, density fraction, near-type adjacency rules, and Perlin noise parameters.",
+      "tags": [
+        "spawning",
+        "scriptable-object",
+        "config"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpawnObjectInfo.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SpriteLocalCoords.cs",
+      "type": "file",
+      "name": "SpriteLocalCoords.cs",
+      "summary": "EditMode component that pushes a sprite's UV-remap vector (from its texture rect and texel size) into the material via MaterialPropertyBlock, or via a material instance in play mode.",
+      "tags": [
+        "rendering",
+        "sprite-uv",
+        "material-property-block",
+        "shader"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpriteLocalCoords.cs",
+      "languageNotes": "[ExecuteInEditMode], MaterialPropertyBlock or material instance for URP SRP-batcher, _UVRemap vector for a custom shader."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpriteLocalCoords.cs:SpriteLocalCoords",
+      "type": "class",
+      "name": "SpriteLocalCoords",
+      "summary": "Feeds a sprite's texture-rect UV remap into its material on enable, choosing between a MaterialPropertyBlock (default) or a play-mode-only material instance.",
+      "tags": [
+        "rendering",
+        "sprite-uv",
+        "material-property-block"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpriteLocalCoords.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpriteLocalCoords.cs:OnEnable",
+      "type": "function",
+      "name": "OnEnable",
+      "summary": "Computes the uvRemap from sprite texture rect and texel size, then sets it via MaterialPropertyBlock or material instance depending on usePropertyBlock.",
+      "tags": [
+        "rendering",
+        "sprite-uv"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpriteLocalCoords.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "type": "file",
+      "name": "SpriteSubdivider.cs",
+      "summary": "Subdivides a SpriteRenderer's sprite into a grid of vertices/triangles using OverrideGeometry, optionally on a cloned sprite, to enable per-segment sprite deformation effects.",
+      "tags": [
+        "rendering",
+        "sprite-deformation",
+        "mesh-geometry"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "languageNotes": "Sprite.OverrideGeometry with ushort triangle index buffer, optional Instantiate'd sprite clone with cleanup in OnDestroy."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/SpriteSubdivider.cs:SpriteSubdivider",
+      "type": "class",
+      "name": "SpriteSubdivider",
+      "summary": "Rebuilds a sprite's mesh as a horizontal-by-vertical grid of triangles on Start (and on demand via Regenerate), cloning the sprite first so the original asset is never mutated.",
+      "tags": [
+        "rendering",
+        "sprite-deformation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpriteSubdivider.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Runs Regenerate once at start to subdivide the renderer's current sprite.",
+      "tags": [
+        "rendering",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpriteSubdivider.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Regenerate",
+      "type": "function",
+      "name": "Regenerate",
+      "summary": "Public API that clones the current sprite (if configured) and builds the subdivided geometry on it, recreating the clone if the source sprite changed.",
+      "tags": [
+        "rendering",
+        "sprite-deformation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/SpriteSubdivider.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:BuildAndOverride",
+      "type": "function",
+      "name": "BuildAndOverride",
+      "summary": "Generates a grid of vertices and two-triangle quads and applies them to the sprite via OverrideGeometry.",
+      "tags": [
+        "rendering",
+        "mesh-geometry"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/SpriteSubdivider.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "type": "file",
+      "name": "UseItem.cs",
+      "summary": "Player item-use driver: queues use input, resolves the target under the grid cursor, and routes item usage through interfaces (IUsableOnWorldObject, IUsableOnTileMap, IUsableWithoutTarget), depleting energy and playing hit sounds on successful use.",
+      "tags": [
+        "item-use",
+        "player-input",
+        "interaction",
+        "energy-cost"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs",
+      "languageNotes": "input-queue flag consumed in Update, interface-based extension contracts on Inventory.Item, UnityEngine.Assertions, EventSystem pointer-over guard, PlayerState interruption checks."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/UseItem.cs:UseItemInput",
+      "type": "class",
+      "name": "UseItemInput",
+      "summary": "Drives player item use: queues use-item input, gathers cursor target and interactable tilemap, then tries carried-object placement or inventory-item use against world objects, tilemaps, or with no target.",
+      "tags": [
+        "item-use",
+        "player-input",
+        "interaction"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableOnWorldObject",
+      "type": "class",
+      "name": "IUsableOnWorldObject",
+      "summary": "Interface implemented by Inventory.Item types that can be used on a world object under the cursor; returns whether the use was consumed.",
+      "tags": [
+        "item-use",
+        "interface",
+        "contract"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableOnTileMap",
+      "type": "class",
+      "name": "IUsableOnTileMap",
+      "summary": "Interface for items usable on an interactable tilemap layer under the cursor (e.g. Water), returning whether the use was consumed.",
+      "tags": [
+        "item-use",
+        "interface",
+        "contract"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableWithoutTarget",
+      "type": "class",
+      "name": "IUsableWithoutTarget",
+      "summary": "Interface for items usable without any target; returns whether energy was spent.",
+      "tags": [
+        "item-use",
+        "interface",
+        "contract"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableWithSound",
+      "type": "class",
+      "name": "IUsableWithSound",
+      "summary": "Interface for items that play a hit sound after a successful use.",
+      "tags": [
+        "item-use",
+        "interface",
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Consumes a queued use: bails if over UI or in a non-interruptible player state, resolves the cursor target and tilemap, then tries carried-object use then inventory-item use.",
+      "tags": [
+        "item-use",
+        "update-loop"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseCarriedObject",
+      "type": "function",
+      "name": "TryUseCarriedObject",
+      "summary": "Places the carried weighty object: adds it to a targeted Box, pushes it onto an IWeightyObjectContainer stack with space, or puts it down at the cursor location.",
+      "tags": [
+        "item-use",
+        "carried-objects",
+        "weighty-objects"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "type": "function",
+      "name": "TryUseInventoryItem",
+      "summary": "Gets the active inventory item and its instance data, checks energy sufficiency, then tries use-on-world-object, use-on-tilemap, or use-without-target in order.",
+      "tags": [
+        "item-use",
+        "inventory",
+        "energy-cost"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnWorldObject",
+      "type": "function",
+      "name": "TryUseItemOnWorldObject",
+      "summary": "If the item implements IUsableOnWorldObject and the target accepts the use, depletes energy and plays the hit sound.",
+      "tags": [
+        "item-use",
+        "world-objects"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnTileMap",
+      "type": "function",
+      "name": "TryUseItemOnTileMap",
+      "summary": "If the item implements IUsableOnTileMap and the tilemap use succeeds, depletes energy and plays the hit sound.",
+      "tags": [
+        "item-use",
+        "tilemap"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemWithoutTarget",
+      "type": "function",
+      "name": "TryUseItemWithoutTarget",
+      "summary": "If the item implements IUsableWithoutTarget and the targetless use succeeds, depletes energy.",
+      "tags": [
+        "item-use",
+        "targetless"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:PlayHitSound",
+      "type": "function",
+      "name": "PlayHitSound",
+      "summary": "Plays the item's hit sound when it implements IUsableWithSound.",
+      "tags": [
+        "item-use",
+        "audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/UseItem.cs:DepleteUseEnergy",
+      "type": "function",
+      "name": "DepleteUseEnergy",
+      "summary": "Depletes the item's EnergyCost from the player when the item implements IEnergyDepleting.",
+      "tags": [
+        "item-use",
+        "energy-cost"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/UseItem.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/VirtualCameraManager.cs",
+      "type": "file",
+      "name": "VirtualCameraManager.cs",
+      "summary": "Cinemachine camera manager that warps the virtual camera to the player's scene spawn position on scene load, skipping the menu scene.",
+      "tags": [
+        "cinemachine",
+        "camera",
+        "scene-transition"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/VirtualCameraManager.cs",
+      "languageNotes": "Unity.Cinemachine CinemachineCamera, OnTargetObjectWarped for hard camera snap, FindFirstObjectByType for PlayerSceneData."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/VirtualCameraManager.cs:VirtualCameraManager",
+      "type": "class",
+      "name": "VirtualCameraManager",
+      "summary": "On scene load, snaps the CinemachineCamera to the player's recorded spawn position via OnTargetObjectWarped so the camera doesn't fly across the map during transitions.",
+      "tags": [
+        "cinemachine",
+        "camera",
+        "scene-transition"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/VirtualCameraManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/VirtualCameraManager.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "Finds the player and warps the virtual camera target to the player's SceneSpawnPosition, unless loading the GameMenu scene.",
+      "tags": [
+        "cinemachine",
+        "scene-load"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/VirtualCameraManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "type": "file",
+      "name": "WaterLevelEnabler.cs",
+      "summary": "Enables the water-body visual group matching the current WorldState.WaterState (flood, full, shallow, puddles, or post-flood) at Start and disables all other groups.",
+      "tags": [
+        "water-level",
+        "world-state",
+        "flooding",
+        "visual-states"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "languageNotes": "switch on WorldState.WaterState.Value enum, lists of GameObjects toggled via SetActive."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:WaterLevelEnabler",
+      "type": "class",
+      "name": "WaterLevelEnabler",
+      "summary": "Switches between pre-configured water-body object groups based on the current water state, enabling exactly one group and disabling the rest at Start.",
+      "tags": [
+        "water-level",
+        "world-state",
+        "flooding"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/WaterLevelEnabler.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Disables all water-level groups, then enables the group matching the current WorldState.WaterState.",
+      "tags": [
+        "water-level",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WaterLevelEnabler.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:EnableObjects",
+      "type": "function",
+      "name": "EnableObjects",
+      "summary": "Sets every GameObject in the given list active.",
+      "tags": [
+        "water-level",
+        "toggle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WaterLevelEnabler.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:DisableAllObjects",
+      "type": "function",
+      "name": "DisableAllObjects",
+      "summary": "Deactivates every GameObject in all water-level groups.",
+      "tags": [
+        "water-level",
+        "toggle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WaterLevelEnabler.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "type": "file",
+      "name": "WeightyObjectStack.cs",
+      "summary": "Weight-capped LIFO stack for carried/stored weighty objects backed by a ReactiveUnity ReactiveStack, with a container interface for world objects that accept pushed weighty objects.",
+      "tags": [
+        "weighty-objects",
+        "inventory-stack",
+        "reactive-stack",
+        "carry-system"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "languageNotes": "ReactiveUnity ReactiveStack<StoredWeightyObject>, UnityEngine.Assertions, plain [System.Serializable] class (not MonoBehaviour), IWeightyObjectContainer extends InteractInput.IInteractable."
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/WeightyObjectStack.cs:WeightyObjectStack",
+      "type": "class",
+      "name": "WeightyObjectStack",
+      "summary": "Reactive LIFO stack of StoredWeightyObjects that tracks cumulative weight against a Capacity, supporting push/pop/peek/clear with weight and space checks.",
+      "tags": [
+        "weighty-objects",
+        "stack",
+        "carry-system"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Base Systems/WeightyObjectStack.cs:IWeightyObjectContainer",
+      "type": "class",
+      "name": "IWeightyObjectContainer",
+      "summary": "Interface for interactable world objects (e.g. crates, wheelbarrows) that expose a WeightyStack for storing carried weighty objects.",
+      "tags": [
+        "weighty-objects",
+        "interface",
+        "contract"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Clear",
+      "type": "function",
+      "name": "Clear",
+      "summary": "Empties the stack and resets CurrentWeight to zero.",
+      "tags": [
+        "weighty-objects",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Push",
+      "type": "function",
+      "name": "Push",
+      "summary": "Adds a stored object to the top of the stack and adds its weight to CurrentWeight.",
+      "tags": [
+        "weighty-objects",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Pop",
+      "type": "function",
+      "name": "Pop",
+      "summary": "Removes and returns the top object, subtracting its weight from CurrentWeight.",
+      "tags": [
+        "weighty-objects",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Peek",
+      "type": "function",
+      "name": "Peek",
+      "summary": "Returns the top object without removing it.",
+      "tags": [
+        "weighty-objects",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:IsEmpty",
+      "type": "function",
+      "name": "IsEmpty",
+      "summary": "Returns true when the stack is empty and asserts CurrentWeight is zero.",
+      "tags": [
+        "weighty-objects",
+        "stack"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:HasEnoughSpace",
+      "type": "function",
+      "name": "HasEnoughSpace",
+      "summary": "Returns whether adding an object of the given weight would stay within Capacity.",
+      "tags": [
+        "weighty-objects",
+        "capacity"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "target": "class:Assets/Scripts/Base Systems/LocalHeatSource.cs:LocalHeatSource",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "target": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:Temperature",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "target": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:AddSourceToOverlappedHeatSensitives",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/LocalHeatSource.cs",
+      "target": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:RemoveSourceFromOverlappedHeatSensitives",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "target": "class:Assets/Scripts/Base Systems/Magnetosphere.cs:Magnetosphere",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "target": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:FixedUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "target": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:CollectItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Magnetosphere.cs",
+      "target": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:ApplyMagneticForce",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/MatchLightWithSun.cs",
+      "target": "class:Assets/Scripts/Base Systems/MatchLightWithSun.cs:MatchLightWithSun",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/MatchLightWithSun.cs",
+      "target": "function:Assets/Scripts/Base Systems/MatchLightWithSun.cs:LateUpdate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "class:Assets/Scripts/Base Systems/Narrator.cs:Narrator",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:Instance",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:CheckMessageLifeSpans",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:AreMessagesClear",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintFirstVisitToSceneMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessageAfterDelay",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "target": "class:Assets/Scripts/Base Systems/ObjectPooling.cs:ObjectPooling",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "target": "class:Assets/Scripts/Base Systems/ObjectPooling.cs:PooledObjectInfo",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "target": "function:Assets/Scripts/Base Systems/ObjectPooling.cs:SpawnObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ObjectPooling.cs",
+      "target": "function:Assets/Scripts/Base Systems/ObjectPooling.cs:ReturnObjectToPool",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+      "target": "class:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs:OccupyWorldObjectSpace",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+      "target": "function:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "class:Assets/Scripts/Base Systems/OutsideTemperature.cs:OutsideTemperature",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:Temperature",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnTemperatureChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllHeatSensitives",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllChildHeatSensitives",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/OutsideTemperature.cs",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "class:Assets/Scripts/Base Systems/Persistence.cs:JsonPersistence",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:PersistJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:FromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:JsonExists",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:DeleteFile",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+      "target": "class:Assets/Scripts/Base Systems/PickUpOnInteract.cs:PickUpOnInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+      "target": "function:Assets/Scripts/Base Systems/PickUpOnInteract.cs:CursorInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "target": "class:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:ReduceOpacityWhenPlayerBehind",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "target": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerEnter2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "target": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerExit2D",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+      "target": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:FadeToOpacity",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "class:Assets/Scripts/Base Systems/SaveData.cs:SaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "class:Assets/Scripts/Base Systems/SaveData.cs:ISaveable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "class:Assets/Scripts/Base Systems/SaveData.cs:SimpleVector3",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "function:Assets/Scripts/Base Systems/SaveData.cs:AddIdentifier",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "function:Assets/Scripts/Base Systems/SaveData.cs:AddTransformPosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "function:Assets/Scripts/Base Systems/SaveData.cs:AddExtendedSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "function:Assets/Scripts/Base Systems/SaveData.cs:GetExtendedSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "target": "function:Assets/Scripts/Base Systems/SaveData.cs:InstantiateGameObjectFromSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SceneSaveLoadManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SceneSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "class:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:PlayerComponentsSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:IsFirstVisit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnApplicationQuit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SaveScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SavePlayerComponents",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadPlayerComponents",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:FindAllSaveableComponents",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:GatherChildSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:InstantiateAndLoadSavedObjects",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:ProcessElaspedTimeForChildren",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:ClearTWNSaves",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "class:Assets/Scripts/Base Systems/SceneSpawner.cs:SceneSpawner",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:InitializeSpawner",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:ApplyPerlinNoiseToPositions",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsOccupiedByNewObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreOccupied",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreTooSmall",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:GetPositionsOfValidTilesInArea",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsNotNearTypes",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Shuffle",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:VerifyVariantsAreSameSize",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:CalculateWorldPosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+      "target": "class:Assets/Scripts/Base Systems/SelectRandomSprite.cs:SelectRandomSprite",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+      "target": "class:Assets/Scripts/Base Systems/SelectRandomSprite.cs:WeightedSprite",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+      "target": "function:Assets/Scripts/Base Systems/SelectRandomSprite.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SleepMenu.cs",
+      "target": "class:Assets/Scripts/Base Systems/SleepMenu.cs:SleepMenu",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SleepMenu.cs",
+      "target": "function:Assets/Scripts/Base Systems/SleepMenu.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SleepMenu.cs",
+      "target": "function:Assets/Scripts/Base Systems/SleepMenu.cs:SleepRoutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SoundData.cs",
+      "target": "class:Assets/Scripts/Base Systems/SoundData.cs:SoundData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SoundDataEditor.cs",
+      "target": "class:Assets/Scripts/Base Systems/SoundDataEditor.cs:SoundDataEditor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SoundDataEditor.cs",
+      "target": "function:Assets/Scripts/Base Systems/SoundDataEditor.cs:OnInspectorGUI",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItems",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpawnItems.cs:LaunchDirection",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnLooseItems",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:FetchItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:InstantiateLooseItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GetRandomPositionsWithinCollider",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SetLaunchSpeed",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnItems.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GenerateLaunchDirection",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpawnObjectInfo.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpawnObjectInfo.cs:SpawnObjectInfo",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteLocalCoords.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpriteLocalCoords.cs:SpriteLocalCoords",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteLocalCoords.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpriteLocalCoords.cs:OnEnable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "target": "class:Assets/Scripts/Base Systems/SpriteSubdivider.cs:SpriteSubdivider",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Regenerate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+      "target": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:BuildAndOverride",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "class:Assets/Scripts/Base Systems/UseItem.cs:UseItemInput",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableOnWorldObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableOnTileMap",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableWithoutTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "class:Assets/Scripts/Base Systems/UseItem.cs:IUsableWithSound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseCarriedObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnWorldObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnTileMap",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemWithoutTarget",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:PlayHitSound",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:DepleteUseEnergy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/VirtualCameraManager.cs",
+      "target": "class:Assets/Scripts/Base Systems/VirtualCameraManager.cs:VirtualCameraManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/VirtualCameraManager.cs",
+      "target": "function:Assets/Scripts/Base Systems/VirtualCameraManager.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "target": "class:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:WaterLevelEnabler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "target": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "target": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:EnableObjects",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+      "target": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:DisableAllObjects",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "class:Assets/Scripts/Base Systems/WeightyObjectStack.cs:WeightyObjectStack",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "class:Assets/Scripts/Base Systems/WeightyObjectStack.cs:IWeightyObjectContainer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Clear",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Push",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Pop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:Peek",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:IsEmpty",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "target": "function:Assets/Scripts/Base Systems/WeightyObjectStack.cs:HasEnoughSpace",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "Defines or contains this class/function"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:Temperature",
+      "target": "function:Assets/Scripts/Base Systems/LocalHeatSource.cs:AddSourceToOverlappedHeatSensitives",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Temperature setter re-registers the source with overlapped heat sensitives"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:ApplyMagneticForce",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Pulls each magnetic loose item toward the player"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:FixedUpdate",
+      "target": "function:Assets/Scripts/Base Systems/Magnetosphere.cs:CollectItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Collects items intersecting the collect collider"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Narrator.cs:Update",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:CheckMessageLifeSpans",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fades and removes expired messages"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Narrator.cs:Update",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Prints the next queued message"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Narrator.cs:PrintFirstVisitToSceneMessage",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessageAfterDelay",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Schedules delayed first-visit messages"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessageAfterDelay",
+      "target": "function:Assets/Scripts/Base Systems/Narrator.cs:PostMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Enqueues the delayed narrator message"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:Temperature",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnTemperatureChange",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Triggers re-registration when the ambient temperature changes"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnTemperatureChange",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllHeatSensitives",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fans the source out to all heat sensitives"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllHeatSensitives",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllChildHeatSensitives",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Recurses through the world grid's children"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:OnSceneLoaded",
+      "target": "function:Assets/Scripts/Base Systems/OutsideTemperature.cs:AddToAllHeatSensitives",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Registers the source on scene load"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Persistence.cs:PersistJson",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the write path under persistentDataPath"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Persistence.cs:FromJson",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the read path under persistentDataPath"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Persistence.cs:JsonExists",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the path to check"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/Persistence.cs:DeleteFile",
+      "target": "function:Assets/Scripts/Base Systems/Persistence.cs:GetPersistencePath",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the path to delete"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerEnter2D",
+      "target": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:FadeToOpacity",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fades down while player overlaps"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:OnTriggerExit2D",
+      "target": "function:Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs:FadeToOpacity",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Fades back up when player leaves"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Awake",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Loads the scene save on awake"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnSceneLoaded",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Reloads scene save after scene change"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadPlayerComponents",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Restores player component state"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:OnApplicationQuit",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SavePlayerComponents",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Persists player component state on quit"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SaveScene",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:GatherChildSaveData",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Collects world-object SaveData from the Impermanent container"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:InstantiateAndLoadSavedObjects",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Instantiates saved world objects"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadScene",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:ProcessElaspedTimeForChildren",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Replays elapsed game time on loaded objects"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:SavePlayerComponents",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:FindAllSaveableComponents",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Discovers ISaveableComponent instances"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:LoadPlayerComponents",
+      "target": "function:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs:FindAllSaveableComponents",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Discovers ISaveableComponent instances"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spawns world objects on first visit"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:InitializeSpawner",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Caches tilemaps and occupancy map"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:GetPositionsOfValidTilesInArea",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Finds tile-valid spawn positions"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreOccupied",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Filters out pre-occupied positions"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsThatAreTooSmall",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Filters positions too small for object footprint"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:ApplyPerlinNoiseToPositions",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies optional noise gating"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsNotNearTypes",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Filters by near-type adjacency"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:Shuffle",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Randomizes spawn order"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:RemovePositionsOccupiedByNewObject",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Clears footprint of each spawned object"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:SpawnObjects",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:CalculateWorldPosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Converts marker tile cells to world positions"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:InitializeSpawner",
+      "target": "function:Assets/Scripts/Base Systems/SceneSpawner.cs:VerifyVariantsAreSameSize",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Checks variant footprints match"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SleepMenu.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/SleepMenu.cs:SleepRoutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Starts the sleep sequence coroutine"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:FetchItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the item from Resources"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GetRandomPositionsWithinCollider",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Computes random in-collider spawn points"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:InstantiateLooseItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Instantiates loose item pickups"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnItemsFromCollider",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SetLaunchSpeed",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies launch velocity"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnLooseItems",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:FetchItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Resolves the item from Resources"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnLooseItems",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:InstantiateLooseItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Instantiates loose item pickups"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SpawnLooseItems",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SetLaunchSpeed",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Applies launch velocity"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpawnItems.cs:SetLaunchSpeed",
+      "target": "function:Assets/Scripts/Base Systems/SpawnItems.cs:GenerateLaunchDirection",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Picks a launch direction vector"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Regenerate",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Builds subdivided geometry at start"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:Regenerate",
+      "target": "function:Assets/Scripts/Base Systems/SpriteSubdivider.cs:BuildAndOverride",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Writes grid geometry into the sprite"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:Update",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseCarriedObject",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Tries placing the carried weighty object first"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:Update",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Falls back to using the active inventory item"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnWorldObject",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Attempts use against the cursor target object"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnTileMap",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Attempts use against the interactable tilemap"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseInventoryItem",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemWithoutTarget",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Attempts targetless use"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnWorldObject",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:DepleteUseEnergy",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spends energy on successful use"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnWorldObject",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:PlayHitSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Plays item hit sound"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnTileMap",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:DepleteUseEnergy",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spends energy on successful use"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemOnTileMap",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:PlayHitSound",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Plays item hit sound"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/UseItem.cs:TryUseItemWithoutTarget",
+      "target": "function:Assets/Scripts/Base Systems/UseItem.cs:DepleteUseEnergy",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Spends energy on successful use"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:DisableAllObjects",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Clears all water-level groups first"
+    },
+    {
+      "source": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:Start",
+      "target": "function:Assets/Scripts/Base Systems/WaterLevelEnabler.cs:EnableObjects",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Enables the group for the current water state"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "target": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Reads SceneSaveLoadManager.IsFirstVisit to print first-visit scene messages"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "file:Assets/Scripts/Base Systems/SaveData.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Gathers and instantiates world objects via SaveData.ISaveable and InstantiateGameObjectFromSaveData"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "target": "file:Assets/Scripts/Base Systems/Persistence.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Persists scene and player-component JSON via ColePersistence.JsonPersistence"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "file:Assets/Scripts/Base Systems/SpawnObjectInfo.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Reads spawn configuration (density, valid tile types, prefab variants, noise) from SpawnObjectInfo assets"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "file:Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Reads OccupyWorldObjectSpace tile-footprint fields to filter spawn positions"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SceneSpawner.cs",
+      "target": "file:Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Checks SceneSaveLoadManager.IsFirstVisit to decide whether to spawn"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+      "target": "file:Assets/Scripts/Base Systems/SoundData.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "References a SoundData asset for the pickup sound played via AudioManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SleepMenu.cs",
+      "target": "file:Assets/Scripts/Base Systems/Narrator.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Calls Narrator.Instance.PostMessage and AreMessagesClear during the sleep sequence"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/SoundDataEditor.cs",
+      "target": "file:Assets/Scripts/Base Systems/SoundData.cs",
+      "type": "configures",
+      "weight": 0.6,
+      "direction": "forward",
+      "description": "Custom inspector editing SoundData asset fields"
+    },
+    {
+      "source": "file:Assets/Scripts/Base Systems/UseItem.cs",
+      "target": "file:Assets/Scripts/Base Systems/WeightyObjectStack.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "Uses IWeightyObjectContainer.WeightyStack to push/put down carried weighty objects"
+    }
+  ],
+  "files": [
+    "Assets/Scripts/Base Systems/LocalHeatSource.cs",
+    "Assets/Scripts/Base Systems/Magnetosphere.cs",
+    "Assets/Scripts/Base Systems/MatchLightWithSun.cs",
+    "Assets/Scripts/Base Systems/Narrator.cs",
+    "Assets/Scripts/Base Systems/ObjectPooling.cs",
+    "Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs",
+    "Assets/Scripts/Base Systems/OutsideTemperature.cs",
+    "Assets/Scripts/Base Systems/Persistence.cs",
+    "Assets/Scripts/Base Systems/PickUpOnInteract.cs",
+    "Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs",
+    "Assets/Scripts/Base Systems/SaveData.cs",
+    "Assets/Scripts/Base Systems/SceneSaveLoadManager.cs",
+    "Assets/Scripts/Base Systems/SceneSpawner.cs",
+    "Assets/Scripts/Base Systems/SelectRandomSprite.cs",
+    "Assets/Scripts/Base Systems/SleepMenu.cs",
+    "Assets/Scripts/Base Systems/SoundData.cs",
+    "Assets/Scripts/Base Systems/SoundDataEditor.cs",
+    "Assets/Scripts/Base Systems/SpawnItems.cs",
+    "Assets/Scripts/Base Systems/SpawnObjectInfo.cs",
+    "Assets/Scripts/Base Systems/SpriteLocalCoords.cs",
+    "Assets/Scripts/Base Systems/SpriteSubdivider.cs",
+    "Assets/Scripts/Base Systems/UseItem.cs",
+    "Assets/Scripts/Base Systems/VirtualCameraManager.cs",
+    "Assets/Scripts/Base Systems/WaterLevelEnabler.cs",
+    "Assets/Scripts/Base Systems/WeightyObjectStack.cs"
+  ]
+}

@@ -1,0 +1,3807 @@
+{
+ "nodes": [
+  {
+   "id": "file:Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "type": "file",
+   "name": "WeightyObjectType.cs",
+   "summary": "Defines the weighty-object concept: IWeighty ties carryable objects to interaction (InteractInput.IInteractable) and saving (SaveData.ISaveable); StoredWeightyObject snapshots a carried object's type and save data; WeightyObjectType ScriptableObject holds weight, strength requirement, and N/S-E/W carry sprites.",
+   "tags": [
+    "weighty-objects",
+    "carrying",
+    "scriptable-object",
+    "save-data",
+    "interactable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WeightyObjectType.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:IWeighty",
+   "type": "class",
+   "name": "IWeighty",
+   "summary": "Interface combining InteractInput.IInteractable and SaveData.ISaveable, exposing the object's WeightyObjectType so carriers can snapshot and save it.",
+   "tags": [
+    "weighty-objects",
+    "interface",
+    "interactable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:StoredWeightyObject",
+   "type": "class",
+   "name": "StoredWeightyObject",
+   "summary": "POCO snapshot of a carried weighty object: captures its WeightyObjectType and the serialized SaveData at pickup time.",
+   "tags": [
+    "weighty-objects",
+    "stacking",
+    "save-data"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:WeightyObjectType",
+   "type": "class",
+   "name": "WeightyObjectType",
+   "summary": "ScriptableObject asset defining a carryable object: Weight, StrengthRequired, and NSCarry/EWCarry sprites for carrying poses.",
+   "tags": [
+    "weighty-objects",
+    "scriptable-object",
+    "carrying"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "file:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "type": "file",
+   "name": "WorldObjectOccupancyMap.cs",
+   "summary": "MonoBehaviour that treats a Tilemap as a spatial occupancy grid. CheckOccupied queries for marker tiles at a world or cell position; SetOccupied paints a rectangular footprint of marker tiles and returns an eraser callback for later release.",
+   "tags": [
+    "occupancy",
+    "tilemap",
+    "world-objects",
+    "spatial-grid"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:WorldObjectOccupancyMap",
+   "type": "class",
+   "name": "WorldObjectOccupancyMap",
+   "summary": "Tilemap-backed occupancy marker (RequireComponent Tilemap/TilemapRenderer) used to reserve and query world-space cells.",
+   "tags": [
+    "occupancy",
+    "tilemap",
+    "world-objects"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:CheckOccupied",
+   "type": "function",
+   "name": "CheckOccupied",
+   "summary": "Returns true if a marker tile exists at the given world position or cell position, lazily caching the Tilemap.",
+   "tags": [
+    "occupancy",
+    "tilemap",
+    "query"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:SetOccupied",
+   "type": "function",
+   "name": "SetOccupied",
+   "summary": "Paints a rectangle of marker tiles around a world position (tilesToLeft/Right/Above/Below) and returns an Action that erases exactly those tiles.",
+   "tags": [
+    "occupancy",
+    "tilemap",
+    "reservation"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Base Systems/WorldState.cs",
+   "type": "file",
+   "name": "WorldState.cs",
+   "summary": "ScriptableObject holding global environmental state as static ReactiveUnity properties: WaterState (Puddles/Flood/Full/Shallow/PostFlood), RainState, WindState, plus a static outside Temperature. Other systems subscribe to the reactives.",
+   "tags": [
+    "world-state",
+    "reactive",
+    "environment",
+    "weather"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WorldState.cs:WorldState",
+   "type": "class",
+   "name": "WorldState",
+   "summary": "Static Reactive<T> holders for water/rain/wind state and outside temperature, plus their enum types; the shared ambient-world state read across systems.",
+   "tags": [
+    "world-state",
+    "reactive",
+    "environment"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "file:Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "type": "file",
+   "name": "WorldStateByCalendar.cs",
+   "summary": "WorldStateCalendar MonoBehaviour with a hand-authored list of DayState entries (year/day/season -> water/rain/wind). On every GameClock game-day tick it looks up the current date and writes the matching state into WorldState; logs an error and falls back to Shallow if no entry matches.",
+   "tags": [
+    "world-state",
+    "calendar",
+    "game-clock",
+    "environment"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Base Systems/WorldStateByCalendar.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:WorldStateCalendar",
+   "type": "class",
+   "name": "WorldStateCalendar",
+   "summary": "Singleton MonoBehaviour that subscribes to GameClock.OnGameDayTick and pushes calendar-authored environmental states into WorldState.",
+   "tags": [
+    "world-state",
+    "calendar",
+    "singleton"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:DayState",
+   "type": "class",
+   "name": "DayState",
+   "summary": "Serializable per-day entry mapping a GameYear/GameDay/Season key to WaterState, RainState, and WindState values.",
+   "tags": [
+    "world-state",
+    "calendar",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:UpdateWorldState",
+   "type": "function",
+   "name": "UpdateWorldState",
+   "summary": "Finds the DayState matching the current game date and writes its Water/Rain/Wind values into the static WorldState reactives; logs an error and defaults water to Shallow on no match.",
+   "tags": [
+    "world-state",
+    "calendar",
+    "update"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "type": "file",
+   "name": "YDepthSorter.cs",
+   "summary": "MonoBehaviour that derives a GameObject's sprite/SortingGroup/Canvas sorting order from its world Y position (negative Y = higher order), adding per-layer offsets for GroundObstacle, LowObstacle, HighObstacle, and Birds layers. Sorts on enable/start and optionally every frame.",
+   "tags": [
+    "sorting",
+    "y-depth",
+    "sprite-renderer",
+    "pixel-art"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Base Systems/YDepthSorter.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Base Systems/YDepthSorter.cs:YDepthSorter",
+   "type": "class",
+   "name": "YDepthSorter",
+   "summary": "Computes sorting order from world Y with configurable layer offsets; requires a SpriteRenderer, SortingGroup, or Canvas (asserted).",
+   "tags": [
+    "sorting",
+    "y-depth"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:Sort",
+   "type": "function",
+   "name": "Sort",
+   "summary": "Recomputes baseOrder from transform.position.y * _yPrecision plus the layer offset and writes it to the sprite/SortingGroup/Canvas sortingOrder.",
+   "tags": [
+    "sorting",
+    "y-depth",
+    "update"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:GetLayerOffset",
+   "type": "function",
+   "name": "GetLayerOffset",
+   "summary": "Maps a Unity layer name (GroundObstacle/LowObstacle/HighObstacle/Birds) to its configured sorting-order offset.",
+   "tags": [
+    "sorting",
+    "layers",
+    "offset"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "file",
+   "name": "BirdAnimatorController.cs",
+   "summary": "Drives a bird's Animator: builds a per-species AnimatorOverrideController from BirdSpeciesData clips, plays tagged vs untagged animation variants, supports flapping/gliding/two-hop animations via coroutine, and flips the sprite to match facing direction.",
+   "tags": [
+    "birding",
+    "animation",
+    "animator",
+    "species-clips"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdAnimatorController.cs:BirdAnimatorController",
+   "type": "class",
+   "name": "BirdAnimatorController",
+   "summary": "RequireComponent(BirdBrain) animator facade exposing PlayFlying/PlayIdle/PlaySwimming/PlayWalking/PlayTwoHop/PlayFlapping/PlayGliding, all of which branch on the tagged state.",
+   "tags": [
+    "birding",
+    "animation",
+    "animator"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:Initialize",
+   "type": "function",
+   "name": "Initialize",
+   "summary": "Caches the BirdBrain and builds the per-species AnimatorOverrideController from SpeciesData animation clips.",
+   "tags": [
+    "birding",
+    "animation",
+    "override-controller"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayFlying",
+   "type": "function",
+   "name": "PlayFlying",
+   "summary": "Plays the Flying (or Flying_Tagged) animation at full speed.",
+   "tags": [
+    "birding",
+    "animation",
+    "flying"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayFlapping",
+   "type": "function",
+   "name": "PlayFlapping",
+   "summary": "Plays the flying animation at the configured flapping speed for ascent.",
+   "tags": [
+    "birding",
+    "animation",
+    "flapping"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayGliding",
+   "type": "function",
+   "name": "PlayGliding",
+   "summary": "Plays the flying clip frozen at the glide-frame normalized time with animator speed 0 for descent.",
+   "tags": [
+    "birding",
+    "animation",
+    "gliding"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayTwoHop",
+   "type": "function",
+   "name": "PlayTwoHop",
+   "summary": "Starts a coroutine that plays the Two Hop base animation plus an additive Idle layer and returns to the previous state on completion.",
+   "tags": [
+    "birding",
+    "animation",
+    "coroutine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:StopTwoHop",
+   "type": "function",
+   "name": "StopTwoHop",
+   "summary": "Stops the two-hop coroutine, snaps back to Idle, and zeroes additive layer weight.",
+   "tags": [
+    "birding",
+    "animation",
+    "coroutine"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:MatchAnimationToFacingDirection",
+   "type": "function",
+   "name": "MatchAnimationToFacingDirection",
+   "summary": "Flips local scale.x so the bird sprite faces West/East based on a CompassDirection.",
+   "tags": [
+    "birding",
+    "animation",
+    "facing"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "file",
+   "name": "BirdBehaviourConfig.cs",
+   "summary": "ScriptableObject tuning pack for the bird state machine: flocking reaction cooldown and reaction-time range, circle-cast avoidance parameters, and one parameters struct per bird state (LowFlying, LowLanding, Sheltered, Perched, Grounded, Fleeing, HighFlying, HighLanding).",
+   "tags": [
+    "birding",
+    "config",
+    "state-machine",
+    "tuning"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:BirdBehaviourConfig",
+   "type": "class",
+   "name": "BirdBehaviourConfig",
+   "summary": "Per-species ScriptableObject configuration consumed by every BirdBrain state for wander/flocking/avoidance/landing tuning.",
+   "tags": [
+    "birding",
+    "config",
+    "state-machine"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:LowFlyingParameters",
+   "type": "class",
+   "name": "LowFlyingParameters",
+   "summary": "Wander, flocking (boid weights), avoidance, speed-limit and landing/high-flying preference tuning for the low-flying state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:LowLandingParameters",
+   "type": "class",
+   "name": "LowLandingParameters",
+   "summary": "Perch/shelter/ground preferences, snap distance, landing timeout, stuck threshold, flock-landing radius, and avoidance weight for the landing state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:ShelteredParameters",
+   "type": "class",
+   "name": "ShelteredParameters",
+   "summary": "Behaviour duration range for the sheltered state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:PerchedParameters",
+   "type": "class",
+   "name": "PerchedParameters",
+   "summary": "Behaviour duration range for the perched state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:GroundedParameters",
+   "type": "class",
+   "name": "GroundedParameters",
+   "summary": "Land travel type (two-hop/walk), swim flags and speeds, walk/swim durations, two-hop force limits, and time-till-move ranges for the grounded state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:FleeingParameters",
+   "type": "class",
+   "name": "FleeingParameters",
+   "summary": "Behaviour duration, flee force magnitude, max flee speed, and avoidance weight for the fleeing state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:HighFlyingParameters",
+   "type": "class",
+   "name": "HighFlyingParameters",
+   "summary": "Behaviour duration, low-flying/landing preferences, wander and speed tuning for the high-flying state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:HighLandingParameters",
+   "type": "class",
+   "name": "HighLandingParameters",
+   "summary": "Perch/ground preferences, snap distance, timeout, and flock landing radius for the high-landing state.",
+   "tags": [
+    "birding",
+    "config",
+    "parameters"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "file",
+   "name": "BirdBrain.cs",
+   "summary": "Partial MonoBehaviour that is the bird AI controller. Owns the IBirdState state machine (eight nested state classes spread across sibling files), per-bird instance/tag data, flock reaction logic (reacting to nearby birds' state changes), tag animation, world-exit respawning, and helper queries for landing spots, water, and obstacles.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "flocking",
+    "ai"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:BirdBrain",
+   "type": "class",
+   "name": "BirdBrain",
+   "summary": "Partial MonoBehaviour implementing IFlockMate; instantiates and transitions between the eight bird states, broadcasts BirdStateChanged, and holds shared config, rigidbody, sorting, and tilemap references.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "ai",
+    "flocking"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:BirdInstanceData",
+   "type": "class",
+   "name": "BirdInstanceData",
+   "summary": "Per-bird spawn metadata (PeriodSpawned, SeasonSpawned, SpawnPosition, Reactive IsTagged). Tag() marks the bird tagged, plays capture audio, and logs the capture to PlayerCaptureLogs.",
+   "tags": [
+    "birding",
+    "instance-data",
+    "tagging"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "class",
+   "name": "IBirdState",
+   "summary": "State-machine contract with Enter/FixedUpdate/Exit/DrawGizmos; every bird state class implements it.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdLandingSpot",
+   "type": "class",
+   "name": "IBirdLandingSpot",
+   "summary": "Contract for objects birds can land on: exposes a position target, on-entry/exit hooks, and a sorting order.",
+   "tags": [
+    "birding",
+    "landing",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IShelterable",
+   "type": "class",
+   "name": "IShelterable",
+   "summary": "Marker landing spot for sheltering objects (extends IBirdLandingSpot).",
+   "tags": [
+    "birding",
+    "shelter",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchable",
+   "type": "class",
+   "name": "IPerchable",
+   "summary": "Landing spot with space reservation: IsThereSpace() and ReserveSpace(bird).",
+   "tags": [
+    "birding",
+    "perching",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableLowElevation",
+   "type": "class",
+   "name": "IPerchableLowElevation",
+   "summary": "Marker interface for low-elevation perchable landing spots.",
+   "tags": [
+    "birding",
+    "perching",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableHighElevation",
+   "type": "class",
+   "name": "IPerchableHighElevation",
+   "summary": "Marker interface for high-elevation perchable landing spots.",
+   "tags": [
+    "birding",
+    "perching",
+    "interface"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Start",
+   "type": "function",
+   "name": "Start",
+   "summary": "Caches rigidbody, animator, sorting, nearby tracker, leaf-splash particles, world collider and water tilemaps, then enters LowFlying state.",
+   "tags": [
+    "birding",
+    "setup",
+    "state-machine"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Per-frame state-machine driver: forces the Fleeing state if frightened, updates state text, checks world exit, updates facing direction, and delegates to the current state's FixedUpdate.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "update"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:GetTilemapsInLayerMask",
+   "type": "function",
+   "name": "GetTilemapsInLayerMask",
+   "summary": "Finds all Tilemaps whose gameObject layer falls in the given LayerMask.",
+   "tags": [
+    "birding",
+    "tilemap",
+    "query"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:SetTagListener",
+   "type": "function",
+   "name": "SetTagListener",
+   "summary": "Subscribes to InstanceData.IsTagged changes to play the TAG! animation when tagged.",
+   "tags": [
+    "birding",
+    "tagging",
+    "reactive"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:FrightenBird",
+   "type": "function",
+   "name": "FrightenBird",
+   "summary": "Public entry point (currently a no-op return) that would mark the bird frightened; frightened birds force-transition to FleeingState.",
+   "tags": [
+    "birding",
+    "fleeing",
+    "ai"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:TransitionToState",
+   "type": "function",
+   "name": "TransitionToState",
+   "summary": "Core transition: exits the current state, stores it as previous, enters the new state, then broadcasts BirdStateChanged for flock reactions; ignores transitions while the bird is reacting.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "transitions"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:ReactToNearbyBirdStateChange",
+   "type": "function",
+   "name": "ReactToNearbyBirdStateChange",
+   "summary": "Flock-behavior handler: if a nearby same-species bird flees, lands, or changes flying elevation, react by mirroring that state after a short randomized delay (unless already fleeing).",
+   "tags": [
+    "birding",
+    "flocking",
+    "state-machine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Tag",
+   "type": "function",
+   "name": "Tag",
+   "summary": "Marks a bird tagged, plays the species capture sound via AudioManager, and logs the species name into the player's birding capture log.",
+   "tags": [
+    "birding",
+    "tagging",
+    "capture"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "type": "file",
+   "name": "FleeingState.cs",
+   "summary": "BirdBrain state that flees from the player: computes a flee direction away from the player collider, adds flee + avoidance forces, clamps to max speed, and returns to LowFlying once the behaviour timer elapses.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "fleeing",
+    "avoidance"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:FleeingState",
+   "type": "class",
+   "name": "FleeingState",
+   "summary": "IBirdState that chases away from the player using flee and avoidance forces until its timer runs out.",
+   "tags": [
+    "birding",
+    "fleeing",
+    "state-machine"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Reads FleeingParameters, plays the flying animation, finds the player collider, computes the initial flee force, and sets damping/timer.",
+   "tags": [
+    "birding",
+    "fleeing",
+    "enter"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Expires to LowFlying when the timer elapses; otherwise applies avoidance + flee forces and clamps velocity to FleeMaxSpeed.",
+   "tags": [
+    "birding",
+    "fleeing",
+    "steering"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:GetFleeDirection",
+   "type": "function",
+   "name": "GetFleeDirection",
+   "summary": "Returns the normalized direction away from the player collider.",
+   "tags": [
+    "birding",
+    "fleeing",
+    "steering"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "type": "file",
+   "name": "GroundedState.cs",
+   "summary": "Ground behaviour state: alternates between moving and idling, choosing walk, two-hop, or swim depending on config and whether the bird is on a deep-water tile. Enables ground/water collision while grounded and disables it on exit.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "grounded",
+    "swimming"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:GroundedState",
+   "type": "class",
+   "name": "GroundedState",
+   "summary": "IBirdState for on-the-ground behaviour with TravelMethod (TWO_HOP/WALK) and TravelState (GROUND/WATER) enums; drives animator and rigidbody forces.",
+   "tags": [
+    "birding",
+    "grounded",
+    "state-machine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Plays Idle, sets behaviour duration, enables ground (and optionally water) collision, sets grounded damping, and resets the movement timer.",
+   "tags": [
+    "birding",
+    "grounded",
+    "enter"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Expires to LowFlying when done; otherwise updates travel state from deep-water detection and cycles through move/idle/next-movement phases.",
+   "tags": [
+    "birding",
+    "grounded",
+    "update"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartNextMovement",
+   "type": "function",
+   "name": "StartNextMovement",
+   "summary": "Selects StartTwoHop, StartWalking, or StartSwimming based on the configured travel method and current travel state.",
+   "tags": [
+    "birding",
+    "grounded",
+    "movement"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartTwoHop",
+   "type": "function",
+   "name": "StartTwoHop",
+   "summary": "Plays the two-hop animation and applies a single impulse force within the configured force limits.",
+   "tags": [
+    "birding",
+    "grounded",
+    "two-hop"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartSwimming",
+   "type": "function",
+   "name": "StartSwimming",
+   "summary": "Plays the swimming animation and sets a swim force from SwimSpeed for the walk/swim duration.",
+   "tags": [
+    "birding",
+    "grounded",
+    "swimming"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:IsEdgeTile",
+   "type": "function",
+   "name": "IsEdgeTile",
+   "summary": "Static helper returning true when a tilemap cell has a tile but any of its four orthogonal neighbours is empty (used to detect deep vs shallow water).",
+   "tags": [
+    "birding",
+    "tilemap",
+    "water"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "type": "file",
+   "name": "HighFlyingState.cs",
+   "summary": "High-altitude flight state: excludes low obstacles and people from collision, applies wander steering force on an interval, and on timer expiry chooses between descending to LowFlying or starting a HighLanding.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "high-flying",
+    "wander"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:HighFlyingState",
+   "type": "class",
+   "name": "HighFlyingState",
+   "summary": "IBirdState for high-altitude wandering; renders on the Foreground sorting layer and ignores people/low obstacles.",
+   "tags": [
+    "birding",
+    "high-flying",
+    "state-machine"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Plays flying animation, sets behaviour duration, excludes low-obstacle and people layers, and switches the sorting group to Foreground.",
+   "tags": [
+    "birding",
+    "high-flying",
+    "enter"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Refreshes wander force on an interval, applies it, clamps velocity to the speed limit, and transitions when the timer elapses.",
+   "tags": [
+    "birding",
+    "high-flying",
+    "steering"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:TransitionToPreferredState",
+   "type": "function",
+   "name": "TransitionToPreferredState",
+   "summary": "Rolls between LowFlying and HighLanding using configured preferences, presetting the landing circle from the wander ring before landing.",
+   "tags": [
+    "birding",
+    "high-flying",
+    "transitions"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "type": "file",
+   "name": "HighLandingState.cs",
+   "summary": "Descending-landing state: picks a perch or ground spot inside a landing circle (preferring high-elevation perches), seeks toward it, and snaps/teleports to the target on timeout or proximity before handing off to Perched/Grounded/HighFlying.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "landing",
+    "high-elevation"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:HighLandingState",
+   "type": "class",
+   "name": "HighLandingState",
+   "summary": "IBirdState that lands from high flight, selecting a high-elevation perch or a valid ground point and snapping onto the target.",
+   "tags": [
+    "birding",
+    "landing",
+    "state-machine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Plays flying, resolves the landing circle (preset or from the ViewDistance collider), picks the target state/spot, and excludes low-obstacle/people layers.",
+   "tags": [
+    "birding",
+    "landing",
+    "enter"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Bails to HighFlying if that was chosen, seeks the target with SteeringForces, and snaps to the target on timeout or proximity.",
+   "tags": [
+    "birding",
+    "landing",
+    "steering"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:SetLandingCircle",
+   "type": "function",
+   "name": "SetLandingCircle",
+   "summary": "Publicly presets the landing circle radius/center (used by BirdBrain when reacting to a landing flockmate).",
+   "tags": [
+    "birding",
+    "landing",
+    "config"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "function",
+   "name": "SetPreferredLandingSpotInLandingArea",
+   "summary": "Rolls between perch and ground preferences, finds a valid spot (avoiding obstacles/water), and returns the state to land into.",
+   "tags": [
+    "birding",
+    "landing",
+    "spot-selection"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "type": "file",
+   "name": "LandingState.cs",
+   "summary": "Low-flight landing state: picks a perch, shelter, or ground target in the landing area by preference, glides in with seek + avoidance forces, warps around obstacles if stuck, and snaps to the target before entering the chosen state.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "landing",
+    "avoidance"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:LandingState",
+   "type": "class",
+   "name": "LandingState",
+   "summary": "IBirdState for the low-altitude glide-to-land: selects target by perch/shelter/ground preference and handles stuck-warping.",
+   "tags": [
+    "birding",
+    "landing",
+    "state-machine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Plays the glide animation, sets the landing circle, picks the target spot/state, and excludes obstacle layers if the target is a shelter.",
+   "tags": [
+    "birding",
+    "landing",
+    "enter"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Bails to LowFlying if chosen, warps if stuck or near target, and otherwise applies avoidance + seek forces.",
+   "tags": [
+    "birding",
+    "landing",
+    "steering"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:SetLandingTargetArea",
+   "type": "function",
+   "name": "SetLandingTargetArea",
+   "summary": "Publicly presets the landing area radius/center (used by BirdBrain flock reactions and LowFlying transitions).",
+   "tags": [
+    "birding",
+    "landing",
+    "config"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "function",
+   "name": "SetPreferredLandingSpotInLandingArea",
+   "summary": "Rolls perch/shelter/ground preferences, finds a valid landing spot via TrySetLandingSpotOfType, and returns the target state.",
+   "tags": [
+    "birding",
+    "landing",
+    "spot-selection"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckandWarpIfStuck",
+   "type": "function",
+   "name": "CheckandWarpIfStuck",
+   "summary": "Detects a stationary bird past the stuck threshold and raycasts toward the target, warping to the far side of any blocking collider.",
+   "tags": [
+    "birding",
+    "landing",
+    "stuck-detection"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckAndWarpIfNearTarget",
+   "type": "function",
+   "name": "CheckAndWarpIfNearTarget",
+   "summary": "Snaps the bird to TargetPosition and enters the target state once within SnapToTargetDistance.",
+   "tags": [
+    "birding",
+    "landing",
+    "snap"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "file",
+   "name": "LowFlyingState.cs",
+   "summary": "Default low-altitude flight state combining wander, boid/flocking, and avoidance steering forces. On timer expiry it rolls between Landing and HighFlying using configured preferences.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "low-flying",
+    "flocking"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:LowFlyingState",
+   "type": "class",
+   "name": "LowFlyingState",
+   "summary": "IBirdState combining wander + flocking + avoidance forces while flying low above the ground layer.",
+   "tags": [
+    "birding",
+    "low-flying",
+    "flocking",
+    "state-machine"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Plays flying animation, sets behaviour duration, puts the sorting group on Main, and applies flying damping.",
+   "tags": [
+    "birding",
+    "low-flying",
+    "enter"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Refreshes wander, boid (flockmates filtered by species), and avoidance forces on their intervals, applies the sum, clamps speed, and transitions on timer expiry.",
+   "tags": [
+    "birding",
+    "low-flying",
+    "steering"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:TransitionToPreferredState",
+   "type": "function",
+   "name": "TransitionToPreferredState",
+   "summary": "Rolls between Landing (presetting the landing area from the wander ring) and HighFlying by configured preference.",
+   "tags": [
+    "birding",
+    "low-flying",
+    "transitions"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "type": "file",
+   "name": "PerchedState.cs",
+   "summary": "State where the bird sits on a perchable landing spot: notifies the spot on entry/exit, freezes rigidbody constraints, then returns to LowFlying or HighFlying depending on the previous state.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "perched"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:PerchedState",
+   "type": "class",
+   "name": "PerchedState",
+   "summary": "IBirdState that locks the bird onto an IPerchable spot and returns to flight after a duration.",
+   "tags": [
+    "birding",
+    "perched",
+    "state-machine"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Notifies the landing spot of entry, plays Idle, sets behaviour duration, and freezes the rigidbody constraints.",
+   "tags": [
+    "birding",
+    "perched",
+    "enter"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "On timer expiry returns to LowFlying or HighFlying based on the previous state, restoring constraints and notifying the spot of exit.",
+   "tags": [
+    "birding",
+    "perched",
+    "update"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "type": "file",
+   "name": "ShelteredState.cs",
+   "summary": "State where the bird hides inside a shelterable object: hides all child renderers, disables the sorting group, plays a leaf-splash particle effect, freezes constraints, and later returns to LowFlying.",
+   "tags": [
+    "birding",
+    "state-machine",
+    "sheltered"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:ShelteredState",
+   "type": "class",
+   "name": "ShelteredState",
+   "summary": "IBirdState that hides the bird inside an IShelterable spot and plays a leaf-splash particle burst.",
+   "tags": [
+    "birding",
+    "sheltered",
+    "state-machine"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:Enter",
+   "type": "function",
+   "name": "Enter",
+   "summary": "Notifies the shelter spot, plays leaf splash, hides child renderers and sorting group, and freezes rigidbody constraints.",
+   "tags": [
+    "birding",
+    "sheltered",
+    "enter"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:FixedUpdate",
+   "type": "function",
+   "name": "FixedUpdate",
+   "summary": "Returns to LowFlying when the behaviour timer elapses; exit restores renderers, constraints, and leaf splash.",
+   "tags": [
+    "birding",
+    "sheltered",
+    "update"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "type": "file",
+   "name": "BirdElevationVisualTweaks.cs",
+   "summary": "Visual proxy that maps the bird's current state to an elevation level (grounded/low/high): lerps the bird and shadow Y positions and opacities, and triggers flapping/gliding animations. Landing states lerp elevation over the distance to the target.",
+   "tags": [
+    "birding",
+    "visual-effects",
+    "elevation",
+    "shadow"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:BirdElevationVisualTweaks",
+   "type": "class",
+   "name": "BirdElevationVisualTweaks",
+   "summary": "MonoBehaviour that tween-lerps bird/shadow elevation and opacity based on the BirdBrain state, with a special distance-based lerp for landing.",
+   "tags": [
+    "birding",
+    "visual-effects",
+    "elevation"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:Update",
+   "type": "function",
+   "name": "Update",
+   "summary": "Tracks BirdBrain state changes, moves toward the target elevation, and applies interpolated shadow/bird Y and opacity whenever elevation changes.",
+   "tags": [
+    "birding",
+    "visual-effects",
+    "update"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:MoveTowardsTargetElevation",
+   "type": "function",
+   "name": "MoveTowardsTargetElevation",
+   "summary": "Advances the normalized elevation toward the target (distance-based while landing, step-based otherwise) and plays flying animation when reaching a flying target.",
+   "tags": [
+    "birding",
+    "visual-effects",
+    "lerp"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:TransitionToState",
+   "type": "function",
+   "name": "TransitionToState",
+   "summary": "Maps each bird state to a target elevation, hiding the shadow for sheltered, and starts flapping/gliding animations when elevation changes.",
+   "tags": [
+    "birding",
+    "visual-effects",
+    "state-map"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "type": "file",
+   "name": "BirdFrightDetector.cs",
+   "summary": "Trigger collider that frightens a bird when the player enters, unless the bird is already sheltered, fleeing, or high flying. Finds the single player collider on Awake.",
+   "tags": [
+    "birding",
+    "fright",
+    "trigger",
+    "player-proximity"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdFrightDetector.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdFrightDetector.cs:BirdFrightDetector",
+   "type": "class",
+   "name": "BirdFrightDetector",
+   "summary": "MonoBehaviour that calls BirdBrain.FrightenBird when the player's collider stays inside its trigger while the bird is in a frightenable state.",
+   "tags": [
+    "birding",
+    "fright",
+    "trigger"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdFrightDetector.cs:OnTriggerStay2D",
+   "type": "function",
+   "name": "OnTriggerStay2D",
+   "summary": "Ignores non-player colliders and frightened/sheltered/high states, otherwise calls _bird.FrightenBird().",
+   "tags": [
+    "birding",
+    "fright",
+    "trigger"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "type": "file",
+   "name": "BirdMaterialController.cs",
+   "summary": "Manages the bird's outline-shader material: wipes between base/highlight/mask outline states via an angular wipe driven from the sprite pivot UV, locks states during the tag highlight, and reacts to the bird's IsTagged reactive.",
+   "tags": [
+    "birding",
+    "shader",
+    "outline",
+    "material"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdMaterialController.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdMaterialController.cs:BirdMaterialController",
+   "type": "class",
+   "name": "BirdMaterialController",
+   "summary": "MonoBehaviour controlling a bird outline shader's _Color1/_Color2/_AngleRange properties, with state locking and an angular wipe coroutine.",
+   "tags": [
+    "birding",
+    "shader",
+    "outline"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdMaterialController.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdMaterialController.cs:TryChangeOutlineColor",
+   "type": "function",
+   "name": "TryChangeOutlineColor",
+   "summary": "Public API to switch outline state (with optional wipe and lock duration), returning false while the state is locked.",
+   "tags": [
+    "birding",
+    "shader",
+    "outline"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdMaterialController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdMaterialController.cs:TagCoroutine",
+   "type": "function",
+   "name": "TagCoroutine",
+   "summary": "Highlights the outline on tagging, holds for the configured duration, then wipes to mask and unlocks.",
+   "tags": [
+    "birding",
+    "tagging",
+    "shader",
+    "coroutine"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdMaterialController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdMaterialController.cs:WipeCoroutine",
+   "type": "function",
+   "name": "WipeCoroutine",
+   "summary": "Sweeps the shader's _AngleRange vector from _startAngle around a full 2*PI turn to reveal the target outline color.",
+   "tags": [
+    "birding",
+    "shader",
+    "coroutine"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdMaterialController.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdOutliner.cs",
+   "type": "file",
+   "name": "BirdOutliner.cs",
+   "summary": "Occlusion helper: a frame-mask trigger switches a bird's outline to Base or Mask depending on which side of a frame mask it stands, and masks the outline when it leaves the trigger.",
+   "tags": [
+    "birding",
+    "outline",
+    "occlusion",
+    "trigger"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdOutliner.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdOutliner.cs:BirdOutliner",
+   "type": "class",
+   "name": "BirdOutliner",
+   "summary": "MonoBehaviour that toggles BirdMaterialController outline state based on the bird's position relative to a _frameMask transform.",
+   "tags": [
+    "birding",
+    "outline",
+    "occlusion"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdOutliner.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdOutliner.cs:OnTriggerStay2D",
+   "type": "function",
+   "name": "OnTriggerStay2D",
+   "summary": "Sets the bird's outline to Base (in front of the mask) or Mask (behind) based on the bird's local X relative to the frame mask.",
+   "tags": [
+    "birding",
+    "outline",
+    "occlusion"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdOutliner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "type": "file",
+   "name": "BirdSceneSaveManager.cs",
+   "summary": "ScriptableObject that persists per-scene bird spawn state (spawn X/Y, tagged flag, species name) as JSON (Newtonsoft) keyed by scene name, with save/load/clear operations.",
+   "tags": [
+    "birding",
+    "save-system",
+    "json",
+    "scene-persistence"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSceneSaveManager.cs:BirdSceneSaveManager",
+   "type": "class",
+   "name": "BirdSceneSaveManager",
+   "summary": "ScriptableObject JSON persistence for bird instances per scene name; tracks LastSpawnTime for respawn decisions.",
+   "tags": [
+    "birding",
+    "save-system",
+    "scriptable-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSceneSaveManager.cs:BirdSaveData",
+   "type": "class",
+   "name": "BirdSaveData",
+   "summary": "Serializable snapshot of a bird instance: x/y spawn position, IsTagged, and SpeciesName (floats because Unity Vector2 isn't JSON-serializable).",
+   "tags": [
+    "birding",
+    "save-system",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:SaveBirds",
+   "type": "function",
+   "name": "SaveBirds",
+   "summary": "Serializes a list of BirdBrain instances into JSON for the active scene, asserting no duplicate saves for that scene.",
+   "tags": [
+    "birding",
+    "save-system",
+    "serialize"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:LoadBirds",
+   "type": "function",
+   "name": "LoadBirds",
+   "summary": "Deserializes saved bird data for the active scene, returning an empty list when nothing is saved.",
+   "tags": [
+    "birding",
+    "save-system",
+    "deserialize"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:ClearSceneSaveData",
+   "type": "function",
+   "name": "ClearSceneSaveData",
+   "summary": "Removes the saved bird JSON for the active scene.",
+   "tags": [
+    "birding",
+    "save-system",
+    "clear"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdSeasonSpawnData.cs",
+   "type": "file",
+   "name": "BirdSeasonSpawnData.cs",
+   "summary": "Empty placeholder file with no source code and no types. A serializable class of the same name actually lives nested inside BirdSpawner.cs and carries the per-season/week spawn configuration.",
+   "tags": [
+    "birding",
+    "placeholder",
+    "empty"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSeasonSpawnData.cs"
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdSounds.cs",
+   "type": "file",
+   "name": "BirdSounds.cs",
+   "summary": "Ambient bird calls: plays a random sound from a list at random intervals, with volume scaled down by distance from the player between the full-volume and silence radii.",
+   "tags": [
+    "birding",
+    "audio",
+    "ambient",
+    "proximity"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSounds.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSounds.cs:BirdSounds",
+   "type": "class",
+   "name": "BirdSounds",
+   "summary": "MonoBehaviour that periodically plays random bird SFX via AudioManager with distance-based volume falloff.",
+   "tags": [
+    "birding",
+    "audio",
+    "ambient"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSounds.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSounds.cs:Update",
+   "type": "function",
+   "name": "Update",
+   "summary": "Accumulates time and triggers PlayRandomBirdSound when the next interval elapses; disables itself when no sounds are configured.",
+   "tags": [
+    "birding",
+    "audio",
+    "update"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSounds.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSounds.cs:PlayRandomBirdSound",
+   "type": "function",
+   "name": "PlayRandomBirdSound",
+   "summary": "Picks a random sound, computes distance-scaled volume against the player, and plays it through AudioManager.",
+   "tags": [
+    "birding",
+    "audio",
+    "volume-falloff"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSounds.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "type": "file",
+   "name": "BirdSpawner.cs",
+   "summary": "Spawns birds per season and week from inspector-authored spawn data (species, count, tilemap areas). Restores saved spawn positions when the week data still matches, otherwise picks new points in the spawn tilemaps outside the camera view, and saves all living birds on disable.",
+   "tags": [
+    "birding",
+    "spawning",
+    "seasons",
+    "tilemaps",
+    "persistence"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpawner.cs:BirdSpawner",
+   "type": "class",
+   "name": "BirdSpawner",
+   "summary": "MonoBehaviour orchestrator that reads BirdSeasonSpawnData week tables from GameClock, spawns BirdBrain instances, and hands persistence to BirdSceneSaveManager.",
+   "tags": [
+    "birding",
+    "spawning",
+    "seasons"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpawner.cs:SpeciesSpawnData",
+   "type": "class",
+   "name": "SpeciesSpawnData",
+   "summary": "Serializable per-species spawn entry: species data, spawn count, and the list of Tilemap spawn areas.",
+   "tags": [
+    "birding",
+    "spawning",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpawner.cs:WeekData",
+   "type": "class",
+   "name": "WeekData",
+   "summary": "Serializable week table holding the DailySpawns species list for one week.",
+   "tags": [
+    "birding",
+    "spawning",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpawner.cs:BirdSeasonSpawnData",
+   "type": "class",
+   "name": "BirdSeasonSpawnData",
+   "summary": "Serializable container of WeekData arrays for spring/summer/fall/winter, each three weeks long.",
+   "tags": [
+    "birding",
+    "spawning",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:OnEnable",
+   "type": "function",
+   "name": "OnEnable",
+   "summary": "Loads all species from Resources, asserts world/save-manager references, clears stale saves on new weeks, and calls SpawnBirds.",
+   "tags": [
+    "birding",
+    "spawning",
+    "setup"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "type": "function",
+   "name": "SpawnBirds",
+   "summary": "Picks the current season's week data, restores saved positions if valid and recent, otherwise spawns fresh birds off-camera.",
+   "tags": [
+    "birding",
+    "spawning",
+    "logic"
+   ],
+   "complexity": "complex",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBird",
+   "type": "function",
+   "name": "SpawnBird",
+   "summary": "Instantiates the species prefab, assigns SpeciesData/InstanceData/GetNewSpawnPoint, sets the tag listener, and initializes the animator; restores tagged state from save data when present.",
+   "tags": [
+    "birding",
+    "spawning",
+    "instantiation"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetSeasonData",
+   "type": "function",
+   "name": "GetSeasonData",
+   "summary": "Returns the WeekData array for the given GameClock season.",
+   "tags": [
+    "birding",
+    "spawning",
+    "seasons"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:IsSavedBirdDataValid",
+   "type": "function",
+   "name": "IsSavedBirdDataValid",
+   "summary": "Verifies saved bird counts and species frequencies exactly match the current week's expected spawn table.",
+   "tags": [
+    "birding",
+    "spawning",
+    "validation"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetPointInTilemapsAndOutsideCamera",
+   "type": "function",
+   "name": "GetPointInTilemapsAndOutsideCamera",
+   "summary": "Shuffles spawn tilemaps and returns a random occupied tile position that lies outside the camera frame.",
+   "tags": [
+    "birding",
+    "spawning",
+    "tilemap",
+    "camera"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetCameraFrameBounds",
+   "type": "function",
+   "name": "GetCameraFrameBounds",
+   "summary": "Converts the main camera's viewport corners to a world-space Bounds at the camera's depth.",
+   "tags": [
+    "birding",
+    "spawning",
+    "camera"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "function:Assets/Scripts/Birding/BirdSpawner.cs:FindSpeciesByName",
+   "type": "function",
+   "name": "FindSpeciesByName",
+   "summary": "Looks up a BirdSpeciesData by asset name from the loaded species list.",
+   "tags": [
+    "birding",
+    "spawning",
+    "lookup"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpawner.cs",
+   "languageNotes": "Unity C# method; uses [SerializeField], coroutines, or Rigidbody2D force steering as noted in summary."
+  },
+  {
+   "id": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "type": "file",
+   "name": "BirdSpeciesData.cs",
+   "summary": "ScriptableObject describing one bird species: name, prefab, flockable species list, icon, spawnable seasons/periods, behaviour config reference, base animator controller with per-species clip overrides, and capture sound.",
+   "tags": [
+    "birding",
+    "species",
+    "scriptable-object",
+    "animation"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpeciesData.cs"
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpeciesData.cs:BirdSpeciesData",
+   "type": "class",
+   "name": "BirdSpeciesData",
+   "summary": "Per-species data asset consumed by BirdSpawner, BirdBrain, and BirdAnimatorController for flocking, spawning, and animation.",
+   "tags": [
+    "birding",
+    "species",
+    "scriptable-object"
+   ],
+   "complexity": "moderate",
+   "filePath": "Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  },
+  {
+   "id": "class:Assets/Scripts/Birding/BirdSpeciesData.cs:ClipOverride",
+   "type": "class",
+   "name": "ClipOverride",
+   "summary": "Serializable mapping from an original animator clip name to a per-species replacement AnimationClip.",
+   "tags": [
+    "birding",
+    "animation",
+    "serializable"
+   ],
+   "complexity": "simple",
+   "filePath": "Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "languageNotes": "Unity C#; nested class inside a partial BirdBrain class for the SM files."
+  }
+ ],
+ "edges": [
+  {
+   "source": "file:Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "target": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:IWeighty",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IWeighty."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "target": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:StoredWeightyObject",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class StoredWeightyObject."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WeightyObjectType.cs",
+   "target": "class:Assets/Scripts/Base Systems/WeightyObjectType.cs:WeightyObjectType",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class WeightyObjectType."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "target": "class:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:WorldObjectOccupancyMap",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class WorldObjectOccupancyMap."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "target": "function:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:CheckOccupied",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method CheckOccupied."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+   "target": "function:Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs:SetOccupied",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetOccupied."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldState.cs",
+   "target": "class:Assets/Scripts/Base Systems/WorldState.cs:WorldState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class WorldState."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "target": "class:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:WorldStateCalendar",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class WorldStateCalendar."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "target": "class:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:DayState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class DayState."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "target": "function:Assets/Scripts/Base Systems/WorldStateByCalendar.cs:UpdateWorldState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method UpdateWorldState."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "target": "class:Assets/Scripts/Base Systems/YDepthSorter.cs:YDepthSorter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class YDepthSorter."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "target": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:Sort",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Sort."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/YDepthSorter.cs",
+   "target": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:GetLayerOffset",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetLayerOffset."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "class:Assets/Scripts/Birding/BirdAnimatorController.cs:BirdAnimatorController",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdAnimatorController."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:Initialize",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Initialize."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayFlying",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method PlayFlying."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayFlapping",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method PlayFlapping."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayGliding",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method PlayGliding."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:PlayTwoHop",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method PlayTwoHop."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:StopTwoHop",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method StopTwoHop."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdAnimatorController.cs:MatchAnimationToFacingDirection",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method MatchAnimationToFacingDirection."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:BirdBehaviourConfig",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdBehaviourConfig."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:LowFlyingParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class LowFlyingParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:LowLandingParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class LowLandingParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:ShelteredParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class ShelteredParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:PerchedParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class PerchedParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:GroundedParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class GroundedParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:FleeingParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class FleeingParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:HighFlyingParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class HighFlyingParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs:HighLandingParameters",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class HighLandingParameters."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:BirdBrain",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdBrain."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:BirdInstanceData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdInstanceData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IBirdState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdLandingSpot",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IBirdLandingSpot."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IShelterable",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IShelterable."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchable",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IPerchable."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableLowElevation",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IPerchableLowElevation."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableHighElevation",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class IPerchableHighElevation."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Start",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Start."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:GetTilemapsInLayerMask",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetTilemapsInLayerMask."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:SetTagListener",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetTagListener."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:FrightenBird",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FrightenBird."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:TransitionToState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TransitionToState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:ReactToNearbyBirdStateChange",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method ReactToNearbyBirdStateChange."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Tag",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Tag."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:FleeingState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class FleeingState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:GetFleeDirection",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetFleeDirection."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:GroundedState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class GroundedState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartNextMovement",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method StartNextMovement."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartTwoHop",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method StartTwoHop."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartSwimming",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method StartSwimming."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:IsEdgeTile",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method IsEdgeTile."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:HighFlyingState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class HighFlyingState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:TransitionToPreferredState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TransitionToPreferredState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:HighLandingState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class HighLandingState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:SetLandingCircle",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetLandingCircle."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetPreferredLandingSpotInLandingArea."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:LandingState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class LandingState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:SetLandingTargetArea",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetLandingTargetArea."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SetPreferredLandingSpotInLandingArea."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckandWarpIfStuck",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method CheckandWarpIfStuck."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckAndWarpIfNearTarget",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method CheckAndWarpIfNearTarget."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:LowFlyingState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class LowFlyingState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:TransitionToPreferredState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TransitionToPreferredState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:PerchedState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class PerchedState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:ShelteredState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class ShelteredState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:Enter",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Enter."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:FixedUpdate",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FixedUpdate."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "class:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:BirdElevationVisualTweaks",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdElevationVisualTweaks."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:Update",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Update."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:MoveTowardsTargetElevation",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method MoveTowardsTargetElevation."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:TransitionToState",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TransitionToState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "target": "class:Assets/Scripts/Birding/BirdFrightDetector.cs:BirdFrightDetector",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdFrightDetector."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "target": "function:Assets/Scripts/Birding/BirdFrightDetector.cs:OnTriggerStay2D",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method OnTriggerStay2D."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "target": "class:Assets/Scripts/Birding/BirdMaterialController.cs:BirdMaterialController",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdMaterialController."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdMaterialController.cs:TryChangeOutlineColor",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TryChangeOutlineColor."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdMaterialController.cs:TagCoroutine",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method TagCoroutine."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "target": "function:Assets/Scripts/Birding/BirdMaterialController.cs:WipeCoroutine",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method WipeCoroutine."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdOutliner.cs",
+   "target": "class:Assets/Scripts/Birding/BirdOutliner.cs:BirdOutliner",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdOutliner."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdOutliner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdOutliner.cs:OnTriggerStay2D",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method OnTriggerStay2D."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSceneSaveManager.cs:BirdSceneSaveManager",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSceneSaveManager."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSceneSaveManager.cs:BirdSaveData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSaveData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:SaveBirds",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SaveBirds."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:LoadBirds",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method LoadBirds."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSceneSaveManager.cs:ClearSceneSaveData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method ClearSceneSaveData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSounds.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSounds.cs:BirdSounds",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSounds."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSounds.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSounds.cs:Update",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method Update."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSounds.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSounds.cs:PlayRandomBirdSound",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method PlayRandomBirdSound."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpawner.cs:BirdSpawner",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSpawner."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpawner.cs:SpeciesSpawnData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class SpeciesSpawnData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpawner.cs:WeekData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class WeekData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpawner.cs:BirdSeasonSpawnData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSeasonSpawnData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:OnEnable",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method OnEnable."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SpawnBirds."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBird",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method SpawnBird."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetSeasonData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetSeasonData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:IsSavedBirdDataValid",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method IsSavedBirdDataValid."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetPointInTilemapsAndOutsideCamera",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetPointInTilemapsAndOutsideCamera."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetCameraFrameBounds",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method GetCameraFrameBounds."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:FindSpeciesByName",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines method FindSpeciesByName."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpeciesData.cs:BirdSpeciesData",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class BirdSpeciesData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "target": "class:Assets/Scripts/Birding/BirdSpeciesData.cs:ClipOverride",
+   "type": "contains",
+   "weight": 1.0,
+   "direction": "forward",
+   "description": "File defines class ClipOverride."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IShelterable",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdLandingSpot",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "IShelterable extends IBirdLandingSpot."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchable",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdLandingSpot",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "IPerchable extends IBirdLandingSpot."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableLowElevation",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchable",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "IPerchableLowElevation extends IPerchable."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchableHighElevation",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IPerchable",
+   "type": "inherits",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "IPerchableHighElevation extends IPerchable."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:FleeingState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "FleeingState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:GroundedState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "GroundedState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:HighFlyingState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "HighFlyingState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:HighLandingState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "HighLandingState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:LandingState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "LandingState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:LowFlyingState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "LowFlyingState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs:PerchedState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "PerchedState implements the IBirdState contract."
+  },
+  {
+   "source": "class:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs:ShelteredState",
+   "target": "class:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:IBirdState",
+   "type": "implements",
+   "weight": 0.9,
+   "direction": "forward",
+   "description": "ShelteredState implements the IBirdState contract."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Start",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:GetTilemapsInLayerMask",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Start caches water tilemaps for water queries."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:Start",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:TransitionToState",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Start enters the initial LowFlying state."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs:TransitionToState",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate force-transitions to Fleeing when frightened."
+  },
+  {
+   "source": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:Sort",
+   "target": "function:Assets/Scripts/Base Systems/YDepthSorter.cs:GetLayerOffset",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Sort combines the Y-derived base order with the layer offset."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:Enter",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs:GetFleeDirection",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Enter computes the initial flee direction away from the player."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartNextMovement",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate starts a new movement phase when idle time elapses."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartNextMovement",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartTwoHop",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Selects the two-hop movement when configured."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartNextMovement",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs:StartSwimming",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Selects swimming when the bird is in deep water."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs:TransitionToPreferredState",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate rolls the next state when the behaviour timer expires."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:Enter",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Enter picks the landing spot and target state."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:Enter",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:SetPreferredLandingSpotInLandingArea",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Enter picks the landing spot and target state."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckandWarpIfStuck",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate warps the bird around obstacles if stuck."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs:CheckAndWarpIfNearTarget",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate snaps to the target when close."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:FixedUpdate",
+   "target": "function:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs:TransitionToPreferredState",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "FixedUpdate rolls the next state when the behaviour timer expires."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:Update",
+   "target": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:TransitionToState",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Update reacts to BirdBrain state changes."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:Update",
+   "target": "function:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs:MoveTowardsTargetElevation",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Update advances elevation toward the target each frame."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdMaterialController.cs:TryChangeOutlineColor",
+   "target": "function:Assets/Scripts/Birding/BirdMaterialController.cs:WipeCoroutine",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "TryChangeOutlineColor starts the angular wipe coroutine when useWipe is set."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSounds.cs:Update",
+   "target": "function:Assets/Scripts/Birding/BirdSounds.cs:PlayRandomBirdSound",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Update triggers a random bird sound when the interval elapses."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:OnEnable",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "OnEnable spawns the week's birds."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetSeasonData",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "SpawnBirds picks the current season's week tables."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:IsSavedBirdDataValid",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "SpawnBirds checks saved data still matches the week table."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBirds",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBird",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "SpawnBirds instantiates each bird."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:SpawnBird",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetPointInTilemapsAndOutsideCamera",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "SpawnBird assigns an off-camera respawn point for world-exit respawning."
+  },
+  {
+   "source": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetPointInTilemapsAndOutsideCamera",
+   "target": "function:Assets/Scripts/Birding/BirdSpawner.cs:GetCameraFrameBounds",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Spawn-point search excludes the camera frame."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain instantiates and transitions into this nested state class."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Nested state class of the partial BirdBrain; drives transitions via bird.TransitionToState and reads bird config/state."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "State reads its tuning parameters from bird.Config (BirdBehaviourConfig)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "State triggers bird animation playback through bird._animator."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to low flight when the flee timer elapses."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to low flight when the behaviour timer elapses."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Descends to low flight by preference."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Starts a high-altitude landing by preference."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Presets the landing area (bird.Landing.SetLandingTargetArea) before low-landing."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Lands on a perchable high-elevation spot."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Aborts to high flight when no valid spot is found."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Lands on a valid ground point."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Lands on a perchable low-elevation spot."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Lands in a shelterable spot."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Lands on a valid ground point."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to low flight when no spot is found."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Starts a low-altitude landing by preference."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Ascends to high flight by preference."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to low flight (after low landing)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to high flight (after high landing)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Returns to low flight when the shelter timer elapses."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Config property exposes SpeciesData.BehaviourConfig to all states."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "BirdBrain reads SpeciesData (capture audio, flockable species, behaviour config)."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "BirdBrain drives animator facing via _animator.MatchAnimationToFacingDirection."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Animator reads _bird.InstanceData.IsTagged and _bird.SpeciesData to pick clips."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "target": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Animator builds the override controller from species animation clips."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "BirdSpeciesData references a BirdBehaviourConfig asset."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+   "target": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "LowFlyingState filters flockmates by SpeciesData.FlockableSpecies."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Elevation tweaks read the bird's current IBirdState."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Elevation tweaks trigger flapping/gliding/flying animations."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Landing state lerps elevation over distance to target."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+   "type": "related",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "High-landing state lerps elevation over distance to target."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdFrightDetector.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Fright detector invokes _bird.FrightenBird()."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "subscribes",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Material controller subscribes to InstanceData.IsTagged changes."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdOutliner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Outliner finds birds via TryGetComponent<BirdBrain>."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdOutliner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdMaterialController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Outliner switches the bird outline via TryChangeOutlineColor."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "SaveBirds reads each bird's transform, SpeciesData, and InstanceData."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Spawner configures BirdBrain species/instance data and tag listeners."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdAnimatorController.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Spawner calls BirdAnimatorController.Initialize on each spawn."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdSpeciesData.cs",
+   "type": "reads_from",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "Spawner reads species prefabs and data from Resources."
+  },
+  {
+   "source": "file:Assets/Scripts/Birding/BirdSpawner.cs",
+   "target": "file:Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+   "type": "calls",
+   "weight": 0.8,
+   "direction": "forward",
+   "description": "Spawner saves/loads/clears scene bird data via BirdSceneSaveManager."
+  },
+  {
+   "source": "file:Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+   "target": "file:Assets/Scripts/Base Systems/WorldState.cs",
+   "type": "writes_to",
+   "weight": 0.5,
+   "direction": "forward",
+   "description": "WorldStateCalendar writes Water/Rain/Wind state into the WorldState reactives."
+  }
+ ],
+ "files": [
+  "Assets/Scripts/Base Systems/WeightyObjectType.cs",
+  "Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs",
+  "Assets/Scripts/Base Systems/WorldState.cs",
+  "Assets/Scripts/Base Systems/WorldStateByCalendar.cs",
+  "Assets/Scripts/Base Systems/YDepthSorter.cs",
+  "Assets/Scripts/Birding/BirdAnimatorController.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/LandingState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs",
+  "Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs",
+  "Assets/Scripts/Birding/BirdElevationVisualTweaks.cs",
+  "Assets/Scripts/Birding/BirdFrightDetector.cs",
+  "Assets/Scripts/Birding/BirdMaterialController.cs",
+  "Assets/Scripts/Birding/BirdOutliner.cs",
+  "Assets/Scripts/Birding/BirdSceneSaveManager.cs",
+  "Assets/Scripts/Birding/BirdSeasonSpawnData.cs",
+  "Assets/Scripts/Birding/BirdSounds.cs",
+  "Assets/Scripts/Birding/BirdSpawner.cs",
+  "Assets/Scripts/Birding/BirdSpeciesData.cs"
+ ]
+}

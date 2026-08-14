@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/agents/domain.md",
+      "type": "document",
+      "name": "domain.md",
+      "summary": "Agent-workflow doc telling engineering skills how to consume the repo's domain documentation before exploring: read CONTEXT.md (or CONTEXT-MAP.md pointing at per-context CONTEXT.md files) and any relevant docs/adr/ entries, proceeding silently if they are absent. Shows single-context and multi-context directory layouts, requires using the glossary's vocabulary in agent output, and demands that output contradicting an existing ADR be flagged explicitly rather than silently overridden. The /domain-modeling skill (reached via /grill-with-docs and /improve-codebase-architecture) creates these docs lazily.",
+      "tags": ["agents", "documentation", "domain-modeling", "adr", "glossary"],
+      "complexity": "moderate",
+      "filePath": "docs/agents/domain.md"
+    },
+    {
+      "id": "document:docs/agents/issue-tracker.md",
+      "type": "document",
+      "name": "issue-tracker.md",
+      "summary": "Defines GitHub as the repo's issue tracker, driven entirely through the gh CLI with concrete conventions for creating, reading, listing, commenting on, labelling, and closing issues, plus a flag (currently 'no') controlling whether external PRs act as a triage surface. Also documents the wayfinding operations used by /wayfinder: a wayfinder:map issue holding child tickets linked as GitHub sub-issues with native blocked_by dependencies, a frontier query that drops blocked or assigned children, and claim/resolve workflows.",
+      "tags": ["agents", "issue-tracker", "github", "gh-cli", "wayfinder"],
+      "complexity": "moderate",
+      "filePath": "docs/agents/issue-tracker.md"
+    },
+    {
+      "id": "document:docs/agents/triage-labels.md",
+      "type": "document",
+      "name": "triage-labels.md",
+      "summary": "Maps the five canonical triage role names from mattpocock/skills to this repo's actual GitHub label strings: needs-triage, needs-info, ready-for-agent, ready-for-human, and wontfix, each with its meaning. Skills that mention a role apply the local label string from this table; the right-hand column is meant to be edited to match whatever vocabulary this repo actually uses.",
+      "tags": ["agents", "triage", "issue-tracker", "labels"],
+      "complexity": "simple",
+      "filePath": "docs/agents/triage-labels.md"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/agents/issue-tracker.md",
+      "target": "document:docs/agents/triage-labels.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "The tracker workflows in issue-tracker.md apply the canonical triage roles whose label strings are defined in triage-labels.md."
+    },
+    {
+      "source": "document:docs/agents/triage-labels.md",
+      "target": "document:docs/agents/issue-tracker.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Triage labels are applied via the gh CLI issue workflows documented in issue-tracker.md."
+    }
+  ],
+  "files": [
+    "docs/agents/domain.md",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/triage-labels.md"
+  ]
+}

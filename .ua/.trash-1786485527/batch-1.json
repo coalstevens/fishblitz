@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": "document:AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "summary": "Fishblitz development guide for AI agents: the eight design-philosophy principles (no villains/bad luck, restoration-as-adaptation, Presences kept ambiguous, narrative through play, biased storytelling, costly resources, slow community return, season-driven drama), agent communication style, C# code style conventions (PascalCase, _camelCase fields, ReactiveUnity Reactive<T> properties, Logger, NUnit asserts), common Unity patterns (RequireComponent, coroutines, Input System OnMove), tech stack notes (URP, Cinemachine, BlueOyster JSON saves, custom shaders), a complete FlyingChaser prefab setup recipe, and pointers to agent skill docs (issue tracker, triage labels, domain docs).",
+      "tags": ["dev-guide", "design-philosophy", "coding-standards", "unity-patterns", "prefab-setup", "agent-skills"],
+      "complexity": "moderate",
+      "filePath": "AGENTS.md"
+    },
+    {
+      "id": "document:IDEAS.md",
+      "type": "document",
+      "name": "IDEAS.md",
+      "summary": "Design source of truth for Fishblitz. Defines the premise (player arrives in an abandoned, season-organized region and repairs it, villagers return, a disaster hits each season) and opening sequence; themes (no bad people, only bad luck, living within limits, community drama of adaptation and repair); the deliberately ambiguous Presences (River, Forest, Winter) and storytelling rules (brief dialogue, audio-overlay for long content, environment reinforces story). Details the Way North river progression with bow-and-arrow combat and stealth, the full Trail of the Brother backstory (Patrick, June, Maron, the River Presence, the player), and gameplay systems: mushroom foraging with mix-and-match traits, diet/stamina bars, box rewards (wheelbarrow/bow/crouch), birding via ScriptableObjects, drought and four transition seasons, Three Sisters farming, fire system, and fire ecology wood types.",
+      "tags": ["design-document", "game-design", "narrative", "presences", "trail-of-the-brother", "seasons", "survival", "way-north"],
+      "complexity": "complex",
+      "filePath": "IDEAS.md"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "summary": "Project overview: Fishblitz is a top-down pixel art RPG that began as a game-jam fishing game and grew into an expansive RPG, with a link to an early demo on itch.io. Lists the core gameplay loop (fell trees, split firewood, light fires, sleep, fish, go birding) and a short 'what I've learned' section covering Unity/C# experience, design patterns, physics, shaders, and AI.",
+      "tags": ["readme", "project-overview", "game-jam-origin", "itch-demo"],
+      "complexity": "simple",
+      "filePath": "README.md"
+    },
+    {
+      "id": "document:TODOS.md",
+      "type": "document",
+      "name": "TODOS.md",
+      "summary": "Working task list for immediate development. Tracks this-session tasks (bow/arrow/box SFX, wheelbarrow spawn VFX, done wheelbarrow rolling SFX and CanyonStart spawner), this-week art/design tasks (rocks as cliffs with moss and a mossy golem, carrying/knockback damage rules, enemy sprites for flying chaser, golem rock-thrower, shooter, and slow ground chaser), a rendering task about text sprites from a character set, and a blockers section.",
+      "tags": ["todo-list", "task-tracking", "sfx", "vfx", "enemy-art", "blockers"],
+      "complexity": "simple",
+      "filePath": "TODOS.md"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:IDEAS.md",
+      "target": "document:AGENTS.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "IDEAS.md is the design source of truth; AGENTS.md explicitly delegates detail to it while distilling the design philosophy into guiding principles."
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "document:README.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "Both are project-level overview docs; AGENTS.md documents the dev guide and tech stack while README.md gives the game's high-level pitch and demo link."
+    },
+    {
+      "source": "document:IDEAS.md",
+      "target": "document:README.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "README's core gameplay loop (tree felling, fire, fishing, birding) mirrors systems detailed in IDEAS.md."
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:TODOS.md",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "README's 'Things to do' gameplay loop is tracked operationally in TODOS.md's immediate task list."
+    }
+  ],
+  "files": [
+    "AGENTS.md",
+    "IDEAS.md",
+    "README.md",
+    "TODOS.md"
+  ]
+}

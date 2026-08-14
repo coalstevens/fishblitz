@@ -79,7 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileFiringEnemy
   _firingPattern: 1
   _projectilePrefab: {fileID: 4808849940970867615, guid: 40963209cc1cd44a7afa1fa48574a552, type: 3}
-  _fireRate: 1
+  _fireRate: 2
   _projectileSpawnRadius: 0.5
   _projectileSpawnOffset: {x: 0, y: 1}
   _spreadCount: 3
@@ -92,8 +92,6 @@ MonoBehaviour:
   _aimedSpeedMult: 2
   _aimedDamageMult: 2
   _ringCount: 8
-  _viewRadius: 10
-  _detectionInterval: 0.5
   _obstacleLayers:
     serializedVersion: 2
     m_Bits: 8388608
@@ -102,8 +100,10 @@ MonoBehaviour:
   _wanderRadius: 5
   _idleWaitMin: 1
   _idleWaitMax: 3
-  _dangerDistance: 5
-  _safeDistance: 10
+  _detectionInterval: 0.5
+  _approachRadius: 30
+  _retreatRadius: 10
+  _firing_radius: 18
   _logger:
     _info: 0
     _verbose: 0

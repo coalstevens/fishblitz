@@ -1,0 +1,3643 @@
+{
+  "nodes": [
+    {
+      "id": "file:Assets/Scripts/Misc/AnimateTitle.cs",
+      "type": "file",
+      "name": "AnimateTitle.cs",
+      "summary": "Title-screen text that breathes: stores the original local scale in Awake and in every Update oscillates transform.localScale around it with Mathf.Sin(Time.time * _speed) * _scaleFactor.",
+      "tags": [
+        "title-screen",
+        "ui-animation",
+        "sine-pulse",
+        "scale"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/AnimateTitle.cs",
+      "languageNotes": "Uses Mathf.Sin and Time.time in Update for a frame-rate-bound sine pulse; no tween library involved."
+    },
+    {
+      "id": "class:Assets/Scripts/Misc/AnimateTitle.cs:AnimateTitle",
+      "type": "class",
+      "name": "AnimateTitle",
+      "summary": "MonoBehaviour that pulses the title text scale with a sine wave each frame between original scale +/- _scaleFactor.",
+      "tags": [
+        "title-screen",
+        "ui-animation",
+        "sine-pulse"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/AnimateTitle.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Misc/BlinkRepeatedly.cs",
+      "type": "file",
+      "name": "BlinkRepeatedly.cs",
+      "summary": "Blinks a PixelTextRenderer by looping forever in a Start coroutine: shows the original text, waits _visibleInterval, clears Text to empty, waits _invisibleInterval, then restores it.",
+      "tags": [
+        "ui-text",
+        "blinking",
+        "coroutine",
+        "title-screen"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/BlinkRepeatedly.cs",
+      "languageNotes": "Start is declared as IEnumerator so Unity runs it as a coroutine; uses WaitForSeconds in an infinite while loop."
+    },
+    {
+      "id": "class:Assets/Scripts/Misc/BlinkRepeatedly.cs:BlinkRepeatedly",
+      "type": "class",
+      "name": "BlinkRepeatedly",
+      "summary": "MonoBehaviour that alternates a PixelTextRenderer's Text between its original value and empty on a repeating interval.",
+      "tags": [
+        "ui-text",
+        "blinking",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/BlinkRepeatedly.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Misc/KeepChildScaleUnflipped.cs",
+      "type": "file",
+      "name": "KeepChildScaleUnflipped.cs",
+      "summary": "Keeps a child sprite visually unflipped when its parent is mirrored: in LateUpdate it rewrites local scale to the initial magnitude times the sign of each parent axis.",
+      "tags": [
+        "sprite-flip",
+        "parent-scale",
+        "late-update"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/KeepChildScaleUnflipped.cs",
+      "languageNotes": "LateUpdate so the counter-flip applies after the parent's own scale/rotation is set in Update."
+    },
+    {
+      "id": "class:Assets/Scripts/Misc/KeepChildScaleUnflipped.cs:KeepChildScaleUnflipped",
+      "type": "class",
+      "name": "KeepChildScaleUnflipped",
+      "summary": "MonoBehaviour that inverts this transform's local scale sign to cancel a flipped parent, preserving the original scale magnitude.",
+      "tags": [
+        "sprite-flip",
+        "parent-scale",
+        "late-update"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/KeepChildScaleUnflipped.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Misc/PulseLight.cs",
+      "type": "file",
+      "name": "PulseLight.cs",
+      "summary": "Breathes a URP 2D Light2D's intensity between _minIntensity and _maxIntensity every frame by stepping the intensity; SetIntensity retunes the range and snaps intensity to the new minimum.",
+      "tags": [
+        "light2d",
+        "urp",
+        "pulsing",
+        "intensity"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/PulseLight.cs",
+      "languageNotes": "RequireComponent(typeof(Light2D)) guarantees the cached component in Awake; step-based (per-frame) intensity change rather than a tween."
+    },
+    {
+      "id": "class:Assets/Scripts/Misc/PulseLight.cs:PulseLight",
+      "type": "class",
+      "name": "PulseLight",
+      "summary": "MonoBehaviour oscillating a Light2D intensity up and down each frame between configurable min and max values.",
+      "tags": [
+        "light2d",
+        "urp",
+        "pulsing"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/PulseLight.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Misc/PulseLight.cs:SetIntensity",
+      "type": "function",
+      "name": "SetIntensity",
+      "summary": "Public method that sets the pulse min/max intensity range and immediately resets light intensity to the new minimum.",
+      "tags": [
+        "light2d",
+        "pulsing",
+        "public-api"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/PulseLight.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Misc/StartGame.cs",
+      "type": "file",
+      "name": "StartGame.cs",
+      "summary": "Title-screen handler that loads the 'Level 1' scene through SmoothSceneManager when the Space key is pressed in Update.",
+      "tags": [
+        "title-screen",
+        "scene-load",
+        "input"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/StartGame.cs",
+      "languageNotes": "Uses legacy Input.GetKeyDown rather than the new Input System."
+    },
+    {
+      "id": "class:Assets/Scripts/Misc/StartGame.cs:StartGame",
+      "type": "class",
+      "name": "StartGame",
+      "summary": "MonoBehaviour watching for Space and starting the game via SmoothSceneManager.LoadScene.",
+      "tags": [
+        "title-screen",
+        "scene-load",
+        "input"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Misc/StartGame.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "type": "file",
+      "name": "AsepriteEventListener.cs",
+      "summary": "Bridges Animator event callbacks from Aseprite player animations to configurable local transform offsets: each Effect pairs an affected GameObject with an event name (airborne, grounded, squats, pickups) and an offset; originals are snapshotted on enable and the same event drives offsetting.",
+      "tags": [
+        "animator-events",
+        "aseprite",
+        "player-animation",
+        "transform-offsets"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs",
+      "languageNotes": "RequireComponent(typeof(Animator)); event handlers are named to match animation events and dedupe via a stored _lastEvent."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/AsepriteEventListener.cs:AsepriteEventListener",
+      "type": "class",
+      "name": "AsepriteEventListener",
+      "summary": "MonoBehaviour that applies per-animation-event transform offsets to child sprites, deduping repeated events.",
+      "tags": [
+        "animator-events",
+        "aseprite",
+        "player-animation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/AsepriteEventListener.cs:TransformLocalData",
+      "type": "class",
+      "name": "TransformLocalData",
+      "summary": "Nested serializable snapshot of a transform's local position, rotation and scale, captured before any event offset is applied.",
+      "tags": [
+        "transform",
+        "snapshot",
+        "player-animation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/AsepriteEventListener.cs:Effect",
+      "type": "class",
+      "name": "Effect",
+      "summary": "Nested serializable binding of an affected GameObject, the animation event that triggers it, and the transform offset to apply.",
+      "tags": [
+        "animation-event",
+        "offset",
+        "player-animation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/AsepriteEventListener.cs:ApplyEventEffects",
+      "type": "function",
+      "name": "ApplyEventEffects",
+      "summary": "Applies the configured offsets for a given animation event, skipping repeated dispatches of the same event.",
+      "tags": [
+        "animator-events",
+        "transform",
+        "player-animation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/AsepriteEventListener.cs:UpdateTransform",
+      "type": "function",
+      "name": "UpdateTransform",
+      "summary": "Writes the stored original local position, rotation and scale plus the effect's offset into the affected GameObject's transform.",
+      "tags": [
+        "transform",
+        "offset",
+        "player-animation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/AsepriteEventListener.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "type": "file",
+      "name": "CaptureLog.cs",
+      "summary": "Serializable capture journal shared by fishing and birding. AddToLog stamps a CaptureEntry with the full GameClock timestamp (year, season, day, hour, minute) and reports first captures; queries count totals, unique names, per-name totals, per-week counts, a 4x3 season/week presence table, and existence checks.",
+      "tags": [
+        "capture-log",
+        "fishing",
+        "birding",
+        "journal",
+        "save-data"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs",
+      "languageNotes": "Pure [System.Serializable] class, not a MonoBehaviour; reads time from the GameClock.Instance singleton rather than the system clock."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/CaptureLog.cs:CaptureLog",
+      "type": "class",
+      "name": "CaptureLog",
+      "summary": "Serializable log of capture rows with helper queries for first captures, totals, weekly counts, and a season x week presence table.",
+      "tags": [
+        "capture-log",
+        "fishing",
+        "birding"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/CaptureLog.cs:CaptureEntry",
+      "type": "class",
+      "name": "CaptureEntry",
+      "summary": "Nested serializable row holding a species name and the GameClock year/season/day/hour/minute it was caught.",
+      "tags": [
+        "capture",
+        "timestamp",
+        "capture-log"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:AddToLog",
+      "type": "function",
+      "name": "AddToLog",
+      "summary": "Adds a CaptureEntry stamped from GameClock.Instance and returns true when the name has never been caught before.",
+      "tags": [
+        "capture-log",
+        "first-capture",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:GetTotalCaptures",
+      "type": "function",
+      "name": "GetTotalCaptures",
+      "summary": "Returns the total number of logged captures.",
+      "tags": [
+        "capture-log",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:GetUniqueCaptureCount",
+      "type": "function",
+      "name": "GetUniqueCaptureCount",
+      "summary": "Returns the count of distinct captured names using a HashSet.",
+      "tags": [
+        "capture-log",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:GetCaptureCountForName",
+      "type": "function",
+      "name": "GetCaptureCountForName",
+      "summary": "Returns how many times a given name appears in the log.",
+      "tags": [
+        "capture-log",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:GetCaptureCountForNameThisWeek",
+      "type": "function",
+      "name": "GetCaptureCountForNameThisWeek",
+      "summary": "Counts captures of a name within the current GameClock season/week (weeks are 5-day buckets).",
+      "tags": [
+        "capture-log",
+        "weekly-count",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:GetSeasonWeekTable",
+      "type": "function",
+      "name": "GetSeasonWeekTable",
+      "summary": "Builds a 4x3 bool table of whether a name was caught in each season/week bucket.",
+      "tags": [
+        "capture-log",
+        "season-table",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CaptureLog.cs:HasBeenCaught",
+      "type": "function",
+      "name": "HasBeenCaught",
+      "summary": "Returns whether a given name exists anywhere in the log.",
+      "tags": [
+        "capture-log",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CaptureLog.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+      "type": "file",
+      "name": "CarriedObjectsAnimatorController.cs",
+      "summary": "Displays the carried weighty-object stack: subscribes to the PlayerCarry stack's StoredObjects reactive list and rebuilds child SpriteRenderers, showing NSCarry sprites for each stored object and hiding unused children.",
+      "tags": [
+        "player-carry",
+        "carried-objects",
+        "sprite-rendering",
+        "reactive-subscription"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+      "languageNotes": "ReactiveUnity OnChange subscription with an unsubscribe-hook list torn down in OnDisable; Unity Assertions for required parents."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs:CarriedObjectsAnimatorController",
+      "type": "class",
+      "name": "CarriedObjectsAnimatorController",
+      "summary": "MonoBehaviour on the player's carried-object visuals that maps stack contents onto pre-placed child sprite slots.",
+      "tags": [
+        "player-carry",
+        "carried-objects",
+        "sprite-rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CarriedObjectsAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs:UpdateStackItemRenderers",
+      "type": "function",
+      "name": "UpdateStackItemRenderers",
+      "summary": "Assigns the NSCarry sprite of each stored weighty object to the matching child and deactivates the remaining children.",
+      "tags": [
+        "carried-objects",
+        "sprite-rendering",
+        "player-carry"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/CarriedObjectsAnimatorController.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/Diet.cs",
+      "type": "file",
+      "name": "Diet.cs",
+      "summary": "Static nutrition helper. EatFood clamps today's protein/carbs/nutrients into PlayerEnergyManager against the daily 100-point requirements and narrates the nutrition breakdown; ResetDailyIntake zeroes the daily totals; GetRecoveryRatio averages intake ratios and GetRecoveryMessage picks a hunger flavor line.",
+      "tags": [
+        "diet",
+        "nutrition",
+        "recovery",
+        "narrator"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/Diet.cs",
+      "languageNotes": "Static helper class (no MonoBehaviour) operating on PlayerEnergyManager's public fields; uses Narrator.Instance for player-facing messages."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Diet.cs:Diet",
+      "type": "class",
+      "name": "Diet",
+      "summary": "Static helper managing daily food intake on PlayerEnergyManager and deriving sleep recovery ratios and hunger messages.",
+      "tags": [
+        "diet",
+        "nutrition",
+        "recovery"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Diet.cs:IFood",
+      "type": "class",
+      "name": "IFood",
+      "summary": "Nested interface exposing Protein, Carbs and Nutrients for any edible item.",
+      "tags": [
+        "interface",
+        "nutrition",
+        "diet"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Diet.cs:EatFood",
+      "type": "function",
+      "name": "EatFood",
+      "summary": "Adds a food's protein/carbs/nutrients to the player's daily totals, clamped at the daily requirement, then prints the breakdown.",
+      "tags": [
+        "diet",
+        "nutrition",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Diet.cs:PrintFoodMessage",
+      "type": "function",
+      "name": "PrintFoodMessage",
+      "summary": "Posts a Narrator message summarizing the food's +P/+C/+N values.",
+      "tags": [
+        "narrator",
+        "diet",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Diet.cs:ResetDailyIntake",
+      "type": "function",
+      "name": "ResetDailyIntake",
+      "summary": "Zeroes the player's daily protein, carbs and nutrient intake.",
+      "tags": [
+        "diet",
+        "daily-reset",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryRatio",
+      "type": "function",
+      "name": "GetRecoveryRatio",
+      "summary": "Returns the average of the three daily-intake ratios against the requirements (0..1).",
+      "tags": [
+        "diet",
+        "recovery-ratio",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryMessage",
+      "type": "function",
+      "name": "GetRecoveryMessage",
+      "summary": "Picks the flavor message matching the current recovery ratio from a thresholded list.",
+      "tags": [
+        "diet",
+        "recovery-message",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Diet.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/EnergyBar.cs",
+      "type": "file",
+      "name": "EnergyBar.cs",
+      "summary": "HUD energy bar: resizes an Image's width to (CurrentEnergy / MaxEnergy) * max width. Subscribes to PlayerEnergyManager.CurrentEnergy on enable and unsubscribes on disable.",
+      "tags": [
+        "hud",
+        "energy-bar",
+        "ui-image",
+        "reactive-subscription"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/EnergyBar.cs",
+      "languageNotes": "ReactiveUnity OnChange subscription with an unsubscribe Action held for OnDisable."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/EnergyBar.cs:EnergyBar",
+      "type": "class",
+      "name": "EnergyBar",
+      "summary": "MonoBehaviour (RequireComponent Image) rendering current player energy as a proportional bar width.",
+      "tags": [
+        "hud",
+        "energy-bar",
+        "ui-image"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/EnergyBar.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/EnergyBar.cs:UpdateEnergyBar",
+      "type": "function",
+      "name": "UpdateEnergyBar",
+      "summary": "Sets the bar Image's width via sizeDelta proportional to the current energy fraction.",
+      "tags": [
+        "energy-bar",
+        "ui",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/EnergyBar.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/HUDInputManager.cs",
+      "type": "file",
+      "name": "HUDInputManager.cs",
+      "summary": "Maps hotbar input to the active inventory slot: OnItemSelect1..10 set the slot directly, and left/right cursor actions step the slot index with wraparound by writing Inventory.ActiveItemSlot.",
+      "tags": [
+        "input-system",
+        "inventory",
+        "hotbar",
+        "hud"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/HUDInputManager.cs",
+      "languageNotes": "New Input System message handlers named OnItemSelect1..10 and OnMoveItemCursorLeft/Right with InputValue."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/HUDInputManager.cs:HUDInputManager",
+      "type": "class",
+      "name": "HUDInputManager",
+      "summary": "MonoBehaviour receiving item-slot hotkey and cursor inputs and forwarding them to the Inventory's active slot.",
+      "tags": [
+        "input-system",
+        "inventory",
+        "hotbar"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/HUDInputManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/HUDInputManager.cs:SetActiveSlot",
+      "type": "function",
+      "name": "SetActiveSlot",
+      "summary": "Public helper that writes a slot index into Inventory.ActiveItemSlot.",
+      "tags": [
+        "inventory",
+        "hotbar",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/HUDInputManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/InteractInput.cs",
+      "type": "file",
+      "name": "InteractInput.cs",
+      "summary": "Interact action handler: only acts when the player is idle or running, resolves the GridCursor grid position, finds an IInteractable there, refuses non-weighty interactions while carrying, and calls CursorInteract on the target. Logs each attempt via Logger.",
+      "tags": [
+        "interact",
+        "grid-cursor",
+        "player-input",
+        "carrying"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/InteractInput.cs",
+      "languageNotes": "RequireComponent(PlayerMovement, PlayerEnergyManager, PlayerCarry) with cached GetComponent refs; Logger fields via [SerializeField]."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/InteractInput.cs:InteractInput",
+      "type": "class",
+      "name": "InteractInput",
+      "summary": "MonoBehaviour routing the Interact input to whatever CursorInteract target is under the GridCursor.",
+      "tags": [
+        "interact",
+        "grid-cursor",
+        "player-input"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/InteractInput.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/InteractInput.cs:IInteractable",
+      "type": "class",
+      "name": "IInteractable",
+      "summary": "Nested interface for objects that respond to the player's CursorInteract with a cursor location; false means ignored.",
+      "tags": [
+        "interface",
+        "interact",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/InteractInput.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/InteractInput.cs:OnInteract",
+      "type": "function",
+      "name": "OnInteract",
+      "summary": "Validates state and carrying rules, finds the interactable under the cursor, and invokes its CursorInteract.",
+      "tags": [
+        "interact",
+        "grid-cursor",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/InteractInput.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/Inventory.cs",
+      "type": "file",
+      "name": "Inventory.cs",
+      "summary": "ScriptableObject inventory of 10 slots mapping slot index to ItemStack. Stacks quantities into existing slots then empty slots, removes from smallest stacks, swaps slots, and persists to JSON (InventoryData.json in persistentDataPath) including per-instance item data. Active slot is a Reactive<int>; overflow items are dropped on the ground via SpawnItems.",
+      "tags": [
+        "inventory",
+        "save-system",
+        "item-stacks",
+        "scriptableobject",
+        "hotbar"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/Inventory.cs",
+      "languageNotes": "CreateAssetMenu ScriptableObject; JsonUtility + File I/O with try-free IO and Debug.LogError on missing items; ReactiveUnity Reactive<int> for the active slot."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:Inventory",
+      "type": "class",
+      "name": "Inventory",
+      "summary": "Serializable 10-slot inventory with add/remove/swap operations, JSON persistence, and a reactive active-slot selector.",
+      "tags": [
+        "inventory",
+        "save-system",
+        "item-stacks"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:IInstancedItem",
+      "type": "class",
+      "name": "IInstancedItem",
+      "summary": "Nested interface (covariant out T) letting an item produce fresh ItemInstanceData per stack.",
+      "tags": [
+        "interface",
+        "instanced-items",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:ItemInstanceData",
+      "type": "class",
+      "name": "ItemInstanceData",
+      "summary": "Nested abstract base for per-stack instance data, each stamped with a fresh Guid InstancedID.",
+      "tags": [
+        "instanced-items",
+        "guid",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:ItemStack",
+      "type": "class",
+      "name": "ItemStack",
+      "summary": "Nested serializable stack of a quantity of an Item plus optional ItemInstanceData; creates instance data when the item is instanced.",
+      "tags": [
+        "item-stack",
+        "quantity",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:Item",
+      "type": "class",
+      "name": "Item",
+      "summary": "Nested abstract ScriptableObject base for inventory items: sprite, label and stack capacity.",
+      "tags": [
+        "item",
+        "scriptableobject",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:InventorySaveData",
+      "type": "class",
+      "name": "InventorySaveData",
+      "summary": "Nested JSON-serializable wrapper holding the list of SlotSaveData rows.",
+      "tags": [
+        "save-system",
+        "json",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/Inventory.cs:SlotSaveData",
+      "type": "class",
+      "name": "SlotSaveData",
+      "summary": "Nested serializable row: slot key, item name, quantity and optional instance-data JSON.",
+      "tags": [
+        "save-system",
+        "json",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItem",
+      "type": "function",
+      "name": "GetActiveItem",
+      "summary": "Returns the Item in the active slot, or null if the slot is empty.",
+      "tags": [
+        "inventory",
+        "hotbar",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItemInstanceData",
+      "type": "function",
+      "name": "GetActiveItemInstanceData",
+      "summary": "Returns the active slot's ItemInstanceData, or null.",
+      "tags": [
+        "inventory",
+        "instanced-items",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:TryGetActiveItemType",
+      "type": "function",
+      "name": "TryGetActiveItemType",
+      "summary": "Out-parameter wrapper over GetActiveItem reporting whether the active slot holds an item.",
+      "tags": [
+        "inventory",
+        "hotbar",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "type": "function",
+      "name": "TryAddItem",
+      "summary": "Adds a quantity of an item, topping up existing stacks then filling empty slots; plays an add sound and saves; returns false if there is not enough space.",
+      "tags": [
+        "inventory",
+        "stacking",
+        "csharp"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:AddItemOrDrop",
+      "type": "function",
+      "name": "AddItemOrDrop",
+      "summary": "Tries to add an item and spawns the overflow into a collider's area as loose items when inventory space is insufficient.",
+      "tags": [
+        "inventory",
+        "drop-item",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:TryRemoveItem",
+      "type": "function",
+      "name": "TryRemoveItem",
+      "summary": "Removes a quantity of an item starting from the smallest stacks; saves and returns false if not enough is held.",
+      "tags": [
+        "inventory",
+        "consumption",
+        "csharp"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:TryRemoveActiveItem",
+      "type": "function",
+      "name": "TryRemoveActiveItem",
+      "summary": "Removes a quantity from the active slot, deleting the slot when it empties.",
+      "tags": [
+        "inventory",
+        "consumption",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:SwapSlots",
+      "type": "function",
+      "name": "SwapSlots",
+      "summary": "Swaps the ItemStacks between two slots (or clears a slot) and saves.",
+      "tags": [
+        "inventory",
+        "slots",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:AddItemIntoEmptySlots",
+      "type": "function",
+      "name": "AddItemIntoEmptySlots",
+      "summary": "Loads the item from Resources and creates fresh ItemStacks in empty slots until the quantity is placed.",
+      "tags": [
+        "inventory",
+        "stacking",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:HasEnoughInventorySpace",
+      "type": "function",
+      "name": "HasEnoughInventorySpace",
+      "summary": "Computes free space from existing stacks plus empty-slot capacity for the item and compares to the requested quantity.",
+      "tags": [
+        "inventory",
+        "space-check",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:IsPlayerHoldingItem",
+      "type": "function",
+      "name": "IsPlayerHoldingItem",
+      "summary": "Returns whether the active slot currently holds the given item type.",
+      "tags": [
+        "inventory",
+        "hotbar",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:SaveInventory",
+      "type": "function",
+      "name": "SaveInventory",
+      "summary": "Serializes all slots (with per-instance JSON) to InventoryData.json via JsonUtility and File.WriteAllText.",
+      "tags": [
+        "save-system",
+        "json",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/Inventory.cs:LoadInventory",
+      "type": "function",
+      "name": "LoadInventory",
+      "summary": "Reads the save file and rebuilds the slot dictionary, restoring instance data; returns an empty inventory when no save exists or a fresh inventory is forced.",
+      "tags": [
+        "save-system",
+        "json",
+        "inventory"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/Inventory.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "type": "file",
+      "name": "PlayerAnimatorController.cs",
+      "summary": "Drives the player's three animators (default, wheelbarrow, carrying) from PlayerMovement state/direction plus carry, wheelbarrow and inventory signals. Subscribes to reactive PlayerState, Direction, carried stack, wheelbarrow and active-slot changes, maps PlayerStates to named clips (S_Idle, S_Running_Axe, SE_Pickup, S_Chopping, etc.), mirrors the body west-facing, and auto-returns to idle after timed actions.",
+      "tags": [
+        "player-animator",
+        "state-machine",
+        "animation-clips",
+        "facing-direction",
+        "player-carry"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "languageNotes": "ReactiveUnity OnChange subscriptions collected in an unsubscribe-hook list; static Instance singleton; Invoke(nameof(...)) used as a timed state reset."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerAnimatorController.cs:PlayerAnimatorController",
+      "type": "class",
+      "name": "PlayerAnimatorController",
+      "summary": "MonoBehaviour singleton mapping player movement state and facing to Animator clips across three sprite bodies.",
+      "tags": [
+        "player-animator",
+        "state-machine",
+        "animation-clips"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "type": "function",
+      "name": "OnStateChange",
+      "summary": "Central state dispatcher: derives the animation facing from compass direction, flips the body for west-facing, and routes each PlayerState to its clip handler.",
+      "tags": [
+        "state-machine",
+        "facing-direction",
+        "player-animator"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleRunning",
+      "type": "function",
+      "name": "HandleRunning",
+      "summary": "Shows the wheelbarrow/carrying sprite when appropriate, otherwise the default, and plays the running clip (axe variant when holding an axe).",
+      "tags": [
+        "animation",
+        "running",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleIdle",
+      "type": "function",
+      "name": "HandleIdle",
+      "summary": "Shows the correct body sprite and plays the idle clip, with an axe-specific idle when the active item is an axe.",
+      "tags": [
+        "animation",
+        "idle",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCatching",
+      "type": "function",
+      "name": "HandleCatching",
+      "summary": "Plays the S_Catch clip on the default sprite during the catching state.",
+      "tags": [
+        "animation",
+        "catching",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCrouched",
+      "type": "function",
+      "name": "HandleCrouched",
+      "summary": "Plays the S_Crouch clip on the default sprite while crouched.",
+      "tags": [
+        "animation",
+        "crouch",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCelebrating",
+      "type": "function",
+      "name": "HandleCelebrating",
+      "summary": "Plays the Caught clip then returns the player to idle after 1.5 seconds.",
+      "tags": [
+        "animation",
+        "celebrating",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandlePickingUp",
+      "type": "function",
+      "name": "HandlePickingUp",
+      "summary": "Shows the carrying sprite, plays SE_Pickup, and schedules a return to idle shortly after the pickup animation.",
+      "tags": [
+        "animation",
+        "pickup",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleFishing",
+      "type": "function",
+      "name": "HandleFishing",
+      "summary": "Plays the S_Fishing clip on the default sprite.",
+      "tags": [
+        "animation",
+        "fishing",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleChopping",
+      "type": "function",
+      "name": "HandleChopping",
+      "summary": "Plays the S_Chopping clip then returns the player to idle after the chop animation duration.",
+      "tags": [
+        "animation",
+        "axing",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:SetPlayerIdle",
+      "type": "function",
+      "name": "SetPlayerIdle",
+      "summary": "Writes the PlayerMovement PlayerState back to Idle; used by Invoke callbacks after timed animations.",
+      "tags": [
+        "player-state",
+        "animation",
+        "player-animator"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAnimatorController.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "type": "file",
+      "name": "PlayerAudioManager.cs",
+      "summary": "Singleton for playing player SFX through a pool of AudioSources on a shared root. PlayOneShot and PlayLooping route SoundData to the next free source (adding one when all are busy); looping returns an Action to stop the loop.",
+      "tags": [
+        "audio",
+        "sfx",
+        "singleton",
+        "audio-source-pool"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerAudioManager.cs",
+      "languageNotes": "Static Instance with lazy FindFirstObjectByType lookup; round-robin source pool that grows dynamically."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerAudioManager.cs:PlayerAudioManager",
+      "type": "class",
+      "name": "PlayerAudioManager",
+      "summary": "Singleton MonoBehaviour pooling AudioSources for one-shot and looping player sounds.",
+      "tags": [
+        "audio",
+        "sfx",
+        "singleton"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerAudioManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayOneShot",
+      "type": "function",
+      "name": "PlayOneShot",
+      "summary": "Plays a SoundData clip once through an available pooled AudioSource, warning on null data.",
+      "tags": [
+        "audio",
+        "sfx",
+        "player-audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAudioManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayLooping",
+      "type": "function",
+      "name": "PlayLooping",
+      "summary": "Starts a looping clip and returns an Action that stops it; returns null for invalid data.",
+      "tags": [
+        "audio",
+        "sfx",
+        "player-audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAudioManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerAudioManager.cs:GetAvailableSource",
+      "type": "function",
+      "name": "GetAvailableSource",
+      "summary": "Finds the next non-playing pooled AudioSource, growing the pool by one when all are busy.",
+      "tags": [
+        "audio",
+        "source-pool",
+        "player-audio"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerAudioManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "type": "file",
+      "name": "PlayerCaptureLogs.cs",
+      "summary": "ISaveableComponent persisting the player's birding and fishing CaptureLogs: serializes both capture tables to JSON and restores them back into the in-memory logs.",
+      "tags": [
+        "capture-log",
+        "save-system",
+        "isaveablecomponent",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "languageNotes": "Implements ISaveableComponent with ComponentId; uses Newtonsoft.Json rather than JsonUtility."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerCaptureLogs.cs:PlayerCaptureLogs",
+      "type": "class",
+      "name": "PlayerCaptureLogs",
+      "summary": "MonoBehaviour exposing the BirdingLog and FishingLog capture logs with JSON save/restore.",
+      "tags": [
+        "capture-log",
+        "save-system",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCaptureLogs.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerCaptureLogs.cs:State",
+      "type": "class",
+      "name": "State",
+      "summary": "Nested serializable state holding both capture tables for JSON round-tripping.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "capture-log"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCaptureLogs.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCaptureLogs.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes the birding and fishing CaptureTables into a State JSON string.",
+      "tags": [
+        "capture-log",
+        "serialization",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCaptureLogs.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCaptureLogs.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Deserializes a State JSON string and repopulates both capture tables.",
+      "tags": [
+        "capture-log",
+        "serialization",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCaptureLogs.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "file",
+      "name": "PlayerCarry.cs",
+      "summary": "Manages carrying a stack of weighty objects. TryPickUpWeightyObject sets the PickingUp state then pushes after a short delay; PutDown and drop-on-hit spawn the object back into the world at an unoccupied cell near the cursor/player; Push registers the pickup with PlayerStrength; every drop plays a put-down sound.",
+      "tags": [
+        "player-carry",
+        "weighty-objects",
+        "inventory",
+        "world-objects",
+        "spawn"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs",
+      "languageNotes": "ReactiveUnity Reactive<bool> IsCarrying; heavy RequireComponent/Assert usage for cross-object dependencies; local-function coroutine with WaitForSeconds for the delayed push."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerCarry.cs:PlayerCarry",
+      "type": "class",
+      "name": "PlayerCarry",
+      "summary": "MonoBehaviour owning the carried WeightyObjectStack, handling pickup, put-down, drop-on-hit and occupancy-aware respawning.",
+      "tags": [
+        "player-carry",
+        "weighty-objects",
+        "csharp"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:TryPickUpWeightyObject",
+      "type": "function",
+      "name": "TryPickUpWeightyObject",
+      "summary": "Checks stack space, sets the PickingUp player state, and schedules the stack push after the pickup animation delay.",
+      "tags": [
+        "player-carry",
+        "pickup",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:HasEnoughSpace",
+      "type": "function",
+      "name": "HasEnoughSpace",
+      "summary": "Asks the carried stack whether the given weight still fits.",
+      "tags": [
+        "player-carry",
+        "space-check",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:Push",
+      "type": "function",
+      "name": "Push",
+      "summary": "Pushes a stored weighty object onto the stack, flags IsCarrying, plays the insert sound, and registers the pickup with PlayerStrength.",
+      "tags": [
+        "player-carry",
+        "stack",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:PutDown",
+      "type": "function",
+      "name": "PutDown",
+      "summary": "Pops the top carried object and spawns it at the first unoccupied cell around the given cursor grid position, playing the put-down sound.",
+      "tags": [
+        "player-carry",
+        "put-down",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:Pop",
+      "type": "function",
+      "name": "Pop",
+      "summary": "Pops and returns the top stored object, clearing IsCarrying when the stack empties.",
+      "tags": [
+        "player-carry",
+        "stack",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:DropCarriedItemOnHit",
+      "type": "function",
+      "name": "DropCarriedItemOnHit",
+      "summary": "Spawns the top carried object near the player and pops it when hit, returning whether anything was dropped.",
+      "tags": [
+        "player-carry",
+        "drop-on-hit",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:DropStackItemOnHit",
+      "type": "function",
+      "name": "DropStackItemOnHit",
+      "summary": "Drops one object from an arbitrary supplied stack (e.g. wheelbarrow) near the player.",
+      "tags": [
+        "player-carry",
+        "drop-on-hit",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "type": "function",
+      "name": "TrySpawnNearPlayer",
+      "summary": "Finds an unoccupied cell near the player's grid cell, instantiates the stored object there and plays the put-down sound.",
+      "tags": [
+        "player-carry",
+        "spawn",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:Peek",
+      "type": "function",
+      "name": "Peek",
+      "summary": "Returns the top stored object without popping it.",
+      "tags": [
+        "player-carry",
+        "stack",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:CarriedCount",
+      "type": "function",
+      "name": "CarriedCount",
+      "summary": "Read-only count of objects currently in the carried stack.",
+      "tags": [
+        "player-carry",
+        "stack",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:InstantiateWeightyObject",
+      "type": "function",
+      "name": "InstantiateWeightyObject",
+      "summary": "Loads the object prefab from Resources, positions it via SceneSpawner, stamps save position, and re-instantiates + Loads it under the Impermanent container.",
+      "tags": [
+        "world-objects",
+        "spawn",
+        "save-data"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCarry.cs:TryGetUnoccupiedPosition",
+      "type": "function",
+      "name": "TryGetUnoccupiedPosition",
+      "summary": "Searches the cursor cell then its 8 neighbors for a cell the WorldObjectOccupancyMap reports as free.",
+      "tags": [
+        "world-objects",
+        "occupancy",
+        "player-carry"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCarry.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerCrouch.cs",
+      "type": "file",
+      "name": "PlayerCrouch.cs",
+      "summary": "Toggles the Crouched player state while the Crouch input action is held: enters from Idle/Running on started, returns to Idle on canceled. Hooks Input System action callbacks in OnEnable/OnDisable.",
+      "tags": [
+        "input-system",
+        "crouch",
+        "player-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCrouch.cs",
+      "languageNotes": "New Input System actions wired via PlayerInput.actions[\"Crouch\"] with started/canceled subscriptions."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerCrouch.cs:PlayerCrouch",
+      "type": "class",
+      "name": "PlayerCrouch",
+      "summary": "MonoBehaviour mapping the Crouch input action to transitions between the player's Crouched and Idle states.",
+      "tags": [
+        "input-system",
+        "crouch",
+        "player-state"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCrouch.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "type": "file",
+      "name": "PlayerCursor.cs",
+      "summary": "World-facing player cursor snapped to the grid. One of four cursor objects (per compass direction) is shown and its collider enabled only when the player faces that direction and is idle or running; the render transform snaps to the grid cell each frame.",
+      "tags": [
+        "cursor",
+        "facing-direction",
+        "grid",
+        "player-input"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerCursor.cs",
+      "languageNotes": "ReactiveUnity OnChange subscriptions to Direction/PlayerState with an unsubscribe-hook list; SceneManager.sceneLoaded handled for per-scene grid lookup."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerCursor.cs:PlayerCursor",
+      "type": "class",
+      "name": "PlayerCursor",
+      "summary": "MonoBehaviour managing a direction-specific world cursor sprite and collider visibility based on facing and state.",
+      "tags": [
+        "cursor",
+        "facing-direction",
+        "grid"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerCursor.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCursor.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "Caches the scene's Grid when a new scene finishes loading.",
+      "tags": [
+        "scene-load",
+        "grid",
+        "cursor"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCursor.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCursor.cs:TryHideCursor",
+      "type": "function",
+      "name": "TryHideCursor",
+      "summary": "Hides the cursor sprite for acting states and otherwise only shows it when facing the cursor's direction.",
+      "tags": [
+        "cursor",
+        "player-state",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCursor.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerCursor.cs:OnDirectionChange",
+      "type": "function",
+      "name": "OnDirectionChange",
+      "summary": "Enables the cursor sprite and collider only when the player's direction matches this cursor's assigned direction.",
+      "tags": [
+        "cursor",
+        "facing-direction",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerCursor.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerDialogue.cs",
+      "type": "file",
+      "name": "PlayerDialogue.cs",
+      "summary": "Static-instance bridge so any system can push a message to the player's character DialogueController via PostMessage; delegates to the required DialogueController component.",
+      "tags": [
+        "dialogue",
+        "singleton",
+        "npc-chat"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDialogue.cs",
+      "languageNotes": "RequireComponent(DialogueController); simple static Instance field set in Awake."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerDialogue.cs:PlayerDialogue",
+      "type": "class",
+      "name": "PlayerDialogue",
+      "summary": "MonoBehaviour singleton forwarding text messages to the player's DialogueController.",
+      "tags": [
+        "dialogue",
+        "singleton",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDialogue.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDialogue.cs:PostMessage",
+      "type": "function",
+      "name": "PostMessage",
+      "summary": "Posts a message to the player's DialogueController, erroring if it is not assigned.",
+      "tags": [
+        "dialogue",
+        "public-api",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDialogue.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "type": "file",
+      "name": "PlayerDryingManager.cs",
+      "summary": "Wetness state machine (Wet/Dry/Drying/Wetting) driven by rain state and scene. Each game-minute tick accrues drying points at a rate set by ambient temperature; prolonged rain exposure makes the player wet; narrator messages announce transitions; drying pauses while asleep. Persists via ISaveableComponent.",
+      "tags": [
+        "wetness",
+        "drying",
+        "weather",
+        "player-state",
+        "save-system"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs",
+      "languageNotes": "ReactiveUnity Reactive<WetnessStates>; implements GameClock.ITickable (OnGameMinuteTick) and ISaveableComponent; Newtonsoft.Json for save state."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerDryingManager.cs:PlayerDryingManager",
+      "type": "class",
+      "name": "PlayerDryingManager",
+      "summary": "MonoBehaviour modeling the player's wetness/drying cycle from rain and ambient temperature.",
+      "tags": [
+        "wetness",
+        "drying",
+        "weather"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnGameMinuteTick",
+      "type": "function",
+      "name": "OnGameMinuteTick",
+      "summary": "GameClock tick entry point that advances the wetness state (skipped while sleeping).",
+      "tags": [
+        "wetness",
+        "game-clock",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnWetnessStateChange",
+      "type": "function",
+      "name": "OnWetnessStateChange",
+      "summary": "On state transitions posts a message and resets the drying/wetting counters, plus derives PlayerIsWet.",
+      "tags": [
+        "wetness",
+        "player-state",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:SetWetnessState",
+      "type": "function",
+      "name": "SetWetnessState",
+      "summary": "Recomputes the wetness state from the active scene (outside vs inside) and current rain state.",
+      "tags": [
+        "wetness",
+        "weather",
+        "csharp"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:HandleWetnessState",
+      "type": "function",
+      "name": "HandleWetnessState",
+      "summary": "Advances Drying/Wetting counters each game minute, transitioning to Dry once enough drying points accrue or to Wet after enough wet minutes.",
+      "tags": [
+        "wetness",
+        "drying",
+        "csharp"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:PostStateChangeMessage",
+      "type": "function",
+      "name": "PostStateChangeMessage",
+      "summary": "Posts a narrator message describing the wetness transition (soaked, drying, dried off, getting wet).",
+      "tags": [
+        "wetness",
+        "narrator",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:GetDryingPoints",
+      "type": "function",
+      "name": "GetDryingPoints",
+      "summary": "Maps ambient temperature to the drying-point gain per game minute based on configured drying times.",
+      "tags": [
+        "drying",
+        "temperature",
+        "wetness"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes wetness state, counters and PlayerIsWet for saving.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "wetness"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Restores wetness state and counters from saved JSON.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "wetness"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerDryingManager.cs:ResetToDefaults",
+      "type": "function",
+      "name": "ResetToDefaults",
+      "summary": "Resets the player to a dry state with zeroed counters.",
+      "tags": [
+        "wetness",
+        "reset",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerDryingManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "type": "file",
+      "name": "PlayerEnergyManager.cs",
+      "summary": "Central player energy/diet/sleep state. Depletes and recovers energy against a max, tracks today's protein/carbs/nutrients, and Sleep() warms the player instantly, records the last sleep game time, and loads the SleepMenu scene. Persists energy, diet and sleep fields via ISaveableComponent.",
+      "tags": [
+        "player-energy",
+        "diet",
+        "sleep",
+        "save-system"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "languageNotes": "ReactiveUnity Reactive<int> CurrentEnergy; implements ISaveableComponent with Newtonsoft.Json; RequireComponent pulls in PlayerTemperatureManager and PlayerSceneData."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerEnergyManager.cs:PlayerEnergyManager",
+      "type": "class",
+      "name": "PlayerEnergyManager",
+      "summary": "MonoBehaviour owning energy, daily diet totals and sleep state with save/restore.",
+      "tags": [
+        "player-energy",
+        "diet",
+        "sleep"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerEnergyManager.cs:IEnergyDepleting",
+      "type": "class",
+      "name": "IEnergyDepleting",
+      "summary": "Nested interface exposing an EnergyCost for actions that deplete energy.",
+      "tags": [
+        "interface",
+        "energy-cost",
+        "player-energy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:Sleep",
+      "type": "function",
+      "name": "Sleep",
+      "summary": "Instantly syncs player temperature to ambient, records the last sleep time and the sleeping scene, then loads the SleepMenu level.",
+      "tags": [
+        "sleep",
+        "scene-load",
+        "player-energy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:DepleteEnergy",
+      "type": "function",
+      "name": "DepleteEnergy",
+      "summary": "Subtracts energy, flooring at zero, and logs whether the action was possible at all.",
+      "tags": [
+        "player-energy",
+        "depletion",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:RecoverEnergy",
+      "type": "function",
+      "name": "RecoverEnergy",
+      "summary": "Adds energy, clamping at the max value.",
+      "tags": [
+        "player-energy",
+        "recovery",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsEnergyAvailable",
+      "type": "function",
+      "name": "IsEnergyAvailable",
+      "summary": "Returns whether the player currently has more than zero energy.",
+      "tags": [
+        "player-energy",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsSufficientEnergyAvailable",
+      "type": "function",
+      "name": "IsSufficientEnergyAvailable",
+      "summary": "Gate for energy-depleting actions: checks availability and logs when energy is exhausted.",
+      "tags": [
+        "player-energy",
+        "query",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:CaptureStateAsJson",
+      "type": "function",
+      "name": "CaptureStateAsJson",
+      "summary": "Serializes energy, max energy, daily diet totals and sleep fields for saving.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "player-energy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:RestoreStateFromJson",
+      "type": "function",
+      "name": "RestoreStateFromJson",
+      "summary": "Restores energy, diet and sleep state from saved JSON.",
+      "tags": [
+        "save-system",
+        "serialization",
+        "player-energy"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:ResetToDefaults",
+      "type": "function",
+      "name": "ResetToDefaults",
+      "summary": "Fills energy to max and clears diet totals and sleep flags.",
+      "tags": [
+        "player-energy",
+        "reset",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerEnergyManager.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "type": "file",
+      "name": "PlayerHealth.cs",
+      "summary": "Player health with damage absorption: taking damage while carrying drops a carried (or wheelbarrow) item instead of losing health; otherwise health depletes with invulnerability frames and a red flash on the active sprite. Death posts a narrator line.",
+      "tags": [
+        "player-health",
+        "damage",
+        "invulnerability",
+        "carried-items"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs",
+      "languageNotes": "ReactiveUnity Reactive<float> CurrentHealth and Reactive<bool> IsInvulnerable; coroutines for i-frames and red flash; Requires PlayerCarry and PlayerWheelBarrow."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerHealth.cs:PlayerHealth",
+      "type": "class",
+      "name": "PlayerHealth",
+      "summary": "MonoBehaviour tracking player health, damage absorption via dropping carried items, invulnerability frames and hit flash.",
+      "tags": [
+        "player-health",
+        "damage",
+        "invulnerability"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "type": "function",
+      "name": "TakeDamage",
+      "summary": "Applies damage unless invulnerable; first tries absorbing it by dropping a carried item, else reduces health, flashes red, and dies at zero.",
+      "tags": [
+        "player-health",
+        "damage",
+        "csharp"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:TryAbsorbDamageByDropping",
+      "type": "function",
+      "name": "TryAbsorbDamageByDropping",
+      "summary": "Drops the top carried object, or a wheelbarrow stack object, to absorb a hit; returns whether anything was dropped.",
+      "tags": [
+        "player-health",
+        "carried-items",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:InvulnerabilityFrames",
+      "type": "function",
+      "name": "InvulnerabilityFrames",
+      "summary": "Coroutine toggling IsInvulnerable for the configured duration.",
+      "tags": [
+        "invulnerability",
+        "coroutine",
+        "player-health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:FlashRedTwice",
+      "type": "function",
+      "name": "FlashRedTwice",
+      "summary": "Coroutine flashing the active sprite renderers red twice to signal a hit.",
+      "tags": [
+        "hit-feedback",
+        "coroutine",
+        "player-health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:GetActiveSpriteRenderers",
+      "type": "function",
+      "name": "GetActiveSpriteRenderers",
+      "summary": "Collects the SpriteRenderers of the player's currently active visual body via PlayerAnimatorController.ActiveSprite.",
+      "tags": [
+        "player-animator",
+        "sprite-rendering",
+        "player-health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHealth.cs:Die",
+      "type": "function",
+      "name": "Die",
+      "summary": "Handles player death by posting a hurt narrator message.",
+      "tags": [
+        "player-health",
+        "death",
+        "csharp"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHealth.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerHurtbox.cs",
+      "type": "file",
+      "name": "PlayerHurtbox.cs",
+      "summary": "Trigger collider component exposing IHurtBox on the player: reports vulnerability from PlayerHealth's IsInvulnerable and forwards TakeDamage to the parent PlayerHealth.",
+      "tags": [
+        "hurtbox",
+        "damage",
+        "collider"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHurtbox.cs",
+      "languageNotes": "Implements IHurtBox; GetComponentInParent with Assert.IsNotNull for the required PlayerHealth."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerHurtbox.cs:PlayerHurtbox",
+      "type": "class",
+      "name": "PlayerHurtbox",
+      "summary": "MonoBehaviour bridging enemy damage into PlayerHealth and exposing invulnerability state.",
+      "tags": [
+        "hurtbox",
+        "damage",
+        "player-health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHurtbox.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerHurtbox.cs:TakeDamage",
+      "type": "function",
+      "name": "TakeDamage",
+      "summary": "Forwards incoming damage to the parent PlayerHealth.TakeDamage.",
+      "tags": [
+        "damage",
+        "hurtbox",
+        "player-health"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerHurtbox.cs"
+    },
+    {
+      "id": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "file",
+      "name": "PlayerMovement.cs",
+      "summary": "Player movement core: reads move input, derives an 8-way CompassDirection and transitions PlayerStates (Idle/Running, Birding/BirdingRunning, BowCharging/BowChargingRunning), applies cardinal max speeds with per-axis multipliers, and accelerates via Vector2.MoveTowards in FixedUpdate. Carrying and wheelbarrow reduce acceleration and top speed per carried object. Also defines the CompassDirection enum and CardinalVector struct used across the project.",
+      "tags": [
+        "player-movement",
+        "input-system",
+        "player-state",
+        "acceleration",
+        "cardinal-vector"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs",
+      "languageNotes": "ReactiveUnity Reactive<CompassDirection> Direction and Reactive<PlayerStates> PlayerState; RequireComponent for Rigidbody2D and co-dependencies; new Input System OnMove(InputValue)."
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerMovement.cs:PlayerMovement",
+      "type": "class",
+      "name": "PlayerMovement",
+      "summary": "MonoBehaviour singleton computing player direction, movement state and velocity with carry/wheelbarrow-modulated speeds.",
+      "tags": [
+        "player-movement",
+        "input-system",
+        "player-state"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerMovement.cs:CompassDirection",
+      "type": "class",
+      "name": "CompassDirection",
+      "summary": "Top-level enum of 8 compass directions used project-wide for facing and animation.",
+      "tags": [
+        "enum",
+        "facing-direction",
+        "player-movement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    },
+    {
+      "id": "class:Assets/Scripts/Player/PlayerMovement.cs:CardinalVector",
+      "type": "class",
+      "name": "CardinalVector",
+      "summary": "Top-level struct holding per-axis (north/east/south/west) scalar values, used for max move speeds and multipliers.",
+      "tags": [
+        "struct",
+        "cardinal-vector",
+        "movement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerMovement.cs:OnMove",
+      "type": "function",
+      "name": "OnMove",
+      "summary": "Input System handler storing the raw 2D move vector from the action value.",
+      "tags": [
+        "input-system",
+        "movement",
+        "player-movement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerMovement.cs:SetMoveSpeedMultiplier",
+      "type": "function",
+      "name": "SetMoveSpeedMultiplier",
+      "summary": "Public hook (used for effects like wind) replacing the per-axis move-speed multipliers.",
+      "tags": [
+        "movement",
+        "public-api",
+        "player-movement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    },
+    {
+      "id": "function:Assets/Scripts/Player/PlayerMovement.cs:CalculateAcceleration",
+      "type": "function",
+      "name": "CalculateAcceleration",
+      "summary": "Selects acceleration, deceleration and max speed from wheelbarrow/carry/empty states, reducing each per carried object.",
+      "tags": [
+        "movement",
+        "acceleration",
+        "player-movement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Player/PlayerMovement.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:Assets/Scripts/Misc/AnimateTitle.cs",
+      "target": "class:Assets/Scripts/Misc/AnimateTitle.cs:AnimateTitle",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AnimateTitle"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/AnimateTitle.cs",
+      "target": "class:Assets/Scripts/Misc/AnimateTitle.cs:AnimateTitle",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AnimateTitle"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/BlinkRepeatedly.cs",
+      "target": "class:Assets/Scripts/Misc/BlinkRepeatedly.cs:BlinkRepeatedly",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains BlinkRepeatedly"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/KeepChildScaleUnflipped.cs",
+      "target": "class:Assets/Scripts/Misc/KeepChildScaleUnflipped.cs:KeepChildScaleUnflipped",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains KeepChildScaleUnflipped"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/PulseLight.cs",
+      "target": "class:Assets/Scripts/Misc/PulseLight.cs:PulseLight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PulseLight"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/PulseLight.cs",
+      "target": "function:Assets/Scripts/Misc/PulseLight.cs:SetIntensity",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SetIntensity"
+    },
+    {
+      "source": "file:Assets/Scripts/Misc/StartGame.cs",
+      "target": "class:Assets/Scripts/Misc/StartGame.cs:StartGame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains StartGame"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "target": "class:Assets/Scripts/Player/AsepriteEventListener.cs:AsepriteEventListener",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AsepriteEventListener"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "target": "class:Assets/Scripts/Player/AsepriteEventListener.cs:TransformLocalData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TransformLocalData"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "target": "class:Assets/Scripts/Player/AsepriteEventListener.cs:Effect",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Effect"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "target": "function:Assets/Scripts/Player/AsepriteEventListener.cs:ApplyEventEffects",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ApplyEventEffects"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/AsepriteEventListener.cs",
+      "target": "function:Assets/Scripts/Player/AsepriteEventListener.cs:UpdateTransform",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains UpdateTransform"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/AsepriteEventListener.cs:ApplyEventEffects",
+      "target": "function:Assets/Scripts/Player/AsepriteEventListener.cs:UpdateTransform",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies offsets to each matched effect"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "class:Assets/Scripts/Player/CaptureLog.cs:CaptureLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CaptureLog"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "class:Assets/Scripts/Player/CaptureLog.cs:CaptureEntry",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CaptureEntry"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:AddToLog",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AddToLog"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:GetTotalCaptures",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetTotalCaptures"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:GetUniqueCaptureCount",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetUniqueCaptureCount"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:GetCaptureCountForName",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetCaptureCountForName"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:GetCaptureCountForNameThisWeek",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetCaptureCountForNameThisWeek"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:GetSeasonWeekTable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetSeasonWeekTable"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "target": "function:Assets/Scripts/Player/CaptureLog.cs:HasBeenCaught",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HasBeenCaught"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+      "target": "class:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs:CarriedObjectsAnimatorController",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CarriedObjectsAnimatorController"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs:UpdateStackItemRenderers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains UpdateStackItemRenderers"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "class:Assets/Scripts/Player/Diet.cs:Diet",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Diet"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "class:Assets/Scripts/Player/Diet.cs:IFood",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IFood"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "function:Assets/Scripts/Player/Diet.cs:EatFood",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains EatFood"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "function:Assets/Scripts/Player/Diet.cs:PrintFoodMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PrintFoodMessage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "function:Assets/Scripts/Player/Diet.cs:ResetDailyIntake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ResetDailyIntake"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryRatio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetRecoveryRatio"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetRecoveryMessage"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Diet.cs:EatFood",
+      "target": "function:Assets/Scripts/Player/Diet.cs:PrintFoodMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "shows the nutrition breakdown after eating"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryMessage",
+      "target": "function:Assets/Scripts/Player/Diet.cs:GetRecoveryRatio",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "uses the recovery ratio to select a message"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/EnergyBar.cs",
+      "target": "class:Assets/Scripts/Player/EnergyBar.cs:EnergyBar",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains EnergyBar"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/EnergyBar.cs",
+      "target": "function:Assets/Scripts/Player/EnergyBar.cs:UpdateEnergyBar",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains UpdateEnergyBar"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/HUDInputManager.cs",
+      "target": "class:Assets/Scripts/Player/HUDInputManager.cs:HUDInputManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HUDInputManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/HUDInputManager.cs",
+      "target": "function:Assets/Scripts/Player/HUDInputManager.cs:SetActiveSlot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SetActiveSlot"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "class:Assets/Scripts/Player/InteractInput.cs:InteractInput",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains InteractInput"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "class:Assets/Scripts/Player/InteractInput.cs:IInteractable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IInteractable"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "function:Assets/Scripts/Player/InteractInput.cs:OnInteract",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnInteract"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:Inventory",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Inventory"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:IInstancedItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IInstancedItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:ItemInstanceData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ItemInstanceData"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:ItemStack",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ItemStack"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:Item",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Item"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:InventorySaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains InventorySaveData"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "class:Assets/Scripts/Player/Inventory.cs:SlotSaveData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SlotSaveData"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetActiveItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItemInstanceData",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetActiveItemInstanceData"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:TryGetActiveItemType",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryGetActiveItemType"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryAddItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:AddItemOrDrop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AddItemOrDrop"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:TryRemoveItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryRemoveItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:TryRemoveActiveItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryRemoveActiveItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:SwapSlots",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SwapSlots"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:AddItemIntoEmptySlots",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains AddItemIntoEmptySlots"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:HasEnoughInventorySpace",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HasEnoughInventorySpace"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:IsPlayerHoldingItem",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IsPlayerHoldingItem"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:SaveInventory",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SaveInventory"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:LoadInventory",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains LoadInventory"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:HasEnoughInventorySpace",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "pre-checks space before mutating"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:AddItemIntoEmptySlots",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "fills empty slots with the residual"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:SaveInventory",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "persists after a successful add"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:AddItemOrDrop",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:TryAddItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "tries to add before dropping overflow"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:TryRemoveItem",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:SaveInventory",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "persists after a successful removal"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:SwapSlots",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:SaveInventory",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "persists the swapped layout"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:TryGetActiveItemType",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "delegates to the active item lookup"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/Inventory.cs:IsPlayerHoldingItem",
+      "target": "function:Assets/Scripts/Player/Inventory.cs:GetActiveItem",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "compares the active item by name"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "class:Assets/Scripts/Player/PlayerAnimatorController.cs:PlayerAnimatorController",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerAnimatorController"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnStateChange"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleRunning",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleRunning"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleIdle",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleIdle"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCatching",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleCatching"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCrouched",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleCrouched"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCelebrating",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleCelebrating"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandlePickingUp",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandlePickingUp"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleFishing",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleFishing"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleChopping",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleChopping"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:SetPlayerIdle",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SetPlayerIdle"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleRunning",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleIdle",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCatching",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCrouched",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCelebrating",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandlePickingUp",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleFishing",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:OnStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleChopping",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches the state to its clip handler"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleCelebrating",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:SetPlayerIdle",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "returns the player to idle after the timed clip"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandlePickingUp",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:SetPlayerIdle",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "returns the player to idle after the timed clip"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:HandleChopping",
+      "target": "function:Assets/Scripts/Player/PlayerAnimatorController.cs:SetPlayerIdle",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "returns the player to idle after the timed clip"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerAudioManager.cs:PlayerAudioManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerAudioManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayOneShot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayOneShot"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayLooping",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayLooping"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerAudioManager.cs:GetAvailableSource",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetAvailableSource"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayOneShot",
+      "target": "function:Assets/Scripts/Player/PlayerAudioManager.cs:GetAvailableSource",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "acquires a free source"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerAudioManager.cs:PlayLooping",
+      "target": "function:Assets/Scripts/Player/PlayerAudioManager.cs:GetAvailableSource",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "acquires a free source"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "target": "class:Assets/Scripts/Player/PlayerCaptureLogs.cs:PlayerCaptureLogs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerCaptureLogs"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "target": "class:Assets/Scripts/Player/PlayerCaptureLogs.cs:State",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains State"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCaptureLogs.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CaptureStateAsJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCaptureLogs.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains RestoreStateFromJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "class:Assets/Scripts/Player/PlayerCarry.cs:PlayerCarry",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerCarry"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TryPickUpWeightyObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryPickUpWeightyObject"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:HasEnoughSpace",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HasEnoughSpace"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:Push",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Push"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:PutDown",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PutDown"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:Pop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Pop"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:DropCarriedItemOnHit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains DropCarriedItemOnHit"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:DropStackItemOnHit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains DropStackItemOnHit"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TrySpawnNearPlayer"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:Peek",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Peek"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:CarriedCount",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CarriedCount"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:InstantiateWeightyObject",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains InstantiateWeightyObject"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TryGetUnoccupiedPosition",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryGetUnoccupiedPosition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:TryPickUpWeightyObject",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:HasEnoughSpace",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "gates pickup on remaining weight"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:TryPickUpWeightyObject",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:Push",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "delayed push onto the stack"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:PutDown",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TryGetUnoccupiedPosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "finds a free cell to drop into"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:PutDown",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:InstantiateWeightyObject",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "respawns the popped object"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:DropCarriedItemOnHit",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "drops near the player when hit"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:DropStackItemOnHit",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "drops a stack item near the player"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:TryGetUnoccupiedPosition",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "finds a free spawn cell"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerCarry.cs:TrySpawnNearPlayer",
+      "target": "function:Assets/Scripts/Player/PlayerCarry.cs:InstantiateWeightyObject",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "spawns the dropped object"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCrouch.cs",
+      "target": "class:Assets/Scripts/Player/PlayerCrouch.cs:PlayerCrouch",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerCrouch"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "target": "class:Assets/Scripts/Player/PlayerCursor.cs:PlayerCursor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerCursor"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCursor.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnSceneLoaded"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCursor.cs:TryHideCursor",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryHideCursor"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "target": "function:Assets/Scripts/Player/PlayerCursor.cs:OnDirectionChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnDirectionChange"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDialogue.cs",
+      "target": "class:Assets/Scripts/Player/PlayerDialogue.cs:PlayerDialogue",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerDialogue"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDialogue.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDialogue.cs:PostMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PostMessage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerDryingManager.cs:PlayerDryingManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerDryingManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnGameMinuteTick",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnGameMinuteTick"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnWetnessStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnWetnessStateChange"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:SetWetnessState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SetWetnessState"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:HandleWetnessState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains HandleWetnessState"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:PostStateChangeMessage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PostStateChangeMessage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:GetDryingPoints",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetDryingPoints"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CaptureStateAsJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains RestoreStateFromJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:ResetToDefaults",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ResetToDefaults"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnGameMinuteTick",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:HandleWetnessState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "advances wetness each game minute"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerDryingManager.cs:OnWetnessStateChange",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:PostStateChangeMessage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "announces the transition"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerDryingManager.cs:HandleWetnessState",
+      "target": "function:Assets/Scripts/Player/PlayerDryingManager.cs:GetDryingPoints",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "gains drying points from temperature"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerEnergyManager.cs:PlayerEnergyManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerEnergyManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "class:Assets/Scripts/Player/PlayerEnergyManager.cs:IEnergyDepleting",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IEnergyDepleting"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:Sleep",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Sleep"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:DepleteEnergy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains DepleteEnergy"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:RecoverEnergy",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains RecoverEnergy"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsEnergyAvailable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IsEnergyAvailable"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsSufficientEnergyAvailable",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains IsSufficientEnergyAvailable"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:CaptureStateAsJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CaptureStateAsJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:RestoreStateFromJson",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains RestoreStateFromJson"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:ResetToDefaults",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains ResetToDefaults"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsSufficientEnergyAvailable",
+      "target": "function:Assets/Scripts/Player/PlayerEnergyManager.cs:IsEnergyAvailable",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "checks energy availability"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "class:Assets/Scripts/Player/PlayerHealth.cs:PlayerHealth",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerHealth"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TakeDamage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:TryAbsorbDamageByDropping",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TryAbsorbDamageByDropping"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:InvulnerabilityFrames",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains InvulnerabilityFrames"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:FlashRedTwice",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains FlashRedTwice"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:GetActiveSpriteRenderers",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains GetActiveSpriteRenderers"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:Die",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains Die"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:TryAbsorbDamageByDropping",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "damage handling path"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:InvulnerabilityFrames",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "damage handling path"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:FlashRedTwice",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "damage handling path"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerHealth.cs:TakeDamage",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:Die",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "damage handling path"
+    },
+    {
+      "source": "function:Assets/Scripts/Player/PlayerHealth.cs:FlashRedTwice",
+      "target": "function:Assets/Scripts/Player/PlayerHealth.cs:GetActiveSpriteRenderers",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "targets the active body's renderers"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHurtbox.cs",
+      "target": "class:Assets/Scripts/Player/PlayerHurtbox.cs:PlayerHurtbox",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerHurtbox"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHurtbox.cs",
+      "target": "function:Assets/Scripts/Player/PlayerHurtbox.cs:TakeDamage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains TakeDamage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "class:Assets/Scripts/Player/PlayerMovement.cs:PlayerMovement",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains PlayerMovement"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "class:Assets/Scripts/Player/PlayerMovement.cs:CompassDirection",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CompassDirection"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "class:Assets/Scripts/Player/PlayerMovement.cs:CardinalVector",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CardinalVector"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "function:Assets/Scripts/Player/PlayerMovement.cs:OnMove",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains OnMove"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "function:Assets/Scripts/Player/PlayerMovement.cs:SetMoveSpeedMultiplier",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains SetMoveSpeedMultiplier"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "function:Assets/Scripts/Player/PlayerMovement.cs:CalculateAcceleration",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains CalculateAcceleration"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+      "target": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "renders the carried stack from PlayerCarry.CarriedStack"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Diet.cs",
+      "target": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "reads and updates daily intake fields on PlayerEnergyManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/EnergyBar.cs",
+      "target": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "subscribes to CurrentEnergy to resize the bar"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/HUDInputManager.cs",
+      "target": "file:Assets/Scripts/Player/Inventory.cs",
+      "type": "writes_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "sets Inventory.ActiveItemSlot from hotkey/cursor input"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "gates interaction on PlayerState"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "blocks non-weighty interaction while IsCarrying"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/InteractInput.cs",
+      "target": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "required as a sibling component but not used directly"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/Inventory.cs",
+      "target": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "plays the add-item sound via PlayerAudioManager.PlayOneShot"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "drives animation from PlayerState and Direction"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "shows the carrying sprite from IsCarrying/CarriedStack"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "target": "file:Assets/Scripts/Player/Inventory.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "checks the active item via Inventory.TryGetActiveItemType"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCaptureLogs.cs",
+      "target": "file:Assets/Scripts/Player/CaptureLog.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "persists the CaptureLog tables"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "writes_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "sets PlayerState to PickingUp during pickup"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "target": "file:Assets/Scripts/Player/PlayerAudioManager.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "plays insert/put-down sounds via PlayerAudioManager"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCrouch.cs",
+      "target": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "writes_to",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "toggles PlayerState between Crouched and Idle"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerCursor.cs",
+      "target": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "type": "subscribes",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "follows Direction and PlayerState reactive changes"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerDryingManager.cs",
+      "target": "file:Assets/Scripts/Player/PlayerEnergyManager.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "pauses drying while the player sleeps"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "drops carried items to absorb damage"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "target": "file:Assets/Scripts/Player/PlayerAnimatorController.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "flashes the active sprite via PlayerAnimatorController.ActiveSprite"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerHurtbox.cs",
+      "target": "file:Assets/Scripts/Player/PlayerHealth.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "forwards damage into PlayerHealth"
+    },
+    {
+      "source": "file:Assets/Scripts/Player/PlayerMovement.cs",
+      "target": "file:Assets/Scripts/Player/PlayerCarry.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "reads IsCarrying and CarriedStack to modulate speed"
+    }
+  ],
+  "files": [
+    "Assets/Scripts/Misc/AnimateTitle.cs",
+    "Assets/Scripts/Misc/BlinkRepeatedly.cs",
+    "Assets/Scripts/Misc/KeepChildScaleUnflipped.cs",
+    "Assets/Scripts/Misc/PulseLight.cs",
+    "Assets/Scripts/Misc/StartGame.cs",
+    "Assets/Scripts/Player/AsepriteEventListener.cs",
+    "Assets/Scripts/Player/CaptureLog.cs",
+    "Assets/Scripts/Player/CarriedObjectsAnimatorController.cs",
+    "Assets/Scripts/Player/Diet.cs",
+    "Assets/Scripts/Player/EnergyBar.cs",
+    "Assets/Scripts/Player/HUDInputManager.cs",
+    "Assets/Scripts/Player/InteractInput.cs",
+    "Assets/Scripts/Player/Inventory.cs",
+    "Assets/Scripts/Player/PlayerAnimatorController.cs",
+    "Assets/Scripts/Player/PlayerAudioManager.cs",
+    "Assets/Scripts/Player/PlayerCaptureLogs.cs",
+    "Assets/Scripts/Player/PlayerCarry.cs",
+    "Assets/Scripts/Player/PlayerCrouch.cs",
+    "Assets/Scripts/Player/PlayerCursor.cs",
+    "Assets/Scripts/Player/PlayerDialogue.cs",
+    "Assets/Scripts/Player/PlayerDryingManager.cs",
+    "Assets/Scripts/Player/PlayerEnergyManager.cs",
+    "Assets/Scripts/Player/PlayerHealth.cs",
+    "Assets/Scripts/Player/PlayerHurtbox.cs",
+    "Assets/Scripts/Player/PlayerMovement.cs"
+  ]
+}

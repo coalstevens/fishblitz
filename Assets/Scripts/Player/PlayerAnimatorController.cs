@@ -59,6 +59,11 @@ public class PlayerAnimatorController : MonoBehaviour
         _unsubscribeHooks.Clear();
     }
 
+    public GameObject ActiveSprite =>
+        _BarrowingSprite.activeSelf ? _BarrowingSprite :
+        _CarryingSprite.activeSelf ? _CarryingSprite :
+        _DefaultSprite;
+
     private Animator CurrentAnimator =>
         _BarrowingSprite.activeSelf ? _barrowAnimator :
         _CarryingSprite.activeSelf ? _carryAnimator :

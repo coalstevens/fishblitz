@@ -1,0 +1,3444 @@
+{
+  "nodes": [
+    {
+      "id": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "type": "file",
+      "name": "CinemachinePixelSnap.cs",
+      "summary": "Cinemachine extension that snaps the camera position to the pixel grid during the Finalize pipeline stage so the pixel-art render stays crisp while tracking the player.",
+      "tags": [
+        "camera",
+        "pixel-art",
+        "cinemachine",
+        "rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/CinemachinePixelSnap.cs:CinemachinePixelSnap",
+      "type": "class",
+      "name": "CinemachinePixelSnap",
+      "summary": "Extends CinemachineExtension ([ExecuteAlways], [SaveDuringPlay]); exposes a pixelsPerUnit field and rounds RawPosition to the nearest pixel boundary on both axes.",
+      "tags": [
+        "camera",
+        "pixel-snap",
+        "cinemachine-extension"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/CinemachinePixelSnap.cs:PostPipelineStageCallback",
+      "type": "function",
+      "name": "PostPipelineStageCallback",
+      "summary": "Overridden pipeline callback; bails unless stage is Finalize, then rounds the camera x/y to the nearest 1/pixelsPerUnit cell via Mathf.Round.",
+      "tags": [
+        "camera",
+        "pixel-snap",
+        "pipeline"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/GameMenuManager.cs",
+      "type": "file",
+      "name": "GameMenuManager.cs",
+      "summary": "Simple page switcher for the pause-style menu: holds a list of page GameObjects, deactivates all on Start, and toggles between pages by index.",
+      "tags": [
+        "menu",
+        "ui-navigation",
+        "game-menu"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/GameMenuManager.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/GameMenuManager.cs:GameMenuManager",
+      "type": "class",
+      "name": "GameMenuManager",
+      "summary": "MonoBehaviour managing a List<GameObject> of menu pages with a current index; SwitchToPage activates the target page and deactivates the previous one, guarding against out-of-range and no-op switches.",
+      "tags": [
+        "menu",
+        "page-switching"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/GameMenuManager.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/GameMenuManager.cs:SwitchToPage",
+      "type": "function",
+      "name": "SwitchToPage",
+      "summary": "Public method that deactivates the current page and activates the requested page index; ignores out-of-range or identical indexes.",
+      "tags": [
+        "menu",
+        "navigation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/GameMenuManager.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs",
+      "type": "file",
+      "name": "ItemSlot.cs",
+      "summary": "Inventory hotbar/slot widget that renders item sprites and quantity labels, shows hover labels, highlights the active slot, and drives click-select plus drag-and-drop swapping against the player's Inventory.",
+      "tags": [
+        "inventory",
+        "ui",
+        "drag-and-drop",
+        "hotbar",
+        "item-slot"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:ItemSlot",
+      "type": "class",
+      "name": "ItemSlot",
+      "summary": "Implements the full Unity EventSystems pointer/drag interface for one inventory slot; subscribes to Inventory.SlotUpdated and the Reactive ActiveItemSlot to keep sprite, quantity text, highlight, and label in sync, and swaps stacks via Inventory.SwapSlots on drop.",
+      "tags": [
+        "inventory",
+        "drag-and-drop",
+        "reactive-subscription",
+        "item-slot"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnSlotUpdated",
+      "type": "function",
+      "name": "OnSlotUpdated",
+      "summary": "Subscribes to Inventory.SlotUpdated; if the updated index matches this slot it refreshes the slot sprite, item sprite, quantity text, and kicks a coroutine to set native size.",
+      "tags": [
+        "inventory",
+        "ui-refresh"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:UpdateLabelForSlot",
+      "type": "function",
+      "name": "UpdateLabelForSlot",
+      "summary": "Shows the item's label text (lowercased, resized to fit) with an alpha fade-in via CanvasGroup, or hides it instantly when the slot is empty.",
+      "tags": [
+        "inventory",
+        "ui-label"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:SetLabelText",
+      "type": "function",
+      "name": "SetLabelText",
+      "summary": "Writes lowercase label text into a PixelCanvasTextRenderer and resizes the label background fill to the rendered text width plus side padding.",
+      "tags": [
+        "pixel-text",
+        "label"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:ResizeLabel",
+      "type": "function",
+      "name": "ResizeLabel",
+      "summary": "Sets the label fill RectTransform's horizontal size to the item label's TotalWidth plus side padding.",
+      "tags": [
+        "ui-layout",
+        "label"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:UpdateHighlight",
+      "type": "function",
+      "name": "UpdateHighlight",
+      "summary": "Enables the active-highlight image when the slot index equals the inventory's active slot or the slot is hovered.",
+      "tags": [
+        "ui-highlight",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnPointerClick",
+      "type": "function",
+      "name": "OnPointerClick",
+      "summary": "Sets Inventory.ActiveItemSlot.Value to this slot's index on click, selecting the item.",
+      "tags": [
+        "input",
+        "inventory-selection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnBeginDrag",
+      "type": "function",
+      "name": "OnBeginDrag",
+      "summary": "If the slot holds an item, starts a static drag state, activates the drag ghost image following the pointer, hides the slot's item sprite, and records the source slot index.",
+      "tags": [
+        "drag-and-drop",
+        "input"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnDrag",
+      "type": "function",
+      "name": "OnDrag",
+      "summary": "Moves the drag ghost image to the pointer's current world position while dragging.",
+      "tags": [
+        "drag-and-drop",
+        "input"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnEndDrag",
+      "type": "function",
+      "name": "OnEndDrag",
+      "summary": "Hides the drag ghost, clears the static drag state, and re-renders the slot via OnSlotUpdated.",
+      "tags": [
+        "drag-and-drop",
+        "input"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnPointerEnter",
+      "type": "function",
+      "name": "OnPointerEnter",
+      "summary": "Pointer-enter handler that flags hover, refreshes the highlight, and shows the slot's item label.",
+      "tags": [
+        "input",
+        "hover"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnPointerExit",
+      "type": "function",
+      "name": "OnPointerExit",
+      "summary": "Pointer-exit handler that clears hover, refreshes the highlight, and hides the item label.",
+      "tags": [
+        "input",
+        "hover"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/ItemSlot.cs:OnDrop",
+      "type": "function",
+      "name": "OnDrop",
+      "summary": "If a drag is in progress from a different slot, calls Inventory.SwapSlots to swap the two stacks.",
+      "tags": [
+        "drag-and-drop",
+        "inventory"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/ItemSlot.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs",
+      "type": "file",
+      "name": "Journal.cs",
+      "summary": "The trail-of-the-brother journal UI: resolves the player's CaptureLog (birding/fishing) data, wires per-entry buttons, and renders an illustrated notebook page with title, catch counts, and a season-week date-dot grid for each selected entry.",
+      "tags": [
+        "journal",
+        "journal-ui",
+        "birding",
+        "fishing",
+        "capture-log",
+        "trail-of-the-brother"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:Journal",
+      "type": "class",
+      "name": "Journal",
+      "summary": "MonoBehaviour driving a two-page-per-section notebook: collects active journal entry Transforms, binds Button/JournalEntry components to them, loads the correct log per page (Birding vs Fishing), and updates notebook display, counter text, and a 4x3 season-week date-dot grid on selection.",
+      "tags": [
+        "journal",
+        "capture-log",
+        "ui-notebook",
+        "log-data"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:JournalPage",
+      "type": "class",
+      "name": "JournalPage",
+      "summary": "Serializable private nested class bundling a frame sprite, a LogType enum (Birding/Fishing), and Left/Right page Transforms for one journal section.",
+      "tags": [
+        "journal",
+        "serializable",
+        "nested-data"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:SwitchToJournalPage",
+      "type": "function",
+      "name": "SwitchToJournalPage",
+      "summary": "Public switch to another journal section; guards index bounds/identity, reloads the page, rewires entry buttons, and logs the switch via Logger.",
+      "tags": [
+        "journal",
+        "navigation"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:OnEntrySelected",
+      "type": "function",
+      "name": "OnEntrySelected",
+      "summary": "Records the selected entry Transform and refreshes the notebook display using the current page's resolved CaptureLog.",
+      "tags": [
+        "journal",
+        "selection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:LoadJournalPage",
+      "type": "function",
+      "name": "LoadJournalPage",
+      "summary": "Activates the chosen section's pages, sets the frame sprite and 'caught X / total' counter, and toggles each entry's unknown-name vs known-name child images from the log.",
+      "tags": [
+        "journal",
+        "page-load"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:WireEntryButtons",
+      "type": "function",
+      "name": "WireEntryButtons",
+      "summary": "Ensures every active entry has a Button (with Image targetGraphic) and a JournalEntry component wired back to this Journal, then binds on-click to OnEntrySelected.",
+      "tags": [
+        "journal",
+        "ui-wiring"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:UpdateNotebookDisplay",
+      "type": "function",
+      "name": "UpdateNotebookDisplay",
+      "summary": "Fills the notebook with the selected species: obfuscates uncaptured names as '???', shows sprite only when caught, sets title and this-week/all-time tag counts, and refreshes date dots.",
+      "tags": [
+        "journal",
+        "notebook-display"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:UpdateDateDots",
+      "type": "function",
+      "name": "UpdateDateDots",
+      "summary": "Turns the 12 date-dot Images on/off to visualize the capture log's 4x3 season-week table for the selected species.",
+      "tags": [
+        "journal",
+        "date-grid"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/Journal.cs:CollectJournalPageEntries",
+      "type": "function",
+      "name": "CollectJournalPageEntries",
+      "summary": "Gathers all active child Transforms from a page's Left and Right columns into a list used for wiring and counting.",
+      "tags": [
+        "journal",
+        "collection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/Journal.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/JournalEntry.cs",
+      "type": "file",
+      "name": "JournalEntry.cs",
+      "summary": "Selectable wrapper for a single journal entry row that forwards selection events to the owning Journal, adding a Button with an Image target graphic when missing.",
+      "tags": [
+        "journal",
+        "ui-selection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/JournalEntry.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/JournalEntry.cs:JournalEntry",
+      "type": "class",
+      "name": "JournalEntry",
+      "summary": "MonoBehaviour implementing ISelectHandler; holds a public reference to its Journal and calls Journal.OnEntrySelected(transform) on select, auto-adding a Button component in Awake if absent.",
+      "tags": [
+        "journal",
+        "select-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/JournalEntry.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/JournalEntry.cs:OnSelect",
+      "type": "function",
+      "name": "OnSelect",
+      "summary": "ISelectHandler callback that forwards the entry's transform to the referenced Journal's OnEntrySelected.",
+      "tags": [
+        "journal",
+        "selection"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/JournalEntry.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "type": "file",
+      "name": "LocalPositionOscillator.cs",
+      "summary": "Sin-wave bobbing utility for UI/object local position, with per-axis amplitude, frequency, phase offset, optional unscaled time, and play/stop/reset control methods.",
+      "tags": [
+        "ui-animation",
+        "oscillation",
+        "tween-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs:LocalPositionOscillator",
+      "type": "class",
+      "name": "LocalPositionOscillator",
+      "summary": "MonoBehaviour that animates transform.localPosition as a sine wave around a captured start position; supports unscaled time, auto-play on enable, and public Play/Stop/Reset/SetAmplitude/SetFrequency controls.",
+      "tags": [
+        "oscillation",
+        "ui-animation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "While playing, writes per-axis sine offsets onto the start position each frame using scaled or unscaled time.",
+      "tags": [
+        "oscillation",
+        "per-frame"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs:Play",
+      "type": "function",
+      "name": "Play",
+      "summary": "Sets the playing flag true, starting oscillation.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs:Stop",
+      "type": "function",
+      "name": "Stop",
+      "summary": "Sets the playing flag false, freezing the object at its current offset.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalPositionOscillator.cs:Reset",
+      "type": "function",
+      "name": "Reset",
+      "summary": "Stops oscillation and snaps the local position back to the captured start position.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "type": "file",
+      "name": "LocalRotationOscillator.cs",
+      "summary": "Sin-wave rocking utility for local Z rotation, with amplitude in degrees, frequency, phase offset, unscaled-time support, and play/stop/reset controls \u2014 mirror of LocalPositionOscillator for rotation.",
+      "tags": [
+        "ui-animation",
+        "oscillation",
+        "tween-utility"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs:LocalRotationOscillator",
+      "type": "class",
+      "name": "LocalRotationOscillator",
+      "summary": "MonoBehaviour animating transform.localRotation euler Z as a sine wave around the captured start rotation, exposing Play/Stop/Reset/SetAmplitude/SetFrequency and auto-play on enable.",
+      "tags": [
+        "oscillation",
+        "ui-animation"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "While playing, writes the sine-modulated Z angle to localRotation each frame using scaled or unscaled time.",
+      "tags": [
+        "oscillation",
+        "per-frame"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs:Play",
+      "type": "function",
+      "name": "Play",
+      "summary": "Sets the playing flag true, starting rotation oscillation.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs:Stop",
+      "type": "function",
+      "name": "Stop",
+      "summary": "Sets the playing flag false, freezing rotation at the current angle.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/LocalRotationOscillator.cs:Reset",
+      "type": "function",
+      "name": "Reset",
+      "summary": "Stops oscillation and restores the start rotation euler angles.",
+      "tags": [
+        "animation-control"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/NotebookSprite.cs",
+      "type": "file",
+      "name": "NotebookSprite.cs",
+      "summary": "Tiny tag component that carries the sprite to display in the journal notebook for a species entry.",
+      "tags": [
+        "journal",
+        "sprite-holder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/NotebookSprite.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/NotebookSprite.cs:NotebookSprite",
+      "type": "class",
+      "name": "NotebookSprite",
+      "summary": "MonoBehaviour with a single public Sprite field read by Journal.UpdateNotebookDisplay to populate the notebook image.",
+      "tags": [
+        "journal",
+        "sprite-holder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/NotebookSprite.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "type": "file",
+      "name": "PixelCanvasTextRenderer.cs",
+      "summary": "Pixel-art text renderer for the UI (Canvas) layer: lays out individual glyph Images from a PixelFont with alignment, word-wrap, color, and selectable state materials (normal/hovered/selected/pressed).",
+      "tags": [
+        "pixel-art",
+        "text-renderer",
+        "ui",
+        "custom-font",
+        "glyph-layout"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:PixelCanvasTextRenderer",
+      "type": "class",
+      "name": "PixelCanvasTextRenderer",
+      "summary": "MonoBehaviour implementing pointer/select handlers; rebuilds a set of Image glyph children from a PixelFont on text change, supports left/center/right alignment and max-pixel-width wrapping, exposes Text/Color/Alpha/Material properties, and swaps glyph materials by interaction state.",
+      "tags": [
+        "pixel-text",
+        "glyph-rendering",
+        "ui-selectable"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "type": "function",
+      "name": "Rebuild",
+      "summary": "Destroys existing glyphs, splits text into wrapped lines via BuildLines, computes per-line start X from alignment, and positions one Image glyph per character at pixel-perfect anchored positions.",
+      "tags": [
+        "pixel-text",
+        "glyph-layout",
+        "rebuild"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:BuildLines",
+      "type": "function",
+      "name": "BuildLines",
+      "summary": "Splits text on explicit newlines and, when a max wrap width is set, further wraps each line via WrapLine.",
+      "tags": [
+        "text-wrapping"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:WrapLine",
+      "type": "function",
+      "name": "WrapLine",
+      "summary": "Greedy word-wrap: walks characters accumulating advance widths, breaking at the last space (or mid-word) when the wrap width is exceeded.",
+      "tags": [
+        "text-wrapping",
+        "layout"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:UpdateMaterial",
+      "type": "function",
+      "name": "UpdateMaterial",
+      "summary": "Picks the normal/hovered/selected/pressed material from the current interaction state and applies it to all active glyph Images.",
+      "tags": [
+        "ui-selectable",
+        "material"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:GetOrCreateGlyph",
+      "type": "function",
+      "name": "GetOrCreateGlyph",
+      "summary": "Returns the glyph Image at the given index, creating pooled RectTransform+Image children on demand.",
+      "tags": [
+        "pooling",
+        "glyph-rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:DestroyAllGlyphs",
+      "type": "function",
+      "name": "DestroyAllGlyphs",
+      "summary": "Destroys or DestroyImmediates all glyph children and resets the active glyph count, depending on play mode.",
+      "tags": [
+        "glyph-lifecycle",
+        "pooling"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:ApplyColorToActiveGlyphs",
+      "type": "function",
+      "name": "ApplyColorToActiveGlyphs",
+      "summary": "Applies the current color to every active glyph Image.",
+      "tags": [
+        "color",
+        "glyph-rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelFont.cs",
+      "type": "file",
+      "name": "PixelFont.cs",
+      "summary": "ScriptableObject pixel font asset: a character-to-sprite lookup table with space width and tracking, providing glyph lookup, pixel-width measurement, and pixels-per-unit so renderers can lay out crisp pixel text.",
+      "tags": [
+        "pixel-art",
+        "custom-font",
+        "scriptable-object",
+        "text-rendering"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/PixelFont.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelFont.cs:PixelFont",
+      "type": "class",
+      "name": "PixelFont",
+      "summary": "CreateAssetMenu ScriptableObject holding a CharSpritePair array, _spaceWidth and _tracking; exposes Tracking, PixelsPerUnit, TryGetGlyph (sprite + advance width, with a special space case), and GetTotalPixelWidth for measuring a string.",
+      "tags": [
+        "pixel-font",
+        "glyph-table",
+        "scriptable-object"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/PixelFont.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelFont.cs:CharSpritePair",
+      "type": "class",
+      "name": "CharSpritePair",
+      "summary": "Serializable struct pairing a character with its sprite in the font's glyph table.",
+      "tags": [
+        "pixel-font",
+        "serializable",
+        "glyph-table"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelFont.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelFont.cs:TryGetGlyph",
+      "type": "function",
+      "name": "TryGetGlyph",
+      "summary": "Looks up a char in the glyph table, returning the sprite and advance width (space returns null sprite with _spaceWidth + tracking); false if the glyph is missing.",
+      "tags": [
+        "glyph-lookup",
+        "font-metrics"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelFont.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelFont.cs:GetTotalPixelWidth",
+      "type": "function",
+      "name": "GetTotalPixelWidth",
+      "summary": "Sums advance widths (sprite rect width + tracking, or space width + tracking) for every character in a string.",
+      "tags": [
+        "font-metrics",
+        "measurement"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelFont.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "type": "file",
+      "name": "PixelTextRenderer.cs",
+      "summary": "Pixel-art text renderer for world-space objects: lays out pooled SpriteRenderer glyphs from a PixelFont with alignment, word-wrap, sorting order/layer, and color; the world-space sibling of PixelCanvasTextRenderer.",
+      "tags": [
+        "pixel-art",
+        "text-renderer",
+        "world-space",
+        "custom-font",
+        "glyph-layout"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:PixelTextRenderer",
+      "type": "class",
+      "name": "PixelTextRenderer",
+      "summary": "MonoBehaviour that rebuilds SpriteRenderer glyph children from a PixelFont on text change, converting pixel measurements to world units via the font's PixelsPerUnit; exposes Text/Color/Alpha/Material/SortingOrder and a glyph pool.",
+      "tags": [
+        "pixel-text",
+        "sprite-renderer",
+        "glyph-pooling"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:Rebuild",
+      "type": "function",
+      "name": "Rebuild",
+      "summary": "Destroys stale glyphs, wraps the text into lines, computes alignment offsets in world units from pixel widths, and positions pooled SpriteRenderers with sorting order/layer and color.",
+      "tags": [
+        "pixel-text",
+        "glyph-layout",
+        "rebuild"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:BuildLines",
+      "type": "function",
+      "name": "BuildLines",
+      "summary": "Splits text on explicit newlines and wraps each line with WrapLine when a max wrap width is configured.",
+      "tags": [
+        "text-wrapping"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:WrapLine",
+      "type": "function",
+      "name": "WrapLine",
+      "summary": "Greedy word-wrap accumulating glyph advance widths (in pixels) and breaking at the last space or mid-word past the wrap width.",
+      "tags": [
+        "text-wrapping",
+        "layout"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:GetOrCreateGlyph",
+      "type": "function",
+      "name": "GetOrCreateGlyph",
+      "summary": "Returns the pooled SpriteRenderer glyph at an index, lazily creating child GameObjects.",
+      "tags": [
+        "pooling",
+        "glyph-rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:DestroyAllGlyphs",
+      "type": "function",
+      "name": "DestroyAllGlyphs",
+      "summary": "Destroys (or DestroyImmediates) glyph children and clears the pool.",
+      "tags": [
+        "glyph-lifecycle",
+        "pooling"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:HideAllGlyphs",
+      "type": "function",
+      "name": "HideAllGlyphs",
+      "summary": "Deactivates all pooled glyph renderers and resets the active count without destroying them.",
+      "tags": [
+        "glyph-lifecycle",
+        "pooling"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PixelTextRenderer.cs:ApplyColorToActiveGlyphs",
+      "type": "function",
+      "name": "ApplyColorToActiveGlyphs",
+      "summary": "Applies the current color to all active glyph SpriteRenderers.",
+      "tags": [
+        "color",
+        "glyph-rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PlayerPage.cs",
+      "type": "file",
+      "name": "PlayerPage.cs",
+      "summary": "Stub menu page for the player character panel \u2014 all content (diet bars, health/wetness/temperature text) is commented out and awaiting re-implementation.",
+      "tags": [
+        "menu",
+        "player-stats",
+        "scaffold"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/PlayerPage.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/PlayerPage.cs:PlayerPage",
+      "type": "class",
+      "name": "PlayerPage",
+      "summary": "Empty MonoBehaviour whose entire implementation is commented-out references to PlayerData and diet/status bars; placeholder for the player stats page in the menu.",
+      "tags": [
+        "menu",
+        "player-stats",
+        "placeholder"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/PlayerPage.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TasksPage.cs",
+      "type": "file",
+      "name": "TasksPage.cs",
+      "summary": "Empty default MonoBehaviour template with unused Start/Update stubs \u2014 a placeholder for the menu's tasks page.",
+      "tags": [
+        "menu",
+        "scaffold",
+        "tasks"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TasksPage.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TasksPage.cs:TasksPage",
+      "type": "class",
+      "name": "TasksPage",
+      "summary": "Generated-by-default MonoBehaviour with empty Start and Update callbacks; no logic implemented yet.",
+      "tags": [
+        "menu",
+        "placeholder"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TasksPage.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs",
+      "type": "file",
+      "name": "TopRightHUD.cs",
+      "summary": "HUD clock/date/season widget in the top-right: renders 24h time and ordinal day into PixelCanvasTextRenderers and swaps a season frame sprite, all driven by GameClock tick events.",
+      "tags": [
+        "hud",
+        "game-clock",
+        "pixel-text",
+        "season-frame"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs:TopRightHUD",
+      "type": "class",
+      "name": "TopRightHUD",
+      "summary": "MonoBehaviour subscribing to GameClock minute/hour/day/season tick events to update clock and date text and pick the current season's frame sprite; unsubscribes on disable.",
+      "tags": [
+        "hud",
+        "game-clock",
+        "event-subscription"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockTextEveryFiveMinutes",
+      "type": "function",
+      "name": "UpdateClockTextEveryFiveMinutes",
+      "summary": "Minute-tick handler that re-renders the clock text only when the minute is divisible by five.",
+      "tags": [
+        "hud",
+        "clock"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockText",
+      "type": "function",
+      "name": "UpdateClockText",
+      "summary": "Formats the current GameClock hour:minute as 24h text (zero-padded minutes) into the clock PixelCanvasTextRenderer.",
+      "tags": [
+        "hud",
+        "clock-formatting"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs:UpdateDateText",
+      "type": "function",
+      "name": "UpdateDateText",
+      "summary": "Formats the game day with an ordinal suffix (1st/2nd/3rd/th) into the date renderer.",
+      "tags": [
+        "hud",
+        "date-formatting"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/TopRightHUD.cs:UpdateSeasonFrame",
+      "type": "function",
+      "name": "UpdateSeasonFrame",
+      "summary": "Swaps the HUD frame sprite to the matching spring/summer/fall/winter sprite based on GameClock.GameSeason.",
+      "tags": [
+        "hud",
+        "season-frame"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/TopRightHUD.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/UIScalerSync.cs",
+      "type": "file",
+      "name": "UIScalerSync.cs",
+      "summary": "Keeps a Canvas scale factor matched to the pixel-perfect camera's current orthographic size so UI renders at the intended pixel density across resolutions.",
+      "tags": [
+        "ui-scaling",
+        "pixel-perfect",
+        "camera"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/UIScalerSync.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/UIScalerSync.cs:UIScalerSync",
+      "type": "class",
+      "name": "UIScalerSync",
+      "summary": "MonoBehaviour resolving a DynamicPixelPerfectCamera (from a MainCamera-tagged object if unassigned), switching the Canvas to Screen Space Camera, and each frame recomputing canvas.scaleFactor from orthographic size and camera PixelsPerUnit.",
+      "tags": [
+        "ui-scaling",
+        "pixel-perfect",
+        "canvas"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/UI/UIScalerSync.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/UI/UIScalerSync.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Resolves the target DynamicPixelPerfectCamera and Canvas references, then configures the canvas as Screen Space Camera under that camera.",
+      "tags": [
+        "ui-scaling",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/UI/UIScalerSync.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "type": "file",
+      "name": "AnimationHelper.cs",
+      "summary": "Static extension helpers for Animator: looks up an AnimationClip's length by name from the runtime controller, warning when the controller or clip is missing.",
+      "tags": [
+        "animator",
+        "extension-method",
+        "utility"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/AnimationHelper.cs:AnimationHelper",
+      "type": "class",
+      "name": "AnimationHelper",
+      "summary": "Static class with a GetClipLength extension method on Animator that returns clip length in seconds or 0 with a logged warning when not found.",
+      "tags": [
+        "animator",
+        "utility-extension"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/AnimationHelper.cs:GetClipLength",
+      "type": "function",
+      "name": "GetClipLength",
+      "summary": "Extension method returning the length of a named AnimationClip from the animator's RuntimeAnimatorController, warning on missing controller/clip.",
+      "tags": [
+        "animator",
+        "clip-length"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs",
+      "type": "file",
+      "name": "Logger.cs",
+      "summary": "Serializable configurable logging wrapper: Info/Verbose levels gated by inspector toggles, colorized rich-text prefixes, plus static helpers to flatten float arrays and MonoBehaviour game-object names.",
+      "tags": [
+        "logging",
+        "debug",
+        "utility",
+        "serializable"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:Logger",
+      "type": "class",
+      "name": "Logger",
+      "summary": "Non-MonoBehaviour [Serializable] logger with _info/_verbose flags and a colored _prefix; Warning always logs, Info/Verbose only when enabled, and static helpers stringify arrays/object names.",
+      "tags": [
+        "logging",
+        "utility",
+        "serializable"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:LogRichText",
+      "type": "function",
+      "name": "LogRichText",
+      "summary": "Private core that emits Debug.Log with a colorized bold prefix using Unity rich-text tags.",
+      "tags": [
+        "logging",
+        "rich-text"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:Info",
+      "type": "function",
+      "name": "Info",
+      "summary": "Logs at info level only when the _info flag is enabled.",
+      "tags": [
+        "logging",
+        "info-level"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:Verbose",
+      "type": "function",
+      "name": "Verbose",
+      "summary": "Logs only when both _info and _verbose flags are enabled, for extra-detail diagnostics.",
+      "tags": [
+        "logging",
+        "verbose-level"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:FloatArrayToString",
+      "type": "function",
+      "name": "FloatArrayToString",
+      "summary": "Static helper joining a float array into a comma-separated string.",
+      "tags": [
+        "logging",
+        "string-helpers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Logger.cs:GetGameObjectNames",
+      "type": "function",
+      "name": "GetGameObjectNames",
+      "summary": "Static helper joining an array of MonoBehaviours into their game-object names.",
+      "tags": [
+        "logging",
+        "string-helpers"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Logger.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Singleton.cs",
+      "type": "file",
+      "name": "Singleton.cs",
+      "summary": "Generic MonoBehaviour singleton base: exposes a static Instance and auto-destroys duplicates while keeping the first across scenes via DontDestroyOnLoad.",
+      "tags": [
+        "singleton",
+        "utility",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Singleton.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Singleton.cs:Singleton",
+      "type": "class",
+      "name": "Singleton",
+      "summary": "Abstract generic base class; Awake assigns the first instance as T, marks it DontDestroyOnLoad, and destroys any duplicate instance with a log.",
+      "tags": [
+        "singleton",
+        "generic",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Singleton.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/Singleton.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Sets the static instance on first load and DontDestroyOnLoad, or destroys the duplicate GameObject on later loads.",
+      "tags": [
+        "singleton",
+        "lifecycle"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/Singleton.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/SpawnOffset.cs",
+      "type": "file",
+      "name": "SpawnOffset.cs",
+      "summary": "Tag component carrying a spawn offset vector for entity placement, with an OnValidate warning if values exceed 1 unit (likely pixel confusion).",
+      "tags": [
+        "spawning",
+        "utility",
+        "offset"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/SpawnOffset.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/SpawnOffset.cs:SpawnOffset",
+      "type": "class",
+      "name": "SpawnOffset",
+      "summary": "MonoBehaviour exposing an Offset Vector2 property and warning in the inspector when either component exceeds 1 (probable pixels-vs-world-space mistake).",
+      "tags": [
+        "spawning",
+        "offset-tag"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/SpawnOffset.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "type": "file",
+      "name": "UniqueMaterialInstance.cs",
+      "summary": "Gives a SpriteRenderer its own material instance (cloned from a source material with the sprite's texture bound) so per-entity material tweaks don't leak to other renderers.",
+      "tags": [
+        "material",
+        "rendering",
+        "sprite-renderer",
+        "utility"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs:UniqueMaterialInstance",
+      "type": "class",
+      "name": "UniqueMaterialInstance",
+      "summary": "MonoBehaviour that on Awake replaces the SpriteRenderer material with a new Material clone bound to the sprite texture, and destroys that clone on Destroy in play mode.",
+      "tags": [
+        "material-instancing",
+        "rendering"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs:Awake",
+      "type": "function",
+      "name": "Awake",
+      "summary": "Clones the source material onto the SpriteRenderer and binds the sprite's texture to _MainTex.",
+      "tags": [
+        "material-instancing",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "type": "file",
+      "name": "ActiveWhenRaining.cs",
+      "summary": "Toggles a list of components (Behaviour, Collider, Renderer, or ParticleSystem) on/off whenever the world rain state changes, so scenery reacts to weather without polling.",
+      "tags": [
+        "weather",
+        "rain",
+        "reactive-state",
+        "component-toggling"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/ActiveWhenRaining.cs:ActiveWhenRaining",
+      "type": "class",
+      "name": "ActiveWhenRaining",
+      "summary": "MonoBehaviour subscribing to WorldState.RainState via ReactiveUnity; on change it enables or disables each listed component, pre-warming ParticleSystems when enabling.",
+      "tags": [
+        "weather",
+        "rain-state",
+        "reactive-subscription"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/ActiveWhenRaining.cs:OnRainStateChange",
+      "type": "function",
+      "name": "OnRainStateChange",
+      "summary": "Applies the current rain state to every tracked component, disabling them when not raining and enabling them otherwise.",
+      "tags": [
+        "weather",
+        "state-apply"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/ActiveWhenRaining.cs:EnableComponent",
+      "type": "function",
+      "name": "EnableComponent",
+      "summary": "Enables a Behaviour, Collider, Renderer, or ParticleSystem (simulating a full duration to pre-warm the system); errors on unhandled types.",
+      "tags": [
+        "weather",
+        "component-enable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/ActiveWhenRaining.cs:DisableComponent",
+      "type": "function",
+      "name": "DisableComponent",
+      "summary": "Disables a Behaviour, Collider, Renderer, or stops a ParticleSystem; errors on unhandled types.",
+      "tags": [
+        "weather",
+        "component-disable"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "type": "file",
+      "name": "GlobalWindProperties.cs",
+      "summary": "Pushes wind parameters (velocity, density, XY scaling, smooth-step) as global shader properties, optionally every frame, so all wind shaders react consistently.",
+      "tags": [
+        "weather",
+        "wind",
+        "shaders",
+        "global-properties"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/GlobalWindProperties.cs:GlobalWindProperties",
+      "type": "class",
+      "name": "GlobalWindProperties",
+      "summary": "MonoBehaviour writing _WindVelocity/_WindDensity/_WindXYScaling/_WindSmoothStep via Shader.SetGlobal* on Start and (optionally) each Update, with public setters that re-push immediately.",
+      "tags": [
+        "wind",
+        "shader-globals"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/GlobalWindProperties.cs:PushToShaders",
+      "type": "function",
+      "name": "PushToShaders",
+      "summary": "Sets the four global wind shader properties from the serialized wind parameters.",
+      "tags": [
+        "wind",
+        "shader-globals"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs",
+      "type": "file",
+      "name": "RainAudio.cs",
+      "summary": "ScriptableObject rain audio manager: plays a looping rain SFX when the world is in HeavyRain, selecting interior vs heavy-exterior sound data based on the loaded scene, and switching audio on scene load.",
+      "tags": [
+        "weather",
+        "rain",
+        "audio",
+        "scene-sound"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:RainAudio",
+      "type": "class",
+      "name": "RainAudio",
+      "summary": "CreateAssetMenu ScriptableObject subscribing to WorldState.RainState and a Reactive<SoundType>; starts/stop looping rain audio through AudioManager.PlayLoopingSFX and picks the sound set per scene name.",
+      "tags": [
+        "rain-audio",
+        "scriptable-object",
+        "reactive-subscription"
+      ],
+      "complexity": "moderate",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:SoundEffect",
+      "type": "class",
+      "name": "SoundEffect",
+      "summary": "Serializable private nested class pairing a SoundType (Interior/HeavyExterior) with its SoundData asset.",
+      "tags": [
+        "rain-audio",
+        "serializable",
+        "sound-data"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:UpdateRainAudio",
+      "type": "function",
+      "name": "UpdateRainAudio",
+      "summary": "Stops any current rain loop and starts it again only when the world rain state is HeavyRain.",
+      "tags": [
+        "rain-audio",
+        "state-apply"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:PlayRainAudio",
+      "type": "function",
+      "name": "PlayRainAudio",
+      "summary": "Finds the SoundEffect matching the current SoundType and starts a looping SFX via AudioManager, caching the stop callback.",
+      "tags": [
+        "rain-audio",
+        "playback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:StopRainAudio",
+      "type": "function",
+      "name": "StopRainAudio",
+      "summary": "Invokes the cached stop callback and nulls it, halting the rain loop.",
+      "tags": [
+        "rain-audio",
+        "playback"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:OnSceneLoaded",
+      "type": "function",
+      "name": "OnSceneLoaded",
+      "summary": "On non-additive scene loads, re-evaluates rain audio and sets the SoundType from the scene name via GetSceneSoundType.",
+      "tags": [
+        "rain-audio",
+        "scene-management"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/RainAudio.cs:GetSceneSoundType",
+      "type": "function",
+      "name": "GetSceneSoundType",
+      "summary": "Maps a scene name (Abandoned Shed/SleepMenu/Waterfall Cave vs Outside/Boot) to an Interior or HeavyExterior sound type.",
+      "tags": [
+        "rain-audio",
+        "scene-mapping"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/RainAudio.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs",
+      "type": "file",
+      "name": "SunLightControl.cs",
+      "summary": "Drives a URP 2D Light2D through the day/night cycle: interpolates intensity and color across sunrise/sunset gradients from GameClock time, applies a rain overlay color, and supports coroutine-based fade in/out.",
+      "tags": [
+        "weather",
+        "day-night-cycle",
+        "lighting",
+        "sunrise-sunset",
+        "game-clock"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:SunLightControl",
+      "type": "class",
+      "name": "SunLightControl",
+      "summary": "MonoBehaviour sampling GameClock minute ticks every configurable interval to classify the light state (Sunrise/Sunset/Day/Night) via hour ranges, then setting Light2D intensity/color \u2014 blended with a rain overlay and tweened fades through parabolic interpolation.",
+      "tags": [
+        "day-night",
+        "light2d",
+        "game-clock",
+        "rain-blend"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Caches the Light2D, subscribes to GameClock minute ticks and the light-state Reactive, then initializes state and light.",
+      "tags": [
+        "lighting",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:OnMinuteChange",
+      "type": "function",
+      "name": "OnMinuteChange",
+      "summary": "Throttled tick handler that re-evaluates the light state every N game minutes and refreshes twilight interpolation when in sunrise/sunset.",
+      "tags": [
+        "day-night",
+        "throttled-tick"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightState",
+      "type": "function",
+      "name": "UpdateLightState",
+      "summary": "Classifies the current GameClock hour into Sunrise/Sunset/Day/Night using the configured hour ranges.",
+      "tags": [
+        "day-night",
+        "state-machine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLight",
+      "type": "function",
+      "name": "UpdateLight",
+      "summary": "Applies day/night intensity and color, multiplying by the rain overlay when raining; delegates twilight to UpdateLightForTwilight.",
+      "tags": [
+        "lighting",
+        "rain-blend"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightForTwilight",
+      "type": "function",
+      "name": "UpdateLightForTwilight",
+      "summary": "Evaluates the sunrise/sunset gradient and maps current minutes to interpolated intensity/color between the day and night values.",
+      "tags": [
+        "lighting",
+        "gradient-eval"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:SetLightSettings",
+      "type": "function",
+      "name": "SetLightSettings",
+      "summary": "Writes intensity and color to the Light2D, honoring the fade flag so faded states aren't overridden by intensity.",
+      "tags": [
+        "lighting",
+        "apply"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:FadeOutLight",
+      "type": "function",
+      "name": "FadeOutLight",
+      "summary": "Public API starting the fade coroutine toward near-zero intensity.",
+      "tags": [
+        "lighting",
+        "fade"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:FadeInLight",
+      "type": "function",
+      "name": "FadeInLight",
+      "summary": "Public API starting the fade coroutine back to the current target intensity.",
+      "tags": [
+        "lighting",
+        "fade"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:FadeLightCoroutine",
+      "type": "function",
+      "name": "FadeLightCoroutine",
+      "summary": "Coroutine tweening light intensity over a duration using parabolic ease-out interpolation.",
+      "tags": [
+        "lighting",
+        "coroutine"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/SunLightControl.cs:ParabolicInterpolate",
+      "type": "function",
+      "name": "ParabolicInterpolate",
+      "summary": "Public static ease helper: square-root or square easing (easeIn/easeOut) feeding Mathf.Lerp.",
+      "tags": [
+        "math-helper",
+        "easing"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/SunLightControl.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs",
+      "type": "file",
+      "name": "Wind.cs",
+      "summary": "Wind system controller: loops wind audio, drives a ParticleSystemForceField, bends tree materials (spruce/larch) during gusts, and modulates the player's movement speed multiplier by headwind/tailwind through a wind state machine.",
+      "tags": [
+        "weather",
+        "wind",
+        "gust-system",
+        "particles",
+        "player-movement",
+        "audio"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:Wind",
+      "type": "class",
+      "name": "Wind",
+      "summary": "MonoBehaviour running a Fluxtuating\u2192GustBuilding\u2192GustPeak\u2192GustDying Reactive state machine: synthesizes a semi-random wind X vector, applies it to materials/force field/rain rotation, and reduces player move speed against headwind; wind audio loops via AudioManager.",
+      "tags": [
+        "wind-state-machine",
+        "weather",
+        "reactive-state",
+        "material-shader"
+      ],
+      "complexity": "complex",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:Start",
+      "type": "function",
+      "name": "Start",
+      "summary": "Resolves PlayerMovement and the camera, subscribes to the wind-state Reactive, starts looping wind audio, gates gusting on WorldState windiness, and enters fluctuation.",
+      "tags": [
+        "wind",
+        "setup"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:Update",
+      "type": "function",
+      "name": "Update",
+      "summary": "Follows the camera with the force field and dispatches to the handler for the current wind state, then applies the wind vector to all affected entities.",
+      "tags": [
+        "wind",
+        "per-frame"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:OnStateChange",
+      "type": "function",
+      "name": "OnStateChange",
+      "summary": "Reacts to wind-state transitions: restores audio volume on gust build/die and starts/stops tree shake at gust peak/die.",
+      "tags": [
+        "wind",
+        "state-transitions"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:ApplyWindVectorToAffectedEntities",
+      "type": "function",
+      "name": "ApplyWindVectorToAffectedEntities",
+      "summary": "Writes _BendDirection to tree materials, sets the force-field directionX, tilts rain particles, and applies a headwind/tailwind move-speed multiplier to the player.",
+      "tags": [
+        "wind",
+        "effect-application"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:GetFluctuationValue",
+      "type": "function",
+      "name": "GetFluctuationValue",
+      "summary": "Returns a 1D wind magnitude from a semi-random sinusoid combination for calm oscillation.",
+      "tags": [
+        "wind",
+        "math"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:FluctuatingHandler",
+      "type": "function",
+      "name": "FluctuatingHandler",
+      "summary": "Samples the fluctuation value and, when gusting is enabled and the interval elapses, transitions to GustBuilding.",
+      "tags": [
+        "wind",
+        "state-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:GustBuildingHandler",
+      "type": "function",
+      "name": "GustBuildingHandler",
+      "summary": "Ramps the wind vector toward the gust magnitude in the chosen direction, then enters GustPeak.",
+      "tags": [
+        "wind",
+        "state-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:GustPeakHandler",
+      "type": "function",
+      "name": "GustPeakHandler",
+      "summary": "Holds the gust for its peak duration then transitions to GustDying.",
+      "tags": [
+        "wind",
+        "state-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:GustDyingHandler",
+      "type": "function",
+      "name": "GustDyingHandler",
+      "summary": "Decays the wind vector back toward the fluctuation value, returning to fluctuation when close.",
+      "tags": [
+        "wind",
+        "state-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:EnterFluctuation",
+      "type": "function",
+      "name": "EnterFluctuation",
+      "summary": "Returns to the fluctuation state and rolls a random gust interval + start time.",
+      "tags": [
+        "wind",
+        "state-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:GetOriginalTreeValues",
+      "type": "function",
+      "name": "GetOriginalTreeValues",
+      "summary": "Reads each tree material's original _WindSpeed/_WindStrength so materials can be restored after gusts.",
+      "tags": [
+        "wind",
+        "material-restore"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:StartTreeShake",
+      "type": "function",
+      "name": "StartTreeShake",
+      "summary": "Sets spruce/larch materials to gust speed and strength for the tree-shake effect.",
+      "tags": [
+        "wind",
+        "material-shake"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:StopTreeShake",
+      "type": "function",
+      "name": "StopTreeShake",
+      "summary": "Restores tree materials to their original wind parameters.",
+      "tags": [
+        "wind",
+        "material-restore"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    },
+    {
+      "id": "Assets/Scripts/Weather/Wind.cs:ResetTreeMaterials",
+      "type": "function",
+      "name": "ResetTreeMaterials",
+      "summary": "Restores spruce/larch materials to their originally captured _WindSpeed and _WindStrength values.",
+      "tags": [
+        "wind",
+        "material-restore"
+      ],
+      "complexity": "simple",
+      "filePath": "Assets/Scripts/Weather/Wind.cs",
+      "languageNotes": "Unity C#: [SerializeField] inspector fields, _camelCase private fields, coroutines, MonoBehaviour lifecycle. Pixel-art rendering idioms (SpriteRenderer/Image glyphs, pixel snapping)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "target": "Assets/Scripts/UI/CinemachinePixelSnap.cs:CinemachinePixelSnap",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+      "target": "Assets/Scripts/UI/CinemachinePixelSnap.cs:PostPipelineStageCallback",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/GameMenuManager.cs",
+      "target": "Assets/Scripts/UI/GameMenuManager.cs:GameMenuManager",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/GameMenuManager.cs",
+      "target": "Assets/Scripts/UI/GameMenuManager.cs:SwitchToPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnSlotUpdated",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:UpdateLabelForSlot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:SetLabelText",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:ResizeLabel",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:UpdateHighlight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnPointerClick",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnBeginDrag",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnDrag",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnEndDrag",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnPointerEnter",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnPointerExit",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnDrop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:ItemSlot",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:UpdateLabelForSlot",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:SetLabelText",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "shows label by setting text"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:SetLabelText",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:ResizeLabel",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "resizes label to fit text"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:OnPointerEnter",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:UpdateHighlight",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "highlights on hover"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:OnPointerEnter",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:UpdateLabelForSlot",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "shows label on hover"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:OnPointerExit",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:UpdateHighlight",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "clears highlight on exit"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs:OnEndDrag",
+      "target": "Assets/Scripts/UI/ItemSlot.cs:OnSlotUpdated",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "re-renders slot after drag ends"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:SwitchToJournalPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:OnEntrySelected",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:LoadJournalPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:WireEntryButtons",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:UpdateNotebookDisplay",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:UpdateDateDots",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:CollectJournalPageEntries",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:Journal",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/Journal.cs:JournalPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains nested class"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs:SwitchToJournalPage",
+      "target": "Assets/Scripts/UI/Journal.cs:LoadJournalPage",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "loads selected page"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs:SwitchToJournalPage",
+      "target": "Assets/Scripts/UI/Journal.cs:WireEntryButtons",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "rewires entries on switch"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs:OnEntrySelected",
+      "target": "Assets/Scripts/UI/Journal.cs:UpdateNotebookDisplay",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "updates notebook on selection"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs:WireEntryButtons",
+      "target": "Assets/Scripts/UI/Journal.cs:OnEntrySelected",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "binds entry click to selection"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs:UpdateNotebookDisplay",
+      "target": "Assets/Scripts/UI/Journal.cs:UpdateDateDots",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "refreshes date dots with notebook"
+    },
+    {
+      "source": "Assets/Scripts/UI/JournalEntry.cs",
+      "target": "Assets/Scripts/UI/JournalEntry.cs:JournalEntry",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/JournalEntry.cs",
+      "target": "Assets/Scripts/UI/JournalEntry.cs:OnSelect",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:Play",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:Stop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:Reset",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:LocalPositionOscillator",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalPositionOscillator.cs:Reset",
+      "target": "Assets/Scripts/UI/LocalPositionOscillator.cs:Stop",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "reset stops oscillation first"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:Play",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:Stop",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:Reset",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:LocalRotationOscillator",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/LocalRotationOscillator.cs:Reset",
+      "target": "Assets/Scripts/UI/LocalRotationOscillator.cs:Stop",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "reset stops oscillation first"
+    },
+    {
+      "source": "Assets/Scripts/UI/NotebookSprite.cs",
+      "target": "Assets/Scripts/UI/NotebookSprite.cs:NotebookSprite",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:BuildLines",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:WrapLine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:UpdateMaterial",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:GetOrCreateGlyph",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:DestroyAllGlyphs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:ApplyColorToActiveGlyphs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:PixelCanvasTextRenderer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:BuildLines",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "lines from text"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:GetOrCreateGlyph",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "fetches pooled glyph images"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:UpdateMaterial",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies state material after layout"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:DestroyAllGlyphs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "clears old glyphs before layout"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:BuildLines",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs:WrapLine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "wraps lines at max width"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelFont.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs:TryGetGlyph",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelFont.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs:GetTotalPixelWidth",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelFont.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs:PixelFont",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelFont.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs:CharSpritePair",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains struct"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:Rebuild",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:BuildLines",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:WrapLine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:GetOrCreateGlyph",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:DestroyAllGlyphs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:HideAllGlyphs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:ApplyColorToActiveGlyphs",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:PixelTextRenderer",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:BuildLines",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "lines from text"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:GetOrCreateGlyph",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "fetches pooled glyph renderers"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs:Rebuild",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:DestroyAllGlyphs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "clears old glyphs before layout"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs:BuildLines",
+      "target": "Assets/Scripts/UI/PixelTextRenderer.cs:WrapLine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "wraps lines at max width"
+    },
+    {
+      "source": "Assets/Scripts/UI/PlayerPage.cs",
+      "target": "Assets/Scripts/UI/PlayerPage.cs:PlayerPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/TasksPage.cs",
+      "target": "Assets/Scripts/UI/TasksPage.cs:TasksPage",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockTextEveryFiveMinutes",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockText",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:UpdateDateText",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:UpdateSeasonFrame",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:TopRightHUD",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockTextEveryFiveMinutes",
+      "target": "Assets/Scripts/UI/TopRightHUD.cs:UpdateClockText",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "refreshes clock every five minutes"
+    },
+    {
+      "source": "Assets/Scripts/UI/UIScalerSync.cs",
+      "target": "Assets/Scripts/UI/UIScalerSync.cs:UIScalerSync",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/UI/UIScalerSync.cs",
+      "target": "Assets/Scripts/UI/UIScalerSync.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "target": "Assets/Scripts/Utilities/AnimationHelper.cs:AnimationHelper",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/AnimationHelper.cs",
+      "target": "Assets/Scripts/Utilities/AnimationHelper.cs:GetClipLength",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:LogRichText",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:Info",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:Verbose",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:FloatArrayToString",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:GetGameObjectNames",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs:Logger",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs:Info",
+      "target": "Assets/Scripts/Utilities/Logger.cs:LogRichText",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "info level logs through rich text"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Logger.cs:Verbose",
+      "target": "Assets/Scripts/Utilities/Logger.cs:LogRichText",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "verbose level logs through rich text"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Singleton.cs",
+      "target": "Assets/Scripts/Utilities/Singleton.cs:Singleton",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/Singleton.cs",
+      "target": "Assets/Scripts/Utilities/Singleton.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/SpawnOffset.cs",
+      "target": "Assets/Scripts/Utilities/SpawnOffset.cs:SpawnOffset",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "target": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs:UniqueMaterialInstance",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+      "target": "Assets/Scripts/Utilities/UniqueMaterialInstance.cs:Awake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:OnRainStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:EnableComponent",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:DisableComponent",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:ActiveWhenRaining",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs:OnRainStateChange",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:EnableComponent",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "enables components when raining"
+    },
+    {
+      "source": "Assets/Scripts/Weather/ActiveWhenRaining.cs:OnRainStateChange",
+      "target": "Assets/Scripts/Weather/ActiveWhenRaining.cs:DisableComponent",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "disables components when dry"
+    },
+    {
+      "source": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "target": "Assets/Scripts/Weather/GlobalWindProperties.cs:GlobalWindProperties",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/GlobalWindProperties.cs",
+      "target": "Assets/Scripts/Weather/GlobalWindProperties.cs:PushToShaders",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:UpdateRainAudio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:PlayRainAudio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:StopRainAudio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:OnSceneLoaded",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:GetSceneSoundType",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:RainAudio",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:SoundEffect",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains nested class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs:UpdateRainAudio",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:StopRainAudio",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "stops old loop before restarting"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs:UpdateRainAudio",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:PlayRainAudio",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "starts loop during heavy rain"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs:OnSceneLoaded",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:UpdateRainAudio",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "re-applies rain audio on scene load"
+    },
+    {
+      "source": "Assets/Scripts/Weather/RainAudio.cs:OnSceneLoaded",
+      "target": "Assets/Scripts/Weather/RainAudio.cs:GetSceneSoundType",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "resolves interior/exterior type from scene name"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:OnMinuteChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightState",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightForTwilight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:SetLightSettings",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:FadeOutLight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:FadeInLight",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:FadeLightCoroutine",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:ParabolicInterpolate",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:SunLightControl",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:Start",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "initializes state"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:Start",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLight",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies initial light"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:OnMinuteChange",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightState",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "re-evaluates state on tick"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:OnMinuteChange",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightForTwilight",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "refreshes twilight during sunset/sunrise"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLight",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightForTwilight",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "twilight delegates to gradient evaluation"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLight",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:SetLightSettings",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies day/night settings"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:UpdateLightForTwilight",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:SetLightSettings",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies interpolated twilight settings"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:FadeOutLight",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:FadeLightCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "starts fade-out coroutine"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs:FadeInLight",
+      "target": "Assets/Scripts/Weather/SunLightControl.cs:FadeLightCoroutine",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "starts fade-in coroutine"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:Start",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:Update",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:OnStateChange",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:ApplyWindVectorToAffectedEntities",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:GetFluctuationValue",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:FluctuatingHandler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustBuildingHandler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustPeakHandler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustDyingHandler",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:EnterFluctuation",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:GetOriginalTreeValues",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:StartTreeShake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:StopTreeShake",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:ResetTreeMaterials",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains method"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs",
+      "target": "Assets/Scripts/Weather/Wind.cs:Wind",
+      "type": "contains",
+      "weight": 1.0,
+      "direction": "forward",
+      "description": "file contains class"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Start",
+      "target": "Assets/Scripts/Weather/Wind.cs:GetOriginalTreeValues",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "captures original material values"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Start",
+      "target": "Assets/Scripts/Weather/Wind.cs:EnterFluctuation",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "starts in fluctuation state"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Update",
+      "target": "Assets/Scripts/Weather/Wind.cs:FluctuatingHandler",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches fluctuation"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Update",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustBuildingHandler",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches gust building"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Update",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustPeakHandler",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches gust peak"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Update",
+      "target": "Assets/Scripts/Weather/Wind.cs:GustDyingHandler",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "dispatches gust dying"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:Update",
+      "target": "Assets/Scripts/Weather/Wind.cs:ApplyWindVectorToAffectedEntities",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "applies wind every frame"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:OnStateChange",
+      "target": "Assets/Scripts/Weather/Wind.cs:StartTreeShake",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "shakes trees at gust peak"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:OnStateChange",
+      "target": "Assets/Scripts/Weather/Wind.cs:StopTreeShake",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "stops shake at gust die"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:FluctuatingHandler",
+      "target": "Assets/Scripts/Weather/Wind.cs:GetFluctuationValue",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "samples oscillation value"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:GustDyingHandler",
+      "target": "Assets/Scripts/Weather/Wind.cs:GetFluctuationValue",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "decays toward oscillation value"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:GustDyingHandler",
+      "target": "Assets/Scripts/Weather/Wind.cs:EnterFluctuation",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "returns to fluctuation"
+    },
+    {
+      "source": "Assets/Scripts/Weather/Wind.cs:StopTreeShake",
+      "target": "Assets/Scripts/Weather/Wind.cs:ResetTreeMaterials",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "restores materials"
+    },
+    {
+      "source": "Assets/Scripts/UI/ItemSlot.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "renders quantity and hover labels via pixel canvas text"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "renders notebook title/tag/counter text"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/JournalEntry.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "adds JournalEntry components to entry rows"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/UI/NotebookSprite.cs",
+      "type": "reads_from",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "reads entry sprite for notebook display"
+    },
+    {
+      "source": "Assets/Scripts/UI/Journal.cs",
+      "target": "Assets/Scripts/Utilities/Logger.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "logs journal page switches"
+    },
+    {
+      "source": "Assets/Scripts/UI/JournalEntry.cs",
+      "target": "Assets/Scripts/UI/Journal.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "forwards select events to owning Journal"
+    },
+    {
+      "source": "Assets/Scripts/UI/TopRightHUD.cs",
+      "target": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "renders clock and date via pixel canvas text"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "uses PixelFont glyph table and metrics"
+    },
+    {
+      "source": "Assets/Scripts/UI/PixelTextRenderer.cs",
+      "target": "Assets/Scripts/UI/PixelFont.cs",
+      "type": "calls",
+      "weight": 0.8,
+      "direction": "forward",
+      "description": "uses PixelFont glyph table and metrics"
+    },
+    {
+      "source": "Assets/Scripts/Weather/SunLightControl.cs",
+      "target": "Assets/Scripts/Weather/RainAudio.cs",
+      "type": "related",
+      "weight": 0.5,
+      "direction": "forward",
+      "description": "holds a RainAudio reference alongside the light controls"
+    }
+  ],
+  "files": [
+    "Assets/Scripts/UI/CinemachinePixelSnap.cs",
+    "Assets/Scripts/UI/GameMenuManager.cs",
+    "Assets/Scripts/UI/ItemSlot.cs",
+    "Assets/Scripts/UI/Journal.cs",
+    "Assets/Scripts/UI/JournalEntry.cs",
+    "Assets/Scripts/UI/LocalPositionOscillator.cs",
+    "Assets/Scripts/UI/LocalRotationOscillator.cs",
+    "Assets/Scripts/UI/NotebookSprite.cs",
+    "Assets/Scripts/UI/PixelCanvasTextRenderer.cs",
+    "Assets/Scripts/UI/PixelFont.cs",
+    "Assets/Scripts/UI/PixelTextRenderer.cs",
+    "Assets/Scripts/UI/PlayerPage.cs",
+    "Assets/Scripts/UI/TasksPage.cs",
+    "Assets/Scripts/UI/TopRightHUD.cs",
+    "Assets/Scripts/UI/UIScalerSync.cs",
+    "Assets/Scripts/Utilities/AnimationHelper.cs",
+    "Assets/Scripts/Utilities/Logger.cs",
+    "Assets/Scripts/Utilities/Singleton.cs",
+    "Assets/Scripts/Utilities/SpawnOffset.cs",
+    "Assets/Scripts/Utilities/UniqueMaterialInstance.cs",
+    "Assets/Scripts/Weather/ActiveWhenRaining.cs",
+    "Assets/Scripts/Weather/GlobalWindProperties.cs",
+    "Assets/Scripts/Weather/RainAudio.cs",
+    "Assets/Scripts/Weather/SunLightControl.cs",
+    "Assets/Scripts/Weather/Wind.cs"
+  ]
+}

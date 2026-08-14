@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(DialogueController))]
 public class PlayerDialogue : MonoBehaviour
 {
     public static PlayerDialogue Instance;

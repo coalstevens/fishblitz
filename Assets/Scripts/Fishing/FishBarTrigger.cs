@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
 public class FishBarTrigger : MonoBehaviour
 {
     [SerializeField] private Sprite _fulfilledSprite;

@@ -1,0 +1,270 @@
+=== BATCH 1 (4 files) ===
+  187L  [markdown/docs]  AGENTS.md
+  300L  [markdown/docs]  IDEAS.md
+  20L  [markdown/docs]  README.md
+  24L  [markdown/docs]  TODOS.md
+
+=== BATCH 2 (5 files) ===
+  17L  [json/config]  ProjectSettings/BurstAotSettings_StandaloneOSX.json
+  16L  [json/config]  ProjectSettings/BurstAotSettings_WebGL.json
+  6L  [json/config]  ProjectSettings/CommonBurstAotSettings.json
+  2L  [txt/docs]  ProjectSettings/ProjectVersion.txt
+  125L  [json/config]  ProjectSettings/SceneTemplateSettings.json
+
+=== BATCH 3 (3 files) ===
+  51L  [markdown/docs]  docs/agents/domain.md
+  45L  [markdown/docs]  docs/agents/issue-tracker.md
+  15L  [markdown/docs]  docs/agents/triage-labels.md
+
+=== BATCH 4 (25 files) ===
+  24L  [csharp/code]  Assets/Archive/AudioPlayerManager.cs
+  16L  [csharp/code]  Assets/Archive/MyDebugger.cs
+  2251L  [inputactions/code]  Assets/Core/fish blitz.inputactions
+  3077L  [xml/config]  Assets/DOTween/DOTween.XML
+  144L  [xml/config]  Assets/DOTween/Editor/DOTweenEditor.XML
+  198L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleAudio.cs
+  146L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleEPOOutline.cs
+  216L  [csharp/code]  Assets/DOTween/Modules/DOTweenModulePhysics.cs
+  193L  [csharp/code]  Assets/DOTween/Modules/DOTweenModulePhysics2D.cs
+  93L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleSprite.cs
+  662L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleUI.cs
+  389L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleUnityVersion.cs
+  167L  [csharp/code]  Assets/DOTween/Modules/DOTweenModuleUtils.cs
+  28L  [txt/docs]  Assets/DOTween/readme.txt
+  212L  [csharp/code]  Assets/Scripts/Base Systems/AudioManager.cs
+  37L  [csharp/code]  Assets/Scripts/Base Systems/Bootstrapper.cs
+  87L  [csharp/code]  Assets/Scripts/Base Systems/DynamicPixelPerfectCamera.cs
+  23L  [csharp/code]  Assets/Scripts/Base Systems/DynamicSpriteSorting.cs
+  30L  [csharp/code]  Assets/Scripts/Base Systems/FloodDamage.cs
+  179L  [csharp/code]  Assets/Scripts/Base Systems/GameClock.cs
+  132L  [csharp/code]  Assets/Scripts/Base Systems/GridCursor.cs
+  87L  [csharp/code]  Assets/Scripts/Base Systems/HeatSensitive.cs
+  10L  [csharp/code]  Assets/Scripts/Base Systems/HeatSource.cs
+  6L  [csharp/code]  Assets/Scripts/Base Systems/ISaveableComponent.cs
+  104L  [csharp/code]  Assets/Scripts/Base Systems/IntroManager.cs
+
+=== BATCH 5 (25 files) ===
+  59L  [csharp/code]  Assets/Scripts/Base Systems/LocalHeatSource.cs
+  83L  [csharp/code]  Assets/Scripts/Base Systems/Magnetosphere.cs
+  27L  [csharp/code]  Assets/Scripts/Base Systems/MatchLightWithSun.cs
+  146L  [csharp/code]  Assets/Scripts/Base Systems/Narrator.cs
+  68L  [csharp/code]  Assets/Scripts/Base Systems/ObjectPooling.cs
+  25L  [csharp/code]  Assets/Scripts/Base Systems/OccupyWorldObjectSpace.cs
+  82L  [csharp/code]  Assets/Scripts/Base Systems/OutsideTemperature.cs
+  36L  [csharp/code]  Assets/Scripts/Base Systems/Persistence.cs
+  25L  [csharp/code]  Assets/Scripts/Base Systems/PickUpOnInteract.cs
+  160L  [csharp/code]  Assets/Scripts/Base Systems/ReduceOpacityWhenPlayerBehind.cs
+  84L  [csharp/code]  Assets/Scripts/Base Systems/SaveData.cs
+  232L  [csharp/code]  Assets/Scripts/Base Systems/SceneSaveLoadManager.cs
+  412L  [csharp/code]  Assets/Scripts/Base Systems/SceneSpawner.cs
+  50L  [csharp/code]  Assets/Scripts/Base Systems/SelectRandomSprite.cs
+  48L  [csharp/code]  Assets/Scripts/Base Systems/SleepMenu.cs
+  20L  [csharp/code]  Assets/Scripts/Base Systems/SoundData.cs
+  71L  [csharp/code]  Assets/Scripts/Base Systems/SoundDataEditor.cs
+  146L  [csharp/code]  Assets/Scripts/Base Systems/SpawnItems.cs
+  17L  [csharp/code]  Assets/Scripts/Base Systems/SpawnObjectInfo.cs
+  43L  [csharp/code]  Assets/Scripts/Base Systems/SpriteLocalCoords.cs
+  104L  [csharp/code]  Assets/Scripts/Base Systems/SpriteSubdivider.cs
+  195L  [csharp/code]  Assets/Scripts/Base Systems/UseItem.cs
+  34L  [csharp/code]  Assets/Scripts/Base Systems/VirtualCameraManager.cs
+  54L  [csharp/code]  Assets/Scripts/Base Systems/WaterLevelEnabler.cs
+  61L  [csharp/code]  Assets/Scripts/Base Systems/WeightyObjectStack.cs
+
+=== BATCH 6 (25 files) ===
+  26L  [csharp/code]  Assets/Scripts/Base Systems/WeightyObjectType.cs
+  57L  [csharp/code]  Assets/Scripts/Base Systems/WorldObjectOccupancyMap.cs
+  14L  [csharp/code]  Assets/Scripts/Base Systems/WorldState.cs
+  56L  [csharp/code]  Assets/Scripts/Base Systems/WorldStateByCalendar.cs
+  87L  [csharp/code]  Assets/Scripts/Base Systems/YDepthSorter.cs
+  202L  [csharp/code]  Assets/Scripts/Birding/BirdAnimatorController.cs
+  128L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/BirdBehaviourConfig.cs
+  429L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/BirdBrain.cs
+  73L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/FleeingState.cs
+  196L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/GroundedState.cs
+  97L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/HighFlyingState.cs
+  144L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/HighLandingState.cs
+  211L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/LandingState.cs
+  130L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/LowFlyingState.cs
+  54L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/PerchedState.cs
+  47L  [csharp/code]  Assets/Scripts/Birding/BirdBrain SM/ShelteredState.cs
+  184L  [csharp/code]  Assets/Scripts/Birding/BirdElevationVisualTweaks.cs
+  35L  [csharp/code]  Assets/Scripts/Birding/BirdFrightDetector.cs
+  181L  [csharp/code]  Assets/Scripts/Birding/BirdMaterialController.cs
+  46L  [csharp/code]  Assets/Scripts/Birding/BirdOutliner.cs
+  75L  [csharp/code]  Assets/Scripts/Birding/BirdSceneSaveManager.cs
+  0L  [csharp/code]  Assets/Scripts/Birding/BirdSeasonSpawnData.cs
+  73L  [csharp/code]  Assets/Scripts/Birding/BirdSounds.cs
+  254L  [csharp/code]  Assets/Scripts/Birding/BirdSpawner.cs
+  29L  [csharp/code]  Assets/Scripts/Birding/BirdSpeciesData.cs
+
+=== BATCH 7 (25 files) ===
+  363L  [csharp/code]  Assets/Scripts/Birding/BirdingGame.cs
+  28L  [csharp/code]  Assets/Scripts/Birding/BirdingWinFrame.cs
+  74L  [csharp/code]  Assets/Scripts/Birding/NearbyBirdTracker.cs
+  25L  [csharp/code]  Assets/Scripts/Birding/SetBirdingOpacityGradient.cs
+  17L  [csharp/code]  Assets/Scripts/BootstrapperConfig.cs
+  144L  [csharp/code]  Assets/Scripts/Buildings/AbandonedShed.cs
+  9L  [csharp/code]  Assets/Scripts/Buildings/AbandonedShedData.cs
+  29L  [csharp/code]  Assets/Scripts/Buildings/AbandonedShedInterior.cs
+  62L  [csharp/code]  Assets/Scripts/Characters/DialogueController.cs
+  36L  [csharp/code]  Assets/Scripts/Characters/Gerard.cs
+  4L  [csharp/code]  Assets/Scripts/Characters/IGiftable.cs
+  99L  [csharp/code]  Assets/Scripts/Characters/ShedGerard.cs
+  114L  [csharp/code]  Assets/Scripts/Characters/UnconsciousGerard.cs
+  103L  [csharp/code]  Assets/Scripts/Combat/BasicWeapon.cs
+  273L  [csharp/code]  Assets/Scripts/Combat/BowChargeController.cs
+  91L  [csharp/code]  Assets/Scripts/Combat/ContactHitbox.cs
+  33L  [csharp/code]  Assets/Scripts/Combat/EnemyActiveWeapon.cs
+  77L  [csharp/code]  Assets/Scripts/Combat/EnemyHealth.cs
+  20L  [csharp/code]  Assets/Scripts/Combat/EnemyHurtbox.cs
+  196L  [csharp/code]  Assets/Scripts/Combat/FlyingChaser.cs
+  5L  [csharp/code]  Assets/Scripts/Combat/IHurtBox.cs
+  7L  [csharp/code]  Assets/Scripts/Combat/KnockbackMode.cs
+  62L  [csharp/code]  Assets/Scripts/Combat/PlayerActiveWeapon.cs
+  89L  [csharp/code]  Assets/Scripts/Combat/Projectile.cs
+  443L  [csharp/code]  Assets/Scripts/Combat/ProjectileFiringEnemy.cs
+
+=== BATCH 8 (25 files) ===
+  89L  [csharp/code]  Assets/Scripts/Combat/ReloadBar.cs
+  59L  [csharp/code]  Assets/Scripts/Combat/Reloader.cs
+  140L  [csharp/code]  Assets/Scripts/Combat/SteeringForces.cs
+  106L  [csharp/code]  Assets/Scripts/Fishing/FishBarTrigger.cs
+  27L  [csharp/code]  Assets/Scripts/Fishing/FishType.cs
+  406L  [csharp/code]  Assets/Scripts/Fishing/FishingGame.cs
+  37L  [csharp/code]  Assets/Scripts/Items/Axe.cs
+  25L  [csharp/code]  Assets/Scripts/Items/Binoculars.cs
+  33L  [csharp/code]  Assets/Scripts/Items/Bow.cs
+  32L  [csharp/code]  Assets/Scripts/Items/DryLog.cs
+  31L  [csharp/code]  Assets/Scripts/Items/Firewood.cs
+  23L  [csharp/code]  Assets/Scripts/Items/Fly Agaric 1.cs
+  23L  [csharp/code]  Assets/Scripts/Items/Fly Agaric 2.cs
+  23L  [csharp/code]  Assets/Scripts/Items/Fly Agaric.cs
+  7L  [csharp/code]  Assets/Scripts/Items/Hammer.cs
+  36L  [csharp/code]  Assets/Scripts/Items/Kokanee.cs
+  24L  [csharp/code]  Assets/Scripts/Items/Larch Bolete 2.cs
+  24L  [csharp/code]  Assets/Scripts/Items/Larch Bolete 3.cs
+  24L  [csharp/code]  Assets/Scripts/Items/Larch Bolete.cs
+  19L  [csharp/code]  Assets/Scripts/Items/LooseItem.cs
+  37L  [csharp/code]  Assets/Scripts/Items/RainbowTrout.cs
+  28L  [csharp/code]  Assets/Scripts/Items/Rod.cs
+  14L  [csharp/code]  Assets/Scripts/Items/Sling.cs
+  26L  [csharp/code]  Assets/Scripts/Items/SpawnLooseItemsOnDestroy.cs
+  27L  [csharp/code]  Assets/Scripts/Items/WetLog.cs
+
+=== BATCH 9 (25 files) ===
+  22L  [csharp/code]  Assets/Scripts/Misc/AnimateTitle.cs
+  24L  [csharp/code]  Assets/Scripts/Misc/BlinkRepeatedly.cs
+  28L  [csharp/code]  Assets/Scripts/Misc/KeepChildScaleUnflipped.cs
+  41L  [csharp/code]  Assets/Scripts/Misc/PulseLight.cs
+  13L  [csharp/code]  Assets/Scripts/Misc/StartGame.cs
+  109L  [csharp/code]  Assets/Scripts/Player/AsepriteEventListener.cs
+  146L  [csharp/code]  Assets/Scripts/Player/CaptureLog.cs
+  49L  [csharp/code]  Assets/Scripts/Player/CarriedObjectsAnimatorController.cs
+  68L  [csharp/code]  Assets/Scripts/Player/Diet.cs
+  34L  [csharp/code]  Assets/Scripts/Player/EnergyBar.cs
+  71L  [csharp/code]  Assets/Scripts/Player/HUDInputManager.cs
+  60L  [csharp/code]  Assets/Scripts/Player/InteractInput.cs
+  325L  [csharp/code]  Assets/Scripts/Player/Inventory.cs
+  432L  [csharp/code]  Assets/Scripts/Player/PlayerAnimatorController.cs
+  74L  [csharp/code]  Assets/Scripts/Player/PlayerAudioManager.cs
+  40L  [csharp/code]  Assets/Scripts/Player/PlayerCaptureLogs.cs
+  183L  [csharp/code]  Assets/Scripts/Player/PlayerCarry.cs
+  48L  [csharp/code]  Assets/Scripts/Player/PlayerCrouch.cs
+  86L  [csharp/code]  Assets/Scripts/Player/PlayerCursor.cs
+  25L  [csharp/code]  Assets/Scripts/Player/PlayerDialogue.cs
+  225L  [csharp/code]  Assets/Scripts/Player/PlayerDryingManager.cs
+  150L  [csharp/code]  Assets/Scripts/Player/PlayerEnergyManager.cs
+  114L  [csharp/code]  Assets/Scripts/Player/PlayerHealth.cs
+  21L  [csharp/code]  Assets/Scripts/Player/PlayerHurtbox.cs
+  232L  [csharp/code]  Assets/Scripts/Player/PlayerMovement.cs
+
+=== BATCH 10 (25 files) ===
+  23L  [csharp/code]  Assets/Scripts/Player/PlayerMovementData.cs
+  44L  [csharp/code]  Assets/Scripts/Player/PlayerSceneData.cs
+  74L  [csharp/code]  Assets/Scripts/Player/PlayerSoundManager.cs
+  72L  [csharp/code]  Assets/Scripts/Player/PlayerStrength.cs
+  175L  [csharp/code]  Assets/Scripts/Player/PlayerTemperatureManager.cs
+  113L  [csharp/code]  Assets/Scripts/Player/PlayerWheelBarrow.cs
+  69L  [csharp/code]  Assets/Scripts/Player/SleepQuality.cs
+  34L  [csharp/code]  Assets/Scripts/Player/StrengthData.cs
+  40L  [csharp/code]  Assets/Scripts/Player/ToggleMenuInput.cs
+  53L  [csharp/code]  Assets/Scripts/Scene/LevelChanger.cs
+  6L  [csharp/code]  Assets/Scripts/Scene/RodPlacement.cs
+  27L  [csharp/code]  Assets/Scripts/Scene/SceneNames.cs
+  62L  [csharp/code]  Assets/Scripts/Scene/SceneSpawnConfig.cs
+  52L  [csharp/code]  Assets/Scripts/Scene/SceneTransitionOverlay.cs
+  25L  [csharp/code]  Assets/Scripts/Scene/SmoothSceneManager.cs
+  10L  [csharp/code]  Assets/Scripts/TheWayNorth/BiomeConfig.cs
+  627L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorth.cs
+  96L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorthConfig.cs
+  20L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorthEntrance.cs
+  25L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorthExit.cs
+  14L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorthSpawn.cs
+  37L  [csharp/code]  Assets/Scripts/TheWayNorth/TheWayNorthTransition.cs
+  8L  [csharp/code]  Assets/Scripts/TheWayNorth/WeightedScene.cs
+  42L  [csharp/code]  Assets/Scripts/UI/AdditiveUIScaler.cs
+  34L  [csharp/code]  Assets/Scripts/UI/AssignUICamera.cs
+
+=== BATCH 11 (25 files) ===
+  31L  [csharp/code]  Assets/Scripts/UI/CinemachinePixelSnap.cs
+  26L  [csharp/code]  Assets/Scripts/UI/GameMenuManager.cs
+  180L  [csharp/code]  Assets/Scripts/UI/ItemSlot.cs
+  171L  [csharp/code]  Assets/Scripts/UI/Journal.cs
+  22L  [csharp/code]  Assets/Scripts/UI/JournalEntry.cs
+  75L  [csharp/code]  Assets/Scripts/UI/LocalPositionOscillator.cs
+  73L  [csharp/code]  Assets/Scripts/UI/LocalRotationOscillator.cs
+  6L  [csharp/code]  Assets/Scripts/UI/NotebookSprite.cs
+  388L  [csharp/code]  Assets/Scripts/UI/PixelCanvasTextRenderer.cs
+  87L  [csharp/code]  Assets/Scripts/UI/PixelFont.cs
+  338L  [csharp/code]  Assets/Scripts/UI/PixelTextRenderer.cs
+  52L  [csharp/code]  Assets/Scripts/UI/PlayerPage.cs
+  16L  [csharp/code]  Assets/Scripts/UI/TasksPage.cs
+  77L  [csharp/code]  Assets/Scripts/UI/TopRightHUD.cs
+  42L  [csharp/code]  Assets/Scripts/UI/UIScalerSync.cs
+  23L  [csharp/code]  Assets/Scripts/Utilities/AnimationHelper.cs
+  64L  [csharp/code]  Assets/Scripts/Utilities/Logger.cs
+  25L  [csharp/code]  Assets/Scripts/Utilities/Singleton.cs
+  13L  [csharp/code]  Assets/Scripts/Utilities/SpawnOffset.cs
+  22L  [csharp/code]  Assets/Scripts/Utilities/UniqueMaterialInstance.cs
+  67L  [csharp/code]  Assets/Scripts/Weather/ActiveWhenRaining.cs
+  36L  [csharp/code]  Assets/Scripts/Weather/GlobalWindProperties.cs
+  92L  [csharp/code]  Assets/Scripts/Weather/RainAudio.cs
+  173L  [csharp/code]  Assets/Scripts/Weather/SunLightControl.cs
+  246L  [csharp/code]  Assets/Scripts/Weather/Wind.cs
+
+=== BATCH 12 (25 files) ===
+  78L  [csharp/code]  Assets/Scripts/WorldObjects/Barrel.cs
+  27L  [csharp/code]  Assets/Scripts/WorldObjects/BarrelBinos.cs
+  82L  [csharp/code]  Assets/Scripts/WorldObjects/BeachedBoat.cs
+  80L  [csharp/code]  Assets/Scripts/WorldObjects/BigRock.cs
+  28L  [csharp/code]  Assets/Scripts/WorldObjects/BoatHammer.cs
+  47L  [csharp/code]  Assets/Scripts/WorldObjects/BorderTree.cs
+  338L  [csharp/code]  Assets/Scripts/WorldObjects/Box.cs
+  26L  [csharp/code]  Assets/Scripts/WorldObjects/BoxData.cs
+  23L  [csharp/code]  Assets/Scripts/WorldObjects/BoxLidCollider.cs
+  192L  [csharp/code]  Assets/Scripts/WorldObjects/Campfire.cs
+  33L  [csharp/code]  Assets/Scripts/WorldObjects/FallenLarch.cs
+  34L  [csharp/code]  Assets/Scripts/WorldObjects/FallenSpruce.cs
+  117L  [csharp/code]  Assets/Scripts/WorldObjects/FallenTree.cs
+  89L  [csharp/code]  Assets/Scripts/WorldObjects/FirewoodPile.cs
+  59L  [csharp/code]  Assets/Scripts/WorldObjects/GenericWeightyObject.cs
+  30L  [csharp/code]  Assets/Scripts/WorldObjects/Larch.cs
+  202L  [csharp/code]  Assets/Scripts/WorldObjects/LarchStump.cs
+  88L  [csharp/code]  Assets/Scripts/WorldObjects/LogPile.cs
+  26L  [csharp/code]  Assets/Scripts/WorldObjects/MountedRod.cs
+  171L  [csharp/code]  Assets/Scripts/WorldObjects/PlacedMountedRod.cs
+  31L  [csharp/code]  Assets/Scripts/WorldObjects/SleepingPad.cs
+  31L  [csharp/code]  Assets/Scripts/WorldObjects/Spruce.cs
+  69L  [csharp/code]  Assets/Scripts/WorldObjects/SpruceStump.cs
+  104L  [csharp/code]  Assets/Scripts/WorldObjects/StaticWheelBarrow.cs
+  33L  [csharp/code]  Assets/Scripts/WorldObjects/StaticWheelBarrowSelector.cs
+
+=== BATCH 13 (8 files) ===
+  220L  [csharp/code]  Assets/Scripts/WorldObjects/TreePlant.cs
+  8L  [csharp/code]  Assets/Scripts/WorldObjects/WeightyObjectStackConfig.cs
+  47L  [csharp/code]  Assets/Scripts/WorldObjects/WheelBarrowContainedSprites.cs
+  175L  [csharp/code]  Assets/Scripts/WorldObjects/WoodRack.cs
+  223L  [csharp/code]  Assets/Scripts/WorldObjects/WoodStove.cs
+  53L  [hlsl/code]  Assets/Shaders/Birding/Wedges.hlsl
+  49L  [json/config]  Packages/manifest.json
+  652L  [json/config]  Packages/packages-lock.json

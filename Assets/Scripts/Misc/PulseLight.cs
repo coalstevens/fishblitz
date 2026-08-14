@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(Light2D))]
 public class PulseLight : MonoBehaviour
 {
     private Light2D _light;

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 // because it will persist across scenes.  If we were to start the scene load
 // coroutine from the trigger object, the coroutine would die right when the new scene loads
 // and the old scene unloads.
+[RequireComponent(typeof(Animator))]
 public class SceneTransitionOverlay : MonoBehaviour
 {
   [SerializeField] private float transitionDuration = 0.5f;

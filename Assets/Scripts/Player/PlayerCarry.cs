@@ -100,6 +100,42 @@ public class PlayerCarry : MonoBehaviour
         return _removedObject;
     }
 
+    public bool DropCarriedItemOnHit()
+    {
+        if (_carriedStack.IsEmpty())
+            return false;
+
+        if (TrySpawnNearPlayer(_carriedStack.Peek()) == false)
+            return false;
+
+        _carriedStack.Pop();
+        IsCarrying.Value = !_carriedStack.IsEmpty();
+        return true;
+    }
+
+    public bool DropStackItemOnHit(WeightyObjectStack stack)
+    {
+        if (stack.IsEmpty())
+            return false;
+
+        if (TrySpawnNearPlayer(stack.Peek()) == false)
+            return false;
+
+        stack.Pop();
+        return true;
+    }
+
+    private bool TrySpawnNearPlayer(StoredWeightyObject storedObject)
+    {
+        Vector3Int playerGrid = _grid.WorldToCell(transform.position);
+        if (!TryGetUnoccupiedPosition(playerGrid, out Vector3Int _spawnPosition))
+            return false;
+
+        InstantiateWeightyObject(storedObject, _spawnPosition);
+        PlayerAudioManager.Instance.PlayOneShot(_putDownSound);
+        return true;
+    }
+
     public StoredWeightyObject Peek()
     {
         return _carriedStack.Peek();
