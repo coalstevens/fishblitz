@@ -1,8 +1,9 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PixelTextRenderer))]
 public class DialogueController : MonoBehaviour
 {
-    private PixelTextRenderer _textBox;
+    private PixelTextRenderer text;
     private Transform _followTransform;
     private float _postedTime;
     [SerializeField] private float _messageDurationSecs = 5f;
@@ -10,11 +11,11 @@ public class DialogueController : MonoBehaviour
 
     private void Start()
     {
-        _textBox = GetComponentInChildren<PixelTextRenderer>();
+        text = GetComponent<PixelTextRenderer>();
 
-        if (_textBox == null)
+        if (text == null)
         {
-            Debug.LogError("PixelTextRenderer component is missing from CharacterDialogueController.");
+            Debug.LogError("PixelTextRenderer component is missing from DiaglogueController.");
             return;
         }
 
@@ -26,7 +27,7 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (_textBox == null || string.IsNullOrEmpty(_textBox.Text))
+        if (text == null || string.IsNullOrEmpty(text.Text))
             return;
 
         // Hold message for the duration
@@ -34,29 +35,29 @@ public class DialogueController : MonoBehaviour
             return;
 
         // Fade message
-        Color textColor = _textBox.Color;
+        Color textColor = text.Color;
         if (textColor.a > _fadeRateAlphaPerFrame)
         {
             textColor.a -= _fadeRateAlphaPerFrame;
-            _textBox.Color = textColor;
+            text.Color = textColor;
         }
         else
         {
-            _textBox.Color = new Color(textColor.r, textColor.g, textColor.b, 0f);
-            _textBox.Text = "";
+            text.Color = new Color(textColor.r, textColor.g, textColor.b, 0f);
+            text.Text = "";
         }
     }
 
     public void PostMessage(string message)
     {
-        if (_textBox == null)
+        if (text == null)
         {
             Debug.LogError("Cannot post message: PixelTextRenderer is not assigned.");
             return;
         }
 
-        _textBox.Text = message;
-        _textBox.Color = new Color(_textBox.Color.r, _textBox.Color.g, _textBox.Color.b, 1f);
+        text.Text = message;
+        text.Color = new Color(text.Color.r, text.Color.g, text.Color.b, 1f);
         _postedTime = Time.time;
     }
 }
