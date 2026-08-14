@@ -176,4 +176,9 @@ public class GameClock : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void ResetToStart()
+    {
+        InitializeClock();
+    }
+
 }

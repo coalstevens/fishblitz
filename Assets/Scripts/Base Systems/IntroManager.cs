@@ -30,8 +30,8 @@ public class IntroManager : MonoBehaviour
 
     private void Awake()
     {
-        SetInitialPlayerState();
-        ClearAllFilesInPersistentDataPath();
+        GameReset.ResetPlayerState(_playerInventory);
+        GameReset.ClearAllSaveFiles();
         StartCoroutine(OpeningDialogue());
     }
 
@@ -39,36 +39,6 @@ public class IntroManager : MonoBehaviour
     {
         _worldStateCalendar.UpdateWorldState();
         _rainManager.UpdateRainAudio();
-    }
-
-    private void SetInitialPlayerState()
-    {
-        var _energyManager = FindFirstObjectByType<PlayerEnergyManager>();
-        var _dryingManager = FindFirstObjectByType<PlayerDryingManager>();
-        var _temperatureManager = FindFirstObjectByType<PlayerTemperatureManager>();
-        var _strengthManager = FindFirstObjectByType<PlayerStrength>();
-        var _sceneData = FindFirstObjectByType<PlayerSceneData>();
-
-        if (_energyManager != null) _energyManager.ResetToDefaults();
-        if (_dryingManager != null) _dryingManager.ResetToDefaults();
-        if (_temperatureManager != null) _temperatureManager.ResetToDefaults();
-        if (_strengthManager != null) _strengthManager.ResetToDefaults();
-
-        _playerInventory.ActiveItemSlot.Value = 0;
-
-        var playerCarry = FindFirstObjectByType<PlayerCarry>();
-        if (playerCarry != null)
-        {
-            playerCarry.IsCarrying.Value = false;
-            playerCarry.CarriedStack.Clear();
-        }
-
-        var playerWheelBarrow = FindFirstObjectByType<PlayerWheelBarrow>();
-        if (playerWheelBarrow != null)
-        {
-            playerWheelBarrow.IsHoldingWheelBarrow.Value = false;
-            playerWheelBarrow.WheelBarrowStack.Clear();
-        }
     }
 
     private IEnumerator OpeningDialogue()
@@ -93,12 +63,5 @@ public class IntroManager : MonoBehaviour
             PlayerSceneData.PendingSpawnPosition = _spawnPositions[_spawnPosition];
         PlayerSceneData.HasPendingSpawn = true;
         LevelChanger.ChangeLevel(_toScene);
-    }
-
-    private void ClearAllFilesInPersistentDataPath()
-    {
-        string[] files = System.IO.Directory.GetFiles(Application.persistentDataPath);
-        foreach (string file in files)
-            System.IO.File.Delete(file);
     }
 }

@@ -32,9 +32,17 @@ public class ToggleMenuInput : MonoBehaviour
         }
         else
         {
-            _isMenuOpen = false;
-            _gameMenu.SetActive(false);
-            _playerInput?.SwitchCurrentActionMap("Player");
+            CloseMenu();
         }
+    }
+
+    public void CloseMenu()
+    {
+        if (!_isMenuOpen)
+            return;
+
+        _isMenuOpen = false;
+        _gameMenu.SetActive(false);
+        _playerInput?.SwitchCurrentActionMap("Player");
     }
 }

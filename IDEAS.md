@@ -4,6 +4,26 @@
 - North of the Season
 - The Broken Wheel
 
+## Design Philosophy
+
+A local community drama about learning to live within limits of nature — a cycle of adaptation and repair. IDEAS.md is the source of detail; these principles guide decisions.
+
+1. People never hurt the player. Conflict comes from the environment and the land, strained by years of expansion and extraction — not instant or cartoonish evil.
+
+2. Progress comes from choices, tradeoffs, and cooperation. Keep environmentalism in the background.
+
+3. The Presences: real enough to matter, never so direct they become the solution. Ancient, limited, observant. They operate as omens, whispers, memory, and pressure from the land. Never confirm them in a way that removes doubt; NPCs interpret the same signs differently.
+
+4. Storytelling must never interrupt the primary act of playing. Keep direct dialogue very brief. Longer content is delivered as audio overlay you can listen to while playing. Environment should reinforce the story.
+
+5. Story is filtered through bias. NPCs withhold, misremember, misinterpret, rationalize.
+
+6. Costly resources shape behavior. Scarcity is a design lever — arrow cost encourages stealth, careful aim, and evasion. Every tool carries a cost or downside; tradeoffs over raw stats.
+
+7. Community arrives slowly. People return based on time, events, or player milestones, each filling a role.
+
+8. Seasons structure the drama. Main seasons carry chronic problems (hot summers, cold winters); shoulder seasons bring catastrophic, somewhat-random events with subtle foreshadowing. The player should realize damage will happen but couldn't prepare enough.
+
 ## Story & World
 
 ### Premise

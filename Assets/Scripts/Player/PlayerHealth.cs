@@ -10,15 +10,26 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float _invulnerabilityDuration = 1.5f;
     [SerializeField] private float _flashDuration = 0.1f;
 
+    [Header("Death Respawn")]
+    [SerializeField] private SceneNames _respawnScene = SceneNames.CanyonStart;
+    [SerializeField] private Vector3 _respawnPosition = Vector3.zero;
+
     [Header("Debug")]
     [SerializeField] private Logger _logger = new();
 
     private PlayerCarry _playerCarry;
     private PlayerWheelBarrow _playerWheelBarrow;
     private PlayerAnimatorController _animatorController;
+    private bool _hasDied;
+
+    private static bool _restoreHealthOnRespawn;
+    private static float _healthOnRespawn;
 
     public Reactive<float> CurrentHealth = new Reactive<float>(0f);
     public Reactive<bool> IsInvulnerable = new Reactive<bool>(false);
+
+    public SceneNames RespawnScene => _respawnScene;
+    public Vector3 RespawnPosition => _respawnPosition;
 
     private void Awake()
     {
@@ -29,8 +40,17 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrentHealth.Value = _maxHealth;
-        _logger.Info($"Player health set to max: {CurrentHealth.Value}");
+        if (_restoreHealthOnRespawn)
+        {
+            _restoreHealthOnRespawn = false;
+            CurrentHealth.Value = _healthOnRespawn;
+            _logger.Info($"Player health restored to {CurrentHealth.Value}");
+        }
+        else
+        {
+            CurrentHealth.Value = _maxHealth;
+            _logger.Info($"Player health set to max: {CurrentHealth.Value}");
+        }
     }
 
     public void TakeDamage(float damage)
@@ -109,6 +129,22 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
+        if (_hasDied)
+            return;
+        _hasDied = true;
+
         Narrator.Instance?.PostMessage("i'm hurt bad...");
+        PlayerSceneData.PendingSpawnPosition = _respawnPosition;
+        PlayerSceneData.HasPendingSpawn = true;
+        LevelChanger.ChangeLevel(_respawnScene);
+    }
+
+    public void RespawnAtDeathPosition()
+    {
+        _restoreHealthOnRespawn = true;
+        _healthOnRespawn = CurrentHealth.Value;
+        PlayerSceneData.PendingSpawnPosition = _respawnPosition;
+        PlayerSceneData.HasPendingSpawn = true;
+        LevelChanger.ChangeLevel(_respawnScene);
     }
 }
