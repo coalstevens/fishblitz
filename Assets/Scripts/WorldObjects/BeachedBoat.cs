@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
-public class BeachedBoat : MonoBehaviour, SaveData.ISaveable
+public class BeachedBoat : MonoBehaviour, ISceneSaveable
 {
     private enum States { DamagedWithHammer, Damaged, Normal }
     private class BoatSaveData
@@ -59,24 +60,24 @@ public class BeachedBoat : MonoBehaviour, SaveData.ISaveable
         _state.Value = States.Damaged;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => _identifier;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new BoatSaveData()
         {
             BoatState = _state.Value
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(_identifier);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<BoatSaveData>(_extendedData);
-
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<BoatSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<BoatSaveData>(json);
         _state.Value = _extendedData.BoatState;
     }
+
+    public void ResetState() { }
 }

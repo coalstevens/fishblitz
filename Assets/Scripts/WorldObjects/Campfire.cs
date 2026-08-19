@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
-public class Campfire : MonoBehaviour, InteractInput.IInteractable, GameClock.ITickable, SaveData.ISaveable
+public class Campfire : MonoBehaviour, InteractInput.IInteractable, GameClock.ITickable, ISceneSaveable
 {
     private enum FireStates {Dead, Ready, Hot, Embers};
     private const string IDENTIFIER = "Campfire";
@@ -168,25 +169,26 @@ public class Campfire : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
         return false;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new CampfireSaveData
         {
             State = _stoveState.Value,
             FireDurationCounterGameMinutes = _fireDurationCounterGameMinutes
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<CampfireSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<CampfireSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<CampfireSaveData>(json);
         _stoveState.Value = _extendedData.State;
         _fireDurationCounterGameMinutes = _extendedData.FireDurationCounterGameMinutes;
     }
+
+    public void ResetState() { }
 }

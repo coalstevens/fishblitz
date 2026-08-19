@@ -40,20 +40,18 @@ public class GenericWeightyObject : MonoBehaviour, IWeighty
         Assert.IsNotNull(_weightyObjectType);
     }
 
-    public SaveData Save()
-    {
-        if (string.IsNullOrEmpty(_persistentID))
-            _persistentID = System.Guid.NewGuid().ToString();
+    public string PrefabId => _identifier;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
 
-        var _saveData = new SaveData();
-        _saveData.PersistentID = _persistentID;
-        _saveData.AddIdentifier(_identifier);
-        _saveData.AddTransformPosition(transform.position);
-        return _saveData;
+    public string CaptureState()
+    {
+        return null;
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        _persistentID = saveData.PersistentID;
+        // no extended state to restore
     }
+
+    public void ResetState() { }
 }

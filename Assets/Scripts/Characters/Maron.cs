@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Collider2D))]
-public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveableComponent
+public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveable
 {
     private enum MaronStates
     {
@@ -27,7 +27,7 @@ public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveableCompon
         public int Current;
     }
 
-    public string ComponentId => "Maron";
+    public string SaveableId => "Maron";
 
     private DialogueController _dialogueController;
     private MaronStates _state;
@@ -106,12 +106,12 @@ public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveableCompon
         LevelChanger.ChangeLevel(_warpScene);
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         return JsonConvert.SerializeObject(new State { Current = (int)_state });
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _stateData = JsonConvert.DeserializeObject<State>(json);
         if (_stateData == null)
@@ -119,5 +119,11 @@ public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveableCompon
         _state = (MaronStates)_stateData.Current;
         _offerTime = Time.time;
         ResolvePresence();
+    }
+
+    public void ResetState()
+    {
+        _state = _initialState;
+        _offerTime = Time.time;
     }
 }

@@ -49,7 +49,7 @@ public class SceneSaveLoadManager : MonoBehaviour {
     }
 
     private class SceneSaveData {
-        public List<SaveData> SaveDatas = new();
+        public List<SceneObjectRecord> Records = new();
         public int SceneExitGameTime;
     }
 
@@ -88,10 +88,10 @@ public class SceneSaveLoadManager : MonoBehaviour {
 
     public void SaveScene() {
         SceneSaveData _sceneSaveData = new();
-        _sceneSaveData.SaveDatas = GatherChildSaveData(ImpermanentContainer);
+        _sceneSaveData.Records = GatherChildRecords(ImpermanentContainer);
         _sceneSaveData.SceneExitGameTime = GameClock.Instance.GameMinutesElapsed;
 
-        JsonPersistence.PersistJson<SceneSaveData>(_sceneSaveData, GetSceneFileName()); 
+        JsonPersistence.PersistJson(_sceneSaveData, GetSceneFileName()); 
     }
 
     private void LoadScene() {
@@ -103,10 +103,15 @@ public class SceneSaveLoadManager : MonoBehaviour {
             return;
         }
 
+        var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
+        if (_loadedSaveData?.Records == null) {
+            _logger.Warning($"{_sceneName} save is in an old or invalid format; treating as first visit.");
+            return;
+        }
+
         DestroyChildren(ImpermanentContainer);
 
-        var _loadedSaveData = JsonPersistence.FromJson<SceneSaveData>(_fileName);
-        InstantiateAndLoadSavedObjects(_loadedSaveData.SaveDatas, ImpermanentContainer);
+        InstantiateAndLoadSavedObjects(_loadedSaveData.Records, ImpermanentContainer);
         ProcessElaspedTimeForChildren(_loadedSaveData.SceneExitGameTime, ImpermanentContainer);
         _logger.Info($"{_sceneName} loaded from save.");
     }
@@ -114,18 +119,18 @@ public class SceneSaveLoadManager : MonoBehaviour {
     // --- Player Component Save/Load (global, persists across scenes) ---
 
     public static void SavePlayerComponents() {
-        var _saveableComponents = FindAllSaveableComponents();
-        if (_saveableComponents.Count == 0) return;
+        var _saveables = FindAllSaveables();
+        if (_saveables.Count == 0) return;
 
         var _saveData = new PlayerComponentsSaveData();
-        foreach (var _component in _saveableComponents) {
+        foreach (var _saveable in _saveables) {
             try {
-                var _json = _component.CaptureStateAsJson();
+                var _json = _saveable.CaptureState();
                 if (!string.IsNullOrEmpty(_json))
-                    _saveData.ComponentStates[_component.ComponentId] = _json;
+                    _saveData.ComponentStates[_saveable.SaveableId] = _json;
             }
             catch (System.Exception ex) {
-                Debug.LogError($"Failed to save component '{_component.ComponentId}': {ex.Message}");
+                Debug.LogError($"Failed to save component '{_saveable.SaveableId}': {ex.Message}");
             }
         }
 
@@ -141,14 +146,14 @@ public class SceneSaveLoadManager : MonoBehaviour {
         var _saveData = JsonPersistence.FromJson<PlayerComponentsSaveData>(PLAYER_SAVE_FILE);
         if (_saveData?.ComponentStates == null) return;
 
-        var _saveableComponents = FindAllSaveableComponents();
-        foreach (var _component in _saveableComponents) {
-            if (_saveData.ComponentStates.TryGetValue(_component.ComponentId, out var _json)) {
+        var _saveables = FindAllSaveables();
+        foreach (var _saveable in _saveables) {
+            if (_saveData.ComponentStates.TryGetValue(_saveable.SaveableId, out var _json)) {
                 try {
-                    _component.RestoreStateFromJson(_json);
+                    _saveable.RestoreState(_json);
                 }
                 catch (System.Exception ex) {
-                    Debug.LogWarning($"Failed to restore component '{_component.ComponentId}': {ex.Message}");
+                    Debug.LogWarning($"Failed to restore component '{_saveable.SaveableId}': {ex.Message}");
                 }
             }
         }
@@ -156,11 +161,14 @@ public class SceneSaveLoadManager : MonoBehaviour {
         _logger.Info("Player components loaded from save.");
     }
 
-    private static List<ISaveableComponent> FindAllSaveableComponents() {
-        var _results = new List<ISaveableComponent>();
+    // World objects are ISceneSaveable, not player components — they persist per-scene,
+    // so they must not be captured into the global PlayerComponents file.
+    private static List<ISaveable> FindAllSaveables() {
+        var _results = new List<ISaveable>();
         var _allMonoBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
         foreach (var _mb in _allMonoBehaviours) {
-            if (_mb is ISaveableComponent _saveable)
+            if (_mb is ISceneSaveable) continue;
+            if (_mb is ISaveable _saveable)
                 _results.Add(_saveable);
         }
         return _results;
@@ -173,27 +181,29 @@ public class SceneSaveLoadManager : MonoBehaviour {
             Destroy(_child.gameObject);
     }
 
-    private List<SaveData> GatherChildSaveData(Transform parent) {
-        List<SaveData> _saveDatas = new();
+    private List<SceneObjectRecord> GatherChildRecords(Transform parent) {
+        List<SceneObjectRecord> _records = new();
         foreach (Transform _child in parent) {
-            SaveData _saveData;
-            if (_child.TryGetComponent<SaveData.ISaveable>(out var _saveable)) {
-                _saveData = _saveable.Save();
+            SceneObjectRecord _record;
+            if (_child.TryGetComponent<ISceneSaveable>(out var _saveable)) {
+                _record = SceneObjectRecord.Capture(_saveable, _child.position);
             } else {
-                _saveData = new SaveData();
-                _saveData.AddIdentifier(_child.gameObject.name.Replace("(Clone)", ""));
-                _saveData.AddTransformPosition(_child.position);
+                _record = new SceneObjectRecord {
+                    PrefabId = _child.gameObject.name.Replace("(Clone)", ""),
+                    Position = _child.position
+                };
             }
-            _saveDatas.Add(_saveData);
+            _records.Add(_record);
         }
-        return _saveDatas;
+        return _records;
     }
 
-    private void InstantiateAndLoadSavedObjects(List<SaveData> saveDatas, Transform container) {
-        foreach (var _saveData in saveDatas) {
-            var newObject = _saveData.InstantiateGameObjectFromSaveData(container);
-            if (newObject.TryGetComponent<SaveData.ISaveable>(out var _saveable))
-                _saveable.Load(_saveData);
+    private void InstantiateAndLoadSavedObjects(List<SceneObjectRecord> records, Transform container) {
+        foreach (var _record in records) {
+            var newObject = _record.Instantiate(container);
+            if (newObject == null) continue;
+            if (newObject.TryGetComponent<ISceneSaveable>(out var _saveable))
+                _record.Restore(_saveable);
         }
     }
 

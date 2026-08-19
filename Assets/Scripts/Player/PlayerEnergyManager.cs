@@ -5,14 +5,14 @@ using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerTemperatureManager), typeof(PlayerSceneData))]
-public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
+public class PlayerEnergyManager : MonoBehaviour, ISaveable
 {
     public interface IEnergyDepleting
     {
         public int EnergyCost { get; }
     }
 
-    public string ComponentId => "PlayerEnergy";
+    public string SaveableId => "PlayerEnergy";
 
     [Header("Energy")]
     public Reactive<int> CurrentEnergy = new Reactive<int>(0);
@@ -112,7 +112,7 @@ public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
         return false;
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State
         {
@@ -127,7 +127,7 @@ public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         CurrentEnergy.Value = _state.CurrentEnergy;
@@ -139,7 +139,7 @@ public class PlayerEnergyManager : MonoBehaviour, ISaveableComponent
         LastPlayerSleepTime = _state.LastPlayerSleepTime;
     }
 
-    public void ResetToDefaults()
+    public void ResetState()
     {
         CurrentEnergy.Value = _maxEnergy;
         TodaysProtein = 0;

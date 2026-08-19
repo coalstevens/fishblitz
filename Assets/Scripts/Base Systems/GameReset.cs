@@ -17,10 +17,10 @@ public static class GameReset
         var _temperatureManager = Object.FindFirstObjectByType<PlayerTemperatureManager>();
         var _strengthManager = Object.FindFirstObjectByType<PlayerStrength>();
 
-        if (_energyManager != null) _energyManager.ResetToDefaults();
-        if (_dryingManager != null) _dryingManager.ResetToDefaults();
-        if (_temperatureManager != null) _temperatureManager.ResetToDefaults();
-        if (_strengthManager != null) _strengthManager.ResetToDefaults();
+        if (_energyManager != null) _energyManager.ResetState();
+        if (_dryingManager != null) _dryingManager.ResetState();
+        if (_temperatureManager != null) _temperatureManager.ResetState();
+        if (_strengthManager != null) _strengthManager.ResetState();
 
         if (playerInventory != null)
             playerInventory.ActiveItemSlot.Value = 0;

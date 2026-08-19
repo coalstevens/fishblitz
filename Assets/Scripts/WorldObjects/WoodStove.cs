@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
-public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInput.IUsableTarget, GameClock.ITickable, SaveData.ISaveable
+public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInput.IUsableTarget, GameClock.ITickable, ISceneSaveable
 {
     private enum FireStates { Dead, Ready, Hot, Embers };
     private const string IDENTIFIER = "WoodStove";
@@ -181,30 +182,31 @@ public class WoodStove : MonoBehaviour, InteractInput.IInteractable, UseItemInpu
         return false;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new WoodStoveSaveData
         {
             State = _stoveState.Value,
             FireDurationCounterGameMinutes = _fireDurationCounterGameMinutes
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<WoodStoveSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<WoodStoveSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<WoodStoveSaveData>(json);
         _stoveState.Value = _extendedData.State;
         _fireDurationCounterGameMinutes = _extendedData.FireDurationCounterGameMinutes;
 
         if (_stoveState.Value == FireStates.Hot)
             StartFireSFX();
     }
+
+    public void ResetState() { }
 
     private void StopFireSFX()
     {

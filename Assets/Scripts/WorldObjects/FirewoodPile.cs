@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
+public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, ISceneSaveable
 {
     private class LogPileSaveData
     {
@@ -66,24 +67,24 @@ public class FirewoodPile : MonoBehaviour, InteractInput.IInteractable, SaveData
         return true;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new LogPileSaveData()
         {
             NumLogs = _numLogs.Value,
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<LogPileSaveData>(_extendedData);
-
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<LogPileSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<LogPileSaveData>(json);
         _numLogs.Value = _extendedData.NumLogs;
     }
+
+    public void ResetState() { }
 }

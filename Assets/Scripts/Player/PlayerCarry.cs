@@ -75,7 +75,7 @@ public class PlayerCarry : MonoBehaviour
         _carriedStack.Push(objectToStore);
         if (_stackConfig != null && _stackConfig.InsertSound != null)
             PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
-        _playerStrength.RegisterPickup(objectToStore.SavedData.PersistentID);
+        _playerStrength.RegisterPickup(objectToStore.Record.PersistentID);
     }
 
     public void PutDown(Vector3Int cursorLocationGrid)
@@ -145,12 +145,12 @@ public class PlayerCarry : MonoBehaviour
 
     private void InstantiateWeightyObject(StoredWeightyObject carriedObject, Vector3Int spawnPosition)
     {
-        GameObject prefab = Resources.Load<GameObject>("WorldObjects/" + carriedObject.SavedData.Identifier);
+        GameObject prefab = Resources.Load<GameObject>("WorldObjects/" + carriedObject.Record.PrefabId);
         Vector3 _worldPos = SceneSpawner.CalculateWorldPosition(_grid, spawnPosition, prefab);
-        carriedObject.SavedData.Position = new SaveData.SimpleVector3(_worldPos);
+        carriedObject.Record.Position = _worldPos;
 
-        IWeighty _spawnedObject = carriedObject.SavedData.InstantiateGameObjectFromSaveData(_impermanent.transform).GetComponent<IWeighty>();
-        _spawnedObject.Load(carriedObject.SavedData);
+        IWeighty _spawnedObject = carriedObject.Record.Instantiate(_impermanent.transform).GetComponent<IWeighty>();
+        carriedObject.Record.Restore(_spawnedObject);
     }
 
     private bool TryGetUnoccupiedPosition(Vector3Int cursorLocationGrid, out Vector3Int unoccupiedPosition)

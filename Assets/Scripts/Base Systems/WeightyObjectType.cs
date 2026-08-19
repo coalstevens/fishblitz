@@ -1,5 +1,5 @@
 using UnityEngine;
-public interface IWeighty : InteractInput.IInteractable, SaveData.ISaveable
+public interface IWeighty : InteractInput.IInteractable, ISceneSaveable
 {
     public WeightyObjectType WeightyObject { get; }
 }
@@ -7,12 +7,13 @@ public interface IWeighty : InteractInput.IInteractable, SaveData.ISaveable
 public class StoredWeightyObject 
 {
     public WeightyObjectType Type;
-    public SaveData SavedData;
+    public SceneObjectRecord Record;
 
     public StoredWeightyObject(IWeighty weighty)
     {
         this.Type = weighty.WeightyObject;
-        this.SavedData = weighty.Save();
+        var weightyMb = weighty as MonoBehaviour;
+        this.Record = SceneObjectRecord.Capture(weighty, weightyMb != null ? weightyMb.transform.position : Vector3.zero);
     }
 }
 

@@ -2,9 +2,9 @@ using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class PlayerSceneData : MonoBehaviour, ISaveableComponent
+public class PlayerSceneData : MonoBehaviour, ISaveable
 {
-    public string ComponentId => "PlayerScene";
+    public string SaveableId => "PlayerScene";
 
     public static Vector3 PendingSpawnPosition;
     public static bool HasPendingSpawn;
@@ -21,7 +21,7 @@ public class PlayerSceneData : MonoBehaviour, ISaveableComponent
         public string SceneOnAwake;
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State
         {
@@ -33,7 +33,7 @@ public class PlayerSceneData : MonoBehaviour, ISaveableComponent
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         Vector3 pos = new Vector3(_state.PositionX, _state.PositionY, _state.PositionZ);
@@ -41,4 +41,6 @@ public class PlayerSceneData : MonoBehaviour, ISaveableComponent
         SceneSpawnPosition = pos;
         SceneOnAwake = _state.SceneOnAwake;
     }
+
+    public void ResetState() { }
 }

@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
 
-public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.ITickable, SaveData.ISaveable
+public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.ITickable, ISceneSaveable
 {
     private class WoodRackSaveData
     {
@@ -147,7 +148,11 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
         return true;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => _identifier;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new WoodRackSaveData()
         {
@@ -155,21 +160,17 @@ public class WoodRack : MonoBehaviour, InteractInput.IInteractable, GameClock.IT
             NumDryLogs = _numDryLogs.Value,
             LogTimers = _logDryingTimers
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(_identifier);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<WoodRackSaveData>(_extendedData);
-
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<WoodRackSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<WoodRackSaveData>(json);
         _logDryingTimers = _extendedData.LogTimers;
         _numWetLogs.Value = _extendedData.NumWetLogs;
         _numDryLogs.Value = _extendedData.NumDryLogs;
     }
+
+    public void ResetState() { }
 
 }

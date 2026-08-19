@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using ReactiveUnity;
 using UnityEngine;
 
-public class LarchStump : MonoBehaviour, InteractInput.IInteractable, Axe.IUseableWithAxe, SaveData.ISaveable, BirdBrain.IPerchableLowElevation
+public class LarchStump : MonoBehaviour, InteractInput.IInteractable, Axe.IUseableWithAxe, ISceneSaveable, BirdBrain.IPerchableLowElevation
 {
     private const string IDENTIFIER = "LarchStump";
     private enum StumpStates { AxeIn, LogOn, Splitting, Idle };
@@ -142,25 +143,26 @@ public class LarchStump : MonoBehaviour, InteractInput.IInteractable, Axe.IUseab
         }
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new StumpSaveData()
         {
             State = _state.Value,
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<StumpSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<StumpSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<StumpSaveData>(json);
         _state.Value = _extendedData.State;
     }
+
+    public void ResetState() { }
 
     public Vector2 GetPositionTarget()
     {

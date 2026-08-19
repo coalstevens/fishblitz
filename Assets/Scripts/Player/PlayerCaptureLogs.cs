@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class PlayerCaptureLogs : MonoBehaviour, ISaveableComponent
+public class PlayerCaptureLogs : MonoBehaviour, ISaveable
 {
-    public string ComponentId => "PlayerLogs";
+    public string SaveableId => "PlayerLogs";
 
     [SerializeField] private CaptureLog _birdingLog = new();
     [SerializeField] private CaptureLog _fishingLog = new();
@@ -19,7 +19,7 @@ public class PlayerCaptureLogs : MonoBehaviour, ISaveableComponent
         public List<CaptureLog.CaptureEntry> FishingLogEntries = new();
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State();
         if (_birdingLog != null)
@@ -29,7 +29,7 @@ public class PlayerCaptureLogs : MonoBehaviour, ISaveableComponent
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         if (_birdingLog != null && _state.BirdingLogEntries != null)
@@ -37,4 +37,6 @@ public class PlayerCaptureLogs : MonoBehaviour, ISaveableComponent
         if (_fishingLog != null && _state.FishingLogEntries != null)
             _fishingLog.CaptureTable = _state.FishingLogEntries;
     }
+
+    public void ResetState() { }
 }

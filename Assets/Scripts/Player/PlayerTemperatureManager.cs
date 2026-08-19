@@ -11,9 +11,9 @@ using UnityEngine;
 /// else actualTemperature == dryTemperature - 1 temp step
 /// </summary>
 [RequireComponent(typeof(PlayerDryingManager), typeof(PlayerEnergyManager))]
-public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISaveableComponent
+public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISaveable
 {
-    public string ComponentId => "PlayerTemperature";
+    public string SaveableId => "PlayerTemperature";
 
     public Reactive<Temperature> ActualPlayerTemperature = new Reactive<Temperature>(Temperature.Freezing);
     public Reactive<Temperature> DryPlayerTemperature = new Reactive<Temperature>(Temperature.Cold);
@@ -147,7 +147,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISav
         return false;
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State
         {
@@ -158,7 +158,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISav
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         ActualPlayerTemperature.Value = (Temperature)_state.ActualPlayerTemperature;
@@ -166,7 +166,7 @@ public class PlayerTemperatureManager : HeatSensitive, GameClock.ITickable, ISav
         CounterToMatchAmbientGamemins = _state.CounterToMatchAmbientGamemins;
     }
 
-    public void ResetToDefaults()
+    public void ResetState()
     {
         ActualPlayerTemperature.Value = Temperature.Normal;
         DryPlayerTemperature.Value = Temperature.Normal;

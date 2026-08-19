@@ -1,6 +1,7 @@
+using Newtonsoft.Json;
 using UnityEngine;
 
-public class Larch : TreePlant, SaveData.ISaveable
+public class Larch : TreePlant, ISceneSaveable
 {
     private const string IDENTIFIER = "Larch";
     private class LarchSaveData
@@ -8,23 +9,24 @@ public class Larch : TreePlant, SaveData.ISaveable
         public TreeStates TreeState;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new LarchSaveData()
         {
             TreeState = _treeState.Value,
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<LarchSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<LarchSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<LarchSaveData>(json);
         _treeState.Value = _extendedData.TreeState;
     }
+
+    public void ResetState() { }
 }

@@ -7,11 +7,11 @@ using System.Collections;
 using ReactiveUnity;
 
 [RequireComponent(typeof(PlayerEnergyManager), typeof(PlayerTemperatureManager))]
-public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveableComponent
+public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
 {
     public enum WetnessStates { Wet, Dry, Drying, Wetting };
 
-    public string ComponentId => "PlayerWetness";
+    public string SaveableId => "PlayerWetness";
 
     public Reactive<WetnessStates> WetnessState = new Reactive<WetnessStates>(WetnessStates.Wet);
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
@@ -194,7 +194,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
         return 0;
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State
         {
@@ -206,7 +206,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         WetnessState.Value = (WetnessStates)_state.WetnessState;
@@ -215,7 +215,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
         WettingGameMinCounter = _state.WettingGameMinCounter;
     }
 
-    public void ResetToDefaults()
+    public void ResetState()
     {
         WetnessState.Value = WetnessStates.Dry;
         PlayerIsWet.Value = false;

@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerCarry))]
-public class PlayerStrength : MonoBehaviour, ISaveableComponent
+public class PlayerStrength : MonoBehaviour, ISaveable
 {
-    public string ComponentId => "PlayerStrength";
+    public string SaveableId => "PlayerStrength";
 
     [SerializeField] private StrengthData _strengthData;
     public StrengthData StrengthData => _strengthData;
@@ -53,19 +53,19 @@ public class PlayerStrength : MonoBehaviour, ISaveableComponent
         _carryStack.Capacity = _strengthData.GetLevelConfig(_currentLevel).CarryCapacity;
     }
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         var _state = new State { TotalPickupCount = TotalPickupCount };
         return JsonConvert.SerializeObject(_state);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         var _state = JsonConvert.DeserializeObject<State>(json);
         TotalPickupCount = _state.TotalPickupCount;
     }
 
-    public void ResetToDefaults()
+    public void ResetState()
     {
         TotalPickupCount = 0;
     }

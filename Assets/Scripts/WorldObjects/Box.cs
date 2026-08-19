@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Assertions;
 using DG.Tweening;
 
-public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, SaveData.ISaveable
+public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableTarget, ISceneSaveable
 {
     [Header("References")]
     [SerializeField] private GameObject _blurb;
@@ -48,7 +49,11 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         public bool IsComplete;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => "Box";
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var extended = new BoxSaveData
         {
@@ -59,16 +64,12 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         foreach (var kv in _fulfilledQuantities)
             extended.FulfilledQuantities[kv.Key.name] = kv.Value;
 
-        var saveData = new SaveData();
-        saveData.AddIdentifier("Box");
-        saveData.AddTransformPosition(transform.position);
-        saveData.AddExtendedSaveData(extended);
-        return saveData;
+        return JsonConvert.SerializeObject(extended);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var extended = saveData.GetExtendedSaveData<BoxSaveData>();
+        var extended = JsonConvert.DeserializeObject<BoxSaveData>(json);
         _boxData = Resources.Load<BoxData>("BoxPrizes/" + extended.BoxDataName);
         _hasInteracted = extended.HasInteracted;
         _isComplete = extended.IsComplete;
@@ -85,6 +86,8 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         }
         UpdateUI();
     }
+
+    public void ResetState() { }
 
     public WeightyObjectStack WeightyStack => _weightyContainer;
 

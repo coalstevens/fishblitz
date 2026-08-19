@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SleepingPad : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
+public class SleepingPad : MonoBehaviour, InteractInput.IInteractable, ISceneSaveable
 {
     PlayerEnergyManager _playerEnergyManager;
     private const string IDENTIFIER = "Sleeping Pad";
@@ -17,15 +17,18 @@ public class SleepingPad : MonoBehaviour, InteractInput.IInteractable, SaveData.
         return true;
     }
 
-    public SaveData Save() {
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(IDENTIFIER);
-        _saveData.AddTransformPosition(transform.position);
-        return _saveData;
+    private string _persistentID;
+    public string PrefabId => IDENTIFIER;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState() {
+        return null;
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
         // no extended data to load
     }
+
+    public void ResetState() { }
 }

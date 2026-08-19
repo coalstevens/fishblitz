@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Newtonsoft.Json;
 using UnityEngine;
 using ReactiveUnity;
 using System;
 
 // Used for 4 different prefabs (different rod facing directions)
 // Hence there is lots of serialized members
-public class PlacedMountedRod : MonoBehaviour, InteractInput.IInteractable, SaveData.ISaveable
+public class PlacedMountedRod : MonoBehaviour, InteractInput.IInteractable, ISceneSaveable
 {
     private class PlacedMountedRodSaveData {
         public bool fishOnState;
@@ -151,22 +152,23 @@ public class PlacedMountedRod : MonoBehaviour, InteractInput.IInteractable, Save
         return true;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => _identifier;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new PlacedMountedRodSaveData {
             fishOnState = _fishOn.Value            
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(_identifier);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<PlacedMountedRodSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<PlacedMountedRodSaveData>();
+        var _extendedData = JsonConvert.DeserializeObject<PlacedMountedRodSaveData>(json);
         _fishOn.Value = _extendedData.fishOnState;
     }
+
+    public void ResetState() { }
 }

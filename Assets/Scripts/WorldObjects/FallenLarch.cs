@@ -1,6 +1,7 @@
+using Newtonsoft.Json;
 using UnityEngine;
 
-public class FallenLarch : FallenTree, SaveData.ISaveable
+public class FallenLarch : FallenTree, ISceneSaveable
 {
     [SerializeField] private string _identifier;
     private class FallenLarchSaveData
@@ -8,26 +9,26 @@ public class FallenLarch : FallenTree, SaveData.ISaveable
         public FallenTreeStates State;
     }
 
-    public SaveData Save()
+    private string _persistentID;
+    public string PrefabId => _identifier;
+    public string PersistentID { get => _persistentID; set => _persistentID = value; }
+
+    public string CaptureState()
     {
         var _extendedData = new FallenLarchSaveData()
         {
             State = _state.Value,
         };
-
-        var _saveData = new SaveData();
-        _saveData.AddIdentifier(_identifier);
-        _saveData.AddTransformPosition(transform.position);
-        _saveData.AddExtendedSaveData<FallenLarchSaveData>(_extendedData);
-        return _saveData;
+        return JsonConvert.SerializeObject(_extendedData);
     }
 
-    public void Load(SaveData saveData)
+    public void RestoreState(string json)
     {
-        var _extendedData = saveData.GetExtendedSaveData<FallenLarchSaveData>();
-        _identifier = saveData.Identifier;
+        var _extendedData = JsonConvert.DeserializeObject<FallenLarchSaveData>(json);
         _state.Value = _extendedData.State;
         if (_state.Value == FallenTreeStates.Idle)
             StopAnimation(); 
     }
+
+    public void ResetState() { }
 }

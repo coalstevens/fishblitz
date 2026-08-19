@@ -6,7 +6,7 @@ using OysterUtils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TheWayNorth : MonoBehaviour, ISaveableComponent
+public class TheWayNorth : MonoBehaviour, ISaveable
 {
     public static TheWayNorth Instance { get; private set; }
 
@@ -61,9 +61,9 @@ public class TheWayNorth : MonoBehaviour, ISaveableComponent
         public List<List<int>> NodeOrder;
     }
 
-    public string ComponentId => "TheWayNorth";
+    public string SaveableId => "TheWayNorth";
 
-    public string CaptureStateAsJson()
+    public string CaptureState()
     {
         if (!_isActive) return null;
 
@@ -82,7 +82,7 @@ public class TheWayNorth : MonoBehaviour, ISaveableComponent
         return JsonConvert.SerializeObject(data);
     }
 
-    public void RestoreStateFromJson(string json)
+    public void RestoreState(string json)
     {
         if (_isActive) return;
 
@@ -128,6 +128,18 @@ public class TheWayNorth : MonoBehaviour, ISaveableComponent
         }
 
         _logger.Info("The Way North state restored from save");
+    }
+
+    public void ResetState()
+    {
+        _isActive = false;
+        _scenePath.Clear();
+        _exitToEntrance.Clear();
+        _entranceToExit.Clear();
+        _currentSceneIndex = -1;
+        _rootNode = null;
+        _currentNode = null;
+        _nodeOrder.Clear();
     }
 
     private void RebuildNodeOrderFromPath()
