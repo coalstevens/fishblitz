@@ -2,22 +2,17 @@ using UnityEngine;
 
 public class BoxLidCollider : MonoBehaviour
 {
-    private Box _box;
+    public bool IsPlayerInside { get; private set; }
 
-    private void Awake()
-    {
-        _box = GetComponentInParent<Box>();
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.transform.root.CompareTag("Player"))
-            _box.OnPlayerProximityEnter();
+            IsPlayerInside = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.transform.root.CompareTag("Player"))
-            _box.OnPlayerProximityExit();
+            IsPlayerInside = false;
     }
 }

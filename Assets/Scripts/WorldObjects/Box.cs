@@ -24,8 +24,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [Header("Quest Data")]
     [SerializeField] private BoxData _boxData;
 
-    [Header("Animation")]
-    [SerializeField] private Animator _animator;
 
     [Header("Sound Effects")]
     [SerializeField] private SoundData _winChimeSound;
@@ -34,12 +32,10 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     [SerializeField] private WeightyObjectStack _weightyContainer = new();
     [SerializeField] private WeightyObjectStackConfig _stackConfig;
     private Dictionary<WeightyObjectType, int> _fulfilledQuantities = new();
+    private BoxAnimator _boxAnimator;
     private bool _hasInteracted = false;
     private bool _isComplete = false;
     private Coroutine _fadeRoutine;
-
-    private enum BoxAnimState { Closed, Opening, Open, Closing }
-    private BoxAnimState _animState = BoxAnimState.Closed;
 
     private class BoxSaveData
     {
@@ -82,7 +78,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         if (_isComplete)
         {
             SetBlurbVisible(false);
-            _animator?.Play("Closed");
+            _boxAnimator.ResetToClosed();
         }
         UpdateUI();
     }
@@ -93,11 +89,14 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     private void Awake()
     {
+        _boxAnimator = GetComponent<BoxAnimator>();
+
         Assert.IsNotNull(_blurb);
         Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
         Assert.IsNotNull(_quantityText);
         Assert.IsNotNull(_boxData);
+        Assert.IsNotNull(_boxAnimator);
 
         foreach (var required in _boxData.RequiredObjects)
         {
@@ -110,7 +109,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         SetBlurbVisible(false);
         _alert.SetActive(true);
-        _animator?.Play("Closed");
+        _boxAnimator.ResetToClosed();
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
@@ -130,7 +129,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         {
             _hasInteracted = true;
             _alert.SetActive(false);
-            OnPlayerProximityEnter();
         }
 
         StartFadeTimer();
@@ -283,15 +281,15 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
         AudioManager.PlaySFX(_audioSource, _winChimeSound);
 
-        if (_animator != null)
-            _animator.Play("Win");
+        _boxAnimator.PlayWin();
+        _boxAnimator.SetComplete();
 
         StartCoroutine(DeliverPrize());
     }
 
     private IEnumerator DeliverPrize()
     {
-        yield return new WaitForSeconds(_animator.GetClipLength("Win"));
+        yield return new WaitForSeconds(_boxAnimator.GetClipLength("Win"));
 
         if (_boxData.PrizePrefab != null)
         {
@@ -317,43 +315,4 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         Destroy(gameObject);
     }
 
-    private IEnumerator OnOpeningFinished()
-    {
-        yield return new WaitForSeconds(_animator.GetClipLength("Opening"));
-        if (_isComplete) yield break;
-        _animator?.Play("Open");
-        _animState = BoxAnimState.Open;
-    }
-
-    public void OnPlayerProximityEnter()
-    {
-        if (_isComplete || !_hasInteracted) return;
-
-        if (_animState == BoxAnimState.Closed || _animState == BoxAnimState.Closing)
-        {
-            _animator?.Play("Opening");
-            _animState = BoxAnimState.Opening;
-            StartCoroutine(OnOpeningFinished());
-        }
-    }
-
-    public void OnPlayerProximityExit()
-    {
-        if (_isComplete || !_hasInteracted) return;
-
-        if (_animState == BoxAnimState.Open)
-        {
-            _animator?.Play("Closing");
-            _animState = BoxAnimState.Closing;
-        StartCoroutine(OnClosingFinished());
-        }
-    }
-
-    private IEnumerator OnClosingFinished()
-    {
-        yield return new WaitForSeconds(_animator.GetClipLength("Closing"));
-        if (_isComplete) yield break;
-        _animator?.Play("Closed");
-        _animState = BoxAnimState.Closed;
-    }
 }
