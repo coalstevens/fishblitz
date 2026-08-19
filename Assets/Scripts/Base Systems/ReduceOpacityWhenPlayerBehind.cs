@@ -69,14 +69,11 @@ public class ReduceOpacityWhenPlayerBehind : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("ontriggerenter");
         if (other.transform.root.CompareTag("Player"))
         {
-            Debug.Log("fade me");
             if (_fadeCoroutine != null)
-            {
                 StopCoroutine(_fadeCoroutine);
-            }
+
             _fadeCoroutine = StartCoroutine(FadeToOpacity(_fadedOpacity));
         }
     }
@@ -86,9 +83,9 @@ public class ReduceOpacityWhenPlayerBehind : MonoBehaviour
         if (other.transform.root.CompareTag("Player"))
         {
             if (_fadeCoroutine != null)
-            {
                 StopCoroutine(_fadeCoroutine);
-            }
+
+            if (!gameObject.activeInHierarchy) return;
 
             _fadeCoroutine = StartCoroutine(FadeToOpacity(_originalColor.a));
         }

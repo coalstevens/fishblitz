@@ -116,9 +116,9 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     public bool CursorInteract(Vector3 cursorLocation)
     {
         if (_isComplete) return false;
+        _alert.SetActive(false);
         UpdateUI();
         ShowBlurb();
-        _alert.SetActive(false);
         return true;
     }
 
