@@ -15,6 +15,8 @@ public class BoxData : ScriptableObject
 
     [Header("Prize")]
     public GameObject PrizePrefab;
+    public Inventory.Item PrizeItem;
+    public GameObject PrizePlaceholderPrefab;
     public Vector3 PrizeSpawnOffset;
 
     [Serializable]

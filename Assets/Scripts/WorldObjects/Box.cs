@@ -295,6 +295,19 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             if (prize.TryGetComponent<BoxData.IBoxPrize>(out var prizeComponent))
                 prizeComponent.AwardPrize();
         }
+        else if (_boxData.PrizeItem != null && _boxData.PrizePlaceholderPrefab != null)
+        {
+            Vector3 spawnPos = transform.position + _boxData.PrizeSpawnOffset;
+            GameObject prize = Instantiate(_boxData.PrizePlaceholderPrefab, spawnPos, Quaternion.identity);
+            if (prize.TryGetComponent<PrizePlaceholder>(out var placeholder))
+                placeholder.SetItem(_boxData.PrizeItem);
+            if (prize.TryGetComponent<BoxData.IBoxPrize>(out var prizeComponent))
+                prizeComponent.AwardPrize();
+        }
+        else
+        {
+            Debug.LogWarning("BoxData has no prize configured");
+        }
 
         Destroy(gameObject);
     }
