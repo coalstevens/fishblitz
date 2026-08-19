@@ -8,17 +8,19 @@ public class BoxAnimator : MonoBehaviour
     private BoxLidCollider _lidCollider;
     private float _transitionProgress;
     private bool _isComplete;
+    private bool _alertCleared;
 
     public float GetClipLength(string clipName) => _animator.GetClipLength(clipName);
 
     private void Awake()
     {
+        _transitionProgress = 0;
         _lidCollider = GetComponentInChildren<BoxLidCollider>();
     }
 
     private void Update()
     {
-        if (_isComplete) return;
+        if (_isComplete || !_alertCleared) return;
 
         float target = _lidCollider.IsPlayerInside ? 1f : 0f;
         _transitionProgress = Mathf.MoveTowards(_transitionProgress, target, _transitionSpeed * Time.deltaTime);
@@ -39,10 +41,15 @@ public class BoxAnimator : MonoBehaviour
         }
     }
 
+    public void SetAlertCleared()
+    {
+        _alertCleared = true;
+    }
+
     public void PlayWin()
     {
         _isComplete = true;
-        _animator?.Play("Win");
+        _animator.Play("Win");
     }
 
     public void SetComplete()
@@ -53,7 +60,7 @@ public class BoxAnimator : MonoBehaviour
     public void ResetToClosed()
     {
         _transitionProgress = 0f;
-        _animator?.Play("Closed");
+        _animator.Play("Closed");
     }
 
     public void ResetState()

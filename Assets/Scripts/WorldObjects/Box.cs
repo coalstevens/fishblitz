@@ -116,6 +116,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     {
         if (_isComplete) return false;
         _alert.SetActive(false);
+        _boxAnimator.SetAlertCleared();
         UpdateUI();
         ShowBlurb();
         return true;
@@ -129,6 +130,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         {
             _hasInteracted = true;
             _alert.SetActive(false);
+            _boxAnimator.SetAlertCleared();
         }
 
         StartFadeTimer();
