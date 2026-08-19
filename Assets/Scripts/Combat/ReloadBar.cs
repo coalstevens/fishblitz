@@ -63,8 +63,8 @@ public class ReloadBar : MonoBehaviour
     {
         _progressBar.enabled = true;
         _progressBar.color = _reloadBarColor;
-        if (_reloadCoroutine != null) {
-            Debug.LogError("Reload coroutine already running, stopping it before starting a new one.");
+        if (_reloadCoroutine != null) 
+        {
             StopCoroutine(_reloadCoroutine);
         }
         _reloadCoroutine = StartCoroutine(UpdateProgressBar());

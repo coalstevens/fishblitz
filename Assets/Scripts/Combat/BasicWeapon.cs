@@ -26,6 +26,14 @@ public class RangedWeaponItem : Inventory.Item, Inventory.IInstancedItem<RangedW
         [HideInInspector] public float CoolDownElapsed;
         [HideInInspector] public int CurrentClipCount;
         [HideInInspector] public Collider2D TargetCollider;
+
+        public void RecordShot()
+        {
+            IsCoolingDown.Value = true;
+            CurrentClipCount--;
+            if (CurrentClipCount <= 0)
+                IsReloading.Value = true;
+        }
     }
 
     public InstanceData CreateInstanceData()
@@ -58,13 +66,7 @@ public class RangedWeaponItem : Inventory.Item, Inventory.IInstancedItem<RangedW
             return false;
 
         ExecuteFireMethod(instanceData);
-
-        instanceData.IsCoolingDown.Value = true;
-        instanceData.CurrentClipCount--;
-        if (instanceData.CurrentClipCount <= 0)
-        {
-            instanceData.IsReloading.Value = true;
-        }
+        instanceData.RecordShot();
         return true;
     }
 
