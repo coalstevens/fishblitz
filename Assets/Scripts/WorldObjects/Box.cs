@@ -238,16 +238,21 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             Color c = originalColors[i];
             renderers[i].color = new Color(c.r, c.g, c.b, 0f);
         }
+        _blurb.SetActive(false);
     }
 
     private void SetBlurbVisible(bool visible)
     {
-        var renderers = _blurb.GetComponentsInChildren<SpriteRenderer>(true);
-        for (int i = 0; i < renderers.Length; i++)
+        _blurb.SetActive(visible);
+        if (visible)
         {
-            if (renderers[i] == null) continue;
-            Color c = renderers[i].color;
-            renderers[i].color = new Color(c.r, c.g, c.b, visible ? 1f : 0f);
+            var renderers = _blurb.GetComponentsInChildren<SpriteRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i] == null) continue;
+                Color c = renderers[i].color;
+                renderers[i].color = new Color(c.r, c.g, c.b, 1f);
+            }
         }
     }
 
