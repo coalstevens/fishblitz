@@ -1,7 +1,9 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
-[RequireComponent(typeof(PlayerMovement), typeof(PlayerEnergyManager), typeof(PlayerCarry))]
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerEnergyManager))]
+[RequireComponent(typeof(PlayerCarry))]
+[RequireComponent(typeof(PlayerInteraction))]
 public class InteractInput : MonoBehaviour
 {
     public interface IInteractable
@@ -13,8 +15,8 @@ public class InteractInput : MonoBehaviour
     }
 
     [SerializeField] private Inventory _inventory;
-    [SerializeField] private GridCursor _gridCursor;
     [SerializeField] private Logger _logger = new();
+    private PlayerInteraction _playerInteraction;
     private PlayerMovement _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
@@ -24,6 +26,7 @@ public class InteractInput : MonoBehaviour
         _playerMovementController = GetComponent<PlayerMovement>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
+        _playerInteraction = GetComponent<PlayerInteraction>();
     }
 
     private void OnInteract()
@@ -37,8 +40,7 @@ public class InteractInput : MonoBehaviour
         }
 
         // Check for an interactable object
-        Vector3Int cursorLocation = _gridCursor.GridPosition;
-        IInteractable interactable = _gridCursor.FindObjectAtGridCursor<IInteractable>();
+        IInteractable interactable = _playerInteraction.FindTarget<IInteractable>();
         if (interactable == null)
         {
             _logger.Info("Attempted to interact but there is no item under cursor.");
@@ -52,7 +54,7 @@ public class InteractInput : MonoBehaviour
             return;
         }
 
-        if (interactable?.CursorInteract(cursorLocation) == true)
+        if (interactable?.CursorInteract(_playerInteraction.ResolvePoint) == true)
         {
             _logger.Info($"Interacting with {name}");
             return;

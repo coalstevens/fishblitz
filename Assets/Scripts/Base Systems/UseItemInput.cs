@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerEnergyManager))]
+[RequireComponent(typeof(PlayerCarry))]
+[RequireComponent(typeof(PlayerInteraction))]
 public class UseItemInput : MonoBehaviour
 {
     public interface IUsableTarget
@@ -37,9 +41,9 @@ public class UseItemInput : MonoBehaviour
         public void PlayHitSound(Inventory.ItemInstanceData instanceData);
     }
 
-    [SerializeField] private GridCursor _gridCursor;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Logger _logger = new();
+    private PlayerInteraction _playerInteraction;
     private PlayerMovement _playerMovementController;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
@@ -51,11 +55,8 @@ public class UseItemInput : MonoBehaviour
         _playerMovementController = GetComponent<PlayerMovement>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
+        _playerInteraction = GetComponent<PlayerInteraction>();
 
-        Assert.IsNotNull(_playerMovementController);
-        Assert.IsNotNull(_playerEnergyManager);
-        Assert.IsNotNull(_playerCarry);
-        Assert.IsNotNull(_gridCursor);
         Assert.IsNotNull(_inventory);
     }
 
@@ -75,9 +76,9 @@ public class UseItemInput : MonoBehaviour
             return;
         }
 
-        Vector3Int _cursorLocation = _gridCursor.GridPosition;
-        IUsableTarget _targetWorldObject = _gridCursor.FindObjectAtGridCursor<IUsableTarget>();
-        string _targetTileMapTag = _gridCursor.FindInteractableTileMapByTags(INTERACTABLE_TILEMAP_LAYERS);
+        IUsableTarget _targetWorldObject = _playerInteraction.FindTarget<IUsableTarget>();
+        Vector3Int _cursorLocation = _playerInteraction.GridPosition;
+        string _targetTileMapTag = _playerInteraction.FindInteractableTileMapByTags(INTERACTABLE_TILEMAP_LAYERS);
 
         if (TryUseCarriedObject(_cursorLocation, _targetWorldObject)) return;
         if (TryUseInventoryItem(_cursorLocation, _targetTileMapTag, _targetWorldObject)) return;
