@@ -4,8 +4,10 @@ public class BoxAnimator : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private float _transitionSpeed = 2f;
+    [SerializeField] private float _overlapRadius = 1.5f;
+    [SerializeField] private Vector2 _overlapOffset = new Vector2(0f, 0.5f);
+    [SerializeField] private LayerMask _playerLayer;
 
-    private BoxLidCollider _lidCollider;
     private float _transitionProgress;
     private bool _isComplete;
     private bool _alertCleared;
@@ -15,14 +17,16 @@ public class BoxAnimator : MonoBehaviour
     private void Awake()
     {
         _transitionProgress = 0;
-        _lidCollider = GetComponentInChildren<BoxLidCollider>();
     }
 
     private void Update()
     {
-        if (_isComplete || !_alertCleared) return;
+        if (_isComplete || !_alertCleared) 
+            return;
 
-        float target = _lidCollider.IsPlayerInside ? 1f : 0f;
+        bool isPlayerInside = IsPlayerInLidRange();
+
+        float target = isPlayerInside ? 1f : 0f;
         _transitionProgress = Mathf.MoveTowards(_transitionProgress, target, _transitionSpeed * Time.deltaTime);
 
         if (_transitionProgress >= 0.99f)
@@ -39,6 +43,26 @@ public class BoxAnimator : MonoBehaviour
         {
             _animator?.Play("Opening", 0, _transitionProgress);
         }
+    }
+
+    private bool IsPlayerInLidRange()
+    {
+        Vector2 center = (Vector2)transform.position + _overlapOffset;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, _overlapRadius, _playerLayer);
+        foreach (Collider2D hit in hits)
+        {
+            if (hit.transform.root.CompareTag("Player"))
+                return true;
+        }
+
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Vector2 center = (Vector2)transform.position + _overlapOffset;
+        Gizmos.DrawWireSphere(center, _overlapRadius);
     }
 
     public void SetAlertCleared()
@@ -61,11 +85,5 @@ public class BoxAnimator : MonoBehaviour
     {
         _transitionProgress = 0f;
         _animator.Play("Closed");
-    }
-
-    public void ResetState()
-    {
-        _isComplete = false;
-        ResetToClosed();
     }
 }

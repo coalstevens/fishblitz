@@ -41,7 +41,7 @@ public class BirdSpawner : MonoBehaviour
     private Camera _mainCamera;
     private List<BirdSpeciesData> allSpecies;
 
-    private void OnEnable()
+    private void Start()
     {
         allSpecies = Resources.LoadAll<BirdSpeciesData>(_birdSpeciesResourcePath).ToList();
         Assert.IsNotNull(allSpecies, "All species was not found");
