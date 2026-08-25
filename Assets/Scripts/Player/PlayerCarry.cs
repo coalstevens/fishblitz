@@ -5,6 +5,7 @@ using System.Collections;
 using ReactiveUnity;
 
 [RequireComponent(typeof(PlayerStrength))]
+[RequireComponent(typeof(PlayerInteraction))]
 public class PlayerCarry : MonoBehaviour
 {
     public Reactive<bool> IsCarrying = new Reactive<bool>(false);
@@ -12,7 +13,7 @@ public class PlayerCarry : MonoBehaviour
     [SerializeField] private WeightyObjectStack _carriedStack = new();
     [SerializeField] private WeightyObjectStackConfig _stackConfig;
     [SerializeField] private SoundData _putDownSound;
-    private WorldObjectOccupancyMap _worldObjectOccupancyMap;
+    private PlayerInteraction _playerInteraction;
     private PlayerMovement _playermovementController;
     private PlayerStrength _playerStrength;
     private GameObject _impermanent;
@@ -38,8 +39,7 @@ public class PlayerCarry : MonoBehaviour
         _impermanent = GameObject.FindGameObjectWithTag("Impermanent");
         Assert.IsNotNull(_impermanent);
 
-        _worldObjectOccupancyMap = _impermanent.GetComponent<WorldObjectOccupancyMap>();
-        Assert.IsNotNull(_worldObjectOccupancyMap);
+        _playerInteraction = GetComponent<PlayerInteraction>();
 
         _playerStrength = GetComponent<PlayerStrength>();
     }
@@ -78,18 +78,16 @@ public class PlayerCarry : MonoBehaviour
         _playerStrength.RegisterPickup(objectToStore.Record.PersistentID);
     }
 
-    public void PutDown(Vector3Int cursorLocationGrid)
+    public void PutDown()
     {
         Assert.IsTrue(IsCarrying.Value);
 
-        if (!TryGetUnoccupiedPosition(cursorLocationGrid, out Vector3Int _spawnPosition))
+        if (!_playerInteraction.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
             return;
 
         InstantiateWeightyObject(_carriedStack.Pop(), _spawnPosition);
         PlayerAudioManager.Instance.PlayOneShot(_putDownSound);
         IsCarrying.Value = !_carriedStack.IsEmpty();
-
-        return;
     }
 
     public StoredWeightyObject Pop()
@@ -127,8 +125,7 @@ public class PlayerCarry : MonoBehaviour
 
     private bool TrySpawnNearPlayer(StoredWeightyObject storedObject)
     {
-        Vector3Int playerGrid = _grid.WorldToCell(transform.position);
-        if (!TryGetUnoccupiedPosition(playerGrid, out Vector3Int _spawnPosition))
+        if (!_playerInteraction.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
             return false;
 
         InstantiateWeightyObject(storedObject, _spawnPosition);
@@ -151,33 +148,5 @@ public class PlayerCarry : MonoBehaviour
 
         IWeighty _spawnedObject = carriedObject.Record.Instantiate(_impermanent.transform).GetComponent<IWeighty>();
         carriedObject.Record.Restore(_spawnedObject);
-    }
-
-    private bool TryGetUnoccupiedPosition(Vector3Int cursorLocationGrid, out Vector3Int unoccupiedPosition)
-    {
-        Vector3Int[] _searchOrder = new Vector3Int[]
-        {
-            cursorLocationGrid,
-            cursorLocationGrid + Vector3Int.up,
-            cursorLocationGrid + Vector3Int.down,
-            cursorLocationGrid + Vector3Int.left,
-            cursorLocationGrid + Vector3Int.right,
-            cursorLocationGrid + Vector3Int.up + Vector3Int.left,
-            cursorLocationGrid + Vector3Int.up + Vector3Int.right,
-            cursorLocationGrid + Vector3Int.down + Vector3Int.left,
-            cursorLocationGrid + Vector3Int.down + Vector3Int.right
-        };
-
-        foreach (var _position in _searchOrder)
-        {
-            if (!_worldObjectOccupancyMap.CheckOccupied(_position))
-            {
-                unoccupiedPosition = _position;
-                return true;
-            }
-        }
-
-        unoccupiedPosition = default;
-        return false;
     }
 }

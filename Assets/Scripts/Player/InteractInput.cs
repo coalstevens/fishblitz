@@ -18,13 +18,11 @@ public class InteractInput : MonoBehaviour
     [SerializeField] private Logger _logger = new();
     private PlayerInteraction _playerInteraction;
     private PlayerMovement _playerMovementController;
-    private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
 
     private void OnEnable()
     {
         _playerMovementController = GetComponent<PlayerMovement>();
-        _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
         _playerInteraction = GetComponent<PlayerInteraction>();
     }

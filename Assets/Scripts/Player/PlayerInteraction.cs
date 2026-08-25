@@ -25,12 +25,16 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float _fallbackReach = 1f;
     [SerializeField] private LayerMask _targetingMask;
 
+    [Header("Put Down")]
+    [SerializeField] private int _putDownRange = 1;
+
     private static readonly Color RegionColor = new(1f, 0.92f, 0.23f, 0.85f);
     private static readonly Color DeadZoneColor = new(1f, 0.25f, 0.25f, 0.8f);
     private static readonly Color FallbackColor = new(0.3f, 0.9f, 1f, 0.9f);
 
     private Grid _grid;
     private PlayerMovement _playerMovement;
+    private WorldObjectOccupancyMap _worldObjectOccupancyMap;
     private readonly List<Candidate> _candidates = new();
     private readonly HashSet<Object> _seen = new();
     private Collider2D _resolveCollider;
@@ -42,7 +46,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         get
         {
-            RunQuery();
+            RunCandidateQuery();
             if (_resolveCollider != null)
                 return _resolveCollider.ClosestPoint(transform.position);
             return transform.position + (Vector3)(InteractDirection * _fallbackReach);
@@ -67,6 +71,10 @@ public class PlayerInteraction : MonoBehaviour
         _playerMovement = GetComponent<PlayerMovement>();
         _grid = FindFirstObjectByType<Grid>();
         Assert.IsNotNull(_grid, "Grid not found in scene.");
+
+        _worldObjectOccupancyMap = FindFirstObjectByType<WorldObjectOccupancyMap>();
+        Assert.IsNotNull(_worldObjectOccupancyMap, "WorldObjectOccupancyMap not found in scene.");
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -78,11 +86,12 @@ public class PlayerInteraction : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _grid = FindFirstObjectByType<Grid>();
+        _worldObjectOccupancyMap = FindFirstObjectByType<WorldObjectOccupancyMap>();
     }
 
     public T FindTarget<T>() where T : class
     {
-        RunQuery();
+        RunCandidateQuery();
         foreach (Candidate candidate in _candidates)
         {
             T target = candidate.Collider.GetComponent<T>();
@@ -116,7 +125,48 @@ public class PlayerInteraction : MonoBehaviour
         return foundInteractableTags[0];
     }
 
-    private void RunQuery()
+    public bool TryGetUnoccupiedTileNearPlayer(out Vector3Int tile)
+    {
+        Vector3Int origin = GridPosition;
+        Vector2 aim = InteractDirection;
+        tile = default;
+        bool found = false;
+        int nearestRing = int.MaxValue;
+        float bestAlignment = float.MinValue;
+
+        for (int x = -_putDownRange; x <= _putDownRange; x++)
+        {
+            for (int y = -_putDownRange; y <= _putDownRange; y++)
+            {
+                Vector3Int candidate = origin + new Vector3Int(x, y, 0);
+                if (_worldObjectOccupancyMap.CheckOccupied(candidate))
+                    continue;
+
+                int ring = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
+                Vector2 offset = new(x, y);
+                float alignment = offset.sqrMagnitude > Mathf.Epsilon
+                    ? Vector2.Dot(offset.normalized, aim)
+                    : 1f;
+
+                if (!found || ring < nearestRing || (ring == nearestRing && alignment > bestAlignment))
+                {
+                    found = true;
+                    nearestRing = ring;
+                    bestAlignment = alignment;
+                    tile = candidate;
+                }
+            }
+        }
+
+        if (found)
+            return true;
+
+        Debug.Log("No unoccupied tiles in put down range.");
+        tile = default;
+        return false;
+    }
+
+    private void RunCandidateQuery()
     {
         if (_queryFrame == Time.frameCount)
             return;
@@ -197,6 +247,7 @@ public class PlayerInteraction : MonoBehaviour
         _interactRadius = Mathf.Max(_deadZoneRadius + 0.05f, _interactRadius);
         _maxAngleDeg = Mathf.Clamp(_maxAngleDeg, 1f, 180f);
         _fallbackReach = Mathf.Max(0f, _fallbackReach);
+        _putDownRange = Mathf.Max(0, _putDownRange);
     }
 
     private void OnDrawGizmosSelected()

@@ -80,7 +80,7 @@ public class UseItemInput : MonoBehaviour
         Vector3Int _cursorLocation = _playerInteraction.GridPosition;
         string _targetTileMapTag = _playerInteraction.FindInteractableTileMapByTags(INTERACTABLE_TILEMAP_LAYERS);
 
-        if (TryUseCarriedObject(_cursorLocation, _targetWorldObject)) return;
+        if (TryUseCarriedObject(_targetWorldObject)) return;
         if (TryUseInventoryItem(_cursorLocation, _targetTileMapTag, _targetWorldObject)) return;
     }
 
@@ -89,7 +89,7 @@ public class UseItemInput : MonoBehaviour
         _useItemQueued = true;
     }
 
-    private bool TryUseCarriedObject(Vector3Int cursorLocation, IUsableTarget targetWorldObject)
+    private bool TryUseCarriedObject(IUsableTarget targetWorldObject)
     {
         _logger.Info("Trying to use carried object");
         if (!_playerCarry.IsCarrying.Value)
@@ -110,7 +110,7 @@ public class UseItemInput : MonoBehaviour
         }
         else
         {
-            _playerCarry.PutDown(cursorLocation);
+            _playerCarry.PutDown();
         }
 
         return true;
