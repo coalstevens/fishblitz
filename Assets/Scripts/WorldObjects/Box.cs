@@ -10,7 +10,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 {
     [Header("References")]
     [SerializeField] private GameObject _blurb;
-    [SerializeField] private GameObject _alert;
     [SerializeField] private SpriteRenderer _itemImage;
     [SerializeField] private PixelTextRenderer _quantityText;
     [SerializeField] private float _fadeDelaySeconds = 3f;
@@ -31,7 +30,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
 
     [SerializeField] private WeightyObjectStack _weightyContainer = new();
     [SerializeField] private WeightyObjectStackConfig _stackConfig;
-    private Dictionary<WeightyObjectType, int> _fulfilledQuantities = new();
     private BoxAnimator _boxAnimator;
     private bool _hasInteracted = false;
     private bool _isComplete = false;
@@ -40,9 +38,9 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     private class BoxSaveData
     {
         public string BoxDataName;
-        public Dictionary<string, int> FulfilledQuantities = new();
         public bool HasInteracted;
         public bool IsComplete;
+        public List<StoredWeightyObjectSaveData> ContainedItems = new();
     }
 
     private string _persistentID;
@@ -55,10 +53,9 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         {
             BoxDataName = _boxData.name,
             HasInteracted = _hasInteracted,
-            IsComplete = _isComplete
+            IsComplete = _isComplete,
+            ContainedItems = StoredWeightyObjectSaveData.CaptureAll(_weightyContainer.StoredObjects)
         };
-        foreach (var kv in _fulfilledQuantities)
-            extended.FulfilledQuantities[kv.Key.name] = kv.Value;
 
         return JsonConvert.SerializeObject(extended);
     }
@@ -70,10 +67,13 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         _hasInteracted = extended.HasInteracted;
         _isComplete = extended.IsComplete;
 
-        foreach (var kv in extended.FulfilledQuantities)
-            foreach (var required in _boxData.RequiredObjects)
-                if (required.Type.name == kv.Key)
-                    _fulfilledQuantities[required.Type] = kv.Value;
+        _weightyContainer.Clear();
+        foreach (var saveData in extended.ContainedItems)
+        {
+            var storedObject = saveData.Restore();
+            if (storedObject != null)
+                _weightyContainer.Push(storedObject);
+        }
     }
 
     public void ResetState() { }
@@ -85,23 +85,17 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         _boxAnimator = GetComponent<BoxAnimator>();
 
         Assert.IsNotNull(_blurb);
-        Assert.IsNotNull(_alert);
         Assert.IsNotNull(_itemImage);
         Assert.IsNotNull(_quantityText);
         Assert.IsNotNull(_boxData);
         Assert.IsNotNull(_boxAnimator);
-
-        foreach (var required in _boxData.RequiredObjects)
-        {
-            _fulfilledQuantities[required.Type] = 0;
-        }
 
     }
 
     private void Start()
     {
         SetBlurbVisible(false);
-        _alert.SetActive(!_hasInteracted);
+        _boxAnimator.SetAlertVisible(!_hasInteracted);
         _boxAnimator.ResetToClosed();
         UpdateUI();
     }
@@ -109,8 +103,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     public bool CursorInteract(Vector3 cursorLocation)
     {
         if (_isComplete) return false;
-        _alert.SetActive(false);
-        _boxAnimator.SetAlertCleared();
+        _boxAnimator.ClearAlert();
         UpdateUI();
         ShowBlurb();
         return true;
@@ -123,8 +116,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         if (!_hasInteracted)
         {
             _hasInteracted = true;
-            _alert.SetActive(false);
-            _boxAnimator.SetAlertCleared();
+            _boxAnimator.ClearAlert();
         }
 
         StartFadeTimer();
@@ -136,8 +128,11 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             return false;
 
         var targetObject = _boxData.RequiredObjects[0];
+        if (type != targetObject.Type)
+            return false;
+
         int required = targetObject.Quantity;
-        int fulfilled = _fulfilledQuantities[type];
+        int fulfilled = FulfilledCount(targetObject.Type);
 
         return fulfilled < required;
     }
@@ -164,7 +159,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         _weightyContainer.Push(item);
         if (_stackConfig != null && _stackConfig.InsertSound != null)
             PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
-        _fulfilledQuantities[item.Type]++;
         UpdateUI();
         Shake();
         CheckWinCondition();
@@ -185,8 +179,17 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         var targetObject = _boxData.RequiredObjects[0];
         _itemImage.sprite = targetObject.Type.NSCarry;
 
-        int remaining = targetObject.Quantity - _fulfilledQuantities[targetObject.Type];
+        int remaining = targetObject.Quantity - FulfilledCount(targetObject.Type);
         _quantityText.Text = remaining.ToString();
+    }
+
+    private int FulfilledCount(WeightyObjectType type)
+    {
+        int count = 0;
+        foreach (var stored in _weightyContainer.StoredObjects)
+            if (stored.Type == type)
+                count++;
+        return count;
     }
 
     private void StartFadeTimer()
@@ -256,7 +259,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             return;
 
         var targetObject = _boxData.RequiredObjects[0];
-        if (_fulfilledQuantities[targetObject.Type] >= targetObject.Quantity)
+        if (FulfilledCount(targetObject.Type) >= targetObject.Quantity)
         {
             Win();
         }

@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class BoxAnimator : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _alert;
     [SerializeField] private float _overlapRadius = 1.5f;
     [SerializeField] private Vector2 _overlapOffset = new Vector2(0f, 0.5f);
     [SerializeField] private LayerMask _playerLayer;
@@ -11,6 +13,12 @@ public class BoxAnimator : MonoBehaviour
     private bool _alertCleared;
 
     public float GetClipLength(string clipName) => _animator.GetClipLength(clipName);
+
+    private void Awake()
+    {
+        Assert.IsNotNull(_animator);
+        Assert.IsNotNull(_alert);
+    }
 
     private void Update()
     {
@@ -54,8 +62,15 @@ public class BoxAnimator : MonoBehaviour
         Gizmos.DrawWireSphere(center, _overlapRadius);
     }
 
-    public void SetAlertCleared()
+    public void SetAlertVisible(bool visible)
     {
+        _alert.SetActive(visible);
+        _alertCleared = !visible;
+    }
+
+    public void ClearAlert()
+    {
+        _alert.SetActive(false);
         _alertCleared = true;
     }
 
