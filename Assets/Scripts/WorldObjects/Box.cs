@@ -74,13 +74,6 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
             foreach (var required in _boxData.RequiredObjects)
                 if (required.Type.name == kv.Key)
                     _fulfilledQuantities[required.Type] = kv.Value;
-
-        if (_isComplete)
-        {
-            SetBlurbVisible(false);
-            _boxAnimator.ResetToClosed();
-        }
-        UpdateUI();
     }
 
     public void ResetState() { }
@@ -108,8 +101,9 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
     private void Start()
     {
         SetBlurbVisible(false);
-        _alert.SetActive(true);
+        _alert.SetActive(!_hasInteracted);
         _boxAnimator.ResetToClosed();
+        UpdateUI();
     }
 
     public bool CursorInteract(Vector3 cursorLocation)
