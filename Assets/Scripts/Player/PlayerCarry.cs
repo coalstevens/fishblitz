@@ -2,12 +2,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Assertions;
 using System.Collections;
+using Newtonsoft.Json;
 using ReactiveUnity;
 
 [RequireComponent(typeof(PlayerStrength))]
 [RequireComponent(typeof(PlayerInteraction))]
-public class PlayerCarry : MonoBehaviour
+public class PlayerCarry : MonoBehaviour, ISaveable
 {
+    public string SaveableId => "PlayerCarry";
+
     public Reactive<bool> IsCarrying = new Reactive<bool>(false);
 
     [SerializeField] private WeightyObjectStack _carriedStack = new();
@@ -148,5 +151,37 @@ public class PlayerCarry : MonoBehaviour
 
         IWeighty _spawnedObject = carriedObject.Record.Instantiate(_impermanent.transform).GetComponent<IWeighty>();
         carriedObject.Record.Restore(_spawnedObject);
+    }
+
+    public string CaptureState()
+    {
+        var _data = new StackContentsSaveData
+        {
+            Holding = IsCarrying.Value,
+            Items = StoredWeightyObjectSaveData.CaptureAll(_carriedStack.StoredObjects)
+        };
+        return JsonConvert.SerializeObject(_data);
+    }
+
+    public void RestoreState(string json)
+    {
+        var _data = JsonConvert.DeserializeObject<StackContentsSaveData>(json);
+        if (_data?.Items == null) return;
+
+        _carriedStack.Clear();
+        foreach (var _saveData in _data.Items)
+        {
+            var _storedObject = _saveData.Restore();
+            if (_storedObject != null)
+                _carriedStack.Push(_storedObject);
+        }
+
+        IsCarrying.Value = _data.Holding;
+    }
+
+    public void ResetState()
+    {
+        _carriedStack.Clear();
+        IsCarrying.Value = false;
     }
 }

@@ -70,13 +70,16 @@ public class SceneSaveLoadManager : MonoBehaviour {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
+    {
+        LoadPlayerComponents();
         _impermanentContainer = null;
         _isFirstVisit = null;
         LoadScene();
     }
 
-    private void Start() {
+    private void Start() 
+    {
         LoadPlayerComponents();
     }
 

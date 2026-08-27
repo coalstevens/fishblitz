@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using ReactiveUnity;
 using Unity.Mathematics;
@@ -8,8 +9,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerWheelBarrow : MonoBehaviour
+public class PlayerWheelBarrow : MonoBehaviour, ISaveable
 {
+    public string SaveableId => "PlayerWheelBarrow";
+
     public Reactive<bool> IsHoldingWheelBarrow = new Reactive<bool>(false);
 
     [SerializeField] private WeightyObjectStack _wheelbarrowStack = new();
@@ -21,6 +24,7 @@ public class PlayerWheelBarrow : MonoBehaviour
     List<Action> _unsubscribeHooks = new();
     private PlayerInput _playerInput;
     private Rigidbody2D _rb;
+    private bool _suppressLiftSound;
 
     public WeightyObjectStack WheelBarrowStack => _wheelbarrowStack;
 
@@ -46,9 +50,16 @@ public class PlayerWheelBarrow : MonoBehaviour
     {
         if (isWheelBarrowing)
         {
-            Debug.Log($"Player position change {Time.frameCount}");
-            _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
-            PlayerAudioManager.Instance.PlayOneShot(_liftBarrowSound);
+            if (!_suppressLiftSound)
+            {
+                Debug.Log($"Player position change {Time.frameCount}");
+                _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
+                PlayerAudioManager.Instance.PlayOneShot(_liftBarrowSound);
+            }
+            else
+            {
+                _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
+            }
         }
         else
         {
@@ -109,5 +120,39 @@ public class PlayerWheelBarrow : MonoBehaviour
         foreach (var hook in _unsubscribeHooks)
             hook();
         _unsubscribeHooks.Clear();
+    }
+
+    public string CaptureState()
+    {
+        var _data = new StackContentsSaveData
+        {
+            Holding = IsHoldingWheelBarrow.Value,
+            Items = StoredWeightyObjectSaveData.CaptureAll(_wheelbarrowStack.StoredObjects)
+        };
+        return JsonConvert.SerializeObject(_data);
+    }
+
+    public void RestoreState(string json)
+    {
+        var _data = JsonConvert.DeserializeObject<StackContentsSaveData>(json);
+        if (_data?.Items == null) return;
+
+        _wheelbarrowStack.Clear();
+        foreach (var _saveData in _data.Items)
+        {
+            var _storedObject = _saveData.Restore();
+            if (_storedObject != null)
+                _wheelbarrowStack.Push(_storedObject);
+        }
+
+        _suppressLiftSound = true;
+        IsHoldingWheelBarrow.Value = _data.Holding;
+        _suppressLiftSound = false;
+    }
+
+    public void ResetState()
+    {
+        _wheelbarrowStack.Clear();
+        IsHoldingWheelBarrow.Value = false;
     }
 }

@@ -15,6 +15,12 @@ public class StoredWeightyObject
         var weightyMb = weighty as MonoBehaviour;
         this.Record = SceneObjectRecord.Capture(weighty, weightyMb != null ? weightyMb.transform.position : Vector3.zero);
     }
+
+    public StoredWeightyObject(WeightyObjectType type, SceneObjectRecord record)
+    {
+        this.Type = type;
+        this.Record = record;
+    }
 }
 
 [CreateAssetMenu(fileName = "WeightyObjectType", menuName = "Weighty/WeightyObjectType")]
