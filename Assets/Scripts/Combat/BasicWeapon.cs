@@ -2,6 +2,7 @@ using System;
 using ReactiveUnity;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "NewRangedWeapon", menuName = "Combat/RangedWeapon")]
 [Serializable]
@@ -89,7 +90,10 @@ public class RangedWeaponItem : Inventory.Item, Inventory.IInstancedItem<RangedW
 
         Vector2 _targetPosition;
         if (target == null)
-            _targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        {
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            _targetPosition = new Vector2(mouseWorld.x, mouseWorld.y);
+        }
         else
             _targetPosition = (Vector2)target.transform.position + target.offset;
 
