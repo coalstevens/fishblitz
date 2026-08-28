@@ -22,6 +22,9 @@ public static class GameReset
         if (_temperatureManager != null) _temperatureManager.ResetState();
         if (_strengthManager != null) _strengthManager.ResetState();
 
+        if (TheWayNorth.Instance != null)
+            TheWayNorth.Instance.ResetState();
+
         if (playerInventory != null)
             playerInventory.ActiveItemSlot.Value = 0;
 
