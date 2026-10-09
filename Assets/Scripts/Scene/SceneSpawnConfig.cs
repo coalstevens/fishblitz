@@ -11,7 +11,7 @@ public class SceneSpawnConfig : ScriptableObject
     [System.Serializable]
     public struct SceneSpawnEntry
     {
-        public SceneNames scene;
+        public SceneReference scene;
         public List<NamedSpawn> spawns;
     }
 
@@ -22,7 +22,7 @@ public class SceneSpawnConfig : ScriptableObject
         public Vector3 position;
     }
 
-    public Vector3 GetSpawnPosition(SceneNames scene, string spawnName)
+    public Vector3 GetSpawnPosition(SceneReference scene, string spawnName)
     {
         foreach (var entry in _sceneSpawns)
         {
@@ -48,7 +48,7 @@ public class SceneSpawnConfig : ScriptableObject
         return Vector3.zero;
     }
 
-    public string GetDefaultSpawnName(SceneNames scene)
+    public string GetDefaultSpawnName(SceneReference scene)
     {
         foreach (var entry in _sceneSpawns)
         {

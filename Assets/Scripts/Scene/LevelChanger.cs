@@ -4,7 +4,7 @@ using UnityEngine;
 public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
 {
     [SerializeField] bool OnInteract = false;
-    [SerializeField] private string _toScene;
+    [SerializeField] [SceneName] private string _toScene;
     [SerializeField] private Vector3 _spawnLocation;
     [SerializeField] private SoundData _sound;
     [SerializeField] private AudioSource _audioSource;
@@ -40,9 +40,9 @@ public class LevelChanger : MonoBehaviour, InteractInput.IInteractable
         SmoothSceneManager.LoadScene(sceneName);
     }
 
-    public static void ChangeLevel(SceneNames scene)
+    public static void ChangeLevel(SceneReference scene)
     {
-        ChangeLevel(scene.ToString());
+        ChangeLevel(scene.SceneName);
     }
 
     private void PlaySound()

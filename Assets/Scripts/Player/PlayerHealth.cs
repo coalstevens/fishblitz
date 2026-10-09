@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float _flashDuration = 0.1f;
 
     [Header("Death Respawn")]
-    [SerializeField] private SceneNames _respawnScene = SceneNames.CanyonStart;
+    [SerializeField] private SceneReference _respawnScene;
     [SerializeField] private Vector3 _respawnPosition = Vector3.zero;
 
     [Header("Debug")]
@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
     public Reactive<float> CurrentHealth = new Reactive<float>(0f);
     public Reactive<bool> IsInvulnerable = new Reactive<bool>(false);
 
-    public SceneNames RespawnScene => _respawnScene;
+    public SceneReference RespawnScene => _respawnScene;
     public Vector3 RespawnPosition => _respawnPosition;
 
     private void Awake()

@@ -13,15 +13,25 @@ MonoBehaviour:
   m_Name: Canyon
   m_EditorClassIdentifier: Assembly-CSharp::BiomeConfig
   ScenePool:
-  - Scene: 12
+  - Scene:
+      _sceneName: Canyon1
+      _sceneGuid: a673a03439db940d5a2faa02e7cd0928
     Weight: 1
-  - Scene: 13
+  - Scene:
+      _sceneName: Canyon2
+      _sceneGuid: 7917a2413bc49442ba602ad6d7b832e0
     Weight: 1
-  - Scene: 13
+  - Scene:
+      _sceneName: Canyon3
+      _sceneGuid: 9c222e02fd3ce4e889e776a3ebfafc27
     Weight: 1
-  - Scene: 13
+  - Scene:
+      _sceneName: Canyon4
+      _sceneGuid: 7016d5b262fa64f06bb5df74bb08ceec
     Weight: 1
   Forks:
-  - Scene: 14
+  - Scene:
+      _sceneName: CanyonFork
+      _sceneGuid: ac55fb6b81f86449fb718c412d604659
     Weight: 1
   PoolScenesBeforeFork: 2

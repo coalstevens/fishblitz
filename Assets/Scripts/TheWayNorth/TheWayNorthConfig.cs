@@ -19,7 +19,7 @@ public class TheWayNorthConfig : ScriptableObject
     }
 
     [Header("Config")]
-    public SceneNames StartScene;
+    public SceneReference StartScene;
     public List<BiomeConfig> Biomes;
 
     [Header("Network Depth")]
@@ -29,7 +29,7 @@ public class TheWayNorthConfig : ScriptableObject
     [Header("Debug")]
     public bool AlwaysRegenerateNetwork = false;
 
-    public SceneNames PickWeighted(List<WeightedScene> entries)
+    public SceneReference PickWeighted(List<WeightedScene> entries)
     {
         float totalWeight = 0f;
         foreach (var entry in entries)
@@ -83,13 +83,13 @@ public class TheWayNorthConfig : ScriptableObject
 
     public HashSet<string> GetAllTWNScceneNames()
     {
-        HashSet<string> names = new HashSet<string> { StartScene.ToString() };
+        HashSet<string> names = new HashSet<string> { StartScene.SceneName };
         foreach (var biome in Biomes)
         {
             foreach (var ws in biome.ScenePool)
-                names.Add(ws.Scene.ToString());
+                names.Add(ws.Scene.SceneName);
             foreach (var ws in biome.Forks)
-                names.Add(ws.Scene.ToString());
+                names.Add(ws.Scene.SceneName);
         }
         return names;
     }

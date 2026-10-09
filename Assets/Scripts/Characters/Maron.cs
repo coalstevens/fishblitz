@@ -18,7 +18,7 @@ public class Maron : MonoBehaviour, InteractInput.IInteractable, ISaveable
     [SerializeField] private bool _isSawmillMaron;
     [SerializeField] private float _viewRange = 5f;
     [SerializeField] private float _minWaitBeforeWarpSecs = 1f;
-    [SerializeField] private SceneNames _warpScene = SceneNames.CanyonStart;
+    [SerializeField] private SceneReference _warpScene;
     [SerializeField] private Vector3 _warpPosition = Vector3.zero;
 
     [System.Serializable]

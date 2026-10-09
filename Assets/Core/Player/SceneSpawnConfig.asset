@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: SceneSpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::SceneSpawnConfig
   _sceneSpawns:
-  - scene: 1
+  - scene:
+      _sceneName: Outside
+      _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
     spawns:
     - name: 
       position: {x: 0, y: 0, z: 0}
@@ -21,7 +23,9 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
     - name: 
       position: {x: 0, y: 0, z: 0}
-  - scene: 15
+  - scene:
+      _sceneName: CaveStart
+      _sceneGuid: 
     spawns:
     - name: Main
       position: {x: -11, y: 5, z: 0}

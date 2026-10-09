@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440303712d64a4c2a8976993781821b6, type: 3}
   m_Name: TheWayNorthConfig
   m_EditorClassIdentifier: Assembly-CSharp::TheWayNorthConfig
-  StartScene: 11
+  StartScene:
+    _sceneName: CanyonStart
+    _sceneGuid: a8bf9cca5101f47c08df70d15dbfcad4
   Biomes:
   - {fileID: 11400000, guid: 3514093f61c0c4708bf61202dcf285c5, type: 2}
   NetworkDepth: 2

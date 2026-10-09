@@ -23,5 +23,10 @@ namespace OysterUtils
             GameObject transitionObject = GameObject.Instantiate(SceneTransitionOverlayPrefab, Vector3.zero, Quaternion.identity);
             transitionObject.GetComponent<SceneTransitionOverlay>().LoadScene(toSceneName);
         }
+
+        public static void LoadScene(SceneReference scene, string loadSuffix = "")
+        {
+            LoadScene(scene.SceneName, loadSuffix);
+        }
     }
 }

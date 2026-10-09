@@ -13,7 +13,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     [SerializeField] private TheWayNorthConfig _config;
     [SerializeField] private Logger _logger = new();
 
-    private List<SceneNames> _scenePath = new();
+    private List<SceneReference> _scenePath = new();
     private int _currentSceneIndex = -1;
     private Dictionary<string, string> _exitToEntrance = new();
     private Dictionary<string, string> _entranceToExit = new();
@@ -31,7 +31,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     private class BiomeNode
     {
         public BiomeConfig Config;
-        public List<SceneNames> Path;
+        public List<SceneReference> Path;
         public string LeftExitId;
         public string RightExitId;
         public BiomeNode Left;
@@ -69,7 +69,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
 
         var data = new TwnSaveData
         {
-            ScenePath = _scenePath.Select(s => s.ToString()).ToList(),
+            ScenePath = _scenePath.Select(s => s.SceneName).ToList(),
             CurrentSceneIndex = _currentSceneIndex,
             ExitToEntrance = new Dictionary<string, string>(_exitToEntrance),
             EntranceToExit = new Dictionary<string, string>(_entranceToExit),
@@ -89,7 +89,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         var data = JsonConvert.DeserializeObject<TwnSaveData>(json);
         if (data == null) return;
 
-        _scenePath = data.ScenePath.Select(ParseSceneName).ToList();
+        _scenePath = data.ScenePath.Select(n => new SceneReference(n)).ToList();
         _currentSceneIndex = data.CurrentSceneIndex;
         _exitToEntrance = data.ExitToEntrance ?? new Dictionary<string, string>();
         _entranceToExit = data.EntranceToExit ?? new Dictionary<string, string>();
@@ -188,7 +188,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         return new TreeNodeData
         {
             ConfigName = node.Config.name,
-            Path = node.Path.Select(s => s.ToString()).ToList(),
+            Path = node.Path.Select(s => s.SceneName).ToList(),
             LeftExitId = node.LeftExitId,
             RightExitId = node.RightExitId,
             Left = SerializeNode(node.Left),
@@ -203,7 +203,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         BiomeNode node = new BiomeNode
         {
             Config = _config.FindBiomeConfig(data.ConfigName),
-            Path = data.Path.Select(ParseSceneName).ToList(),
+            Path = data.Path.Select(n => new SceneReference(n)).ToList(),
             LeftExitId = data.LeftExitId,
             RightExitId = data.RightExitId,
             Parent = parent
@@ -274,7 +274,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     private bool IsForkScene(BiomeNode node, string sceneName)
     {
         if (node == null || node.Path.Count == 0) return false;
-        return node.Path[node.Path.Count - 1].ToString() == sceneName;
+        return node.Path[node.Path.Count - 1].SceneName == sceneName;
     }
 
     private void Awake()
@@ -299,7 +299,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!_isActive && scene.name == _config.StartScene.ToString() && !_isRunTransition)
+        if (!_isActive && scene.name == _config.StartScene.SceneName && !_isRunTransition)
         {
             if (_config.AlwaysRegenerateNetwork || !JsonPersistence.JsonExists("PlayerComponents.json"))
             {
@@ -319,7 +319,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         if (!_isActive)
             StartRun();
 
-        string currentScene = _scenePath[_currentSceneIndex].ToString();
+        string currentScene = _scenePath[_currentSceneIndex].SceneName;
         int sourceIndex = _currentSceneIndex;
         string key = $"{currentScene}|{sourceIndex}|{exitId}";
 
@@ -359,7 +359,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         _scenePath.AddRange(child.Path);
         _currentSceneIndex = _scenePath.Count - child.Path.Count;
 
-        PerformTransition(child.Path[0].ToString(), _currentSceneIndex.ToString(), sourceIndex,
+        PerformTransition(child.Path[0].SceneName, _currentSceneIndex.ToString(), sourceIndex,
             $"↳ Fork: {currentScene}|{exitId} → {child.Config.name}:{child.Path[0]} (spawn:{transitionLabel})",
             key, transitionLabel, null);
     }
@@ -373,7 +373,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
             return;
         }
         _currentSceneIndex = nextIndex;
-        PerformTransition(_scenePath[nextIndex].ToString(), nextIndex.ToString(), sourceIndex,
+        PerformTransition(_scenePath[nextIndex].SceneName, nextIndex.ToString(), sourceIndex,
             null, key, transitionLabel, null);
     }
 
@@ -395,7 +395,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     {
         if (!_isActive) return;
 
-        string currentScene = _scenePath[_currentSceneIndex].ToString();
+        string currentScene = _scenePath[_currentSceneIndex].SceneName;
         int sourceIndex = _currentSceneIndex;
         string key = $"{currentScene}|{sourceIndex}|{entranceId}";
 
@@ -455,7 +455,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         BiomeNode node = new BiomeNode
         {
             Config = config,
-            Path = new List<SceneNames>()
+            Path = new List<SceneReference>()
         };
 
         for (int i = 0; i < config.PoolScenesBeforeFork; i++)
@@ -505,8 +505,8 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     {
         if (node.Path.Count == 0) return;
 
-        SceneNames forkScene = node.Path[node.Path.Count - 1];
-        string forkSceneName = forkScene.ToString();
+        SceneReference forkScene = node.Path[node.Path.Count - 1];
+        string forkSceneName = forkScene.SceneName;
 
         foreach (var exit in FindObjectsByType<TheWayNorthExit>(FindObjectsSortMode.None))
         {
@@ -594,7 +594,7 @@ public class TheWayNorth : MonoBehaviour, ISaveable
 
     private void LogNetworkState()
     {
-        var pathParts = _scenePath.Select<SceneNames, string>((s, i) => i == _currentSceneIndex ? $"<b>{s}</b>" : s.ToString());
+        var pathParts = _scenePath.Select<SceneReference, string>((s, i) => i == _currentSceneIndex ? $"<b>{s.SceneName}</b>" : s.SceneName);
         string path = string.Join(" → ", pathParts);
         _logger.Info($"TWN Path: [{path}]");
     }
@@ -628,12 +628,5 @@ public class TheWayNorth : MonoBehaviour, ISaveable
             sb.AppendLine($"{indent}  └─");
             LogTreeNode(node.Right, depth + 2, sb);
         }
-    }
-
-    private static SceneNames ParseSceneName(string name)
-    {
-        if (System.Enum.TryParse<SceneNames>(name, out var result))
-            return result;
-        return SceneNames.CanyonStart;
     }
 }
