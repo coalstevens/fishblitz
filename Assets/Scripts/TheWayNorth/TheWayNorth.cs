@@ -86,6 +86,10 @@ public class TheWayNorth : MonoBehaviour, ISaveable
     {
         if (_isActive) return;
 
+        if (_config.AlwaysRegenerateNetwork &&
+            SceneManager.GetActiveScene().name == _config.StartScene.SceneName)
+            return;
+
         var data = JsonConvert.DeserializeObject<TwnSaveData>(json);
         if (data == null) return;
 
@@ -494,11 +498,8 @@ public class TheWayNorth : MonoBehaviour, ISaveable
         if (node != null)
             _currentNode = node;
 
-        if (IsForkScene(_currentNode, sceneName) &&
-            (string.IsNullOrEmpty(_currentNode.LeftExitId) || string.IsNullOrEmpty(_currentNode.RightExitId)))
-        {
+        if (IsForkScene(_currentNode, sceneName))
             FindForkExits(_currentNode);
-        }
     }
 
     private void FindForkExits(BiomeNode node)
