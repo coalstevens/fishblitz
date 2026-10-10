@@ -61991,6 +61991,74 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4740620627268086058, guid: 432c334b55d8640b88cc67239ab7ffc6, type: 3}
   m_PrefabInstance: {fileID: 1799550290}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1836613561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1836613563}
+  - component: {fileID: 1836613562}
+  m_Layer: 0
+  m_Name: BirdSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1836613562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836613561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f98c7213dfa024c12b38acef13aa1b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _allSpawnData:
+    springData:
+    - DailySpawns: []
+    - DailySpawns: []
+    - DailySpawns: []
+    summerData:
+    - DailySpawns:
+      - SpeciesData: {fileID: 11400000, guid: f1b62ac81a8a843e3a48bc5a89c6b05d, type: 2}
+        SpawnCount: 5
+        SpawnAreas:
+        - {fileID: 56102996}
+        - {fileID: 971035651}
+    fallData:
+    - DailySpawns: []
+    - DailySpawns: []
+    - DailySpawns: []
+    winterData:
+    - DailySpawns: []
+    - DailySpawns: []
+    - DailySpawns: []
+  _birdSaveManager: {fileID: 11400000, guid: 49bc411d5a2f8457390a89a1af7e4aac, type: 2}
+  _birdSpeciesResourcePath: Birds/Species
+  _world: {fileID: 542403489}
+  RespawnAfterGameMinutesAway: 30
+--- !u!4 &1836613563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836613561}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1941083500
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62213,3 +62281,4 @@ SceneRoots:
   - {fileID: 542403488}
   - {fileID: 1767204131}
   - {fileID: 1210256217}
+  - {fileID: 1836613563}

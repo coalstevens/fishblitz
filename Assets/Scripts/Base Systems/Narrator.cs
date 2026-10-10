@@ -18,7 +18,10 @@ public class Narrator : MonoBehaviour
     [SerializeField] private float _sidePadding = 0.5f;
     [SerializeField] private float _lineSpacing = 0.2f;
     [SerializeField] private float _postMessageDelaySeconds = 2f;
+    [SerializeField] private bool _postTestMessage = false;
+    [SerializeField] private float _testMessageIntervalSecs = 5f;
     private float _postMessageBuffer = 0f;
+    private float _testMessageTimer = 0f;
     private Transform _narratorMessageContainer;
     private static Narrator _instance;
     public static Narrator Instance
@@ -49,6 +52,16 @@ public class Narrator : MonoBehaviour
     void Update()
     {
         CheckMessageLifeSpans();
+
+        if (_postTestMessage)
+        {
+            _testMessageTimer += Time.unscaledDeltaTime;
+            if (_testMessageTimer >= _testMessageIntervalSecs)
+            {
+                _testMessageTimer = 0f;
+                PostMessage("This is a test of the narrator.");
+            }
+        }
 
         // Print next message if the post message delay is expired
         if (_postMessageBuffer > _postMessageDelaySeconds)
