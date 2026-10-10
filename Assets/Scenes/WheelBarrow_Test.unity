@@ -28524,6 +28524,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _menuScene:
+    _sceneName: GameMenu
+    _sceneGuid: ca42dab8167fa4af78138b823a9e2d08
 --- !u!114 &859274532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96496,6 +96499,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _outdoorScene:
+    _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
 --- !u!95 &3460655639706076186
 Animator:
   serializedVersion: 7
@@ -96856,6 +96862,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _sleepScene:
+    _sceneName: SleepMenu
+    _sceneGuid: 64556fdd0882845cf9de7832c425c07f
 --- !u!1 &4938587636711824239
 GameObject:
   m_ObjectHideFlags: 0
@@ -107407,8 +107416,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CatchableSceneNames:
-  - Outside
+  CatchableScenes:
+  - _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   CaughtItem: {fileID: 11400000, guid: 9ce9ff8376419476085cc9d7aa7ed5ab, type: 2}
   SpawnableSeasons: 0000000002000000
   SpawnablePeriods: 00000000010000000200000003000000
@@ -112637,8 +112647,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CatchableSceneNames:
-  - Outside
+  CatchableScenes:
+  - _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   CaughtItem: {fileID: 11400000, guid: 3596368ca90984f558a4440f609d3027, type: 2}
   SpawnableSeasons: 0000000002000000
   SpawnablePeriods: 00000000010000000200000003000000

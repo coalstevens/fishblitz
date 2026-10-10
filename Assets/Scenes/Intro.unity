@@ -169,7 +169,9 @@ MonoBehaviour:
   _playerInventory: {fileID: 0}
   _rainManager: {fileID: 0}
   _worldStateCalendar: {fileID: 0}
-  _toScene: 1
+  _toScene:
+    _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   _spawnName: 
 --- !u!4 &1312362304848080084
 Transform:
@@ -467,6 +469,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _menuScene:
+    _sceneName: GameMenu
+    _sceneGuid: ca42dab8167fa4af78138b823a9e2d08
 --- !u!114 &7983837212363168335
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,6 +20,16 @@ public class Narrator : MonoBehaviour
     [SerializeField] private float _postMessageDelaySeconds = 2f;
     [SerializeField] private bool _postTestMessage = false;
     [SerializeField] private float _testMessageIntervalSecs = 5f;
+
+    [Serializable]
+    private class FirstVisitMessage
+    {
+        public SceneReference _scene;
+        public string _message;
+        public float _delay;
+        public bool _useNarrator;
+    }
+    [SerializeField] private List<FirstVisitMessage> _firstVisitMessages = new();
     private float _postMessageBuffer = 0f;
     private float _testMessageTimer = 0f;
     private Transform _narratorMessageContainer;
@@ -135,16 +145,12 @@ public class Narrator : MonoBehaviour
 
     private void PrintFirstVisitToSceneMessage(string sceneName)
     {
-        switch (sceneName)
+        foreach (var entry in _firstVisitMessages)
         {
-            case "Outside":
-                StartCoroutine(PostMessageAfterDelay("i need to find shelter", 30f, false));
-                break;
-            case "Abandoned Shed":
-                StartCoroutine(PostMessageAfterDelay("guess i'm sleeping in this wreck", 2f, false));
-                break;
-            default:
-                break;
+            if (entry._scene.SceneName != sceneName) continue;
+
+            StartCoroutine(PostMessageAfterDelay(entry._message, entry._delay, entry._useNarrator));
+            return;
         }
     }
 

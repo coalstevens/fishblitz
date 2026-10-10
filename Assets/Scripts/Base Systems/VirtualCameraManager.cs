@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class VirtualCameraManager : MonoBehaviour
 {
+    [SerializeField] private SceneReference _menuScene;
+
     private PlayerSceneData _sceneData;
     CinemachineCamera _virtualCamera;
 
@@ -25,7 +27,7 @@ public class VirtualCameraManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "GameMenu") return;
+        if (scene.name == _menuScene.SceneName) return;
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
         if (_player == null) return;
 

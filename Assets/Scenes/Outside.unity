@@ -119449,8 +119449,12 @@ PrefabInstance:
       value: Level 3
       objectReference: {fileID: 0}
     - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
-      propertyPath: _toScene
-      value: Waterfall Cave
+      propertyPath: _toScene._sceneName
+      value: WaterfallCave
+      objectReference: {fileID: 0}
+    - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
+      propertyPath: _toScene._sceneGuid
+      value: 9f8277e80af79474cb83d11e8a7d083a
       objectReference: {fileID: 0}
     - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
       propertyPath: _playerData
@@ -230992,6 +230996,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _menuScene:
+    _sceneName: GameMenu
+    _sceneGuid: ca42dab8167fa4af78138b823a9e2d08
 --- !u!114 &859274532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589918,7 +589925,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnInteract: 1
-  _toScene: Abandoned Shed
+  _toScene:
+    _sceneName: AbandonedShed
+    _sceneGuid: be4671e640d0d4bc58e22cf753334e28
   _spawnLocation: {x: -0.5, y: 0.7, z: 0}
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
   _sound: {fileID: 8300000, guid: 5ef32318af9214b5c9ded0b1fb0137dc, type: 3}

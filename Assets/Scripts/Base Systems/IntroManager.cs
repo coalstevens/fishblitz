@@ -17,7 +17,7 @@ public class IntroManager : MonoBehaviour
     [SerializeField] private WorldStateCalendar _worldStateCalendar;
 
     [Header("Initial Scene Transition")]
-    [SerializeField] [SceneName] private string _toScene;
+    [SerializeField] private SceneReference _toScene;
     [SerializeField] private SpawnPositions _spawnPosition;
     [SerializeField] private bool _useCustomSpawn;
     [SerializeField] private Vector3 _customSpawnLocation;

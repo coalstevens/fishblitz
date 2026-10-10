@@ -3025,6 +3025,9 @@ MonoBehaviour:
   TodaysProtein: 0
   TodaysCarbs: 0
   TodaysNutrients: 0
+  _sleepScene:
+    _sceneName: SleepMenu
+    _sceneGuid: 64556fdd0882845cf9de7832c425c07f
   IsPlayerSleeping: 0
   LastPlayerSleepTime: 0
 --- !u!114 &2738924931342105826
@@ -3039,6 +3042,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45b03398ad4bc483fb5b4ddc401a0d39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _outdoorScene:
+    _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   WetnessState:
     _val: 0
   PlayerIsWet:
@@ -30380,8 +30386,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CatchableSceneNames:
-  - Outside
+  CatchableScenes:
+  - _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   CaughtItem: {fileID: 11400000, guid: 3596368ca90984f558a4440f609d3027, type: 2}
   SpawnableSeasons: 0000000002000000
   SpawnablePeriods: 00000000010000000200000003000000
@@ -31654,6 +31661,19 @@ MonoBehaviour:
   _postMessageDelaySeconds: 4
   _postTestMessage: 0
   _testMessageIntervalSecs: 5
+  _firstVisitMessages:
+  - _scene:
+      _sceneName: Outside
+      _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
+    _message: i need to find shelter
+    _delay: 30
+    _useNarrator: 0
+  - _scene:
+      _sceneName: AbandonedShed
+      _sceneGuid: be4671e640d0d4bc58e22cf753334e28
+    _message: guess i'm sleeping in this wreck
+    _delay: 2
+    _useNarrator: 0
 --- !u!1 &6130074044021981680
 GameObject:
   m_ObjectHideFlags: 0
@@ -38933,8 +38953,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 980e205faf6544c058d5231b4abc84cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CatchableSceneNames:
-  - Outside
+  CatchableScenes:
+  - _sceneName: Outside
+    _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
   CaughtItem: {fileID: 11400000, guid: 9ce9ff8376419476085cc9d7aa7ed5ab, type: 2}
   SpawnableSeasons: 0000000002000000
   SpawnablePeriods: 00000000010000000200000003000000

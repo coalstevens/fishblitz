@@ -15,7 +15,17 @@ public class RainAudio : ScriptableObject
         public SoundType _type;
         public SoundData _soundData;
     }
+
+    [Serializable]
+    private class SceneSoundType
+    {
+        public SceneReference _scene;
+        public SoundType _type;
+    }
+
     [SerializeField] List<SoundEffect> _rainSounds = new();
+    [SerializeField] private List<SceneSoundType> _sceneSoundTypes = new();
+    [SerializeField] private SoundType _defaultSoundType = SoundType.HeavyExterior;
     [SerializeField] private AudioSource _audioSource;
     private Action _stopAudio;
     private List<Action> _unsubscribe = new();
@@ -71,15 +81,11 @@ public class RainAudio : ScriptableObject
 
     private SoundType GetSceneSoundType(string sceneName)
     {
-        return sceneName switch
-        {
-            "Abandoned Shed" => SoundType.Interior,
-            "SleepMenu" => SoundType.Interior,
-            "Waterfall Cave" => SoundType.Interior,
-            "Outside" => SoundType.HeavyExterior,
-            "Boot" => SoundType.HeavyExterior,
-            _ => SoundType.HeavyExterior
-        };
+        foreach (var entry in _sceneSoundTypes)
+            if (entry._scene.SceneName == sceneName)
+                return entry._type;
+
+        return _defaultSoundType;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

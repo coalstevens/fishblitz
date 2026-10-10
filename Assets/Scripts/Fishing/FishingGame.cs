@@ -377,7 +377,7 @@ public class FishingGame : MonoBehaviour
         {
             _fish = _child.GetComponent<FishType>();
             if (
-                _fish.CatchableSceneNames.Contains(SceneManager.GetActiveScene().name) &&
+                _fish.IsCatchableIn(SceneManager.GetActiveScene().name) &&
                 _fish.SpawnableSeasons.Contains(GameClock.Instance.GameSeason) &&
                 _fish.SpawnablePeriods.Contains(GameClock.Instance.GameDayPeriod) 
             )

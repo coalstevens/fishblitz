@@ -21,7 +21,22 @@ public class SceneTransitionOverlay : MonoBehaviour
 
   private IEnumerator LoadSceneAsync(string name)
   {
-    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(name);
+    AsyncOperation asyncLoad = null;
+    try
+    {
+      asyncLoad = SceneManager.LoadSceneAsync(name);
+    }
+    catch (System.Exception e)
+    {
+      Debug.LogError($"Failed to load scene '{name}': {e.Message}");
+    }
+
+    if (asyncLoad == null)
+    {
+      Debug.LogError($"Failed to load scene '{name}'. Is it added to Build Settings?");
+      yield break;
+    }
+
     while (!asyncLoad.isDone)
     {
       yield return null;

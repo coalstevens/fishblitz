@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class FishType : MonoBehaviour
 {
-    public List<string> CatchableSceneNames;
+    public List<SceneReference> CatchableScenes;
+
+    public bool IsCatchableIn(string sceneName)
+    {
+        foreach (var scene in CatchableScenes)
+            if (scene.SceneName == sceneName)
+                return true;
+        return false;
+    }
+
     public Inventory.Item CaughtItem;
     [SerializeField] public List<GameClock.Seasons> SpawnableSeasons = new();
     [SerializeField] public List<GameClock.DayPeriods> SpawnablePeriods = new();

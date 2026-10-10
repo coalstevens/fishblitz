@@ -10181,6 +10181,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: e1a7058445f9b4d60934811ba9779fc7, type: 2}
+  _menuScene:
+    _sceneName: GameMenu
+    _sceneGuid: ca42dab8167fa4af78138b823a9e2d08
 --- !u!114 &575369047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11118,8 +11121,12 @@ PrefabInstance:
       value: Level 3
       objectReference: {fileID: 0}
     - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
-      propertyPath: _toScene
+      propertyPath: _toScene._sceneName
       value: Outside
+      objectReference: {fileID: 0}
+    - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
+      propertyPath: _toScene._sceneGuid
+      value: 8c9cfa26abfee488c85f1582747f6a02
       objectReference: {fileID: 0}
     - target: {fileID: -6743142901353792221, guid: 0a5186921094b4ab9b66875e919d00ad, type: 3}
       propertyPath: _playerData

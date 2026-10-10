@@ -28,6 +28,7 @@ public class PlayerEnergyManager : MonoBehaviour, ISaveable
     public const float NUTRIENTS_REQUIRED_DAILY = 100;
 
     [Header("Sleep")]
+    [SerializeField] private SceneReference _sleepScene;
     public bool IsPlayerSleeping = false;
     public int LastPlayerSleepTime = 0;
 
@@ -58,7 +59,7 @@ public class PlayerEnergyManager : MonoBehaviour, ISaveable
         _playerTemperatureManager.TryUpdatePlayerTempInstantly(true);
         _playerSceneData.SceneOnAwake = SceneManager.GetActiveScene().name;
         LastPlayerSleepTime = GameClock.Instance.GameMinutesElapsed;
-        LevelChanger.ChangeLevel("SleepMenu");
+        LevelChanger.ChangeLevel(_sleepScene);
     }
 
     public void DepleteEnergy(int energy)

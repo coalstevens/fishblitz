@@ -242,6 +242,19 @@ MonoBehaviour:
   _sidePadding: 40
   _lineSpacing: 40
   _postMessageDelaySeconds: 4
+  _firstVisitMessages:
+  - _scene:
+      _sceneName: Outside
+      _sceneGuid: 8c9cfa26abfee488c85f1582747f6a02
+    _message: i need to find shelter
+    _delay: 30
+    _useNarrator: 0
+  - _scene:
+      _sceneName: AbandonedShed
+      _sceneGuid: be4671e640d0d4bc58e22cf753334e28
+    _message: guess i'm sleeping in this wreck
+    _delay: 2
+    _useNarrator: 0
 --- !u!114 &103559621
 MonoBehaviour:
   m_ObjectHideFlags: 0

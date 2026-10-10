@@ -13,6 +13,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
 
     public string SaveableId => "PlayerWetness";
 
+    [SerializeField] private SceneReference _outdoorScene;
     public Reactive<WetnessStates> WetnessState = new Reactive<WetnessStates>(WetnessStates.Wet);
     public Reactive<bool> PlayerIsWet = new Reactive<bool>(true);
     public int DryingPointsCounter = 0;
@@ -102,7 +103,7 @@ public class PlayerDryingManager : MonoBehaviour, GameClock.ITickable, ISaveable
     {
         string _sceneName = SceneManager.GetActiveScene().name;
 
-        if (_sceneName != "Outside")
+        if (_sceneName != _outdoorScene.SceneName)
         {
             if (WetnessState.Value == WetnessStates.Wet)
                 WetnessState.Value = WetnessStates.Drying;

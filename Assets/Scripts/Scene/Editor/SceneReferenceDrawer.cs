@@ -17,6 +17,19 @@ public class SceneReferenceDrawer : PropertyDrawer
         Rect fieldRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 
         EditorGUI.BeginProperty(position, label, property);
+
+        if (sceneAsset != null)
+        {
+            string resolvedGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset));
+            if (nameProp.stringValue != sceneAsset.name || guidProp.stringValue != resolvedGuid)
+            {
+                nameProp.stringValue = sceneAsset.name;
+                guidProp.stringValue = resolvedGuid;
+                property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(property.serializedObject.targetObject);
+            }
+        }
+
         EditorGUI.BeginChangeCheck();
 
         SceneAsset newAsset = (SceneAsset)EditorGUI.ObjectField(fieldRect, label, sceneAsset, typeof(SceneAsset), false);
