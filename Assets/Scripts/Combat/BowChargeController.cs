@@ -48,7 +48,7 @@ public class BowChargeController : MonoBehaviour
         _activeBow = bow;
         _activeWeaponData = weaponData;
 
-        _playerInput.SwitchCurrentActionMap("Combat");
+        PlayerActionMapController.Instance.PushOverlay(PlayerActionMapController.Overlay.Combat);
         _chargeAction = _playerInput.actions["UseTool"];
         Assert.IsNotNull(_chargeAction, "UseTool action not found in Combat map.");
 
@@ -151,7 +151,7 @@ public class BowChargeController : MonoBehaviour
             _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
         }
 
-        _playerInput.SwitchCurrentActionMap("Player");
+        PlayerActionMapController.Instance.PopOverlay(PlayerActionMapController.Overlay.Combat);
         _state = ChargeState.Idle;
         _chargeNormalized = 0f;
         _activeBow = null;

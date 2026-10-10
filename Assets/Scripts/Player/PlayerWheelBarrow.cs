@@ -6,7 +6,6 @@ using NUnit.Framework;
 using ReactiveUnity;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerWheelBarrow : MonoBehaviour, ISaveable
@@ -22,7 +21,6 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
     [SerializeField] private SoundData _liftBarrowSound;
     [SerializeField] private SoundData _placeBarrowSound;
     List<Action> _unsubscribeHooks = new();
-    private PlayerInput _playerInput;
     private Rigidbody2D _rb;
     private bool _suppressLiftSound;
 
@@ -32,9 +30,6 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
     {
         _rb = GetComponent<Rigidbody2D>();
         _unsubscribeHooks.Add(IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-            player.TryGetComponent(out _playerInput);
     }
 
     private void OnUseWheelBarrow()
@@ -51,19 +46,10 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
         if (isWheelBarrowing)
         {
             if (!_suppressLiftSound)
-            {
-                Debug.Log($"Player position change {Time.frameCount}");
-                _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
                 PlayerAudioManager.Instance.PlayOneShot(_liftBarrowSound);
-            }
-            else
-            {
-                _playerInput?.SwitchCurrentActionMap("PlayerBarrowing");
-            }
         }
         else
         {
-            _playerInput?.SwitchCurrentActionMap("Player");
             StaticWheelBarrowSelector newBarrow = InstantiateStaticWheelBarrow();
             newBarrow.SetFacingDirection(PlayerAnimatorController.Instance.AnimationDirection);
             TransferContentsToStaticWheelbarrow(newBarrow);

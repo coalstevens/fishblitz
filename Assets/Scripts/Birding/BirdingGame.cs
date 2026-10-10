@@ -241,7 +241,7 @@ public class BirdingGame : MonoBehaviour
 
     private void ConfigureControls()
     {
-        _playerInput.SwitchCurrentActionMap("Birding");
+        PlayerActionMapController.Instance.PushOverlay(PlayerActionMapController.Overlay.Birding);
         _useAction = _playerInput.actions["UseBinoculars"];
         Assert.IsNotNull(_useAction, "Use action is not set.");
     }
@@ -355,7 +355,7 @@ public class BirdingGame : MonoBehaviour
     {
         _logger.Info("Birding Game Complete");
         _angularVelocity = 0;
-        _playerInput.SwitchCurrentActionMap("Player");
+        PlayerActionMapController.Instance.PopOverlay(PlayerActionMapController.Overlay.Birding);
         yield return null;
         gameObject.SetActive(false);
         PlayerMovement.Instance.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
