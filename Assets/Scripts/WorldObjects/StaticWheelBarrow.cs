@@ -31,6 +31,19 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         Assert.IsNotNull(_playerMovementController);
         Assert.IsNotNull(_staticWheelBarrow);
         Assert.IsNotNull(_wheelBarrow);
+
+        _weightyContainer.Capacity = _stackConfig != null ? _stackConfig.WeightCapacity : int.MaxValue;
+    }
+
+    public bool TryAddItem(StoredWeightyObject item)
+    {
+        if (!_weightyContainer.HasEnoughSpace(item.Type.Weight))
+            return false;
+
+        _weightyContainer.Push(item);
+        if (_stackConfig != null && _stackConfig.InsertSound != null)
+            PlayerAudioManager.Instance.PlayOneShot(_stackConfig.InsertSound);
+        return true;
     }
     private bool IsFacingDirectionForWheelbarrowPickup()
     {

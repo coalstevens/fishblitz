@@ -142,7 +142,7 @@ public class Box : MonoBehaviour, IWeightyObjectContainer, UseItemInput.IUsableT
         Debug.Log("Box: Invalid item deposited");
     }
 
-    public bool TryAddToBox(StoredWeightyObject item)
+    public bool TryAddItem(StoredWeightyObject item)
     {
         if (_isComplete) return false;
         UpdateUI();

@@ -5,6 +5,7 @@ using ReactiveUnity;
 public interface IWeightyObjectContainer : InteractInput.IInteractable
 {
     public WeightyObjectStack WeightyStack { get; }
+    public bool TryAddItem(StoredWeightyObject item);
 }
 
 [System.Serializable]

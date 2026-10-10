@@ -95,24 +95,16 @@ public class UseItemInput : MonoBehaviour
         if (!_playerCarry.IsCarrying.Value)
             return false;
 
-        if (targetWorldObject is Box box)
+        if (targetWorldObject is IWeightyObjectContainer container)
         {
-            if (box.TryAddToBox(_playerCarry.Peek()))
-            {
+            if (container.TryAddItem(_playerCarry.Peek()))
                 _playerCarry.Pop();
-                return true;
-            }
-        }
-        else if (targetWorldObject is IWeightyObjectContainer _weightyObjectContainer &&
-            _weightyObjectContainer.WeightyStack.HasEnoughSpace(_playerCarry.Peek().Type.Weight))
-        {
-            _weightyObjectContainer.WeightyStack.Push(_playerCarry.Pop());
-        }
-        else
-        {
-            _playerCarry.PutDown();
+            else
+                _logger.Info("Container rejected item");
+            return true;
         }
 
+        _playerCarry.PutDown();
         return true;
     }
 
