@@ -85,7 +85,7 @@ public class StaticWheelBarrow : MonoBehaviour, IWeightyObjectContainer, UseItem
         {
             _wheelBarrow.PickUpStaticWheelbarrow(_weightyContainer);
             _wheelBarrow.IsHoldingWheelBarrow.Value = true;
-            _playerMovementController.PlayerState.Value = PlayerStates.Barrowing;
+            PlayerStateController.Instance.TransitionTo(PlayerStates.Barrowing);
             Destroy(transform.gameObject);
             return true;
         }

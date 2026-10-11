@@ -2,16 +2,14 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInput), typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerCrouch : MonoBehaviour
 {
     private InputAction _crouchAction;
-    private PlayerMovement _playerMovementController;
 
     private void OnEnable()
     {
         PlayerInput _inputController = GetComponent<PlayerInput>();
-        _playerMovementController = GetComponent<PlayerMovement>();
 
         _crouchAction = _inputController.actions["Crouch"];
         Assert.IsNotNull(_crouchAction);
@@ -28,18 +26,18 @@ public class PlayerCrouch : MonoBehaviour
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value == PlayerStates.Crouched)
+        if (PlayerStateController.Instance.PlayerState.Value == PlayerStates.Crouched)
         {
-            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+            PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
             return;
         }
     }
 
     private void OnCrouchStarted(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value.CanCrouch())
+        if (PlayerStateController.Instance.PlayerState.Value.CanCrouch())
         {
-            _playerMovementController.PlayerState.Value = PlayerStates.Crouched;
+            PlayerStateController.Instance.TransitionTo(PlayerStates.Crouched);
             return;
         }
     }

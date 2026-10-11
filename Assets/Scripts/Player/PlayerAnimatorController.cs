@@ -44,12 +44,13 @@ public class PlayerAnimatorController : MonoBehaviour
         _playerCarry = GetComponentInParent<PlayerCarry>();
         _carriedObjects = _playerCarry.CarriedStack;
 
-        _unsubscribeHooks.Add(_playerMovementController.PlayerState.OnChange(curr => OnStateChange(curr)));
-        _unsubscribeHooks.Add(_carriedObjects.StoredObjects.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_wheelBarrow.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_playerCarry.IsCarrying.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
-        _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange(_ => OnStateChange(_playerMovementController.PlayerState.Value)));
+        _unsubscribeHooks.Add(PlayerStateController.Instance.PlayerState.OnChange(curr => OnStateChange(curr)));
+        _unsubscribeHooks.Add(PlayerStateController.Instance.IsRunning.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
+        _unsubscribeHooks.Add(_carriedObjects.StoredObjects.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerMovementController.Direction.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
+        _unsubscribeHooks.Add(_wheelBarrow.IsHoldingWheelBarrow.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
+        _unsubscribeHooks.Add(_playerCarry.IsCarrying.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
+        _unsubscribeHooks.Add(_inventory.ActiveItemSlot.OnChange(_ => OnStateChange(PlayerStateController.Instance.PlayerState.Value)));
     }
 
     private void OnDisable()
@@ -109,19 +110,21 @@ public class PlayerAnimatorController : MonoBehaviour
             transform.localScale = new Vector2(-1, 1);
         }
 
+        bool isRunning = PlayerStateController.Instance.IsRunning.Value;
+
         switch (curr)
         {
-            case PlayerStates.Idle:
-                HandleIdle();
-                break;
-            case PlayerStates.Running:
-                HandleRunning();
+            case PlayerStates.Default:
+                if (isRunning)
+                    HandleRunning();
+                else
+                    HandleIdle();
                 break;
             case PlayerStates.Birding:
-                PlayIdleBinos();
-                break;
-            case PlayerStates.BirdingRunning:
-                PlayRunningBinos();
+                if (isRunning)
+                    PlayRunningBinos();
+                else
+                    PlayIdleBinos();
                 break;
             case PlayerStates.Fishing:
                 HandleFishing();
@@ -142,16 +145,13 @@ public class PlayerAnimatorController : MonoBehaviour
                 HandleCrouched();
                 break;
             case PlayerStates.BowCharging:
-                PlayIdleBow();
-                break;
-            case PlayerStates.BowChargingRunning:
-                PlayRunningBow();
+                if (isRunning)
+                    PlayRunningBow();
+                else
+                    PlayIdleBow();
                 break;
             case PlayerStates.Barrowing:
                 HandleBarrowing();
-                break;
-            case PlayerStates.BarrowingRunning:
-                HandleBarrowingRunning();
                 break;
         }
     }
@@ -159,13 +159,11 @@ public class PlayerAnimatorController : MonoBehaviour
     private void HandleBarrowing()
     {
         ShowBarrowingSprite();
-        HandleBarrowIdle();
-    }
 
-    private void HandleBarrowingRunning()
-    {
-        ShowBarrowingSprite();
-        PlayRunningBarrow();
+        if (PlayerStateController.Instance.IsRunning.Value)
+            PlayRunningBarrow();
+        else
+            HandleBarrowIdle();
     }
 
     private void HandleRunning()
@@ -341,7 +339,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void SetPlayerIdle()
     {
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
     }
 
     private void HandleBarrowIdle()

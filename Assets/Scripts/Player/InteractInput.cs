@@ -1,9 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerEnergyManager))]
 [RequireComponent(typeof(PlayerCarry))]
-[RequireComponent(typeof(PlayerInteraction))]
+[RequireComponent(typeof(PlayerCursor))]
 public class InteractInput : MonoBehaviour
 {
     public interface IInteractable
@@ -16,28 +15,26 @@ public class InteractInput : MonoBehaviour
 
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Logger _logger = new();
-    private PlayerInteraction _playerInteraction;
-    private PlayerMovement _playerMovementController;
+    private PlayerCursor _playerCursor;
     private PlayerCarry _playerCarry;
 
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovement>();
         _playerCarry = GetComponent<PlayerCarry>();
-        _playerInteraction = GetComponent<PlayerInteraction>();
+        _playerCursor = GetComponent<PlayerCursor>();
     }
 
     private void OnInteract()
     {
         // returns if player is not idle or walking
-        if (!_playerMovementController.PlayerState.Value.CanInteract())
+        if (!PlayerStateController.Instance.PlayerState.Value.CanInteract())
         {
             _logger.Info("Attempted to interact but player state does not allow.");
             return;
         }
 
         // Check for an interactable object
-        IInteractable interactable = _playerInteraction.FindTarget<IInteractable>();
+        IInteractable interactable = _playerCursor.FindTarget<IInteractable>();
         if (interactable == null)
         {
             _logger.Info("Attempted to interact but there is no item under cursor.");
@@ -51,7 +48,7 @@ public class InteractInput : MonoBehaviour
             return;
         }
 
-        if (interactable?.CursorInteract(_playerInteraction.ResolvePoint) == true)
+        if (interactable?.CursorInteract(_playerCursor.ResolvePoint) == true)
         {
             _logger.Info($"Interacting with {name}");
             return;

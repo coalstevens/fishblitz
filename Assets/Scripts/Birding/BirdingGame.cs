@@ -356,6 +356,6 @@ public class BirdingGame : MonoBehaviour
         _angularVelocity = 0;
         yield return null;
         gameObject.SetActive(false);
-        PlayerMovement.Instance.PlayerState.Value = PlayerStates.Idle;
+        PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
     }
 }

@@ -22,7 +22,6 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
     [SerializeField] private SoundData _placeBarrowSound;
     List<Action> _unsubscribeHooks = new();
     private Rigidbody2D _rb;
-    private PlayerMovement _playerMovementController;
     private bool _suppressLiftSound;
 
     public WeightyObjectStack WheelBarrowStack => _wheelbarrowStack;
@@ -30,18 +29,16 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
     void OnEnable()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _playerMovementController = GetComponent<PlayerMovement>();
         _unsubscribeHooks.Add(IsHoldingWheelBarrow.OnChange(curr => OnWheelBarrowingChange(curr)));
     }
 
-    private void OnInteract()
+    public void PutDownWheelBarrow()
     {
-        if (_playerMovementController.PlayerState.Value != PlayerStates.Barrowing &&
-            _playerMovementController.PlayerState.Value != PlayerStates.BarrowingRunning)
+        if (PlayerStateController.Instance.PlayerState.Value != PlayerStates.Barrowing)
             return;
 
         IsHoldingWheelBarrow.Value = false;
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
     }
 
     private void OnWheelBarrowingChange(bool isWheelBarrowing)
@@ -136,7 +133,7 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
 
         _suppressLiftSound = true;
         IsHoldingWheelBarrow.Value = _data.Holding;
-        _playerMovementController.PlayerState.Value = _data.Holding ? PlayerStates.Barrowing : PlayerStates.Idle;
+        PlayerStateController.Instance.TransitionTo(_data.Holding ? PlayerStates.Barrowing : PlayerStates.Default);
         _suppressLiftSound = false;
     }
 
@@ -144,6 +141,6 @@ public class PlayerWheelBarrow : MonoBehaviour, ISaveable
     {
         _wheelbarrowStack.Clear();
         IsHoldingWheelBarrow.Value = false;
-        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+        PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
     }
 }

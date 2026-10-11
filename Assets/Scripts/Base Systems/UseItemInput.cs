@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerEnergyManager))]
 [RequireComponent(typeof(PlayerCarry))]
-[RequireComponent(typeof(PlayerInteraction))]
+[RequireComponent(typeof(PlayerCursor))]
+[RequireComponent(typeof(PlayerWheelBarrow))]
 public class UseItemInput : MonoBehaviour
 {
     public interface IUsableTarget
@@ -43,19 +43,19 @@ public class UseItemInput : MonoBehaviour
 
     [SerializeField] private Inventory _inventory;
     [SerializeField] private Logger _logger = new();
-    private PlayerInteraction _playerInteraction;
-    private PlayerMovement _playerMovementController;
+    private PlayerCursor _playerCursor;
     private PlayerEnergyManager _playerEnergyManager;
     private PlayerCarry _playerCarry;
+    private PlayerWheelBarrow _playerWheelBarrow;
     private bool _useItemQueued;
     private static readonly List<string> INTERACTABLE_TILEMAP_LAYERS = new List<string> { "Water" };
 
     private void OnEnable()
     {
-        _playerMovementController = GetComponent<PlayerMovement>();
         _playerEnergyManager = GetComponent<PlayerEnergyManager>();
         _playerCarry = GetComponent<PlayerCarry>();
-        _playerInteraction = GetComponent<PlayerInteraction>();
+        _playerCursor = GetComponent<PlayerCursor>();
+        _playerWheelBarrow = GetComponent<PlayerWheelBarrow>();
 
         Assert.IsNotNull(_inventory);
     }
@@ -67,15 +67,19 @@ public class UseItemInput : MonoBehaviour
 
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
-        // can't interrupt these
-        if (!_playerMovementController.PlayerState.Value.CanUseItem())
+        PlayerStates state = PlayerStateController.Instance.PlayerState.Value;
+
+        if (state == PlayerStates.Barrowing)
         {
+            _playerWheelBarrow.PutDownWheelBarrow();
             return;
         }
 
-        IUsableTarget _targetWorldObject = _playerInteraction.FindTarget<IUsableTarget>();
-        Vector3Int _cursorLocation = _playerInteraction.GridPosition;
-        string _targetTileMapTag = _playerInteraction.FindInteractableTileMapByTags(INTERACTABLE_TILEMAP_LAYERS);
+        if (!state.CanUseItem()) return;
+
+        IUsableTarget _targetWorldObject = _playerCursor.FindTarget<IUsableTarget>();
+        Vector3Int _cursorLocation = _playerCursor.GridPosition;
+        string _targetTileMapTag = _playerCursor.FindInteractableTileMapByTags(INTERACTABLE_TILEMAP_LAYERS);
 
         if (TryUseCarriedObject(_targetWorldObject)) return;
         if (TryUseInventoryItem(_cursorLocation, _targetTileMapTag, _targetWorldObject)) return;

@@ -32,6 +32,7 @@ public struct CardinalVector
 
 [RequireComponent(typeof(Rigidbody2D), typeof(PlayerSceneData))]
 [RequireComponent(typeof(PlayerWheelBarrow), typeof(PlayerCarry))]
+[RequireComponent(typeof(PlayerStateController))]
 public class PlayerMovement : MonoBehaviour
 {
     private static PlayerMovement _instance;
@@ -54,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _currentMaxMoveSpeed;
     public Vector2 CurrentMotion => _currentMotion;
     public Reactive<CompassDirection> Direction = new Reactive<CompassDirection>(CompassDirection.SouthEast);
-    public Reactive<PlayerStates> PlayerState = new Reactive<PlayerStates>(PlayerStates.Idle);
+    private PlayerStateController _stateController;
     private Vector2 _currentMotion = Vector2.zero;
     private Vector2 _targetVelocity = Vector2.zero;
     private Vector2 _currentVelocity = Vector2.zero;
@@ -69,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         _sceneData = GetComponent<PlayerSceneData>();
         _wheelBarrow = GetComponent<PlayerWheelBarrow>();
         _playerCarry = GetComponent<PlayerCarry>();
+        _stateController = GetComponent<PlayerStateController>();
         _maxMoveSpeeds = new CardinalVector(_movementData.DefaultMoveSpeed);
         _moveSpeedsMultiplier = new CardinalVector(1);
     }
@@ -90,9 +92,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // Can only change direction 
-        if (!PlayerState.Value.CanMove())
+        // Can only change direction and run while in a movement-allowed state
+        if (!_stateController.PlayerState.Value.CanMove())
+        {
+            _stateController.SetRunning(false);
             return;
+        }
+
+        _stateController.SetRunning(_currentMotion.magnitude > 0);
 
         if (_currentMotion.x > 0 && _currentMotion.y > 0)
             Direction.Value = CompassDirection.NorthEast;
@@ -111,31 +118,7 @@ public class PlayerMovement : MonoBehaviour
         else if (_currentMotion.y < 0)
             Direction.Value = CompassDirection.South;
 
-        if (_currentMotion.magnitude > 0)
-        {
-            if (PlayerState.Value == PlayerStates.Idle)
-                PlayerState.Value = PlayerStates.Running;
-            if (PlayerState.Value == PlayerStates.Birding)
-                PlayerState.Value = PlayerStates.BirdingRunning;
-            if (PlayerState.Value == PlayerStates.BowCharging)
-                PlayerState.Value = PlayerStates.BowChargingRunning;
-            if (PlayerState.Value == PlayerStates.Barrowing)
-                PlayerState.Value = PlayerStates.BarrowingRunning;
-        }
-        else
-        {
-            if (PlayerState.Value == PlayerStates.Running)
-                PlayerState.Value = PlayerStates.Idle;
-            if (PlayerState.Value == PlayerStates.BirdingRunning)
-                PlayerState.Value = PlayerStates.Birding;
-            if (PlayerState.Value == PlayerStates.BowChargingRunning)
-                PlayerState.Value = PlayerStates.BowCharging;
-            if (PlayerState.Value == PlayerStates.BarrowingRunning)
-                PlayerState.Value = PlayerStates.Barrowing;
-        }
-
-        if (_currentMotion.magnitude == 0 &&
-            (PlayerState.Value == PlayerStates.BowCharging || PlayerState.Value == PlayerStates.BowChargingRunning))
+        if (_currentMotion.magnitude == 0 && _stateController.PlayerState.Value == PlayerStates.BowCharging)
         {
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Direction.Value = mouseWorld.x > transform.position.x
@@ -147,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         // Can only move when in a movement-allowed state
-        if (!PlayerState.Value.CanMove())
+        if (!_stateController.PlayerState.Value.CanMove())
         {
             _rb.linearVelocity = Vector2.zero;
             _currentVelocity = Vector2.zero;

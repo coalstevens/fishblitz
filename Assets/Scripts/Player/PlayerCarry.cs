@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using ReactiveUnity;
 
 [RequireComponent(typeof(PlayerStrength))]
-[RequireComponent(typeof(PlayerInteraction))]
+[RequireComponent(typeof(PlayerCursor))]
 public class PlayerCarry : MonoBehaviour, ISaveable
 {
     public string SaveableId => "PlayerCarry";
@@ -16,8 +16,7 @@ public class PlayerCarry : MonoBehaviour, ISaveable
     [SerializeField] private WeightyObjectStack _carriedStack = new();
     [SerializeField] private WeightyObjectStackConfig _stackConfig;
     [SerializeField] private SoundData _putDownSound;
-    private PlayerInteraction _playerInteraction;
-    private PlayerMovement _playermovementController;
+    private PlayerCursor _playerCursor;
     private PlayerStrength _playerStrength;
     private GameObject _impermanent;
     private Grid _grid;
@@ -36,13 +35,10 @@ public class PlayerCarry : MonoBehaviour, ISaveable
         _playerInput = _player.GetComponent<PlayerInput>();
         Assert.IsNotNull(_playerInput);
 
-        _playermovementController = _player.GetComponent<PlayerMovement>();
-        Assert.IsNotNull(_playermovementController);
-
         _impermanent = GameObject.FindGameObjectWithTag("Impermanent");
         Assert.IsNotNull(_impermanent);
 
-        _playerInteraction = GetComponent<PlayerInteraction>();
+        _playerCursor = GetComponent<PlayerCursor>();
 
         _playerStrength = GetComponent<PlayerStrength>();
     }
@@ -51,7 +47,7 @@ public class PlayerCarry : MonoBehaviour, ISaveable
     {
         if (HasEnoughSpace(objectToPickup.WeightyObject.Weight) == false)
             return false;
-        _playermovementController.PlayerState.Value = PlayerStates.PickingUp;
+        PlayerStateController.Instance.TransitionTo(PlayerStates.PickingUp);
 
         StoredWeightyObject _objectToStore = new StoredWeightyObject(objectToPickup);
 
@@ -85,7 +81,7 @@ public class PlayerCarry : MonoBehaviour, ISaveable
     {
         Assert.IsTrue(IsCarrying.Value);
 
-        if (!_playerInteraction.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
+        if (!_playerCursor.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
             return;
 
         InstantiateWeightyObject(_carriedStack.Pop(), _spawnPosition);
@@ -128,7 +124,7 @@ public class PlayerCarry : MonoBehaviour, ISaveable
 
     private bool TrySpawnNearPlayer(StoredWeightyObject storedObject)
     {
-        if (!_playerInteraction.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
+        if (!_playerCursor.TryGetUnoccupiedTileNearPlayer(out Vector3Int _spawnPosition))
             return false;
 
         InstantiateWeightyObject(storedObject, _spawnPosition);

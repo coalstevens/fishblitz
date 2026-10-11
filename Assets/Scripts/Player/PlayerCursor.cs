@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(PlayerMovement))]
-public class PlayerInteraction : MonoBehaviour
+public class PlayerCursor : MonoBehaviour
 {
     private struct Candidate
     {

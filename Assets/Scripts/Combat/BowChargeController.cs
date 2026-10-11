@@ -10,6 +10,16 @@ public class BowChargeController : MonoBehaviour
 
     private enum ChargeState { Idle, Charging }
     private ChargeState _state = ChargeState.Idle;
+    private static BowChargeController _instance;
+    public static BowChargeController Instance
+    {
+        get
+        {
+            if (_instance == null)
+                Debug.LogError("This object does not exist");
+            return _instance;
+        }
+    }
     private PlayerInput _playerInput;
     private InputAction _chargeAction;
     private Bow _activeBow;
@@ -17,19 +27,19 @@ public class BowChargeController : MonoBehaviour
     private float _chargeNormalized;
     private bool _blockNextCharge = false;
     private PlayerEnergyManager _playerEnergyManager;
-    private PlayerMovement _playerMovementController;
     private PlayerCarry _playerCarry;
     private BowChargeView _view;
 
     private void Awake()
     {
+        _instance = this;
+
         var player = GameObject.FindGameObjectWithTag("Player");
         Assert.IsNotNull(player, "Player not found for BowChargeController.");
 
         _playerCarry = player.GetComponent<PlayerCarry>();
         _playerInput = player.GetComponent<PlayerInput>();
         _playerEnergyManager = player.GetComponent<PlayerEnergyManager>();
-        _playerMovementController = player.GetComponent<PlayerMovement>();
 
         Assert.IsNotNull(_playerInput);
         Assert.IsNotNull(_playerEnergyManager);
@@ -55,7 +65,7 @@ public class BowChargeController : MonoBehaviour
 
         if (!_activeBow.AllowMovementWhileCharging)
         {
-            _playerMovementController.PlayerState.Value = PlayerStates.BowCharging;
+            PlayerStateController.Instance.TransitionTo(PlayerStates.BowCharging);
         }
 
         _state = ChargeState.Charging;
@@ -143,13 +153,13 @@ public class BowChargeController : MonoBehaviour
     private void EndCharge()
     {
         _view.HideCharge();
+        _state = ChargeState.Idle;
 
-        if (_playerMovementController.PlayerState.Value.IsBowCharging())
+        if (PlayerStateController.Instance.PlayerState.Value.IsBowCharging())
         {
-            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
+            PlayerStateController.Instance.TransitionTo(PlayerStates.Default);
         }
 
-        _state = ChargeState.Idle;
         _chargeNormalized = 0f;
         _activeBow = null;
         _activeWeaponData = null;
