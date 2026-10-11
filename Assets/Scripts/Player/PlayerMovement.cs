@@ -34,22 +34,6 @@ public struct CardinalVector
 [RequireComponent(typeof(PlayerWheelBarrow), typeof(PlayerCarry))]
 public class PlayerMovement : MonoBehaviour
 {
-    public enum PlayerStates
-    {
-        Running,
-        Idle,
-        Fishing,
-        Axing,
-        Catching,
-        Celebrating,
-        Birding,
-        BirdingRunning,
-        PickingUp,
-        Crouched,
-        BowCharging,
-        BowChargingRunning
-    }
-
     private static PlayerMovement _instance;
     public static PlayerMovement Instance
     {
@@ -107,12 +91,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Can only change direction 
-        if (PlayerState.Value != PlayerStates.Idle &&
-            PlayerState.Value != PlayerStates.Running &&
-            PlayerState.Value != PlayerStates.Birding &&
-            PlayerState.Value != PlayerStates.BirdingRunning &&
-            PlayerState.Value != PlayerStates.BowCharging &&
-            PlayerState.Value != PlayerStates.BowChargingRunning)
+        if (!PlayerState.Value.CanMove())
             return;
 
         if (_currentMotion.x > 0 && _currentMotion.y > 0)
@@ -140,6 +119,8 @@ public class PlayerMovement : MonoBehaviour
                 PlayerState.Value = PlayerStates.BirdingRunning;
             if (PlayerState.Value == PlayerStates.BowCharging)
                 PlayerState.Value = PlayerStates.BowChargingRunning;
+            if (PlayerState.Value == PlayerStates.Barrowing)
+                PlayerState.Value = PlayerStates.BarrowingRunning;
         }
         else
         {
@@ -149,6 +130,8 @@ public class PlayerMovement : MonoBehaviour
                 PlayerState.Value = PlayerStates.Birding;
             if (PlayerState.Value == PlayerStates.BowChargingRunning)
                 PlayerState.Value = PlayerStates.BowCharging;
+            if (PlayerState.Value == PlayerStates.BarrowingRunning)
+                PlayerState.Value = PlayerStates.Barrowing;
         }
 
         if (_currentMotion.magnitude == 0 &&
@@ -163,13 +146,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Can only move when in Idle or Walking
-        if (PlayerState.Value != PlayerStates.Idle &&
-            PlayerState.Value != PlayerStates.Running &&
-            PlayerState.Value != PlayerStates.Birding &&
-            PlayerState.Value != PlayerStates.BirdingRunning &&
-            PlayerState.Value != PlayerStates.BowCharging &&
-            PlayerState.Value != PlayerStates.BowChargingRunning)
+        // Can only move when in a movement-allowed state
+        if (!PlayerState.Value.CanMove())
         {
             _rb.linearVelocity = Vector2.zero;
             _currentVelocity = Vector2.zero;

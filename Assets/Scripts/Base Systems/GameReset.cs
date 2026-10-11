@@ -41,6 +41,10 @@ public static class GameReset
             _playerWheelBarrow.IsHoldingWheelBarrow.Value = false;
             _playerWheelBarrow.WheelBarrowStack.Clear();
         }
+
+        var _playerMovement = Object.FindFirstObjectByType<PlayerMovement>();
+        if (_playerMovement != null)
+            _playerMovement.PlayerState.Value = PlayerStates.Idle;
     }
 
     public static void ResetClock()

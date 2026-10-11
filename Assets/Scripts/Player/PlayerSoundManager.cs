@@ -29,11 +29,14 @@ public class PlayerSoundManager : MonoBehaviour
         _unsubscribeWheelbarrowCB();
     }
 
-    private void OnPlayerStateChange(PlayerMovement.PlayerStates previous, PlayerMovement.PlayerStates current)
+    private void OnPlayerStateChange(PlayerStates previous, PlayerStates current)
     {
         switch (current)
         {
-            case PlayerMovement.PlayerStates.Running:
+            case PlayerStates.Running:
+                _stopFootstepSoundCB = PlayerAudioManager.Instance.PlayLooping(_walkingSound);
+                break;
+            case PlayerStates.BarrowingRunning:
                 _stopFootstepSoundCB = PlayerAudioManager.Instance.PlayLooping(_walkingSound);
                 break;
             default:
@@ -45,7 +48,7 @@ public class PlayerSoundManager : MonoBehaviour
 
     private void OnWheelbarrowStateChange()
     {
-        bool shouldRoll = _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Running
+        bool shouldRoll = _playerMovementController.PlayerState.Value == PlayerStates.BarrowingRunning
                        && _wheelBarrow.IsHoldingWheelBarrow.Value;
 
         if (shouldRoll && _stopWheelbarrowSoundCB == null)

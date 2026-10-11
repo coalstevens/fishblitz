@@ -90,7 +90,7 @@ public class PlayerAnimatorController : MonoBehaviour
         _CarryingSprite.SetActive(true);
     }
 
-    private void OnStateChange(PlayerMovement.PlayerStates curr)
+    private void OnStateChange(PlayerStates curr)
     {
         CompassDirection playerDirection = _playerMovementController.Direction.Value;
         CompassDirection[] faceSouthEast = {CompassDirection.East, CompassDirection.NorthEast, CompassDirection.SouthEast};
@@ -111,43 +111,61 @@ public class PlayerAnimatorController : MonoBehaviour
 
         switch (curr)
         {
-            case PlayerMovement.PlayerStates.Idle:
+            case PlayerStates.Idle:
                 HandleIdle();
                 break;
-            case PlayerMovement.PlayerStates.Running:
+            case PlayerStates.Running:
                 HandleRunning();
                 break;
-            case PlayerMovement.PlayerStates.Birding:
+            case PlayerStates.Birding:
                 PlayIdleBinos();
                 break;
-            case PlayerMovement.PlayerStates.BirdingRunning:
+            case PlayerStates.BirdingRunning:
                 PlayRunningBinos();
                 break;
-            case PlayerMovement.PlayerStates.Fishing:
+            case PlayerStates.Fishing:
                 HandleFishing();
                 break;
-            case PlayerMovement.PlayerStates.Catching:
+            case PlayerStates.Catching:
                 HandleCatching();
                 break;
-            case PlayerMovement.PlayerStates.Axing:
+            case PlayerStates.Axing:
                 HandleChopping();
                 break;
-            case PlayerMovement.PlayerStates.Celebrating:
+            case PlayerStates.Celebrating:
                 HandleCelebrating();
                 break;
-            case PlayerMovement.PlayerStates.PickingUp:
+            case PlayerStates.PickingUp:
                 HandlePickingUp();
                 break;
-            case PlayerMovement.PlayerStates.Crouched:
+            case PlayerStates.Crouched:
                 HandleCrouched();
                 break;
-            case PlayerMovement.PlayerStates.BowCharging:
+            case PlayerStates.BowCharging:
                 PlayIdleBow();
                 break;
-            case PlayerMovement.PlayerStates.BowChargingRunning:
+            case PlayerStates.BowChargingRunning:
                 PlayRunningBow();
                 break;
+            case PlayerStates.Barrowing:
+                HandleBarrowing();
+                break;
+            case PlayerStates.BarrowingRunning:
+                HandleBarrowingRunning();
+                break;
         }
+    }
+
+    private void HandleBarrowing()
+    {
+        ShowBarrowingSprite();
+        HandleBarrowIdle();
+    }
+
+    private void HandleBarrowingRunning()
+    {
+        ShowBarrowingSprite();
+        PlayRunningBarrow();
     }
 
     private void HandleRunning()
@@ -323,7 +341,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void SetPlayerIdle()
     {
-        _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
+        _playerMovementController.PlayerState.Value = PlayerStates.Idle;
     }
 
     private void HandleBarrowIdle()

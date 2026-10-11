@@ -28,19 +28,18 @@ public class PlayerCrouch : MonoBehaviour
 
     private void OnCrouchCanceled(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Crouched)
+        if (_playerMovementController.PlayerState.Value == PlayerStates.Crouched)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
+            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
             return;
         }
     }
 
     private void OnCrouchStarted(InputAction.CallbackContext context)
     {
-        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Idle ||
-            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Running)
+        if (_playerMovementController.PlayerState.Value.CanCrouch())
         {
-            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Crouched;
+            _playerMovementController.PlayerState.Value = PlayerStates.Crouched;
             return;
         }
     }

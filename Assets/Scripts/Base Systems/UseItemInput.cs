@@ -68,10 +68,7 @@ public class UseItemInput : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
         // can't interrupt these
-        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Celebrating ||
-            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Catching ||
-            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.Axing ||
-            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.PickingUp)
+        if (!_playerMovementController.PlayerState.Value.CanUseItem())
         {
             return;
         }

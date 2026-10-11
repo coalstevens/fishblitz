@@ -51,7 +51,7 @@ public class PlayerCarry : MonoBehaviour, ISaveable
     {
         if (HasEnoughSpace(objectToPickup.WeightyObject.Weight) == false)
             return false;
-        _playermovementController.PlayerState.Value = PlayerMovement.PlayerStates.PickingUp;
+        _playermovementController.PlayerState.Value = PlayerStates.PickingUp;
 
         StoredWeightyObject _objectToStore = new StoredWeightyObject(objectToPickup);
 

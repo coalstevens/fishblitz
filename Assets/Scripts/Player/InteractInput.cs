@@ -30,8 +30,7 @@ public class InteractInput : MonoBehaviour
     private void OnInteract()
     {
         // returns if player is not idle or walking
-        if (_playerMovementController.PlayerState.Value != PlayerMovement.PlayerStates.Idle &&
-            _playerMovementController.PlayerState.Value != PlayerMovement.PlayerStates.Running)
+        if (!_playerMovementController.PlayerState.Value.CanInteract())
         {
             _logger.Info("Attempted to interact but player state does not allow.");
             return;

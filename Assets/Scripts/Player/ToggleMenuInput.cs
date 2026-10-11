@@ -1,16 +1,24 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
 public class ToggleMenuInput : MonoBehaviour
 {
     [SerializeField] private GameObject _gameMenu;
+    private PlayerInput _playerInput;
     private bool _isMenuOpen = false;
+
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+    }
 
     private void Start()
     {
         if (_gameMenu.activeSelf)
         {
             _gameMenu.SetActive(false);
-            PlayerActionMapController.Instance.PopOverlay(PlayerActionMapController.Overlay.Menu);
+            SwitchToPlayerMap();
             Debug.Log("ToggleMenuInput: Closed active game menu on start.");
         }
 
@@ -26,7 +34,7 @@ public class ToggleMenuInput : MonoBehaviour
         {
             _isMenuOpen = true;
             _gameMenu.SetActive(true);
-            PlayerActionMapController.Instance.PushOverlay(PlayerActionMapController.Overlay.Menu);
+            SwitchToMenuMap();
         }
         else
         {
@@ -41,6 +49,16 @@ public class ToggleMenuInput : MonoBehaviour
 
         _isMenuOpen = false;
         _gameMenu.SetActive(false);
-        PlayerActionMapController.Instance.PopOverlay(PlayerActionMapController.Overlay.Menu);
+        SwitchToPlayerMap();
+    }
+
+    private void SwitchToMenuMap() => SwitchToMap("Menu");
+
+    private void SwitchToPlayerMap() => SwitchToMap("Player");
+
+    private void SwitchToMap(string map)
+    {
+        if (_playerInput.currentActionMap?.name != map)
+            _playerInput.SwitchCurrentActionMap(map);
     }
 }

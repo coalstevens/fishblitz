@@ -48,15 +48,14 @@ public class BowChargeController : MonoBehaviour
         _activeBow = bow;
         _activeWeaponData = weaponData;
 
-        PlayerActionMapController.Instance.PushOverlay(PlayerActionMapController.Overlay.Combat);
-        _chargeAction = _playerInput.actions["UseTool"];
-        Assert.IsNotNull(_chargeAction, "UseTool action not found in Combat map.");
+        _chargeAction = _playerInput.actions["UseItem"];
+        Assert.IsNotNull(_chargeAction, "UseItem action not found.");
 
         _view.ShowCharge();
 
         if (!_activeBow.AllowMovementWhileCharging)
         {
-            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.BowCharging;
+            _playerMovementController.PlayerState.Value = PlayerStates.BowCharging;
         }
 
         _state = ChargeState.Charging;
@@ -145,13 +144,11 @@ public class BowChargeController : MonoBehaviour
     {
         _view.HideCharge();
 
-        if (_playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.BowCharging ||
-            _playerMovementController.PlayerState.Value == PlayerMovement.PlayerStates.BowChargingRunning)
+        if (_playerMovementController.PlayerState.Value.IsBowCharging())
         {
-            _playerMovementController.PlayerState.Value = PlayerMovement.PlayerStates.Idle;
+            _playerMovementController.PlayerState.Value = PlayerStates.Idle;
         }
 
-        PlayerActionMapController.Instance.PopOverlay(PlayerActionMapController.Overlay.Combat);
         _state = ChargeState.Idle;
         _chargeNormalized = 0f;
         _activeBow = null;
