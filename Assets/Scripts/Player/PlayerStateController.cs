@@ -40,7 +40,7 @@ public class PlayerStateController : MonoBehaviour
         get
         {
             if (_instance == null)
-                Debug.LogError("This object does not exist");
+                _instance = FindFirstObjectByType<PlayerStateController>();
             return _instance;
         }
     }

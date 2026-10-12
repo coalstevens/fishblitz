@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public class WorldObjectOccupancyMap : MonoBehaviour
 {
     [SerializeField] private Tile _marker;
+    [SerializeField] private TilemapQuery _tilemapQuery;
     private Tilemap _tileMap;
 
     public bool CheckOccupied(Vector2 worldPosition)
@@ -14,15 +15,17 @@ public class WorldObjectOccupancyMap : MonoBehaviour
         if (_tileMap == null)
             _tileMap = GetComponent<Tilemap>();
 
-        Vector3Int tilePosition = _tileMap.WorldToCell(worldPosition);
-        return _tileMap.GetTile(tilePosition) != null;
+        return CheckOccupied(_tileMap.WorldToCell(worldPosition));
     }
     public bool CheckOccupied(Vector3Int tilePosition)
     {
         if (_tileMap == null)
             _tileMap = GetComponent<Tilemap>();
 
-        return _tileMap.GetTile(tilePosition) != null;
+        if (_tileMap.GetTile(tilePosition) != null)
+            return true;
+
+        return _tilemapQuery != null && !_tilemapQuery.IsOccupiable(tilePosition);
     }
 
     // Mark an area as occupied and return a callback to erase it
